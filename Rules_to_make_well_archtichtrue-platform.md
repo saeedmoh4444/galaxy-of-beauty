@@ -2,7 +2,7 @@
 
 > The working rulebook for developing, improving, and enhancing this codebase.
 > Every rule below is load-bearing: it exists because something broke when it was ignored.
-> Updated: 2026-10-25 (vendor program Waves 0–6 COMPLETE — F1/F5/F2/F4/G1/G2/G3; Wave-6 gotchas: Prisma back-relations, alphabetized catalogs, next/link breadcrumbs, stacked seed anchors).
+> Updated: 2026-10-30 (reels program Phases 1–3 COMPLETE #541–#558; counts: 267 routers / 1,211 procedures / 251 models; Phase 2–3 gotchas added: merge-tree exit codes, tRPC auto-redirect gating, tie-shuffle E2E, CI trigger-gap recovery).
 
 ---
 
@@ -47,7 +47,7 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 
 ## 2. Architecture Rules
 
-1. **New tRPC router** → new file in `routers/`, re-export in its `domains/<name>/index.ts`, and **bump the 266-router gate** in `trpc-procedures.test.ts`. Prefer adding procedures to an existing router over a new one.
+1. **New tRPC router** → new file in `routers/`, re-export in its `domains/<name>/index.ts`, and **bump the 267-router gate** in `trpc-procedures.test.ts`. Prefer adding procedures to an existing router over a new one.
 2. **Every new procedure** comes from a tiered factory (`publicProcedure`/`protectedProcedure`/`customerProcedure`/`technicianProcedure`/`adminProcedure`) — never a bare `procedure` (tier meta is stamped by the factory).
 3. **Router inventory ritual**: after adding/removing procedures, run `pnpm --dir packages/api exec vitest run src/__tests__/router-inventory.test.ts -u` **on a clean tree**, review the `.snap` diff (counts + hash), and never contaminate it with unrelated edits. **Regenerate BEFORE `git add`**: lint-staged prettier commits the STAGED content, so a file staged before `-u` commits the stale values (this shipped broken on #416 once). After staging, verify direction with `git diff --cached | grep '^[+-]'` — the diff must remove OLD counts/hash and add NEW. After a merge-conflict resolution, re-run `-u` on the resolved tree and stage only then.
 4. **Prisma 7 relations**: writes use `connect` (or `connectOrCreate`) — relation connects and FK scalars are mutually exclusive. Required relations on BOTH sides must be satisfied.
@@ -59,6 +59,9 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
    - Web legacy `t()` accepts **web keys only** (`WebTranslationKey`); `useLocale().t` keeps the global union for dynamic keys.
    - **Locale split (post-#403)**: runtime web code loads catalogs ONLY via `getWebCatalog(locale)` (dynamic import + promise cache — React `use()`-safe); server components take the sync `t()` from `@galaxy/shared/i18n/web-server` — importing that subpath from a client component re-bundles both locales and **fails the build** (`checkLocaleSplit`). The root barrel exports NO catalog values. After adding/changing any web key: run `pnpm i18n:generate` and commit the regenerated `messages/generated/{en,ar}.ts` (CI's drift check compares them semantically — prettier reformats them on commit, so never byte-compare).
 7. **Zero static Arabic** outside `t()` in mobile (gate + now-empty allowlist). If a legitimate exception ever appears, it goes through an explicit allowlist entry — and that is a red flag requiring review.
+8. **The web tRPC client auto-redirects on UNAUTHORIZED** — any UI that must show an inline login affordance checks `isAuthenticated` BEFORE calling a customer-gated mutation (reels Q2 shipped the bug: the redirect won the race and the affordance never rendered). Mutations that must fire for anonymous users (ledgers like `tagClicked`) stay public procedures.
+9. **Client-side data-tap E2E assertions must be order-independent**: `createMany` writes equal timestamps, so seeded lists (feeds, tie-shuffled shorts) reorder per database. Specs scroll-find the target (bounded loop + wheel), and seed anchors use `titleJson: { path: ['ar'], equals: … }` — never row ids (reels P1/Q2).
+10. **Attribution/funnel fixtures get one customer per scenario** — a click-join rule ("any prior tap within the window") bleeds expectations across tests that share a user. Fresh `buildUser()` per case, cleanup in `afterAll` (reels Q3).
 
 ## 3. Database Rules
 
@@ -162,6 +165,10 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 - `next/no-html-link-for-pages` — breadcrumbs must use `next/link`, never a bare `<a href>` (F4).
 - **Stacked-branch seed anchors**: a seed-template anchor from a queued feature only exists on that feature's branch — anchor later branches' templates on a predecessor that is already merged (e.g. `store_low_stock`, not a Wave-6 template).
 - BullMQ v6 repeatable jobs: `queue.upsertJobScheduler(id, { pattern }, { name, data })` — the v3/v4 `repeat` opts are removed (G3 Sunday-09:00 reminder).
+- **`git merge-tree --write-tree A B` ALWAYS prints a tree OID — only the EXIT CODE signals conflicts (exit 1 = conflicts).** Reading a SHA as "clean" mis-flights the whole unwind (reels Phase 2: the P2 dance then conflicted on page.tsx). Judge by `echo $?`, never by the printed tree.
+- **This repo's Playwright has NO `toBeDetached` Locator matcher (TS2551)** — unmount assertions use `expect.poll(() => locator.count(), { timeout }).toBe(0)`; verify with `pnpm --filter @galaxy/web exec tsc --noEmit` BEFORE pushing (a matcher that type-checks locally ships; one that doesn't red-TCs all four stacked branches at once).
+- **CI trigger gaps are real**: a push can land with NO workflow run created (verified via `gh run list --branch <b>` showing the old head). Recovery doubles as the unwind step: merge master into the branch (resolving feature-wins) and push — a real merge commit always triggers. Empty-commit nudges are the fallback.
+- **Service model has `basePrice`, NOT `price`** — select/where on `price` is a runtime PrismaClientValidationError that unit tests catch only if they hit the include path (reels Q1: 6/8 passed while the `tags` include was broken).
 - **Global sweep handlers need pollution-proof tests**: parallel suites leave stale rows in the shared dev DB, so a sweep's total counts fluctuate run-to-run — assert on YOUR fixture rows (scoped queries) and `>= 1`, never `toBe(n)` on global totals (vendor-sla's first run failed exactly this way).
 - **Check `git branch --show-current` before starting a feature session** — a leftover docs-branch checkout swallowed a whole feature's edits once (they passed tests only because the generated Prisma client and dev DB carried newer schema than the branch). Recovery = stash → fresh branch off origin/master → pop → re-verify ALL keys/gates on the correct tree.
 - After a squash-merge the merged branch's tree equals master's tree — `git checkout -b <next> origin/master` carries dirty work cleanly (verify `git diff --stat HEAD origin/master` is empty first); stash-pop moves dirty work the same way when trees differ.

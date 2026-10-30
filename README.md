@@ -60,14 +60,14 @@ pnpm verify         # All checks in sequence
 galaxy-of-beauty/
 ├── apps/
 │   ├── web/          Next.js 16 App Router (300+ routes)
-│   └── mobile/       Expo SDK 57 + Expo Router
+│   └── mobile/       Expo SDK 58 + Expo Router
 ├── packages/
-│   ├── api/          tRPC v11 — 266 routers, Zod validation
-│   ├── db/           Prisma — 234 models, 13 migrations (squashed baseline)
+│   ├── api/          tRPC v11 — 267 routers, Zod validation
+│   ├── db/           Prisma 7 — 251 models, hand-reviewed migrations (squashed baseline)
 │   ├── shared/       Constants, types, i18n, theme (no JSX)
 │   ├── ui/           Components, hooks, Storybook (JSX, web + mobile)
 │   └── config/       TSConfig, ESLint, Prettier, Tailwind preset
-├── docs/             ADRs, architecture, testing, operations
+├── docs/             ADRs, architecture, testing, operations, audits
 ├── docker-compose.yml
 ├── turbo.json
 └── pnpm-workspace.yaml
@@ -79,9 +79,9 @@ galaxy-of-beauty/
 | --------- | ------------------------------------------------------------------------ |
 | Monorepo  | Turborepo + pnpm workspaces                                              |
 | Web       | Next.js 16 App Router, Tailwind CSS 4, React 19                          |
-| Mobile    | Expo SDK 57, Expo Router, React Native 0.87.1 (EAS dev-build aligned)    |
+| Mobile    | Expo SDK 58, Expo Router, React Native 0.88 (EAS dev-build aligned)      |
 | API       | tRPC v11 with Zod validation + superjson transformer                     |
-| Database  | PostgreSQL 15 via Prisma ORM                                             |
+| Database  | PostgreSQL 15 via Prisma 7 (driver adapter)                              |
 | Cache     | Redis 7 (rate limiting, queues, Socket.IO adapter)                       |
 | Auth      | JWT (HS256) — HttpOnly cookies (web) + Bearer token (mobile), 2FA (TOTP) |
 | Real-time | Socket.IO with Redis adapter, Zod-validated events                       |
@@ -101,6 +101,8 @@ galaxy-of-beauty/
 **Growth & marketing** — automated outreach: welcome series (day 0/1/3/7), 30-day re-engagement, abandoned-cart nudges, post-booking review requests, birthday rewards, season-start announcements (Hijri/Gregorian calendar).
 
 **Experiences** — beauty events platform (capacity + auto-promoting waitlists, FREE/PAID/VIP tiers, gated meeting/recording links, certificates of completion), women's lifestyle expansion (clinics, fitness), kids plan, social commerce and shoppable content.
+
+**Reels commerce (shoppable)** — the full reels program: virtualized snap feeds on web + mobile (autoplay-muted, ≤3 live videos), watch analytics, moderation reports, shoppable tag overlays with a tap ledger, 7-day conversion attribution into vendor read-models, and portal reel analytics (views, watch time, clicks, attributed orders/revenue).
 
 **Compliance & trust** — ZATCA e-invoicing (hash-chained invoices, TLV QR, tamper-evident audit trail, VAT reports with CSV export, clearance flow), PDPL pages, ZATCA-ready VAT handling (15%).
 
@@ -129,15 +131,15 @@ galaxy-of-beauty/
 | Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                   |
 | Build             | 6/6 workspaces passing (Next.js 16: 300+ routes)                                                                                       |
 | Web bundle size   | 221/213/298/226 KB gz per route class (FE-007 gate; i18n locale split, ratcheted baseline)                                             |
-| API tests         | 179 files, **1,500+ tests** passing                                                                                                    |
+| API tests         | 246 files, **1,500+ tests** passing                                                                                                    |
 | Coverage          | Enforced per-workspace ratchet thresholds, exit 0                                                                                      |
-| E2E (Playwright)  | 27 specs — full suite passing on every PR (chromium + firefox + mobile Chrome; retries absorb the known bcrypt-under-load login flake) |
+| E2E (Playwright)  | 33 specs — full suite passing on every PR (chromium + firefox + mobile Chrome; retries absorb the known bcrypt-under-load login flake) |
 | Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                    |
 | Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                   |
 | CI                | Frozen install, format, lint, type-check, test, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker    |
 | Prod audit        | 0 critical / 3 accepted high / 2 moderate (documented in SECURITY.md; patch-level fixes overridden)                                    |
 
-**Readiness**: verifiably correct baseline with active coverage ratchet — not yet production-hardened (see [DELIVERY_REPORT.md](DELIVERY_REPORT.md) addendum for the full program status). The 2026-10-10 deep audit is closed: all 20 items fixed or explicitly rejected ([AUDIT_2026-10-10.md](docs/AUDIT_2026-10-10.md) resolution log), board zero.
+**Readiness**: verifiably correct baseline with active coverage ratchet — not yet production-hardened (see [AUDIT_2026-10-30.md](docs/AUDIT_2026-10-30.md) for the 14-item launch gate). The reels program is complete (Phases 1–3, #541–#558 — [REELS_SHOPPABLE_PLAN.md](docs/REELS_SHOPPABLE_PLAN.md)); the 2026-10-10 deep audit is closed: all 20 items fixed or explicitly rejected ([AUDIT_2026-10-10.md](docs/AUDIT_2026-10-10.md) resolution log), board zero.
 
 ---
 
@@ -167,30 +169,32 @@ galaxy-of-beauty/
 
 ## 📚 Documentation
 
-| Document                                                              | Description                                     |
-| --------------------------------------------------------------------- | ----------------------------------------------- |
-| [Delivery Report](DELIVERY_REPORT.md)                                 | Full program status + follow-up addendum        |
-| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                    | Test everything yourself — full checklist       |
-| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)       | Auth architecture decision                      |
-| [Model Ownership Map](docs/architecture/model-ownership.md)           | 234 models → 12 bounded contexts                |
-| [Architecture Context Map](docs/architecture/context-map.md)          | Domain classification + debt audit              |
-| [Migration Standards](docs/architecture/migration-standards.md)       | Conventions, redundant index audit              |
-| [API Risk Matrix](docs/testing/risk-matrix.md)                        | Tiered test coverage strategy                   |
-| [Audit Plan](docs/AUDIT_PLAN.md)                                      | End-to-end bug-audit methodology (A–E)          |
-| [Audit Report](docs/AUDIT_REPORT.md)                                  | Findings, fixes, and recommendations            |
-| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                   | 20-item platform audit + resolution log         |
-| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                | Accessibility/delight backlog — 17/17 done      |
-| [Performance Budgets](docs/frontend/performance-budgets.md)           | Web vitals targets                              |
-| [Incident Runbooks](docs/operations/runbooks.md)                      | 7 emergency scenarios                           |
-| [SECURITY.md](SECURITY.md)                                            | Vulnerability disclosure + audit                |
-| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)      | Golden rules, commands, gates, gotchas          |
-| [Project Brain](brain_code.md)                                        | Living architecture knowledge base              |
-| [Starter Doc Kit](docs/STARTER_DOC_KIT.md)                            | Which docs to reuse when starting a new project |
-| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)         | Per-platform catalogs + CI leak guard           |
-| [Technical Debt](docs/TECHNICAL_DEBT.md)                              | Debt register with priorities                   |
-| [Store & Provider System](docs/architecture/store-provider-system.md) | Unified provider model reference                |
-| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)    | Phased roadmap A–D with effort estimates        |
-| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)           | Fixes → store systems → launch → quality        |
+| Document                                                              | Description                                            |
+| --------------------------------------------------------------------- | ------------------------------------------------------ |
+| [Delivery Report](DELIVERY_REPORT.md)                                 | Historical — the original 2026-08 remediation (PR #44) |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                    | Test everything yourself — full checklist              |
+| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)       | Auth architecture decision                             |
+| [Model Ownership Map](docs/architecture/model-ownership.md)           | 251 models → 12 bounded contexts                       |
+| [Architecture Context Map](docs/architecture/context-map.md)          | Domain classification + debt audit                     |
+| [Migration Standards](docs/architecture/migration-standards.md)       | Conventions, redundant index audit                     |
+| [API Risk Matrix](docs/testing/risk-matrix.md)                        | Tiered test coverage strategy                          |
+| [Audit Plan](docs/AUDIT_PLAN.md)                                      | End-to-end bug-audit methodology (A–E)                 |
+| [Audit Report](docs/AUDIT_REPORT.md)                                  | Findings, fixes, and recommendations                   |
+| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                   | 20-item platform audit + resolution log                |
+| [Deep Audit (2026-10-30)](docs/AUDIT_2026-10-30.md)                   | 14-item launch gate + gap analysis                     |
+| [Reels Shoppable Plan](docs/REELS_SHOPPABLE_PLAN.md)                  | Phases 1–3 DELIVERED — delivery records                |
+| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                | Accessibility/delight backlog — 17/17 done             |
+| [Performance Budgets](docs/frontend/performance-budgets.md)           | Web vitals targets                                     |
+| [Incident Runbooks](docs/operations/runbooks.md)                      | 7 emergency scenarios                                  |
+| [SECURITY.md](SECURITY.md)                                            | Vulnerability disclosure + audit                       |
+| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)      | Golden rules, commands, gates, gotchas                 |
+| [Project Brain](brain_code.md)                                        | Living architecture knowledge base                     |
+| [Starter Doc Kit](docs/STARTER_DOC_KIT.md)                            | Which docs to reuse when starting a new project        |
+| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)         | Per-platform catalogs + CI leak guard                  |
+| [Technical Debt](docs/TECHNICAL_DEBT.md)                              | Debt register with priorities                          |
+| [Store & Provider System](docs/architecture/store-provider-system.md) | Unified provider model reference                       |
+| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)    | Phased roadmap A–D with effort estimates               |
+| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)           | Fixes → store systems → launch → quality               |
 
 ---
 

@@ -2,7 +2,7 @@
 
 > **Honest architecture audit:** What we use, what we skip, and what we must adopt.
 > No fluff. No marketing. Just engineering decisions and their reasons.
-> Last rebuilt: 2026-10-11 (post audit-fix wave #413–#423: wallet money-integrity fixes #413/#414/#415, referral-race payouts #416, functional bundle #417, error-state guards on 100 web pages #422, mobile query gating #423, barrel sweep #420, SEO long-tail #421, audit resolution log closed — board zero at master `5fbb6ed7`).
+> Rebuilt: 2026-10-30 — post vendor program (Waves 0–D, master `cfb42068`→`14dfea08`), post reels program **Phases 1–3 COMPLETE** (#541–#558, master `4e6b5231`): swipe feeds, watch analytics, shoppable tags, conversion attribution, portal reel analytics.
 
 ---
 
@@ -16,69 +16,74 @@
 Academic classification:
 ├── Paradigm:          Declarative + Imperative hybrid (typed functional core, imperative IO edges)
 ├── Architecture:      Modular Monolith — NOT microservices
-├── Decomposition:     Domain-based — 15 bounded contexts (domain barrels)
+├── Decomposition:     Domain-based — bounded contexts exported through domain barrels
 ├── Communication:     Synchronous (tRPC, type-safe RPC) + Async (BullMQ on Redis) + Real-time (Socket.IO)
 ├── Data:              Single PostgreSQL (JSONB bilingual fields), Redis for cache/queues/rate-limits
+├── Read models:       Materialized daily stats (VendorDailyStat, ReelDailyStat) — NOON-UTC buckets
 └── Typing:            End-to-end TypeScript strict — tRPC + Zod infer the contract, no codegen
 ```
 
 **Why not Microservices?**
 
 - Team size: 1–3 developers. Microservices overhead would kill velocity.
-- 15 domain modules give ~80% of the benefit at ~5% of the cost; the barrel pattern means any domain _can_ be extracted later.
+- Domain barrels give ~80% of the benefit at ~5% of the cost; any domain _can_ be extracted later.
 - Single-DB transactions are still cheap at this scale; Sagas/Outbox are only justified when extraction happens.
+- **When we do need async scale, we already have the seam**: BullMQ queues per job family (`gob-media`, `gob-payouts`, `gob-sla`, `gob-disputes`, `gob-reminders`, `gob-notifications`, daily-stats, advisor) — the "extract this domain" path is paved, not hypothetical.
 
 ## 2. Software Anatomy — _The Practical Term_
 
 ```
 galaxy-of-beauty/                       # The Body
 ├── apps/
-│   ├── web/      Next.js 16.3 App Router   # The Face — 319 routes, SEO, dashboards
-│   └── mobile/   Expo SDK 57 (RN 0.86.3)   # The Hands — 314 screens, OTA via EAS
+│   ├── web/      Next.js 16.4 App Router   # The Face — ~320 routes, SEO, dashboards, storefronts
+│   └── mobile/   Expo SDK 58 (RN 0.88)     # The Hands — ~320 screens, OTA via EAS, APK pipeline
 ├── packages/
-│   ├── api/      tRPC v11                  # The Brain — 266 routers / 1,115 procedures, 15 domains, every router barreled
-│   ├── db/       Prisma 7 + PostgreSQL     # The Spine — 234 models, squashed baseline + 13 migrations, seed
-│   ├── shared/   pure TS                   # The Blood — types, i18n (split per platform), constants
-│   ├── ui/       React 19 + Tailwind 4     # The Skin — 560 components + design tokens
+│   ├── api/      tRPC v11                  # The Brain — 267 routers / 1,211 procedures, every router barreled
+│   ├── db/       Prisma 7.10 + PostgreSQL  # The Spine — 251 models, hand-reviewed migrations, typed seed
+│   ├── shared/   pure TS                   # The Blood — types, i18n (per-platform + per-locale split)
+│   ├── ui/       React 19 + Tailwind 4     # The Skin — 560+ components + design tokens
 │   └── config/   tooling                   # The DNA — shared tsconfig, eslint-flat, prettier
 ├── scripts/                                # The Immune System — 20+ gates: budgets, leaks,
-│                                           #   Arabic scan, cycles, dedupe, prune
+│                                           #   Arabic scan, cycles, dedupe, prune, sitemap, hygiene
 ├── docker-compose.yml + .prod.yml          # The Circulatory System
 ├── turbo.json + pnpm-workspace.yaml        # The Nervous System
 └── .github/workflows/ci.yml                # The Reflex Arc — 9-check CI pipeline
 ```
 
+**Scale facts (measured, not vibes):** web bundle classes 221/213/298/226 KB gz (ratcheted baseline); i18n catalog ~5,300 web keys / ~8,800 mobile keys, split per-platform AND per-locale so no route ships both locales; 246 api test files (~1,500+ tests) + E2E on three browser projects + k6 load scripts + axe a11y gate.
+
 ## 3. Structural Blueprint — _The Industry Metaphor_
 
 **Metaphor: The Shopping Mall**
 
-| Layer            | Mall Equivalent | Our Implementation                          |
-| ---------------- | --------------- | ------------------------------------------- |
-| Storefronts      | Pages/Routes    | 319 Next.js routes (public + customer)      |
-| Back Offices     | Admin Panels    | `/admin/*`, `/tech/*`, vendor portals       |
-| Loading Docks    | API Layer       | tRPC — 266 routers, tiered auth             |
-| Warehouse        | Database        | PostgreSQL — bilingual JSONB, Prisma 7      |
-| Security Office  | Auth Middleware | JWT + 2FA + CSRF + tiered rate limiting     |
-| Delivery Fleet   | Job Queues      | BullMQ — wallet/loyalty/notifications       |
-| Mall Directory   | Domain Modules  | 15 domains via barrel exports               |
-| Security Cameras | Monitoring      | Sentry (active) + audit logs + SLO status   |
-| Payment Desk     | Gateway         | MyFatoorah (hosted invoice link + shipping) |
+| Layer            | Mall Equivalent | Our Implementation                                      |
+| ---------------- | --------------- | ------------------------------------------------------- |
+| Storefronts      | Pages/Routes    | ~320 Next.js routes (public + customer + storefronts)   |
+| Back Offices     | Admin Panels    | `/admin/*`, `/tech/*`, vendor portal (`/store`)         |
+| Loading Docks    | API Layer       | tRPC — 267 routers, 5 auth tiers, Zod contracts         |
+| Warehouse        | Database        | PostgreSQL — bilingual JSONB, Prisma 7, 251 models      |
+| Night Shift      | Job Queues      | BullMQ — payouts/SLA/disputes/reminders/media/stats     |
+| Security Office  | Auth Middleware | JWT + 2FA + CSRF + tiered rate limiting                 |
+| Mall Directory   | Domain Modules  | Domain barrels — the extraction seams                   |
+| Security Cameras | Monitoring      | Sentry (active, all surfaces) + audit logs + SLO page   |
+| Payment Desk     | Gateway         | MyFatoorah (hosted invoice + shipping) + ZATCA          |
+| Ad Screens       | Reels Commerce  | Short feed → tag tap → attribution → vendor read-models |
 
 ## 4. Software Architecture and Design — _The Standard Term_
 
-**Architecture Style: Layered + Domain-Modular Monolith**
+**Architecture Style: Layered + Domain-Modular Monolith, with materialized read-models.**
 
 ```
 ┌───────────────────────────────────────────────┐
 │           PRESENTATION LAYER                  │
-│  apps/web (Next.js 16)  apps/mobile (Expo 57) │
+│  apps/web (Next.js 16)  apps/mobile (Expo 58) │
 │  → web: getWebCatalog(locale) lazy-loaded     │
 │    per-locale catalogs (React use()-safe);    │
 │    server pages: t() from i18n/web-server     │
 │  → mobile: i18n-mobile catalog (eager)        │
 ├───────────────────────────────────────────────┤
 │            APPLICATION LAYER                  │
-│  packages/api — 15 domain barrels:            │
+│  packages/api — domain barrels:               │
 │  admin · ai · auth · booking · catalog ·      │
 │  content · loyalty · market · operations ·    │
 │  payments · realtime · safety · social ·      │
@@ -87,8 +92,11 @@ galaxy-of-beauty/                       # The Body
 │    customer/technician/admin)                 │
 ├───────────────────────────────────────────────┤
 │            INFRASTRUCTURE LAYER               │
-│  packages/db (Prisma 7, 100+ migrations)      │
+│  packages/db (Prisma 7, driver adapter)       │
 │  Redis (cache + BullMQ queues + rate limits)  │
+│  Workers: media · payouts · sla · disputes ·  │
+│    reminders · notifications · daily-stats    │
+│  Read models: VendorDailyStat · ReelDailyStat │
 │  External: MyFatoorah · Sentry · ZATCA ·      │
 │    OpenAI · Google Calendar · SMS · WhatsApp  │
 └───────────────────────────────────────────────┘
@@ -100,59 +108,65 @@ galaxy-of-beauty/                       # The Body
 
 ## Patterns We Use (and Why)
 
-| Pattern                         | Where                                                                                                                                                                                               | Why                                                                                                                                                                                                                   |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Module (Barrel)**             | 15 `domains/<name>/index.ts`                                                                                                                                                                        | Single entry per domain; extraction-ready.                                                                                                                                                                            |
-| **Decorator / Middleware**      | tRPC procedure factories                                                                                                                                                                            | `customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'))` — composable tiers.                                                                                                                                 |
-| **Repository**                  | Prisma client in `packages/db`                                                                                                                                                                      | One data access point; swap DB without touching logic.                                                                                                                                                                |
-| **Facade**                      | `lib/fatoorah.ts`, `lib/sentry.ts`                                                                                                                                                                  | Gateway/third-party clients behind typed facades; fail-closed when unconfigured.                                                                                                                                      |
-| **Strategy**                    | Payment methods, shipping couriers                                                                                                                                                                  | wallet vs online; DHL vs Aramex — swappable per request.                                                                                                                                                              |
-| **State Machine**               | Booking/order/checkout lifecycles                                                                                                                                                                   | Enum-constrained transitions; impossible invalid states (money-integrity).                                                                                                                                            |
-| **Observer**                    | Socket.IO emitters                                                                                                                                                                                  | `emitToUser/emitToAdmin` — decoupled realtime events.                                                                                                                                                                 |
-| **Command**                     | BullMQ jobs                                                                                                                                                                                         | Fire-and-forget side effects (`cashback.accrue` etc.), 3 retries + exp backoff.                                                                                                                                       |
-| **Factory**                     | Queue/worker creation                                                                                                                                                                               | `createQueue(name)` — consistent Redis wiring.                                                                                                                                                                        |
-| **Singleton**                   | Prisma + Redis clients                                                                                                                                                                              | `globalForPrisma` — one pool per process.                                                                                                                                                                             |
-| **Adapter**                     | Auth storage (web/mobile)                                                                                                                                                                           | localStorage vs SecureStore behind one interface.                                                                                                                                                                     |
-| **Fail-Closed Gateway**         | MyFatoorah/Sentry facades                                                                                                                                                                           | No config → throw/console, never fake success (money-integrity regression-pinned).                                                                                                                                    |
-| **Test Seam**                   | `_setSentryLoaderForTests`, `vi.mock`                                                                                                                                                               | Deterministic failure simulation without network.                                                                                                                                                                     |
-| **Per-Platform Catalog**        | `i18n/{web,mobile,index}.ts` + runtime                                                                                                                                                              | Bundle isolation: web 5,313 keys, mobile 8,825; merged module only via `i18n-all`.                                                                                                                                    |
-| **Lazy-Loaded Locale Catalogs** | `getWebCatalog(locale)` + `messages/generated/{en,ar}.ts`                                                                                                                                           | Codegen flattens the `{ar,en}` domain sources per locale; a dynamic import + promise cache loads ONLY the active locale (~118 KB gz saved per route). React `use()`-safe (stable promise per locale).                 |
-| **Server-Only Subpath Export**  | `@galaxy/shared/i18n/web-server`                                                                                                                                                                    | Sync `t()` for server components statically bundles both locales in the SERVER graph only — importing it client-side is a build failure (locale-split guard).                                                         |
-| **Build-Level Guard**           | `checkLocaleSplit()` / `checkCatalogLeak()` / drift / sitemap / config-hygiene                                                                                                                      | Architecture invariants enforced by scanning built artifacts — a regression fails CI, not code review.                                                                                                                |
-| **Error-State Guard**           | `isError → ErrorAlert/retry` on every data query — shipped on 100 web pages (#422) + the 3 partially-gated mobile screens (#423)                                                                    | A failing query must never render silent emptiness. Every data page now fails loud with a retry path, and every mobile query is either enabled-gated, guarded, or deliberately disabled with an empty-state fallback. |
-| **Post-Commit Event → Inbox**   | Vendor mutations emit typed events (order placed, review left, payout processing, dispute resolved) after the transaction commits; the notifications domain renders them into the vendor inbox (F1) | Side effects stay out of money transactions; the inbox is a pure materialization of committed state.                                                                                                                  |
-| **Versioned Client Draft**      | `vendorApplyDraft` (G1) — wizard drafts in localStorage behind a versioned envelope with tolerant parsing + a completeness meter                                                                    | Corrupt/stale drafts never crash the wizard; the meter mirrors the submit gate.                                                                                                                                       |
-| **Scheduled Reminder Job**      | `gob-reminders` (G3) — Sunday-09:00 `upsertJobScheduler` + a `licenseRemindedAt` stamp for ~10-day dedupe                                                                                           | Cron-style reminders with replay safety; one queue per job family.                                                                                                                                                    |
-| **Daily Sweep Family**          | `gob-payouts` / `gob-sla` / `gob-disputes` (Wave A) — one queue per job family, each worker binds ONE handler, each sweep idempotent (stamps: lastPayoutRunAt, slaBreachedAt, escalatedAt)          | Automated operations that only write ledger rows + notifications — never money; sweep tests assert on fixture rows, never global totals (parallel-suite pollution).                                                   |
-| **Mobile Pure-Helper Layer**    | `apps/mobile/src/utils/vendor*.ts` (Wave E) — shaping/validation logic as node-testable pure functions with zero RN imports; screens stay thin, CI runs them in the mobile unit job                 | React-Native components cannot run in the node test env, so every screen's logic is extracted first (TDD) — the component is a dumb renderer of a tested pure result.                                                 |
-| **Push Deep-Link Payload**      | `NotifyInput.data` → gob-notifications job → Expo `content.data`; the mobile tap handler routes typed payloads (E2b: `{type, orderId}` → order detail)                                              | The server event carries its route payload end-to-end; clients stay dumb routers (pure `notificationRoute` map, unit-tested) instead of parsing rendered text.                                                        |
-| **Idempotency-Key Contract**    | `fulfillOrder(orderId, idempotencyKey?)` (H0) + mobile per-tap key kept in a ref until success                                                                                                      | Retried taps after a client timeout re-use the key and receive the current row instead of BAD_REQUEST — money transitions survive flaky clients.                                                                      |
+| Pattern                         | Where                                                                                                                                 | Why                                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Module (Barrel)**             | `domains/<name>/index.ts`                                                                                                             | Single entry per domain; extraction-ready.                                                                 |
+| **Decorator / Middleware**      | tRPC procedure factories                                                                                                              | `customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'))` — composable tiers.                      |
+| **Repository**                  | Prisma client in `packages/db`                                                                                                        | One data access point; swap DB without touching logic.                                                     |
+| **Facade (fail-closed)**        | `lib/fatoorah.ts`, `lib/sentry.ts`                                                                                                    | Third parties behind typed facades; no config → throw/dev-stub, never fake success.                        |
+| **Strategy**                    | Payment methods, shipping couriers                                                                                                    | wallet vs online; DHL vs Aramex — swappable per request.                                                   |
+| **State Machine**               | Booking/order/checkout lifecycles — engine-exported transition maps reused by the vendor flow                                         | Impossible invalid states; ONE machine, no copies.                                                         |
+| **Observer**                    | Socket.IO emitters                                                                                                                    | `emitToUser/emitToAdmin` — decoupled realtime events.                                                      |
+| **Command**                     | BullMQ jobs (one queue per job family, one handler per worker)                                                                        | Fire-and-forget side effects, 3 retries + exp backoff, idempotent sweeps.                                  |
+| **Factory**                     | `createQueue(name)`                                                                                                                   | Consistent Redis wiring.                                                                                   |
+| **Singleton**                   | Prisma + Redis clients                                                                                                                | `globalForPrisma` — one pool per process.                                                                  |
+| **Adapter**                     | Auth storage (web/mobile): localStorage vs SecureStore behind one interface                                                           | Platform difference contained.                                                                             |
+| **Post-Commit Event → Inbox**   | Vendor mutations emit typed events after the transaction commits; the notifications domain renders them (F1)                          | Side effects stay out of money transactions.                                                               |
+| **Materialized Read Model**     | `VendorDailyStat` + `ReelDailyStat` — nightly NOON-UTC buckets, portal reads ONLY the read model                                      | Analytics never hammer live order tables; upserts make re-runs idempotent.                                 |
+| **Attribution Ledger**          | `ShortTagClick` snapshots `productId` at tap time; the D1 materializer joins clicks→orders over a 7-day window (reels Q3)             | Attribution survives later tag edits; deterministic earliest-tap-wins rule.                                |
+| **Virtualized Snap Feed**       | Web feed mounts ≤3 `<video>` elements (±1 window), autoplay-muted, wheel-scroll snap (reels P1)                                       | Never N videos for N reels; KSA mobile-data respectful.                                                    |
+| **Per-Platform Catalog**        | `i18n/{web,mobile,index}.ts` + runtime                                                                                                | Bundle isolation: web 5,300 keys, mobile 8,800; merged module only via `i18n-all`.                         |
+| **Lazy-Loaded Locale Catalogs** | `getWebCatalog(locale)` + generated `{en,ar}.ts`                                                                                      | Dynamic import + promise cache loads ONLY the active locale (~118 KB gz saved per route).                  |
+| **Server-Only Subpath Export**  | `@galaxy/shared/i18n/web-server`                                                                                                      | Importing it client-side is a BUILD failure (locale-split guard).                                          |
+| **Build-Level Guard**           | `checkLocaleSplit()` / `checkCatalogLeak()` / drift / sitemap / config-hygiene / size budgets / cycles                                | Architecture invariants enforced by scanning artifacts — regressions fail CI, not review.                  |
+| **Error-State Guard**           | `isError → ErrorAlert/retry` on every data query (100 web pages + mobile gating)                                                      | A failing query must never render silent emptiness.                                                        |
+| **Idempotency-Key Contract**    | `fulfillOrder(orderId, idempotencyKey?)` + mobile per-tap keys                                                                        | Retries after client timeouts receive the current row, not BAD_REQUEST.                                    |
+| **Auth-Gate Before Mutation**   | Feed tag shop-now checks `isAuthenticated` BEFORE calling a customer-gated mutation (reels Q2 fix)                                    | The web tRPC client auto-redirects on UNAUTHORIZED — checking first lets the UI show an inline affordance. |
+| **Scheduled Reminder Job**      | `gob-reminders` — `upsertJobScheduler` + a `licenseRemindedAt` dedupe stamp (G3)                                                      | Cron-style reminders with replay safety.                                                                   |
+| **Mobile Pure-Helper Layer**    | `apps/mobile/src/utils/*.ts` — logic as node-testable pure functions; screens stay thin                                               | RN components can't run in node tests; CI runs the pure layer.                                             |
+| **Tie-Shuffle-Proof E2E**       | Reels specs scroll the feed until the target is active; seed anchors use titleJson path equality, not ids (createMany timestamps tie) | Equal createMany timestamps shuffle feed order per DB — tests must not assume order.                       |
 
 ## Patterns We Don't Use (and Why)
 
-| Pattern                | Why We Skip It                                                                          |
-| ---------------------- | --------------------------------------------------------------------------------------- |
-| **CQRS**               | No read/write separation. Premature at 1K–10K users. _Re-evaluate at 100K+._            |
-| **Event Sourcing**     | AuditLog + idempotency keys cover our needs; event sourcing only for financial ledgers. |
-| **Saga / Outbox**      | All mutations are single-DB transactions. Needed only if a domain is extracted.         |
-| **Clean Architecture** | Domain modules + Prisma already give ~90% of the benefit at ~20% of the boilerplate.    |
-| **Mediator**           | tRPC is already the mediator.                                                           |
-| **Specification**      | Prisma `where` clauses are composable; the pattern would add abstraction without value. |
-| **Unit of Work**       | Prisma `$transaction` already does this.                                                |
-| **Redux/Zustand**      | TanStack Query (via tRPC) owns server state; no complex client state exists.            |
-| **GraphQL/REST/gRPC**  | tRPC is strictly better for an all-TypeScript stack.                                    |
+| Pattern                  | Why We Skip It                                                                                             |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| **CQRS**                 | No read/write separation beyond materialized analytics. Premature at 1K–10K users. _Re-evaluate at 100K+._ |
+| **Event Sourcing**       | AuditLog + idempotency keys + attribution ledgers cover our needs.                                         |
+| **Saga / Outbox**        | All mutations are single-DB transactions. Needed only if a domain is extracted.                            |
+| **Clean Architecture**   | Domain modules + Prisma give ~90% of the benefit at ~20% of the boilerplate.                               |
+| **Mediator**             | tRPC is already the mediator.                                                                              |
+| **Specification**        | Prisma `where` clauses are composable; the pattern adds abstraction without value.                         |
+| **Unit of Work**         | Prisma `$transaction` already does this.                                                                   |
+| **Redux/Zustand**        | TanStack Query (via tRPC) owns server state; no complex client state exists.                               |
+| **GraphQL/REST/gRPC**    | tRPC is strictly better for an all-TypeScript stack.                                                       |
+| **Kubernetes**           | Docker Compose + PM2 covers 1–10 servers. Re-evaluate at 100K+ users.                                      |
+| **Kafka**                | BullMQ on Redis is plenty at this scale.                                                                   |
+| **Elasticsearch**        | Postgres ILIKE + JSONB handles Arabic search well enough today.                                            |
+| **Terraform/Pulumi**     | No cloud infra yet; the `deploy/terraform/` sketch exists for when AWS happens.                            |
+| **Feature-toggles SaaS** | A `FeatureFlag` table + middleware exists; no runtime delivery tooling (P2).                               |
+| **Drizzle/other ORMs**   | Prisma already migrated and stable; switching costs more than the cold-start pain.                         |
 
 ## Patterns We Must Adopt (Production Hardening)
 
-| Pattern                      | What                                                 | Why                                                                                  | Priority |
-| ---------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------ | -------- |
-| **Circuit Breaker + Retry**  | Per-gateway breaker (MyFatoorah, OpenAI, ZATCA, SMS) | Today only BullMQ's 3 retries exist. A down gateway degrades the whole booking flow. | 🔴 P0    |
-| **Staging Environment**      | Clone of prod (DB + services)                        | No staging exists; risky changes are tested against the shared dev DB.               | 🔴 P0    |
-| **Read Replica / CQRS-lite** | Reads → replica, writes → primary                    | Analytics and list queries will hammer the primary at scale.                         | 🟡 P1    |
-| **Saga / Outbox**            | Cross-domain consistency guarantees                  | Needed the day a domain becomes its own service.                                     | 🟡 P1    |
-| **Alerting**                 | Slack/webhook alerts on error rate, payments, disk   | Sentry catches errors; nobody is paged when queues stall or disk fills.              | 🟡 P1    |
-| **Bulkhead**                 | Separate queues per external dependency              | OpenAI exhaustion must not block booking notifications.                              | 🟢 P2    |
-| **Health-Check Hierarchy**   | Liveness vs readiness (DB/Redis/gateway probes)      | Docker healthchecks ping one endpoint; deep readiness checks are missing.            | 🟢 P2    |
+| Pattern                      | What                                                            | Why                                                                                  | Priority |
+| ---------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------ | -------- |
+| **Circuit Breaker + Retry**  | Per-gateway breaker (MyFatoorah, OpenAI, ZATCA, SMS)            | Today only BullMQ's 3 retries exist. A down gateway degrades the whole booking flow. | 🔴 P0    |
+| **Staging Environment**      | Clone of prod (DB + services)                                   | No staging exists; risky changes ride against the shared dev DB.                     | 🔴 P0    |
+| **Alerting**                 | Slack/webhook alerts on error rate, payments, disk, queue depth | Sentry catches errors; nobody is paged when queues stall or disk fills.              | 🟡 P1    |
+| **Read Replica / CQRS-lite** | Reads → replica, writes → primary                               | Analytics and list queries will hammer the primary at scale.                         | 🟡 P1    |
+| **Saga / Outbox**            | Cross-domain consistency guarantees                             | Needed the day a domain becomes its own service.                                     | 🟡 P1    |
+| **Bulkhead**                 | Separate queues per external dependency                         | OpenAI exhaustion must not block booking notifications.                              | 🟢 P2    |
+| **Health-Check Hierarchy**   | Liveness vs readiness (DB/Redis/gateway probes)                 | Docker healthchecks ping one endpoint; deep readiness checks are missing.            | 🟢 P2    |
 
 ---
 
@@ -160,54 +174,57 @@ galaxy-of-beauty/                       # The Body
 
 ## What We Use and Why
 
-| Tech                   | Version    | Reason                                                                                | Choose again?                                        |
-| ---------------------- | ---------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| **tRPC**               | v11        | End-to-end type safety, Zod built-in, no codegen.                                     | ✅ Yes — best decision in the stack                  |
-| **Next.js App Router** | 16.3       | Hybrid SSR/CSR, RSC server callers, middleware.                                       | ✅ Yes                                               |
-| **Expo**               | SDK 57     | One RN codebase (RN 0.87.1 — aligned for EAS dev builds) → iOS/Android/web + EAS OTA. | ✅ Yes (SDK 58 queued)                               |
-| **Prisma**             | 7          | Typed queries + 100+ hand-reviewed migrations.                                        | ⚠️ Maybe — cold start still slow; Drizzle is lighter |
-| **PostgreSQL**         | 15+ (dev)  | JSONB for bilingual content, rock solid.                                              | ✅ Yes                                               |
-| **Redis (ioredis)**    | 6          | Cache + BullMQ queues + rate limiting — one tool, three jobs.                         | ✅ Yes                                               |
-| **BullMQ**             | 6          | Reliable job queues with retries/backoff; admin queues dashboard shipped.             | ✅ Yes                                               |
-| **Zod**                | 4          | Runtime validation that infers types.                                                 | ✅ Yes                                               |
-| **Socket.IO**          | 4          | Realtime events with polling fallback.                                                | ✅ Yes                                               |
-| **Sentry**             | SDK 11     | **ACTIVE** — web client/server/edge + api facade, DSN wired, E2E-verified.            | ✅ Yes                                               |
-| **MyFatoorah**         | v2         | Saudi gateway with SHIPPING (countries/cities/charge) — replaced PayFort.             | ✅ Yes (token pending)                               |
-| **Tailwind CSS**       | 4          | Utility-first, RTL-friendly, tiny output.                                             | ✅ Yes                                               |
-| **pnpm + Turborepo**   | 9.15 + 2.x | Strict workspace installs + cached builds (GH remote cache).                          | ✅ Yes                                               |
-| **Vitest**             | 5          | Fast unit/integration tests (1,500+).                                                 | ✅ Yes                                               |
-| **Playwright**         | —          | E2E incl. axe a11y gate + visual checks.                                              | ✅ Yes                                               |
-| **k6**                 | —          | Load-test scripts (7.2).                                                              | ✅ Yes                                               |
-| **TypeScript**         | 6.0        | Strict mode everywhere incl. noUncheckedIndexedAccess.                                | ✅ Yes                                               |
+| Tech                   | Version     | Reason                                                                  | Choose again?                                     |
+| ---------------------- | ----------- | ----------------------------------------------------------------------- | ------------------------------------------------- |
+| **tRPC**               | v11         | End-to-end type safety, Zod built-in, no codegen.                       | ✅ Yes — best decision in the stack               |
+| **Next.js App Router** | 16.4        | Hybrid SSR/CSR, RSC server callers, middleware.                         | ✅ Yes                                            |
+| **Expo**               | SDK 58      | One RN codebase (RN 0.88) → iOS/Android/web + EAS OTA + APK pipeline.   | ✅ Yes                                            |
+| **Prisma**             | 7.10        | Typed queries + driver adapter (PrismaPg) + hand-reviewed migrations.   | ⚠️ Maybe — cold start still slow; Drizzle lighter |
+| **PostgreSQL**         | 15+ (dev)   | JSONB bilingual, rock solid, single source of truth.                    | ✅ Yes                                            |
+| **Redis (ioredis)**    | 6           | Cache + BullMQ queues + rate limiting — one tool, three jobs.           | ✅ Yes                                            |
+| **BullMQ**             | 6.4         | Reliable queues, retries/backoff, job schedulers (weekly reminders).    | ✅ Yes                                            |
+| **Zod**                | 4.6         | Runtime validation that infers types.                                   | ✅ Yes                                            |
+| **Socket.IO**          | 4.8         | Realtime events with polling fallback.                                  | ✅ Yes                                            |
+| **Sentry**             | SDK 11      | ACTIVE on web client/server/edge + api facade, DSN wired, E2E-verified. | ✅ Yes                                            |
+| **MyFatoorah**         | v2          | Saudi gateway with SHIPPING + ZATCA invoicing path.                     | ✅ Yes (live token still user-gated)              |
+| **Tailwind CSS**       | 4.3         | Utility-first, RTL-friendly, tiny output, dark-mode tokens.             | ✅ Yes                                            |
+| **pnpm + Turborepo**   | 9.15 + 2.11 | Strict workspace installs + cached builds (GH remote cache in CI).      | ✅ Yes                                            |
+| **Vitest**             | 5.0         | Fast unit/integration tests (246 api files, ~1,500+ tests).             | ✅ Yes                                            |
+| **Playwright**         | —           | E2E on chromium + firefox + mobile-chrome, axe a11y gate.               | ✅ Yes                                            |
+| **k6**                 | —           | Load-test scripts (7.2).                                                | ✅ Yes                                            |
+| **TypeScript**         | 6.0         | Strict everywhere incl. noUncheckedIndexedAccess.                       | ✅ Yes                                            |
+| **Node**               | 22          | Required by the toolchain (vitest 5, turbo).                            | ✅ Yes                                            |
 
 ## What We Don't Use and Why
 
-| Tech                     | Why We Skip It                                                                     |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| **Kubernetes**           | Docker Compose + PM2 covers 1–10 servers. Re-evaluate at 100K+ users.              |
-| **Terraform/Pulumi**     | No cloud infra yet; the `deploy/terraform/` sketch exists for when AWS happens.    |
-| **Elasticsearch**        | Postgres ILIKE + JSONB handles Arabic search well enough today.                    |
-| **Kafka**                | BullMQ on Redis is plenty. Kafka only for massive event streaming.                 |
-| **Feature-toggles SAAS** | A `FeatureFlag` table + tRPC middleware already exists; no runtime tooling (P2).   |
-| **Drizzle/other ORMs**   | Prisma already migrated and stable; switching costs more than the cold-start pain. |
+| Tech                     | Why We Skip It                                                                                      |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| **Kubernetes**           | Docker Compose + PM2 covers 1–10 servers. Re-evaluate at 100K+ users.                               |
+| **Terraform/Pulumi**     | No cloud infra yet; the `deploy/terraform/` sketch exists for when AWS happens.                     |
+| **Elasticsearch**        | Postgres ILIKE + JSONB handles Arabic search well enough today.                                     |
+| **Kafka**                | BullMQ on Redis is plenty. Kafka only for massive event streaming.                                  |
+| **Feature-toggles SAAS** | A `FeatureFlag` table + tRPC middleware already exists; no runtime tooling (P2).                    |
+| **Drizzle/other ORMs**   | Prisma already migrated and stable; switching costs more than the cold-start pain.                  |
+| **CDN (CloudFront)**     | User-gated infra item — reels video serves from S3 directly today. MUST add pre-launch.             |
+| **Moderation API**       | Manual-only moderation queue today (R6) — MUST wire an API pre-launch per the reels plan checklist. |
+| **S3 lifecycle rules**   | Reel media accumulates unbounded — MUST add expiry/bucketing pre-launch.                            |
 
-## What We Must Add (Production Checklist — updated)
+## What We Must Add (Production Checklist)
 
-| Priority | Item                                      | Why                                                                                                                                                                                                                                                           | Effort         |
-| -------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 🔴 P0    | **MyFatoorah live token**                 | Payment gateway still runs on dev stubs; the ONLY blocker to real charges.                                                                                                                                                                                    | 5 min          |
-| 🔴 P0    | **Database backup cron**                  | `scripts/backup-db.sh` shipped (#417) and mounted in prod compose — cron the schedule or use RDS snapshots; an un-scheduled backup script protects nothing.                                                                                                   | 1 hr           |
-| 🔴 P0    | **Circuit breaker (gateways)**            | See Part 2.                                                                                                                                                                                                                                                   | 8 hr           |
-| ✅ DONE  | **Audit-fix wave #413–#423 (20 items)**   | Money-integrity wallet payments, referral-race payouts, error-state guards (100 pages), mobile query gating, 27-router barrel sweep, SEO metadata long-tail, functional-bundle fixes, leaderboard, flash-deals tests, backup script — all merged, board zero. | shipped        |
-| ✅ DONE  | **Bundle measured + locale split (#403)** | Measured 221/213/298/226 KB gz; per-locale generated catalogs + lazy loading cut another ~118 KB/route; baseline ratcheted with new locale-split/drift/leak gates. Remaining: framework/app chunk slimming toward FE-007 targets.                             | shipped        |
-| 🟡 P1    | **SSL + Nginx**                           | HTTPS is non-negotiable for a payment platform.                                                                                                                                                                                                               | 2 hr           |
-| 🟡 P1    | **Prometheus + Grafana**                  | Replace in-memory counters with real metrics + dashboards.                                                                                                                                                                                                    | 8 hr           |
-| 🟡 P1    | **Alerting**                              | Error rate, payment failures, queue depth, disk >80%.                                                                                                                                                                                                         | 4 hr           |
-| 🟡 P1    | **Staging environment**                   | Test against a prod clone, not the shared dev DB.                                                                                                                                                                                                             | 8 hr           |
-| 🟡 P1    | **Apple Developer account (~$99/yr)**     | The ONLY blocker to an iOS dev client + App Store; Expo Go cannot run the app.                                                                                                                                                                                | account signup |
-| 🟢 P2    | **App-store submission**                  | EAS pipeline is ready (Android APK built + delivered); staged rollout pending.                                                                                                                                                                                | 1 day          |
-| 🟢 P2    | **Penetration test**                      | OWASP ZAP or manual — verify CSRF/XSS/injection hardening.                                                                                                                                                                                                    | 8 hr           |
-| 🟢 P3    | **Blue-green deploys**                    | Zero-downtime deploys incl. migrations.                                                                                                                                                                                                                       | 8 hr           |
+| Priority | Item                                    | Why                                                                                      | Effort         |
+| -------- | --------------------------------------- | ---------------------------------------------------------------------------------------- | -------------- |
+| 🔴 P0    | **MyFatoorah live token**               | The ONLY blocker to real charges; gateway still runs on dev stubs.                       | 5 min (user)   |
+| 🔴 P0    | **Database backup cron**                | `scripts/backup-db.sh` shipped but unscheduled; an un-scheduled backup protects nothing. | 1 hr           |
+| 🔴 P0    | **CDN + S3 lifecycle + moderation API** | The reels pre-deployment checklist — video costs and content risk grow every day.        | 1–2 days       |
+| 🔴 P0    | **Circuit breaker (gateways)**          | See Part 2.                                                                              | 8 hr           |
+| 🟡 P1    | **SSL + Nginx**                         | HTTPS is non-negotiable for a payment platform.                                          | 2 hr           |
+| 🟡 P1    | **Prometheus + Grafana**                | Replace in-memory counters with real metrics + dashboards.                               | 8 hr           |
+| 🟡 P1    | **Alerting**                            | Error rate, payment failures, queue depth, disk >80%.                                    | 4 hr           |
+| 🟡 P1    | **Staging environment**                 | Test against a prod clone, not the shared dev DB.                                        | 8 hr           |
+| 🟡 P1    | **Apple Developer account (~$99/yr)**   | The ONLY blocker to an iOS dev client + App Store.                                       | account signup |
+| 🟢 P2    | **App-store submission**                | EAS pipeline ready (Android APK built); staged rollout pending.                          | 1 day          |
+| 🟢 P2    | **Penetration test**                    | OWASP ZAP or manual — verify CSRF/XSS/injection hardening.                               | 8 hr           |
+| 🟢 P3    | **Blue-green deploys**                  | Zero-downtime deploys incl. migrations.                                                  | 8 hr           |
 
 ---
 
@@ -217,25 +234,25 @@ galaxy-of-beauty/                       # The Body
 
 ```
 packages/api/src/
-├── routers/          # 266 tRPC routers (per-domain files)
-├── domains/          # 15 barrel modules (the extraction seams)
-├── lib/              # facades: fatoorah, sentry, payfort→gone, jwt, redis, rateLimit,
-│                     #   csrf, errors, storeCheckout, pricing…
+├── routers/          # 267 tRPC routers (per-domain files)
+├── domains/          # domain barrels (the extraction seams)
+├── lib/              # facades: fatoorah, sentry, jwt, redis, rateLimit, csrf,
+│                     #   errors, storeCheckout, pricing, analyticsEngine…
 ├── validators/       # Zod schemas (shared by routers + contract tests)
 ├── queues/ + workers/# BullMQ definitions + standalone worker process
 ├── socket/           # Socket.IO server + typed emitters
-└── __tests__/        # 179 test files (~1,500 tests)
+└── __tests__/        # 246 test files (~1,500 tests)
 ```
 
 **Contract gates (never edit casually):**
 
-- `trpc-procedures.test.ts` — exactly **266 routers** (bump deliberately per new router).
-- `router-inventory.test.ts` — procedure counts + tier map + SHA-256 hash (re-base via `-u` on a clean tree only).
+- `trpc-procedures.test.ts` — exactly **267 routers** (bump deliberately per new router).
+- `router-inventory.test.ts` — **1,211 procedures** + tier map + SHA-256 hash (re-base via `-u` on a clean tree only; THREE gates: counts + detail snap + hash).
 - `money-integrity.test.ts` — no free money: topUp never mints balance, gateway state only from verified callbacks, refunds reverse cashback.
 - `catalog.test.ts` — i18n invariants: ar+en present, trim-safe, per-platform split guards.
-- `check-size-budgets.mjs` — per-class gzipped budgets + mobile-catalog leak sentinels + locale-split sentinels (no chunk may carry both locales).
-- `generate-locale-catalogs.mjs --check` (drift) + `check-config-hygiene.test.mjs` + `check-sitemap.test.mjs` — codegen, config, and sitemap integrity gates.
-- `find-static-arabic.mjs` — zero hardcoded Arabic outside `t()` (allowlist now empty).
+- `check-size-budgets.mjs` — per-class gzipped budgets (221/213/298/226 KB baseline) + mobile-catalog leak sentinels + locale-split sentinels.
+- `generate-locale-catalogs.mjs --check` (drift) + `check-config-hygiene` + `check-sitemap` — codegen/config/sitemap integrity.
+- `find-static-arabic.mjs` — zero hardcoded Arabic outside `t()` (allowlist empty).
 - `check-cycles.mjs` + `gen-dependency-graph.mjs` — import-graph discipline.
 
 ## Request flow (booking create, simplified)
@@ -247,47 +264,55 @@ tRPC middleware: requestCounter → rateLimit → csrf → isAuthed → hasRole
   → Socket.IO emits → response
 ```
 
+## Reels commerce flow (Phase 3, shipped)
+
+```
+Feed slide (virtualized, autoplay-muted)
+  → tag chip tap → ShortTagClick (product snapshot, anon allowed)
+  → authenticated: marketplace.addToCart (auth-gated BEFORE the call)
+  → nightly handleDailyStatsJob: order ←→ click join over the 7-day window
+  → VendorDailyStat.reelOrders/reelRevenue + ReelDailyStat per (short, day)
+  → vendorPortal.reelAnalytics reads ONLY the read models
+```
+
 ## UI structure
 
 - **4-state pattern** on every data page: loading → error(retry) → empty(CTA) → data.
-- **i18n**: `useLocale().t` (client) / `getServerLocale() + t(key, locale)` (server), literal keys only, per-platform catalogs.
-- **Design tokens** in globals.css (light/dark) — semantic 700-weight status colors must keep WCAG AA.
+- **i18n**: `useLocale().t` (client) / `getServerLocale() + t(key, locale)` (server), literal keys only, per-platform + per-locale catalogs, generated files alphabetically sorted.
+- **Design tokens** in globals.css (light/dark) — semantic status colors keep WCAG AA.
 
 ## The Honest Verdict
 
 ### Strengths
 
-- **Type safety end-to-end** — tRPC + Zod + TS strict; the catalog split now makes cross-platform key misuse a _compile error_.
+- **Type safety end-to-end** — tRPC + Zod + TS strict; cross-platform key misuse is a compile error.
 - **Money integrity is regression-pinned** — fail-closed gateways, verified callbacks, idempotency keys everywhere.
 - **CI is a real gate, not theater** — 9 checks incl. E2E+axe, size budgets, leak guards, contract hashes.
-- **Error states are now systemic, not spotty** — every data page (100 web pages + the 3 partially-gated mobile screens) fails loud with a retry path; silent-empty rendering is closed as a class.
-- **Barrel discipline is complete** — all 266 routers export through their domain barrel; the 27-router straggler class (#420) is closed and the architecture gate ratchets it.
-- **Money integrity is regression-pinned** — wallet payment is now the payment path for gift cards, AI subscriptions, and dispute refunds (#413/#414/#415), each in a `$transaction` with idempotency keys; referral-race prizes actually pay out (#416).
-- **i18n is complete and guarded** — zero static Arabic; 8,825-key catalog; web bundle carries only its 5,268.
-- **The sweep pipeline worked** — 16 sequential slice PRs, each independently verifiable, zero regressions.
-- **Store/provider system complete (2026-10-08 wave)** — dedicated `/store` dashboard shell, mobile store browsing, commission rates actually applied in settlements with an admin editor, store ratings surfaced, provider registration covering store/clinic/gym/nail-bar/at-home.
-- **Vendor OS complete (2026-10-25, Waves 0–6)** — the 8-phase vendor program is delivered: analytics read-model + health score, reputation hub with owner replies, disputes, deals/coupons/CSV tooling, at-home/nail-bar queues, notification inbox fed by typed post-commit events, review-request drip, weekly digest email, storefront SEO, wizard draft persistence, submissions/resubmission with SLA hints, license-expiry reminders on a Sunday-09:00 scheduler.
-- **Vendor professionalization Wave A complete (2026-10-26)** — the operational backbone: multi-human stores (staff + capability enforcement, no UserRole), automated settlements (weekly/monthly payout sweeps — transfers stay human), fulfillment SLA (promised windows + breach flags + on-time rate), dispute deadlines (48h auto-escalation), and a quality score that folds breach/escalation rates back into the D2 health score.
-- **Hybrid store-services shipped on the engine, not beside it (2026-10-27)** — the C5 flagship reuses the booking engine with ZERO forks: each store gets one hidden pseudo-technician (generated non-login User + `Technician.storeVendorId`) so availability, booking, and slot machinery work unchanged; store bookings carry a denormalized `vendorId` into settlements (gross = totalAmount − platformFee) and the vendor runs the SAME state machine as the engine (exported transition maps, not duplicated). Isolation is structural: store services and pseudo technicians are excluded from the public browses, and a store service can only be booked with its own store's provider.
-- **Seed is fully typed** — all 14 `(prisma as any)` casts removed (#394); the drift class is closed.
-- **Tree-shaking unlocked + locale split shipped** — `sideEffects: false` (#395) then per-locale generated catalogs (#403): 565/559/646/575 → 221/213/298/226 KB gz, ratcheted and CI-guarded.
+- **Error states are systemic** — every data page fails loud with a retry path.
+- **Barrel discipline is complete and ratcheted** — all 267 routers export through their domain barrel.
+- **The read-model pattern is now proven twice** — D1 daily stats and reels Q3 attribution; analytics never touches live order tables.
+- **Full commerce loop shipped end-to-end** — reels Phases 1–3: uploads → moderation → feeds → watch analytics → shoppable tags → conversion attribution → portal analytics (20 PRs, #541–#558).
+- **Vendor OS complete** — analytics, health score, reputation, disputes, deals, inbox, payouts, staff, store-services on the shared booking engine (no forks).
+- **i18n is complete and guarded** — zero static Arabic; per-locale lazy loading; drift gate.
+- **Seed is fully typed** — no `(prisma as any)` casts remain; the drift class is closed.
 
 ### Weaknesses (hard truths)
 
-- **FE-007 gap (closing)**: targets are 100–150 KB/route; reality is now 213–298 KB gz (from 560–650). The catalog split (~91 KB) + locale split (~118 KB) landed; the remaining bulk is the Next.js framework chunks (~110 KB, mostly fixed cost) + app code. Slimming continues against the ratcheted baseline.
-- **No staging environment** — risky changes ride against the shared dev DB (the local test suite runs `env=test` against it too, which pollutes seed data and flaked tests).
-- **E2E has an intermittent bcrypt-under-load login flake** — under parallel chromium + mobile-chrome load, logins can time out mid-run; retries absorb most (2/380 tests failed once in a loaded window, then passed on the clean re-run). Not fixed — tolerated, and diagnosed via the playwright-report artifact before ever blaming a diff.
+- **No staging environment** — risky changes ride against the shared dev DB; the local suite shares it too.
+- **E2E login flake persists** — bcrypt-under-load timeouts under parallel workers; retries absorb most; always read the playwright-report artifact before blaming a diff.
 - **Single points of failure** — one PostgreSQL, one Redis, no failover.
-- **Gateway resilience** — no circuit breaker; a down MyFatoorah degrades checkout (fail-closed, but loudly).
-- **Lint warnings: ZERO** (#405) — the remaining deliberate exceptions are documented disables with reasons, enforced by the config-hygiene gate.
-- **iOS physical device still blocked** — no Apple Developer account; Expo Go cannot run the app (webrtc/async-storage), so the dev-client APK is the only phone path.
-- **Store accounts are role-less** — `UserRole` has no VENDOR; store owners are CUSTOMER-role users with a Vendor row, gated by ownership checks rather than a role.
+- **Gateway resilience** — no circuit breaker; a down MyFatoorah degrades checkout.
+- **FE-007 gap** — reality 213–298 KB gz vs 100–150 KB target; framework chunks are the fixed cost; app-code slimming continues against the ratcheted baseline.
+- **iOS physical device blocked** — no Apple Developer account.
+- **Store accounts are role-less** — `UserRole` has no VENDOR; store owners are CUSTOMER-role users with a Vendor row.
+- **CI trigger gaps happen** — pushes occasionally don't create workflow runs; the recovery is the branch-update push (merge master, push — a real commit always triggers).
+- **Watchers die under memory pressure** — background CI pollers get reaped; one-shot checks on demand.
 
-### The Next Leap (from $110K platform to $250K+ platform)
+### The Next Leap
 
-1. **Production infra** — RDS + read replica, ElastiCache, CloudFront.
-2. **Resilience** — circuit breakers, alerting, staging environment, backup cron (script shipped — schedule it).
-3. **Bundle reality (steps 1–3 DONE)** — platform split → `sideEffects: false` → locale split measured at 221/213/298/226 KB. Next: attack the framework/app chunks toward FE-007, plus the CWV measurement pass (prod build) from Q6.
-4. **Mobile release** — EAS staged rollout to App Store + Play Store.
+1. **Production infra** — CDN for reel video, S3 lifecycle, RDS + read replica, ElastiCache.
+2. **Resilience** — circuit breakers, alerting, staging environment, backup cron.
+3. **Moderation SLA** — wire a moderation API into the reels pipeline; keep humans for borderline.
+4. **Mobile release** — EAS staged rollout to both stores (Apple account first).
 5. **Compliance** — third-party pentest, NCA-ECC/SOC 2 for the Saudi market.
-6. **Audit hygiene** — the 2026-10-10 deep audit is closed (20/20 items fixed or explicitly rejected); run the next deep audit when the roadmap's next big wave lands.
+6. **Audit hygiene** — run the next deep audit when the next big wave lands (pattern: AUDIT_YYYY-MM-DD.md).
