@@ -6,10 +6,11 @@
 > reels on products, store pages and service cards — not a standalone
 > TikTok clone.
 >
-> Status: **PHASES 1–2 DELIVERED** (2026-10-29/30, master `5c18a3e2`) — the
-> foundation plus the engagement layer are on master: swipe feed (web +
-> mobile), watch analytics and the admin stats surface. Phase 3
-> (commerce) remains proposed.
+> Status: **PHASES 1–3 DELIVERED** (2026-10-30, master `4e6b5231`) — the
+> foundation, engagement and commerce layers are all on master:
+> shoppable tag overlays, tap-ledger attribution into the vendor
+> read-models and portal reel analytics. Remaining before public launch:
+> the pre-deployment checklist (infra, moderation SLA, legal).
 
 ---
 
@@ -43,6 +44,21 @@ The engagement layer is live: web + mobile swipe feeds with
 virtualization and autoplay-muted playback, watch events recorded per
 reel, and a 30-day analytics surface for admins. Phase 3 (shoppable tags
 and conversion attribution) remains proposed.
+
+## 0c. Phase 3 — delivery record (DELIVERED 2026-10-30)
+
+| Item                      | PR   | Shipped                                                                                                   |
+| ------------------------- | ---- | --------------------------------------------------------------------------------------------------------- |
+| Q1 shoppable tags         | #554 | `ShortTag` + `ShortTagClick` ledger, `tags`/`setTags`/`tagClicked`, seed tags                             |
+| Q2 web overlay            | #555 | tag chips on the active feed slide (name/price/shop-now, anon login affordance) + E2E                     |
+| Q3 conversion attribution | #556 | 7-day tap→order window in the D1 materializer, `VendorDailyStat.reelOrders/reelRevenue` + `ReelDailyStat` |
+| Q4 portal reel analytics  | #557 | `vendorPortal.reelAnalytics` + the portal reel performance table                                          |
+
+The commerce layer is live: reels carry shoppable tags, taps land in an
+attribution ledger, the D1 materializer credits reel-attributed orders,
+and stores see per-reel views, watch time, clicks and conversions in the
+portal. The pre-deployment checklist (infra, moderation SLA, legal)
+remains the gate before public launch.
 
 ## 0. Why this shape
 
