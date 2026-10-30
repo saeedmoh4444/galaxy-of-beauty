@@ -8,6 +8,7 @@
  */
 import { logger } from './logger';
 import { sendAlert } from './alerting';
+import { recordBreakerState } from './metrics';
 
 export type BreakerState = 'closed' | 'open' | 'halfOpen';
 
@@ -115,6 +116,7 @@ export function getBreaker(
     onStateChange:
       opts?.onStateChange ??
       ((n, _from, to) => {
+        recordBreakerState(n, to);
         if (to === 'open') {
           void sendAlert(
             `breaker-${n}-open`,
