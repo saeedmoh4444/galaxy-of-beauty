@@ -38,9 +38,25 @@ export default function KidsServicesPage(): JSX.Element {
   };
   const { data: tips } = api.kidsServices.safetyTips.useQuery() as { data: string[] | undefined };
   const bookMut = api.kidsServices.book.useMutation();
+
+  // C1a — real booking: the wizard collects an address + appointment
+  // window before calling the (now real) book procedure.
+  const { data: addresses } = api.addresses.list.useQuery(undefined, {
+    enabled: !!user,
+  }) as { data: Array<Record<string, unknown>> | undefined };
+  const [addressId, setAddressId] = useState<number | null>(null);
+  const [apptDate, setApptDate] = useState('');
+  const [apptTime, setApptTime] = useState('');
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const [childName, setChildName] = useState('');
   const [childAge, setChildAge] = useState(5);
+  const bookingReady =
+    !!user &&
+    childName.trim().length > 0 &&
+    !!addressId &&
+    !!apptDate &&
+    !!apptTime &&
+    !bookMut.isPending;
 
   const categories = (cats ?? []) as Array<Record<string, unknown>>;
   const subServices = (category?.subServices ?? []) as Array<Record<string, unknown>>;
@@ -166,6 +182,51 @@ export default function KidsServicesPage(): JSX.Element {
                 className="w-20 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
+            {/* C1a — real booking fields: address + appointment window */}
+            <div>
+              <label htmlFor="ks-address" className="text-xs font-semibold">
+                {t('marketing.kids-services.address')}
+              </label>
+              <select
+                id="ks-address"
+                value={addressId ?? ''}
+                onChange={(e) => setAddressId(e.target.value ? Number(e.target.value) : null)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              >
+                <option value="">—</option>
+                {(addresses ?? []).map((a: Record<string, unknown>) => (
+                  <option key={a.id as number} value={a.id as number}>
+                    {[a.label as string, a.street as string, a.area as string, a.city as string]
+                      .filter(Boolean)
+                      .join(' — ')}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ks-date" className="text-xs font-semibold">
+                {t('marketing.kids-services.date')}
+              </label>
+              <input
+                id="ks-date"
+                type="date"
+                value={apptDate}
+                onChange={(e) => setApptDate(e.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              />
+            </div>
+            <div>
+              <label htmlFor="ks-time" className="text-xs font-semibold">
+                {t('marketing.kids-services.time')}
+              </label>
+              <input
+                id="ks-time"
+                type="time"
+                value={apptTime}
+                onChange={(e) => setApptTime(e.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              />
+            </div>
           </div>
           <div className="space-y-3">
             {subServices.map((s: Record<string, unknown>) => (
@@ -192,17 +253,25 @@ export default function KidsServicesPage(): JSX.Element {
                     <Button
                       size="sm"
                       className="mt-2"
+                      disabled={!bookingReady}
                       onClick={() => {
-                        if (childName.trim())
-                          bookMut.mutate(
-                            {
-                              serviceId: s.id as string,
-                              category: selectedCat,
-                              childName: childName.trim(),
-                              childAge,
-                            },
-                            { onSuccess: (d) => setResult(d as Record<string, unknown>) },
-                          );
+                        if (!bookingReady) return;
+                        const startAt = new Date(`${apptDate}T${apptTime}:00`);
+                        const durationMin = Number(s.durationMin) || 30;
+                        const endAt = new Date(startAt.getTime() + durationMin * 60_000);
+                        bookMut.mutate(
+                          {
+                            serviceId: s.id as string,
+                            category: selectedCat,
+                            childName: childName.trim(),
+                            childAge,
+                            addressId: addressId!,
+                            startAt: startAt.toISOString(),
+                            endAt: endAt.toISOString(),
+                            idempotencyKey: crypto.randomUUID(),
+                          },
+                          { onSuccess: (d) => setResult(d as Record<string, unknown>) },
+                        );
                       }}
                     >
                       {t('marketing.kids-services.book')}

@@ -1208,6 +1208,44 @@ async function main() {
         isMommyFriendly: true,
       },
     }),
+    // C1a — the kids-services facade's sub-services as REAL bookable
+    // rows. titleJson.en must EXACTLY match the facade's nameEn —
+    // kidsServices.book resolves the service by that match.
+    ...(
+      [
+        ['First Haircut', 'أول قصة شعر', 80, 15, 'kids-first-haircut', 5],
+        ['Baby Massage', 'تدليك رضيع', 120, 25, 'kids-baby-massage', 6],
+        ['Baby Nail Care', 'عناية أظافر الرضع', 60, 15, 'kids-baby-nails', 7],
+        ['Kids Hairstyling', 'تسريحة شعر أطفال', 100, 25, 'kids-hairstyling', 8],
+        ['Kids Manicure', 'مانيكير أطفال', 60, 20, 'kids-manicure', 9],
+        ['Face Painting', 'رسم على الوجه', 50, 15, 'kids-face-painting', 10],
+        ['Haircut & Style', 'قص وتصفيف شعر', 90, 30, 'kids-haircut-style', 11],
+        ['Manicure', 'عناية بالأظافر', 70, 25, 'kids-girls-manicure', 12],
+        ['Beauty Lesson', 'جلسة تعليم عناية', 120, 40, 'kids-beauty-lesson', 13],
+        ['Party Hairstyle', 'تسريحة مناسبة', 110, 30, 'kids-party-hairstyle', 14],
+        ['Teen Facial', 'عناية بالبشرة', 120, 35, 'teen-facial', 15],
+        ['Light Makeup', 'مكياج خفيف', 130, 35, 'teen-light-makeup', 16],
+        ['Hair Styling', 'تصفيف شعر', 100, 35, 'teen-hair-styling', 17],
+        ['Teen Manicure', 'مانيكير مراهقات', 80, 25, 'teen-manicure', 18],
+        ['Beauty Consultation', 'استشارة عناية', 80, 25, 'teen-beauty-consultation', 19],
+      ] as const
+    ).map(([en, ar, price, mins, slug, order]) =>
+      prisma.service.create({
+        data: {
+          categoryId: categories[16]!.id,
+          titleJson: { ar, en },
+          descriptionJson: {
+            ar: `خدمة ${ar} آمنة وممتعة للأطفال والمراهقات`,
+            en: `A safe, fun ${en} experience for kids and teens`,
+          },
+          basePrice: price,
+          durationMin: mins,
+          slug,
+          sortOrder: order,
+          isMommyFriendly: true,
+        },
+      }),
+    ),
   ]);
   console.log(` ${services.length} services`);
 
