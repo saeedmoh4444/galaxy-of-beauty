@@ -158,55 +158,8 @@ function RootNavigator() {
               />
               <Stack.Screen name="customer/promo/index" options={{ title: t('mobile.promo') }} />
 
-              {/* Technician screens */}
-              <Stack.Screen
-                name="tech/dashboard/index"
-                options={{ title: t('mobile.techDashboard') }}
-              />
-              <Stack.Screen name="tech/slots/index" options={{ title: t('mobile.slots') }} />
-              <Stack.Screen
-                name="tech/bookings/index"
-                options={{ title: t('mobile.myBookings') }}
-              />
-              <Stack.Screen name="tech/earnings/index" options={{ title: t('mobile.earnings') }} />
-              <Stack.Screen name="tech/profile/index" options={{ title: t('mobile.myProfile') }} />
-              <Stack.Screen name="tech/calendar/index" options={{ title: t('mobile.calendar') }} />
-              <Stack.Screen
-                name="tech/video/[bookingId]/index"
-                options={{ title: t('mobile.videoConsult') }}
-              />
-              <Stack.Screen
-                name="tech/video/[bookingId]/room/index"
-                options={{ title: t('mobile.videoRoom') }}
-              />
-
-              {/* Admin screens */}
-              <Stack.Screen
-                name="admin/dashboard/index"
-                options={{ title: t('mobile.adminDashboard') }}
-              />
-              <Stack.Screen name="admin/users/index" options={{ title: t('mobile.users') }} />
-              <Stack.Screen name="admin/bookings/index" options={{ title: t('mobile.bookings') }} />
-              <Stack.Screen
-                name="admin/finance/index"
-                options={{ title: t('mobile.adminFinance') }}
-              />
-              <Stack.Screen
-                name="admin/categories/index"
-                options={{ title: t('mobile.categories') }}
-              />
-              <Stack.Screen name="admin/services/index" options={{ title: t('mobile.services') }} />
-              <Stack.Screen
-                name="admin/technicians/index"
-                options={{ title: t('mobile.technicians') }}
-              />
-              <Stack.Screen
-                name="admin/analytics/index"
-                options={{ title: t('mobile.analytics') }}
-              />
-              <Stack.Screen name="admin/disputes/index" options={{ title: t('mobile.disputes') }} />
-              <Stack.Screen name="admin/zatca/index" options={{ title: t('mobile.zatca') }} />
-              <Stack.Screen name="admin/settings/index" options={{ title: t('mobile.settings') }} />
+              {/* tech/* and admin/* screens live in their own guarded
+                  layouts (D4 — role guards) which declare their titles. */}
             </Stack>
           </SocketProvider>
           <OfflineSyncProvider />
