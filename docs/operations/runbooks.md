@@ -141,3 +141,18 @@
 - [ ] Fix deployed and verified
 - [ ] Monitoring alert added for early detection
 - [ ] Runbook updated if response differed from documented procedure
+
+## 9. Database Backup Failure (backup sidecar)
+
+**Symptoms**: `/backups/backup.log` missing entries for the day; disk-full alerts; `docker compose ps backup` shows restarts.
+
+**Response**:
+
+1. Read the sidecar log: `docker compose -f docker-compose.yml -f docker-compose.prod.yml exec backup tail -50 /backups/backup.log`
+2. Verify the schedule: `docker compose exec backup crontab -l` (default `0 3 * * *`, override with `BACKUP_CRON`)
+3. Check the password env reaches the sidecar: `docker compose exec backup sh -c 'test -n "$PGPASSWORD" && echo ok'`
+4. Manual run for an immediate snapshot: `docker compose exec backup /backup.sh`
+5. Verify the dump restores: `gunzip -c <file> | head -5` shows valid SQL (pg_dump header)
+6. If the postgres container moved networks/names: the sidecar resolves `PGHOST=postgres` via the compose network — `docker compose ps` must show both on the same network
+
+**Prevention**: the sidecar rotates 14 days on the `backups_data` volume; copy the volume off-host weekly (or point `BACKUP_DIR` at an NFS/S3 mount) so a host loss never takes the backups with it.
