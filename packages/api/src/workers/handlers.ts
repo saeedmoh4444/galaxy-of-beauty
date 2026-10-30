@@ -1122,12 +1122,36 @@ export async function handleQueueHealthCheck(): Promise<{
 }> {
   const { getQueueHealth, assessQueueHealth } = await import('../lib/queueHealth');
   const { captureMessage } = await import('../lib/sentry');
+  const { sendAlert } = await import('../lib/alerting');
   const health = await getQueueHealth();
   const assessed = assessQueueHealth(health);
+
+  // Disk headroom (AUDIT item 8): the worker volume is where backups,
+  // uploads and logs live — page before a full disk takes the app down.
+  try {
+    const { statfs } = await import('node:fs/promises');
+    const s = await statfs('/');
+    const usedPct = 1 - s.bavail / s.blocks;
+    if (usedPct > 0.8) {
+      const reason = `disk ${Math.round(usedPct * 100)}% used`;
+      assessed.reasons.push(reason);
+      if (assessed.status === 'ok') assessed.status = 'warn';
+      await sendAlert('disk-80', 'Disk usage above 80%', reason, 'warning');
+    }
+  } catch {
+    // statfs unavailable — degrade silently.
+  }
+
   if (assessed.status !== 'ok') {
     await captureMessage(
       `Queue health ${assessed.status}: ${assessed.reasons.join('; ')}`,
       assessed.status === 'critical' ? 'error' : 'warning',
+    );
+    await sendAlert(
+      'queue-health',
+      `Queue health ${assessed.status}`,
+      assessed.reasons.join('; '),
+      assessed.status === 'critical' ? 'critical' : 'warning',
     );
   }
   return assessed;
