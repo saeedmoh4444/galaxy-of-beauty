@@ -47,9 +47,13 @@ CMD ["pnpm", "dev"]
 # ---- Builder ----
 FROM deps AS builder
 # NEXT_PUBLIC_* vars are inlined into the client bundle at build time;
-# without this the browser-side Sentry client stays dormant in Docker.
+# without this the browser-side Sentry client stays dormant in Docker,
+# and the socket client falls back to hostname:4001 instead of the
+# nginx /socket.io path.
 ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_SOCKET_URL
 ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_SOCKET_URL=$NEXT_PUBLIC_SOCKET_URL
 COPY packages/db/src ./packages/db/src
 COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src
@@ -84,3 +88,21 @@ USER nextjs
 
 EXPOSE 3000
 CMD ["npx", "next", "start"]
+
+# ---- Runtime services (socket + worker) ----
+# The minimal production stage above carries only the web app. The
+# socket server and the BullMQ worker run the API package sources via
+# tsx (same as the PM2 path), so they need a fuller image.
+FROM deps AS runtime
+ENV NODE_ENV=production
+
+COPY packages/db/src ./packages/db/src
+COPY packages/api/src ./packages/api/src
+COPY packages/shared/src ./packages/shared/src
+COPY packages/config ./packages/config
+COPY packages/api/package.json ./packages/api/package.json
+COPY packages/db/prisma ./packages/db/prisma
+RUN cd /app/packages/db && npx prisma generate
+
+WORKDIR /app
+EXPOSE 4001
