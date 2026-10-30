@@ -207,6 +207,133 @@ export const beautyShortsRouter = router({
       .slice(0, 20);
   }),
 
+  // ---------------------------------------------------------------------------
+  // Q1 Phase 3 — shoppable tags (commerce overlays + tap ledger)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * tags — the commerce tags on a reel, for the overlay UI. Public, but
+   * the E7 rule applies: anonymous callers only resolve tags on approved,
+   * face-blurred shorts (same gate as the feed itself).
+   */
+  tags: publicProcedure
+    .input(z.object({ shortId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const short = await db.short.findFirst({
+        where: {
+          id: input.shortId,
+          isApproved: true,
+          isActive: true,
+          ...(ctx.user ? {} : { faceBlurred: true }),
+        },
+        select: { id: true },
+      });
+      if (!short) throw new TRPCError({ code: 'NOT_FOUND', message: 'Short not found' });
+
+      const tags = await db.shortTag.findMany({
+        where: { shortId: input.shortId },
+        include: {
+          product: { select: { nameJson: true, price: true } },
+          service: { select: { titleJson: true, basePrice: true } },
+        },
+        orderBy: { id: 'asc' },
+      });
+      return tags.map((t) => ({
+        id: t.id,
+        productId: t.productId,
+        serviceId: t.serviceId,
+        positionSec: t.positionSec,
+        label: t.labelJson,
+        productNameAr: (t.product?.nameJson as { ar?: string } | null)?.ar ?? null,
+        productPrice: t.product ? Number(t.product.price) : null,
+        serviceTitleAr: (t.service?.titleJson as { ar?: string } | null)?.ar ?? null,
+      }));
+    }),
+
+  /**
+   * setTags — replace the tag set on a reel the caller owns (R1 rules:
+   * vendor owners/staff manage their store's reels, verified technicians
+   * their own). Each tagged product/service must be inside the caller's
+   * surface (resolveShortAuthor catalog checks).
+   */
+  setTags: protectedProcedure
+    .input(
+      z.object({
+        shortId: z.number().int().positive(),
+        tags: z
+          .array(
+            z.object({
+              productId: z.number().int().positive().optional(),
+              serviceId: z.number().int().positive().optional(),
+              positionSec: z.number().int().min(0).optional(),
+              label: z.object({ ar: z.string(), en: z.string() }).optional(),
+            }),
+          )
+          .max(8),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const short = await db.short.findUnique({ where: { id: input.shortId } });
+      if (!short) throw new TRPCError({ code: 'NOT_FOUND', message: 'Short not found' });
+
+      const technician = await db.technician.findUnique({ where: { userId: ctx.user.id } });
+      const actor = await resolveVendorActor(ctx.user.id);
+      const eligibleVendorId = actor?.vendor.id ?? technician?.storeVendorId ?? null;
+      const isTechOwner = technician !== null && short.technicianId === technician.id;
+      const isVendorOwner = eligibleVendorId !== null && short.vendorId === eligibleVendorId;
+      if (!isTechOwner && !isVendorOwner) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only tag your own reels' });
+      }
+
+      for (const tag of input.tags) {
+        if (tag.productId === undefined && tag.serviceId === undefined) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Tag needs a product or a service' });
+        }
+        await resolveShortAuthor(ctx.user.id, {
+          productId: tag.productId,
+          serviceId: tag.serviceId,
+        });
+      }
+
+      await db.shortTag.deleteMany({ where: { shortId: input.shortId } });
+      const ids: number[] = [];
+      for (const tag of input.tags) {
+        const created = await db.shortTag.create({
+          data: {
+            shortId: input.shortId,
+            productId: tag.productId ?? null,
+            serviceId: tag.serviceId ?? null,
+            positionSec: tag.positionSec ?? null,
+            labelJson: tag.label ?? undefined,
+          },
+        });
+        ids.push(created.id);
+      }
+      return { count: ids.length, ids };
+    }),
+
+  /**
+   * tagClicked — record a tap on a commerce tag (public; anonymous taps
+   * count for reach, authenticated taps power the Q3 order-attribution
+   * window). The product id is snapshotted so later tag edits never
+   * rewrite attribution history.
+   */
+  tagClicked: publicProcedure
+    .input(z.object({ tagId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const tag = await db.shortTag.findUnique({ where: { id: input.tagId } });
+      if (!tag) throw new TRPCError({ code: 'NOT_FOUND', message: 'Tag not found' });
+      const click = await db.shortTagClick.create({
+        data: {
+          tagId: tag.id,
+          shortId: tag.shortId,
+          productId: tag.productId,
+          userId: ctx.user?.id ?? null,
+        },
+      });
+      return { ok: true, clickId: click.id };
+    }),
+
   /**
    * surfaceShorts — R1 (REELS_SHOPPABLE_PLAN): approved + active shorts
    * attached to a product, a service or a vendor, newest first. The E7

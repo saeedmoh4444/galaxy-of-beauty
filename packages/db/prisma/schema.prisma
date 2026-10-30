@@ -192,6 +192,7 @@ model User {
   winbackReceived   WinbackLog[]
   shortReports      ShortReport[] // R6 — reports this user filed against shorts
   shortWatchLogs    ShortWatchLog[] // P2 — watch events this user produced
+  shortTagClicks    ShortTagClick[] // Q1 Phase 3 — tag taps from this user
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
@@ -515,6 +516,7 @@ model Service {
   bundlesAsChild    ServiceBundle[] @relation("BundleChild")
   pricingRules      ServicePricing[]
   shorts            Short[] // R1 — shoppable reels attached to this service
+  shortTags         ShortTag[] // Q1 Phase 3 — reels tagging this service
 
   @@index([categoryId, isActive])
   @@index([basePrice])
@@ -1564,6 +1566,8 @@ model Product {
   priceLogs ProductPriceLog[]
   variants ProductVariant[]
   shorts   Short[] // R1 — shoppable reels attached to this product
+  shortTags ShortTag[] // Q1 Phase 3 — reels tagging this product
+  shortTagClicks ShortTagClick[] // Q1 — taps that snapshot this product
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
@@ -2687,6 +2691,8 @@ model Short {
   vendor  Vendor?  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
   reports ShortReport[] // R6 — moderation reports against this short
   watchLogs ShortWatchLog[] // P2 — watch analytics events
+  tags ShortTag[] // Q1 Phase 3 — commerce tags overlaid on this reel
+  tagClicks ShortTagClick[] // Q1 — tap ledger for order attribution
 
   @@index([isApproved, isActive])
   @@index([technicianId])
@@ -2739,6 +2745,47 @@ model ShortWatchLog {
 
   @@index([shortId, createdAt])
   @@map("short_watch_logs")
+}
+
+// Q1 Phase 3 (REELS_SHOPPABLE_PLAN) — shoppable commerce tags. A reel
+// carries a small set of product/service tags rendered as overlay chips;
+// taps land in ShortTagClick, the ledger that powers order attribution.
+model ShortTag {
+  id          Int      @id @default(autoincrement())
+  shortId     Int
+  productId   Int?
+  serviceId   Int?
+  positionSec Int? // overlay timing anchor within the reel
+  labelJson   Json? // { ar, en } optional display label
+  createdAt   DateTime @default(now())
+
+  short   Short    @relation(fields: [shortId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  service Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  clicks  ShortTagClick[]
+
+  @@index([shortId])
+  @@index([productId])
+  @@index([serviceId])
+  @@map("short_tags")
+}
+
+model ShortTagClick {
+  id        Int      @id @default(autoincrement())
+  tagId     Int
+  shortId   Int
+  productId Int? // snapshot at tap time — survives later tag edits
+  userId    Int? // null = anonymous tap
+  clickedAt DateTime @default(now())
+
+  tag     ShortTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  short   Short    @relation(fields: [shortId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([productId, clickedAt])
+  @@index([userId, clickedAt])
+  @@map("short_tag_clicks")
 }
 
 model PriceDropAlert {
