@@ -6,7 +6,7 @@ import { OfflineSyncProvider } from '@/components/OfflineSyncProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { TRPCProvider } from '@/lib/trpc-react';
-import { loadAuthToken } from '@/lib/authToken';
+import { loadAuthToken, loadAuthRefreshToken } from '@/lib/authToken';
 import { useNotifications } from '@/hooks/useNotifications';
 import { LocaleProvider, useLocale } from '@/components/LocaleProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
@@ -19,6 +19,7 @@ function RootNavigator() {
   useEffect(() => {
     // Restore the persisted access token so authenticated screens work after restart
     void loadAuthToken();
+    void loadAuthRefreshToken();
   }, []);
 
   return (
