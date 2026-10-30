@@ -57,6 +57,8 @@ export const mobileCustomerAMessages = {
     en: 'Add your first address to make booking easier',
   },
   'addresses.add-new': { ar: 'إضافة عنوان جديد', en: 'Add New Address' },
+  'addresses.save': { ar: 'حفظ', en: 'Save' },
+  'addresses.cancel': { ar: 'إلغاء', en: 'Cancel' },
 
   // ── marketplace ──
   'marketplace.load-error': { ar: 'فشل تحميل المتجر', en: 'Failed to load marketplace' },
