@@ -1,5 +1,12 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { NpsCard } from '@/components/NpsCard';
@@ -29,6 +36,16 @@ export default function BookingDetailScreen(): JSX.Element {
     refetch: () => {},
   };
   const data = detail.data as Record<string, unknown> | undefined;
+
+  // D2 — customer cancellation via the shared state machine (the API
+  // supports it; the screen never exposed it).
+  const utils = trpc.useUtils();
+  const cancelMut = trpc.bookings.transition.useMutation({
+    onSuccess: () => {
+      void utils.bookings.getById.invalidate({ id: Number(id) });
+      void utils.bookings.list.invalidate();
+    },
+  });
 
   const statusLabels: Record<string, string> = {
     REQUESTED: t('booking.status.REQUESTED'),
@@ -89,6 +106,25 @@ export default function BookingDetailScreen(): JSX.Element {
             <Text style={styles.rescheduleText}>{t('mobile.reschedule.title')}</Text>
           </TouchableOpacity>
         )}
+        {/* D2 — cancel was missing entirely from the app despite API support.
+            Cancelable states only (REQUESTED/ACCEPTED/PAID/CONFIRMED_OFFLINE). */}
+        {['REQUESTED', 'ACCEPTED', 'PAID', 'CONFIRMED_OFFLINE'].includes(
+          data?.status as string,
+        ) && (
+          <TouchableOpacity
+            style={styles.cancelBtn}
+            activeOpacity={0.7}
+            onPress={() => {
+              cancelMut.mutate({ id: Number(id), action: 'cancel' });
+            }}
+          >
+            {cancelMut.isPending ? (
+              <ActivityIndicator color={COLORS.brand} />
+            ) : (
+              <Text style={styles.cancelText}>{t('booking.status.CANCELLED')}</Text>
+            )}
+          </TouchableOpacity>
+        )}
         {data?.status === 'COMPLETED' && <NpsCard bookingId={Number(data.id)} />}
       </ScrollView>
     </ScreenState>
@@ -122,4 +158,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rescheduleText: { color: COLORS.white, fontSize: 15, fontWeight: '700' },
+  cancelBtn: {
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: COLORS.brand,
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  cancelText: { color: COLORS.brand, fontSize: 15, fontWeight: '700' },
 });
