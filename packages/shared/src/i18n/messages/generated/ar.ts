@@ -4454,6 +4454,8 @@ export const arWebMessages: Record<string, string> = {
   'share.via-twitter': 'مشاركة عبر تويتر',
   'share.via-whatsapp': 'مشاركة عبر واتساب',
   'share.whatsapp': 'واتساب',
+  'shorts.shopNow': 'اشترِ الآن',
+  'shorts.viewProduct': 'شاهدي المنتج',
   'skin.analysisFallback': 'تحليل',
   'skin.analyze': 'تحليل',
   'skin.concernsTitle': 'المشاكل المحددة',
