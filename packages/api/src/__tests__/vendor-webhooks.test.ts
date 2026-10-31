@@ -5,9 +5,10 @@
  * delivery itself is exercised by the signing tests + the worker).
  */
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
+import crypto from 'crypto';
 import { buildUser } from './factories';
 
 vi.mock('../lib/webhookDelivery', async () => {
@@ -33,6 +34,31 @@ let webhookId: number;
 
 async function caller(user: JwtPayload | null) {
   return (appRouter as any).createCaller({ user, ip: '127.0.0.1' });
+}
+
+// A5 — buyCart was removed (unpaid orders are gone). Tests purchase
+// through the REAL wallet checkout instead.
+const SHIPPING = {
+  personName: 'Saeed Test',
+  mobile: '0500000000',
+  lineAddress: 'Test Street 1',
+  cityName: 'RIYADH',
+  postalCode: '12345',
+  countryCode: 'SA',
+  shippingMethod: 1 as const,
+};
+
+async function buyWithWallet(c: ReturnType<typeof caller>, userId: number) {
+  await prisma.wallet.upsert({
+    where: { userId },
+    create: { userId, balance: new Prisma.Decimal(100000) },
+    update: { balance: new Prisma.Decimal(100000) },
+  });
+  return c.payments.payCart({
+    idempotencyKey: crypto.randomUUID(),
+    method: 'wallet',
+    shipping: SHIPPING,
+  });
 }
 
 beforeAll(async () => {
@@ -81,6 +107,13 @@ afterAll(async () => {
   await prisma.notification.deleteMany({ where: { userId: { in: createdUserIds } } });
   await prisma.product.deleteMany({ where: { id: { in: createdProductIds } } });
   await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+  // A5 — wallet purchases create checkouts/wallet rows referencing the
+  // customer (onDelete Restrict) — clear before the users go.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
+  await prisma.walletTransaction.deleteMany({
+    where: { wallet: { userId: { in: createdUserIds } } },
+  });
+  await prisma.wallet.deleteMany({ where: { userId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
 }, 30000);
 
@@ -133,7 +166,7 @@ describe('D1b — vendor webhooks', () => {
     });
     const cart = await caller(customer);
     await cart.marketplace.addToCart({ productId, quantity: 1 });
-    await cart.marketplace.buyCart({});
+    await buyWithWallet(cart, customer.id);
 
     const { enqueueWebhookEvents, __calls } = await import('../lib/webhookDelivery');
     const calls = __calls as Array<{ event: string; payload: Record<string, unknown> }>;
