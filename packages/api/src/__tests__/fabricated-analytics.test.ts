@@ -169,16 +169,20 @@ describe('fabricated-analytics fail-closed contracts', () => {
     ).rejects.toMatchObject({ code: 'NOT_FOUND' });
   });
 
-  it('womensServices.book no longer returns a CONFIRMED booking', async () => {
+  it('womensServices.book never fabricates a booking for unknown services', async () => {
+    // E-womens: book now goes through the REAL pipeline (resolved seeded
+    // service + booking.create) — the fail-closed contract is that an
+    // unmappable facade item yields NOT_FOUND, never a fake success.
     const c = await customer();
-    const r = await c.womensServices.book({
-      serviceId: 'ps1',
-      category: 'pregnancy_safe',
-      pregnancyTrimester: 2,
-    });
-    expect(r.booked).toBe(false);
-    expect(r.status).toBe('NOT_CREATED');
-    expect(r).not.toHaveProperty('bookingId');
-    expect(r).not.toHaveProperty('message');
+    await expect(
+      c.womensServices.book({
+        serviceId: 'zz9',
+        category: 'pregnancy_safe',
+        addressId: 1,
+        startAt: new Date(Date.now() + 3 * 86_400_000).toISOString(),
+        endAt: new Date(Date.now() + 3 * 86_400_000 + 30 * 60_000).toISOString(),
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
   });
 });
