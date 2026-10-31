@@ -95,6 +95,12 @@ export const mobileCustomerBMessages = {
 
   // ---- reviews ----
   'mobile.reviews.load-error': { ar: 'فشل تحميل التقييمات', en: 'Failed to load reviews' },
+  'mobile.reviews.write': { ar: 'كتابة تقييم', en: 'Write a review' },
+  'mobile.reviews.comment-placeholder': {
+    ar: 'أضيفي تعليقك (اختياري)',
+    en: 'Add your comment (optional)',
+  },
+  'mobile.reviews.submitted': { ar: 'تم إرسال تقييمك', en: 'Review submitted' },
   'mobile.reviews.empty-title': { ar: 'لا توجد تقييمات', en: 'No reviews yet' },
   'mobile.reviews.empty-desc': {
     ar: 'قيمي الخدمات التي حصلتِ عليها',
