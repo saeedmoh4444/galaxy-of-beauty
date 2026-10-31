@@ -32,9 +32,9 @@ const AR_DIGITS: Record<string, string> = {
 };
 function parseAmount(text: string): number {
   const normalized = text.replace(/[٠-٩]/g, (d) => AR_DIGITS[d] ?? d);
-  const m = normalized.match(/([\d,]+(?:\.\d+)?)/);
-  if (!m) throw new Error(`No amount found in: ${text}`);
-  return parseFloat(m[1].replace(/,/g, ''));
+  const amount = normalized.match(/([\d,]+(?:\.\d+)?)/)?.[1];
+  if (!amount) throw new Error(`No amount found in: ${text}`);
+  return parseFloat(amount.replace(/,/g, ''));
 }
 
 async function loginAsCustomer(page: import('@playwright/test').Page) {
