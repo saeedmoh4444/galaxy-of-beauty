@@ -8,7 +8,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, paidCheckoutForOrder } from './factories';
 
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
@@ -41,6 +41,7 @@ async function fulfillableOrder(items: Array<{ productId: number; price: number 
     },
   });
   createdOrderIds.push(order.id);
+  await paidCheckoutForOrder(order.id);
   await prisma.storeOrderItem.createMany({
     data: items.map((i, idx) => ({
       orderId: order.id,
@@ -120,6 +121,8 @@ afterAll(async () => {
   await prisma.productCategory.deleteMany({ where: { id: { in: createdCategoryIds } } });
   await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
   await prisma.notificationTemplate.deleteMany({ where: { id: { in: createdTemplateIds } } });
+  // Checkouts reference customers (onDelete Restrict) — clear before users.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
 });
 
