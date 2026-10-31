@@ -31,7 +31,12 @@ export default function ReviewsScreen(): JSX.Element {
       {(data as Record<string, unknown>[])?.map((r: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <View style={styles.row}>
-            <Text style={styles.stars}>{''.repeat(Number(r.rating) || 0)}</Text>
+            {/* D2b — the old ''.repeat(rating) always rendered an EMPTY
+                string (blank stars); render real filled/empty glyphs. */}
+            <Text style={styles.stars}>
+              {'★'.repeat(Math.max(0, Math.min(5, Number(r.rating) || 0))) +
+                '☆'.repeat(Math.max(0, 5 - (Number(r.rating) || 0)))}
+            </Text>
             <Text style={styles.date}>
               {new Date(r.createdAt as string).toLocaleDateString(
                 locale === 'en' ? 'en-GB' : 'ar-SA',
