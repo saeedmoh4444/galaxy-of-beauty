@@ -191,7 +191,12 @@ export default function proxy(request: NextRequest) {
   const isDocumentRequest = request.headers.get('accept')?.includes('text/html') ?? false;
   const existingCsrf = request.cookies.get(CSRF_COOKIE_NAME)?.value;
   if (isDocumentRequest && (!existingCsrf || !/^[a-f0-9]{64}$/.test(existingCsrf))) {
-    response.headers.append('Set-Cookie', buildCsrfCookie(generateCsrfToken()));
+    // Audit B3: the Secure flag must ride the cookie in production (the
+    // API route already passes it; this document-provisioned twin did not).
+    response.headers.append(
+      'Set-Cookie',
+      buildCsrfCookie(generateCsrfToken(), process.env.NODE_ENV === 'production'),
+    );
   }
 
   // Strict Transport Security (HSTS) — 1 year, include subdomains
@@ -206,10 +211,13 @@ export default function proxy(request: NextRequest) {
   // Restrict referrer information
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-  // Restrict browser features
+  // Restrict browser features — camera/mic stay same-origin: AR try-on
+  // and the WebRTC video rooms need getUserMedia (audit B3: the previous
+  // camera=(), microphone=() hard-blocked them while next.config.js
+  // allowed them; the stricter header won).
   response.headers.set(
     'Permissions-Policy',
-    'camera=(), microphone=(), geolocation=(self), payment=()',
+    'camera=(self), microphone=(self), geolocation=(self), payment=()',
   );
 
   // CORS for the tRPC API endpoint — only allowed origins

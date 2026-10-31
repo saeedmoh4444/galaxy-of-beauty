@@ -17,6 +17,33 @@ test.describe('Security Headers', () => {
 
     // Referrer-Policy
     expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
+
+    // Permissions-Policy — camera/mic stay same-origin (audit B3): AR
+    // try-on and the WebRTC video rooms need getUserMedia; a hard
+    // camera=() / microphone=() would break both in production.
+    expect(headers['permissions-policy']).toBeDefined();
+    expect(headers['permissions-policy']).toContain('camera=(self)');
+    expect(headers['permissions-policy']).toContain('microphone=(self)');
+  });
+
+  test('should never serve immutable HTML (audit B3)', async ({ page }) => {
+    const response = await page.goto('/');
+    const headers = response?.headers() || {};
+    const cacheControl = headers['cache-control'] || '';
+    expect(cacheControl).not.toContain('immutable');
+  });
+
+  test('should serve no-store on authenticated pages (audit B3)', async ({ page }) => {
+    // The seeded customer session — /dashboard is personalized HTML.
+    await page.goto('/login');
+    await page.getByPlaceholder('example@email.com').fill('customer@test.com');
+    await page.getByPlaceholder('••••••••').fill('Admin@123456');
+    await page.getByRole('button', { name: 'دخول' }).click();
+    await page.waitForTimeout(3000);
+
+    const response = await page.goto('/dashboard');
+    const cacheControl = response?.headers()['cache-control'] || '';
+    expect(cacheControl).toContain('no-store');
   });
 });
 
