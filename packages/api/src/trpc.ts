@@ -60,6 +60,51 @@ const tracingGuard = t.middleware(async ({ ctx, path, type, next }) => {
 
 export const { router, procedure, middleware, mergeRouters } = t;
 
+// ---- CSRF Protection (applied to mutations) ----
+const csrfGuard = middleware(({ ctx, next }) => {
+  // Non-browser clients (native apps, curl) don't send an Origin header
+  // and have no ambient cookie jar for an attacker to ride, so the
+  // browser CSRF threat model doesn't apply — skip the guard for them.
+  // Browsers always send Origin on POST (fetch and form submissions).
+  if (!ctx.origin) return next();
+
+  // Read CSRF cookie and header from the context
+  const cookieToken = ctx.csrfCookie ?? null;
+  const headerToken = ctx.csrfHeader ?? null;
+
+  if (!verifyCsrfToken(cookieToken, headerToken)) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'CSRF token missing or invalid',
+    });
+  }
+
+  return next();
+});
+
+/**
+ * Root-level CSRF enforcement (audit B2): the *Mutation wrappers only
+ * cover the routers that chose to use them (~37 of ~435 mutation sites).
+ * Attaching the same check to the shared base `procedure` means every
+ * mutation in the tree — including bare customerProcedure.input().mutation
+ * sites — is verified, while queries pass through untouched and the
+ * origin-skip keeps server-to-server flows (Meta webhooks, MyFatoorah
+ * callbacks, API-key clients) working.
+ */
+const procedureWithCsrf = procedure.use(({ ctx, next, type }) => {
+  if (type !== 'mutation') return next();
+  if (!ctx.origin) return next();
+  const cookieToken = ctx.csrfCookie ?? null;
+  const headerToken = ctx.csrfHeader ?? null;
+  if (!verifyCsrfToken(cookieToken, headerToken)) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'CSRF token missing or invalid',
+    });
+  }
+  return next();
+});
+
 // ---- Rate Limiting Middleware ----
 const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
   const tier = ctx.user ? (ctx.user.role === 'ADMIN' ? 'admin' : 'authenticated') : 'anonymous';
@@ -86,7 +131,7 @@ const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
 // .meta({ tier }) stamps the minimum auth tier; it is inert at runtime and
 // consumed only by the router-inventory snapshot gate (__tests__/
 // router-inventory.test.ts) — meta propagates through .use() chains.
-export const publicProcedure = procedure
+export const publicProcedure = procedureWithCsrf
   .use(tracingGuard)
   .use(requestCounter)
   .use(rateLimitGuard)
@@ -116,28 +161,6 @@ export const vendorApiKeyProcedure = publicProcedure.use(async ({ ctx, next }) =
   });
 });
 
-// ---- CSRF Protection (applied to mutations) ----
-const csrfGuard = middleware(({ ctx, next }) => {
-  // Non-browser clients (native apps, curl) don't send an Origin header
-  // and have no ambient cookie jar for an attacker to ride, so the
-  // browser CSRF threat model doesn't apply — skip the guard for them.
-  // Browsers always send Origin on POST (fetch and form submissions).
-  if (!ctx.origin) return next();
-
-  // Read CSRF cookie and header from the context
-  const cookieToken = ctx.csrfCookie ?? null;
-  const headerToken = ctx.csrfHeader ?? null;
-
-  if (!verifyCsrfToken(cookieToken, headerToken)) {
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'CSRF token missing or invalid',
-    });
-  }
-
-  return next();
-});
-
 /**
  * Public mutation — request-counted, CSRF-protected, no auth required.
  */
@@ -156,7 +179,7 @@ const isAuthed = middleware(({ ctx, next }) => {
   return next({ ctx: { ...ctx, user: ctx.user } });
 });
 
-export const protectedProcedure = procedure
+export const protectedProcedure = procedureWithCsrf
   .use(tracingGuard)
   .use(isAuthed)
   .use(rateLimitGuard)
