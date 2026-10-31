@@ -118,11 +118,15 @@ export const uploadRouter = router({
       }
 
       const { buffer } = decodeBase64File(input.file);
+      // B1 — identity documents go to the private KYC bucket; the stored
+      // url is the object KEY, and display URLs are signed on read
+      // (getSignedFileUrl in the admin/technician status paths).
       const result = await uploadFile(
         buffer,
         input.file.name,
         `kyc/${ctx.user.id}/${input.documentType}`,
         input.file.type,
+        { private: true },
       );
 
       // Technicians: append the document to kycDocuments and flip PENDING
