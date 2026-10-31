@@ -19,7 +19,17 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function ServicesPage(): Promise<JSX.Element> {
+export default async function ServicesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ categoryId?: string }>;
+}): Promise<JSX.Element> {
+  // E2 — the ?categoryId= chip links were never read (the client ignored
+  // them and the SSR fetch ignored them); filter the initial data by the
+  // same param the client query uses.
+  const params = await searchParams;
+  const categoryId = params?.categoryId ? Number(params.categoryId) : undefined;
+
   const data: ServicesPageData = {
     initialServices: [],
     initialCategories: [],
@@ -29,7 +39,12 @@ export default async function ServicesPage(): Promise<JSX.Element> {
   try {
     const caller = await getServerCaller();
     const [svcResult, categories] = await Promise.all([
-      caller.services.list({ sort: 'newest', page: 1, limit: 12 }),
+      caller.services.list({
+        sort: 'newest',
+        page: 1,
+        limit: 12,
+        ...(categoryId ? { categoryId } : {}),
+      }),
       caller.categories.list(),
     ]);
 
