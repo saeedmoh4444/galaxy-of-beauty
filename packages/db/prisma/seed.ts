@@ -1211,6 +1211,26 @@ async function main() {
   ]);
   console.log(` ${services.length} services`);
 
+  // ---- E-womens (audit wave E) — the consultation target for the
+  // static women's catalog: sessions/packages that have no dedicated
+  // service book against this row (the requested item travels in the
+  // booking notes).
+  await prisma.service.create({
+    data: {
+      categoryId: categories[2]!.id, // Skin Care
+      titleJson: { ar: 'استشارة جمال', en: 'Beauty Consultation' },
+      descriptionJson: {
+        ar: 'استشارة جمال شاملة مع خبيرة معتمدة — خطة عناية مخصصة لكِ',
+        en: 'A one-on-one beauty consultation with a certified expert — a personalized care plan',
+      },
+      basePrice: 80,
+      durationMin: 25,
+      slug: 'beauty-consultation',
+      sortOrder: 60,
+      isWomenOnlyStaff: true,
+    },
+  });
+
   // ---- K4 (kids plan) — babysitting services: hourly pricing
   // (basePrice = hourly rate), women-only staff, kid-safe environment.
   await Promise.all([

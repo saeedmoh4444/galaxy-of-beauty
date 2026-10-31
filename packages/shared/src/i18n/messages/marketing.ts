@@ -2327,6 +2327,14 @@ export const marketingMessages = {
   'marketing.womens-services.book': { ar: 'احجزي', en: 'Book' },
   'marketing.womens-services.tips-title': { ar: 'نصائح مهمة', en: 'Important tips' },
   'marketing.womens-services.login-cta': { ar: 'سجّلي دخول للحجز', en: 'Log in to book' },
+  'marketing.womens-services.address': { ar: 'العنوان', en: 'Address' },
+  'marketing.womens-services.date': { ar: 'التاريخ', en: 'Date' },
+  'marketing.womens-services.time': { ar: 'الوقت', en: 'Time' },
+  'marketing.womens-services.booking-code': { ar: 'رمز الحجز: {code}', en: 'Booking code: {code}' },
+  'marketing.womens-services.requested': {
+    ar: 'تم استلام طلب الحجز — سيتم تأكيده من الفنية قريباً',
+    en: 'Booking request received — a technician will confirm shortly',
+  },
 
   // Hero rollouts (Rose Blush phase — K-beauty flat heroes)
   'marketing.services.hero-subtitle': {
