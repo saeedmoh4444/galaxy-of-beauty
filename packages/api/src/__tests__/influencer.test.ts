@@ -10,7 +10,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate } from './factories';
+import { safeFutureDate, markBookingPaid } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -206,6 +206,7 @@ describe('influencers router', () => {
     const tech = await authCaller(technician);
     await tech.bookings.transition({ id: booking.id, action: 'accept' });
     await tech.bookings.transition({ id: booking.id, action: 'start' });
+    await markBookingPaid(booking.id);
     const done = await tech.bookings.transition({ id: booking.id, action: 'complete' });
     expect(done.status).toBe('COMPLETED');
 
@@ -248,6 +249,7 @@ describe('influencers router', () => {
     const tech = await authCaller(technician);
     await tech.bookings.transition({ id: booking.id, action: 'accept' });
     await tech.bookings.transition({ id: booking.id, action: 'start' });
+    await markBookingPaid(booking.id);
     await tech.bookings.transition({ id: booking.id, action: 'complete' });
 
     const after = await prisma.influencer.findUniqueOrThrow({ where: { id: infl.id } });
