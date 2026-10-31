@@ -1211,6 +1211,68 @@ async function main() {
   ]);
   console.log(` ${services.length} services`);
 
+  // ---- E1 (catalog gap sweep) — the missing women's-services staples:
+  // pedicures, evening/airbrush makeup, keratin/protein/extensions,
+  // anti-aging/hydrafacial/peels, brow shaping/lamination, laser &
+  // sugaring, lash refills, meditation/breathwork/nutrition. Attached to
+  // their root categories; subcategory chips resolve to parents in
+  // services.list.
+  await Promise.all(
+    (
+      [
+        // Nail Care (1)
+        ['Classic Pedicure', 'باديكير كلاسيكي', 60, 30, 'pedicure-classic', 1],
+        ['Spa Pedicure', 'باديكير سبا', 120, 45, 'pedicure-spa', 1],
+        ['Nail Art', 'رسم الأظافر', 80, 30, 'nail-art', 1],
+        // Makeup (3)
+        ['Evening Makeup', 'مكياج سهرة', 150, 40, 'evening-makeup', 3],
+        ['Airbrush Makeup', 'مكياج إيربرش', 200, 50, 'airbrush-makeup', 3],
+        ['Everyday Makeup', 'مكياج يومي', 100, 30, 'everyday-makeup', 3],
+        ['Graduation Makeup', 'مكياج تخرج', 160, 45, 'graduation-makeup', 3],
+        // Hair Care (0)
+        ['Keratin Treatment', 'علاج الكيراتين', 400, 120, 'keratin-treatment', 0],
+        ['Protein Treatment', 'علاج البروتين', 250, 90, 'protein-treatment', 0],
+        ['Hair Extensions', 'تركيب وصلات الشعر', 600, 180, 'hair-extensions', 0],
+        ['Scalp Treatment', 'علاج فروة الرأس', 150, 45, 'scalp-treatment', 0],
+        // Skin Care (2)
+        ['Anti-Aging Facial', 'جلسة مكافحة التجاعيد', 250, 60, 'anti-aging-facial', 2],
+        ['HydraFacial', 'هايدرافيشل', 350, 60, 'hydrafacial', 2],
+        ['Chemical Peel', 'تقشير كيميائي', 200, 45, 'chemical-peel', 2],
+        ['Brightening Facial', 'جلسة تفتيح البشرة', 220, 50, 'brightening-facial', 2],
+        ['Acne Treatment', 'علاج حب الشباب', 180, 45, 'acne-treatment', 2],
+        // Lashes & Brows (7)
+        ['Brow Shaping', 'تحديد الحواجب', 50, 20, 'brow-shaping', 7],
+        ['Brow Lamination', 'رفع الحواجب', 120, 40, 'brow-lamination', 7],
+        ['Brow Tinting', 'صبغ الحواجب', 60, 20, 'brow-tinting', 7],
+        ['Lash Refill', 'تعبئة الرموش', 100, 45, 'lash-refill', 7],
+        // Waxing & Hair Removal (6)
+        ['Laser Hair Removal Session', 'جلسة إزالة شعر بالليزر', 300, 45, 'laser-session', 6],
+        ['Sugaring', 'إزالة الشعر بالسكر', 150, 40, 'sugaring', 6],
+        ['Full Legs Wax', 'إزالة شعر الساقين', 120, 45, 'full-legs-wax', 6],
+        // Spa & Wellness (11)
+        ['Meditation Session', 'جلسة تأمل', 100, 45, 'meditation-session', 11],
+        ['Breathwork Session', 'جلسة تنفس', 120, 45, 'breathwork-session', 11],
+        ['Nutrition Consultation', 'استشارة تغذية', 200, 60, 'nutrition-consultation', 11],
+      ] as const
+    ).map(([en, ar, price, mins, slug, catIdx]) =>
+      prisma.service.create({
+        data: {
+          categoryId: categories[catIdx]!.id,
+          titleJson: { ar, en },
+          descriptionJson: {
+            ar: `خدمة ${ar} احترافية على يد خبيرات معتمدات`,
+            en: `A professional ${en} by certified beauty experts`,
+          },
+          basePrice: price,
+          durationMin: mins,
+          slug,
+          sortOrder: 50,
+          isWomenOnlyStaff: true,
+        },
+      }),
+    ),
+  );
+
   // ---- K4 (kids plan) — babysitting services: hourly pricing
   // (basePrice = hourly rate), women-only staff, kid-safe environment.
   await Promise.all([
