@@ -366,3 +366,26 @@ export async function paidCheckoutForOrder(orderId: number): Promise<number> {
   await prisma.storeOrder.update({ where: { id: orderId }, data: { checkoutId: checkout.id } });
   return checkout.id;
 }
+
+/**
+ * Marks a booking PAID with a CAPTURED payment — the state the
+ * transition machine now requires before `complete`. For tests whose
+ * concern is not the payment flow itself (use the real
+ * payments.authorize → payments.capture flow to exercise money).
+ */
+export async function markBookingPaid(bookingId: number): Promise<void> {
+  const booking = await prisma.booking.findUniqueOrThrow({ where: { id: bookingId } });
+  await prisma.payment.upsert({
+    where: { bookingId },
+    create: {
+      bookingId,
+      amount: booking.totalAmount,
+      currency: 'SAR',
+      status: 'CAPTURED',
+      intent: 'AUTHORIZE',
+      idempotencyKey: `test_paid_${bookingId}_${crypto.randomUUID().slice(0, 8)}`,
+    },
+    update: { status: 'CAPTURED' },
+  });
+  await prisma.booking.update({ where: { id: bookingId }, data: { status: 'PAID' } });
+}
