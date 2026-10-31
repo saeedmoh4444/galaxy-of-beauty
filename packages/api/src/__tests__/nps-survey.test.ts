@@ -7,7 +7,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate } from './factories';
+import { safeFutureDate, markBookingPaid } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -57,6 +57,7 @@ async function completedBooking(customerUser: JwtPayload): Promise<number> {
   });
   await techCaller.bookings.transition({ id: booking.id, action: 'accept' });
   await techCaller.bookings.transition({ id: booking.id, action: 'start' });
+  await markBookingPaid(booking.id);
   await techCaller.bookings.transition({ id: booking.id, action: 'complete' });
   return booking.id;
 }
