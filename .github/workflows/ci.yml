@@ -98,7 +98,7 @@ jobs:
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:15-alpine
@@ -136,7 +136,9 @@ jobs:
         run: pnpm --filter @galaxy/db db:seed
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
-      - run: pnpm --filter @galaxy/api test
+      # --coverage enforces the vitest.config thresholds (audit F1 — the
+      # ratchet was declared but never wired; CI ran vitest without it)
+      - run: pnpm --filter @galaxy/api test -- --coverage
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
       # Mobile pure-logic unit tests (node env — no react-native imports)
