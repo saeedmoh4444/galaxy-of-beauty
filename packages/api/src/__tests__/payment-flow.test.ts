@@ -164,6 +164,33 @@ describe('Payments', () => {
     expect(second.id).toBe(first.paymentId);
   });
 
+  it('should reject a second authorization on the same booking with a typed conflict', async () => {
+    const bookingId = await seedBooking({ customerId: customer.id });
+    sendPaymentMock.mockResolvedValue({
+      invoiceId: 'INV-CONFLICT-1',
+      invoiceURL: 'https://apitest.myfatoorah.com/INV-CONFLICT-1',
+    });
+    const caller = await authCaller(customer);
+    // Online keeps the booking ACCEPTED (cash flips it to
+    // CONFIRMED_OFFLINE, which would pre-empt the race below).
+    const first = await caller.payments.authorize({
+      bookingId,
+      method: 'online',
+      idempotencyKey: crypto.randomUUID(),
+    });
+    expect(first.paymentId).toBeDefined();
+
+    // Different idempotency key, same booking — races the bookingId unique
+    // constraint and must surface CONFLICT, not a generic 500 (audit M11).
+    await expect(
+      caller.payments.authorize({
+        bookingId,
+        method: 'online',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: 'CONFLICT' });
+  });
+
   it('should reject capture by a technician who does not own the booking', async () => {
     const bookingId = await seedBooking({ customerId: customer.id });
     const customerCaller = await authCaller(customer);
