@@ -1793,6 +1793,7 @@ export const enWebMessages: Record<string, string> = {
   'disputes.bookingLabel': 'Booking number',
   'disputes.bookingPlaceholder': 'Enter booking number',
   'disputes.createNew': 'Open New Dispute',
+  'disputes.descriptionPlaceholder': 'Additional details (optional)',
   'disputes.emptyDesc': "You haven't opened any disputes yet",
   'disputes.emptyTitle': 'No disputes yet',
   'disputes.loadError': 'Failed to load disputes',

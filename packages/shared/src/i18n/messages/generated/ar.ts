@@ -1779,6 +1779,7 @@ export const arWebMessages: Record<string, string> = {
   'disputes.bookingLabel': 'رقم الحجز',
   'disputes.bookingPlaceholder': 'أدخل رقم الحجز',
   'disputes.createNew': 'فتح نزاع جديد',
+  'disputes.descriptionPlaceholder': 'تفاصيل إضافية (اختياري)',
   'disputes.emptyDesc': 'لم تقم بفتح أي نزاع حتى الآن',
   'disputes.emptyTitle': 'لا توجد نزاعات',
   'disputes.loadError': 'فشل تحميل النزاعات',
