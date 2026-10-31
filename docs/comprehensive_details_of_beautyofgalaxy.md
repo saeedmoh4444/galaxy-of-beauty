@@ -15,7 +15,7 @@
 | **Users**        | Customers, Technicians, Admins                                             |
 | **Services**     | Hair, Nails, Skincare, Makeup, Massage, Henna                              |
 | **Architecture** | Monorepo — 7 packages, 280 routes, 202 database models                     |
-| **Stack**        | Next.js 15, tRPC v11, Prisma, PostgreSQL 15, Redis 7, Tailwind CSS, Docker |
+| **Stack**        | Next.js 16, tRPC v11, Prisma, PostgreSQL 15, Redis 7, Tailwind CSS, Docker |
 
 ---
 
@@ -24,8 +24,8 @@
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/          # Next.js 15 App Router — 280 routes, Server Components + Client Components
-│   └── mobile/       # Expo SDK 57 + Expo Router — 47 screens
+│   ├── web/          # Next.js 16 App Router — 319 routes, Server Components + Client Components
+│   └── mobile/       # Expo SDK 58 + Expo Router — 314 screens
 ├── packages/
 │   ├── api/          # tRPC v11 — 243 routers, Zod validation
 │   ├── db/           # Prisma — 202 models, 15 enums, PostgreSQL 15
@@ -41,8 +41,8 @@ galaxy-of-beauty/
 | Layer                      | Technology                                  | Version            |
 | -------------------------- | ------------------------------------------- | ------------------ |
 | Monorepo                   | Turborepo + pnpm workspaces                 | turbo 2.10, pnpm 9 |
-| Web Framework              | Next.js App Router                          | 14.2               |
-| Mobile Framework           | Expo + Expo Router                          | SDK 54             |
+| Web Framework              | Next.js App Router                          | 16                 |
+| Mobile Framework           | Expo + Expo Router                          | SDK 58             |
 | API Layer                  | tRPC                                        | v11                |
 | Validation                 | Zod                                         | v3                 |
 | Database ORM               | Prisma                                      | 5.22               |
@@ -387,7 +387,7 @@ Customer Shares Referral Code → Friend Registers with Code
 
 ---
 
-## 8. Database Models (87 Total)
+## 8. Database Models (251 Total)
 
 Core domains: Users, Auth, Services, Bookings, Payments, Wallet, Loyalty, Referrals, Notifications, Reviews, Disputes, ZATCA, AI, Blog, Events, Campaigns, Marketplace, Community, Family, Wellness, Video
 
