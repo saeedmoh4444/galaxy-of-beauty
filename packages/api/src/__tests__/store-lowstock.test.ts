@@ -9,6 +9,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vites
 import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
+import crypto from 'crypto';
 import { buildUser } from './factories';
 import { calculateShippingCharge } from '../lib/fatoorah';
 
@@ -22,16 +23,6 @@ vi.mock('../lib/fatoorah', async (importOriginal) => {
 
 const chargeMock = vi.mocked(calculateShippingCharge);
 
-const SHIPPING = {
-  personName: 'Saeed Test',
-  mobile: '0500000000',
-  lineAddress: 'Test Street 1',
-  cityName: 'RIYADH',
-  postalCode: '12345',
-  countryCode: 'SA',
-  shippingMethod: 1 as const,
-};
-
 const createdUserIds: number[] = [];
 const createdCategoryIds: number[] = [];
 const createdCheckoutIds: number[] = [];
@@ -44,6 +35,31 @@ let catId: number;
 
 async function caller(user: JwtPayload | null) {
   return (appRouter as any).createCaller({ user, ip: '127.0.0.1' });
+}
+
+// A5 — buyCart was removed (unpaid orders are gone). Tests purchase
+// through the REAL wallet checkout instead.
+const SHIPPING = {
+  personName: 'Saeed Test',
+  mobile: '0500000000',
+  lineAddress: 'Test Street 1',
+  cityName: 'RIYADH',
+  postalCode: '12345',
+  countryCode: 'SA',
+  shippingMethod: 1 as const,
+};
+
+async function buyWithWallet(c: ReturnType<typeof caller>, userId: number) {
+  await prisma.wallet.upsert({
+    where: { userId },
+    create: { userId, balance: new Prisma.Decimal(100000) },
+    update: { balance: new Prisma.Decimal(100000) },
+  });
+  return c.payments.payCart({
+    idempotencyKey: crypto.randomUUID(),
+    method: 'wallet',
+    shipping: SHIPPING,
+  });
 }
 
 /** Track + return every low-stock notification for the vendor owner. */
@@ -128,6 +144,13 @@ afterAll(async () => {
   await prisma.product.deleteMany({ where: { vendor: { userId: { in: createdUserIds } } } });
   await prisma.productCategory.deleteMany({ where: { id: { in: createdCategoryIds } } });
   await prisma.vendor.deleteMany({ where: { userId: { in: createdUserIds } } });
+  // A5 — wallet purchases create wallet + checkout rows referencing the
+  // customer (onDelete Restrict) — clear before the users go.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
+  await prisma.walletTransaction.deleteMany({
+    where: { wallet: { userId: { in: createdUserIds } } },
+  });
+  await prisma.wallet.deleteMany({ where: { userId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
   vi.clearAllMocks();
 });
@@ -179,7 +202,7 @@ describe('vendorPortal.addProduct — threshold input (B3b)', () => {
 });
 
 describe('checkout — low_stock event emission (B3b)', () => {
-  it('buyCart emits store_low_stock to the vendor only when the sale crosses the threshold', async () => {
+  it('a wallet purchase emits store_low_stock to the vendor only when the sale crosses the threshold', async () => {
     const vendor = await prisma.vendor.findUniqueOrThrow({ where: { userId: owner.id } });
     // 6 → 4 crosses (old 6 > 5, new 4 ≤ 5).
     const crossing = await makeProduct(vendor.id, { ar: 'سيروم', en: 'Serum' }, { stock: 6 });
@@ -193,13 +216,16 @@ describe('checkout — low_stock event emission (B3b)', () => {
     await seedCart(above, 1);
 
     const c = await caller(customer);
-    const res = await c.marketplace.buyCart({});
-    expect(res.success).toBe(true);
+    // payCart calculates the shipping charge through the mocked fatoorah
+    // lib — the bare vi.fn() must return a charge for the purchase.
+    chargeMock.mockResolvedValue({ shippingCharge: 25 });
+    const res = await buyWithWallet(c, customer.id);
+    expect(res.status).toBe('PAID');
 
-    // Track the no-checkout orders for teardown (their items hold the
+    // Track the purchase's orders for teardown (their items hold the
     // product FK Restrict alive until the orders are deleted).
     const orders = await prisma.storeOrder.findMany({
-      where: { customerId: customer.id, checkoutId: null },
+      where: { customerId: customer.id, checkoutId: res.checkoutId },
     });
     orders.forEach((o) => createdOrderIds.push(o.id));
 

@@ -5,10 +5,11 @@
  * the store fulfills.
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import crypto from 'crypto';
+import { buildUser, paidCheckoutForOrder } from './factories';
 
 let admin: JwtPayload;
 let merchant: JwtPayload;
@@ -23,6 +24,31 @@ let categoryId: number;
 
 async function caller(user: JwtPayload | null) {
   return (appRouter as any).createCaller({ user, ip: '127.0.0.1' });
+}
+
+// A5 — buyCart was removed (unpaid orders are gone). Tests purchase
+// through the REAL wallet checkout instead.
+const SHIPPING = {
+  personName: 'Saeed Test',
+  mobile: '0500000000',
+  lineAddress: 'Test Street 1',
+  cityName: 'RIYADH',
+  postalCode: '12345',
+  countryCode: 'SA',
+  shippingMethod: 1 as const,
+};
+
+async function buyWithWallet(c: ReturnType<typeof caller>, userId: number) {
+  await prisma.wallet.upsert({
+    where: { userId },
+    create: { userId, balance: new Prisma.Decimal(100000) },
+    update: { balance: new Prisma.Decimal(100000) },
+  });
+  return c.payments.payCart({
+    idempotencyKey: crypto.randomUUID(),
+    method: 'wallet',
+    shipping: SHIPPING,
+  });
 }
 
 describe('store registration + approval (Store Phase 1)', () => {
@@ -62,6 +88,10 @@ describe('store registration + approval (Store Phase 1)', () => {
     } catch {}
     try {
       await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+    } catch {}
+    try {
+      // Checkouts reference customers (onDelete Restrict) — clear before users.
+      await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
     } catch {}
     try {
       await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
@@ -183,12 +213,12 @@ describe('store registration + approval (Store Phase 1)', () => {
     expect(res.items.find((x: { id: number }) => x.id === p.id)).toBeDefined();
   });
 
-  it('buyCart splits the purchase into per-store orders', async () => {
+  it('a wallet purchase splits the cart into per-store orders', async () => {
     const c = await caller(buyer);
     await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 2 });
 
-    const res = await c.marketplace.buyCart({});
-    expect(res.success).toBe(true);
+    const res = await buyWithWallet(c, buyer.id);
+    expect(res.status).toBe('PAID');
 
     const orders = await prisma.storeOrder.findMany({
       where: { customerId: buyer.id },
@@ -214,6 +244,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     ).rejects.toThrow();
 
     const store = await caller(merchant);
+    await paidCheckoutForOrder(createdOrderIds[0]!);
     const res = await store.vendorPortal.fulfillOrder({ orderId: createdOrderIds[0]! });
     expect(res.status).toBe('FULFILLED');
 
@@ -298,8 +329,8 @@ describe('store registration + approval (Store Phase 1)', () => {
     await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 1 }); // store 1
     await c.marketplace.addToCart({ productId: product2.id, quantity: 2 }); // store 2
 
-    const res = await c.marketplace.buyCart({});
-    expect(res.success).toBe(true);
+    const res = await buyWithWallet(c, buyer.id);
+    expect(res.status).toBe('PAID');
 
     const orders = await prisma.storeOrder.findMany({
       where: {
@@ -327,7 +358,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     // Fresh order for a deterministic accrual.
     const c = await caller(buyer);
     await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 1 });
-    await c.marketplace.buyCart({});
+    await buyWithWallet(c, buyer.id);
 
     const order = await prisma.storeOrder.findFirstOrThrow({
       where: { customerId: buyer.id, status: 'PENDING_FULFILLMENT' },
@@ -340,6 +371,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     const payoutsBefore = await prisma.payout.count({
       where: { vendorId: createdVendorIds[0] },
     });
+    await paidCheckoutForOrder(order.id);
     await store.vendorPortal.fulfillOrder({ orderId: order.id });
 
     const payout = await prisma.payout.findFirst({
@@ -373,7 +405,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     // Buy + fulfill → net = 90 − 18 = 72.
     const c = await caller(buyer);
     await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 1 });
-    await c.marketplace.buyCart({});
+    await buyWithWallet(c, buyer.id);
     const order = await prisma.storeOrder.findFirstOrThrow({
       where: { customerId: buyer.id, status: 'PENDING_FULFILLMENT' },
       orderBy: { createdAt: 'desc' },
@@ -381,6 +413,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     createdOrderIds.push(order.id);
 
     const store = await caller(merchant);
+    await paidCheckoutForOrder(order.id);
     await store.vendorPortal.fulfillOrder({ orderId: order.id });
 
     const payout = await prisma.payout.findFirst({

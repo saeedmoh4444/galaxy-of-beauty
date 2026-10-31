@@ -9,7 +9,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, paidCheckoutForOrder } from './factories';
 
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
@@ -341,12 +341,16 @@ describe('A1 — staff-scoped portal procedures', () => {
         status: 'PENDING_FULFILLMENT',
       },
     });
+    // M2 — fulfillOrder requires the order's checkout to exist and be
+    // PAID (checked inside the same transaction).
+    await paidCheckoutForOrder(order.id);
 
     const c = await caller(invitee);
     const res = await c.vendorPortal.fulfillOrder({ orderId: order.id });
     expect(res.status).toBe('FULFILLED');
 
     await prisma.storeOrder.deleteMany({ where: { id: order.id } });
+    await prisma.storeCheckout.deleteMany({ where: { customerId: invitee.id } });
     await prisma.product.deleteMany({ where: { id: product.id } });
   });
 });

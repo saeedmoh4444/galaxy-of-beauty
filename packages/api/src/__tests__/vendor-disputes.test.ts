@@ -8,7 +8,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, paidCheckoutForOrder } from './factories';
 
 const createdUserIds: number[] = [];
 
@@ -54,6 +54,9 @@ beforeAll(async () => {
     },
   });
   orderId = order.id;
+  // M2/M4 — resolve refunds only a PAID wallet checkout; the fixture
+  // order must carry one for the refund to move money.
+  await paidCheckoutForOrder(orderId);
 }, 15000);
 
 afterAll(async () => {
@@ -63,6 +66,8 @@ afterAll(async () => {
   await prisma.wallet.deleteMany({ where: { userId: { in: createdUserIds } } });
   // Disputes cascade with their store order.
   await prisma.storeOrder.deleteMany({ where: { id: orderId } });
+  // Checkouts reference customers (onDelete Restrict) — clear before users.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
   await prisma.vendor.deleteMany({ where: { userId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
 });

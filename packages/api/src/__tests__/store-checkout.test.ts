@@ -35,6 +35,7 @@ async function authCaller(user: JwtPayload) {
 
 let customer: JwtPayload;
 let productId: number;
+let vendorOwnerId: number;
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
 const createdCategoryIds: number[] = [];
@@ -91,6 +92,7 @@ beforeAll(async () => {
 
   const vendorUser = await prisma.user.create({ data: buildUser() });
   createdUserIds.push(vendorUser.id);
+  vendorOwnerId = vendorUser.id;
   const vendor = await prisma.vendor.create({ data: buildVendor({ userId: vendorUser.id }) });
   createdVendorIds.push(vendor.id);
   const cat = await prisma.productCategory.create({
@@ -356,18 +358,122 @@ describe('payCart — idempotency', () => {
   });
 });
 
-describe('buyCart regression', () => {
-  it('still creates orders without a checkoutId', async () => {
-    await seedCart(1);
-    const caller = await authCaller(customer);
-    const result = await caller.marketplace.buyCart({});
-    expect(result.success).toBe(true);
+describe('A5 — the unpaid purchase endpoint is gone', () => {
+  it('marketplace no longer exposes buyCart (audit M3)', async () => {
+    // The createCaller proxy cannot prove absence statically — CALLING
+    // the removed procedure must throw.
+    const c = await authCaller(customer);
+    await expect(
+      (c.marketplace as Record<string, unknown>).buyCart as unknown as () => Promise<unknown>,
+    ).rejects.toThrow();
+  });
+});
 
-    const orders = await prisma.storeOrder.findMany({
-      where: { customerId: customer.id, checkoutId: null },
+/** A5 — create a PENDING_FULFILLMENT order with NO checkout (the exact
+ *  state buyCart used to produce) so the payment gates can be tested. */
+async function createCheckoutlessOrder(): Promise<{ id: number }> {
+  // The file's own vendor (vendorOwnerId) — vendorCaller() must own the
+  // order or the ownership guard masks the payment-gate assertion.
+  const vendor = await prisma.vendor.findFirstOrThrow({
+    where: { userId: vendorOwnerId },
+  });
+  const product = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
+  const order = await prisma.storeOrder.create({
+    data: {
+      vendorId: vendor.id,
+      customerId: customer.id,
+      totalAmount: Number(product.price),
+      itemCount: 1,
+      status: 'PENDING_FULFILLMENT',
+    },
+  });
+  await prisma.storeOrderItem.create({
+    data: {
+      orderId: order.id,
+      productId,
+      nameSnapshot: (product.nameJson ?? {}) as object,
+      priceSnapshot: product.price,
+      quantity: 1,
+    },
+  });
+  createdOrderIds.push(order.id);
+  return order;
+}
+
+describe('A2 — payment gates on fulfillment and cancel', () => {
+  async function vendorCaller() {
+    const user = await prisma.user.findUniqueOrThrow({ where: { id: vendorOwnerId } });
+    return authCaller({ id: user.id, role: 'CUSTOMER', email: user.email });
+  }
+
+  /** Earlier tests in this file consume the product stock — top up. */
+  async function restock() {
+    await prisma.product.update({ where: { id: productId }, data: { stock: 100 } });
+  }
+
+  it('fulfillOrder rejects an order with no checkout (audit M2)', async () => {
+    await restock();
+    await seedCart(1);
+    const c = await authCaller(customer);
+    const order = await createCheckoutlessOrder();
+
+    const vc = await vendorCaller();
+    await expect(vc.vendorPortal.fulfillOrder({ orderId: order.id })).rejects.toMatchObject({
+      code: 'PRECONDITION_FAILED',
     });
-    expect(orders.length).toBeGreaterThanOrEqual(1);
-    orders.forEach((o) => createdOrderIds.push(o.id));
+  });
+
+  it('fulfillOrder rejects an order whose checkout is not PAID (audit M2)', async () => {
+    await restock();
+    await seedCart(1);
+    const c = await authCaller(customer);
+    const order = await createCheckoutlessOrder();
+
+    // Attach a PENDING (unpaid) online checkout — stock exists, money does not.
+    const checkout = await prisma.storeCheckout.create({
+      data: {
+        customerId: customer.id,
+        idempotencyKey: `a2_pending_${order.id}`,
+        method: 'online',
+        subtotal: order.totalAmount,
+        total: order.totalAmount,
+        status: 'PENDING',
+        shipPersonName: 'Test',
+        shipMobile: '0500000000',
+        shipLineAddress: 'Test Street',
+        shipCityName: 'RIYADH',
+        shipPostalCode: '12345',
+        shipCountryCode: 'SA',
+      },
+    });
+    createdCheckoutIds.push(checkout.id);
+    await prisma.storeOrder.update({ where: { id: order.id }, data: { checkoutId: checkout.id } });
+
+    const vc = await vendorCaller();
+    await expect(vc.vendorPortal.fulfillOrder({ orderId: order.id })).rejects.toMatchObject({
+      code: 'PRECONDITION_FAILED',
+    });
+  });
+
+  it('cancelOrder on a checkout-less order refunds nothing (audit M4 — no money mint)', async () => {
+    await restock();
+    await seedCart(1);
+    const c = await authCaller(customer);
+    const order = await createCheckoutlessOrder();
+
+    const wallet = await prisma.wallet.upsert({
+      where: { userId: customer.id },
+      create: { userId: customer.id, balance: new Prisma.Decimal(0) },
+      update: {},
+    });
+    const balanceBefore = Number(wallet.balance);
+
+    const vc = await vendorCaller();
+    const cancelled = await vc.vendorPortal.cancelOrder({ orderId: order.id });
+    expect(cancelled.status).toBe('CANCELLED');
+
+    const after = await prisma.wallet.findUniqueOrThrow({ where: { userId: customer.id } });
+    expect(Number(after.balance)).toBe(balanceBefore);
   });
 });
 
