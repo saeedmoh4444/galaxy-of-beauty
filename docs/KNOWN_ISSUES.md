@@ -1,6 +1,6 @@
 # Galaxy of Beauty — Known Issues
 
-> **Date:** 2026-10-09 | **Severity:** Low | **Platform Status:** Verifiably-correct baseline (see [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) — not yet production-hardened)
+> **Date:** 2026-10-31 | **Severity:** Low | **Platform Status:** Verifiably-correct baseline, ops-hardened (staging/backups/alerting shipped) — launch gated on user credentials (see [AUDIT_2026-10-30.md](AUDIT_2026-10-30.md)).
 
 ---
 
@@ -36,10 +36,9 @@ android` produces a 6.1MB Hermes bundle.
 
 ## 4. Test Coverage Gap (Medium)
 
-**Current (2026-08-19):** 65 test files, 820 tests (passing), coverage ratchet enforced at 62/74/69/62 (actuals 63.72/75.74/70.17/63.72) — the 60% statements goal is met.
-**Gap:** Untested procedure handlers across ~130 feature routers; entry scripts (socket server.ts, workers run.ts)
-**Plan:** Gradual — ratchet upward toward 65 → 70 (see `packages/api/vitest.config.ts`). Test files now run serially (fileParallelism: false) — 65 files sharing one dev DB had cross-file races under parallel + coverage instrumentation.
-**Status:** In progress — the "push toward 60" campaign covered 17 routers (+188 tests) and fixed six real router bugs found by the new tests (referrals circular applyCode, beautyDiscovery emoji selects, payouts idempotency, technicianEarnings wrong id filter, waitlist rejoin P2002, calendar.pull fetch errors).
+**Current (2026-10-31):** ~1,905 test cases across the api/web/shared/ui/db suites; the api coverage ratchet is NOW ENFORCED IN CI (#581) — floors 63/55/53/65 vs measured 64.35 stmts / 56.45 branches / 54.25 functions / 66.01 lines (2026-10-31 run).
+**Gap:** 705 of 1,204 procedures are still never named in any test (audit T2) — the F2 slice started closing this for slots/notifications; the long tail (fabricated-analytics era verticals) remains.
+**Plan:** Raise the floors from each clean CI run's printed numbers; keep F-wave slices (F2/F3) feeding the ratchet.
 
 ---
 
@@ -105,13 +104,12 @@ tsc/lint, web, shared, and ui type-checks all green.
 
 ### 9.2 FE-007 bundle gap (Medium) — IN PROGRESS
 
-**Symptom:** routes ship ~560–650 KB gzipped first-load vs 100–150 KB targets.
-**State:** catalog split (#368) reclaimed ~91 KB/route; `sideEffects: false` on shared+ui (#395) unlocked tree-shaking. **The post-#395 numbers are unmeasured** — next step is a fresh build + size-gate run, then slimming the shared tRPC/API chunk set.
+**Symptom:** routes ship 221/213/298/226 KB gzipped first-load per class vs 100–150 KB targets.
+**State:** catalog split (#368) reclaimed ~91 KB/route; `sideEffects: false` on shared+ui (#395) unlocked tree-shaking; numbers measured 2026-10-04 and pinned in size-baseline.json with a CI gate (FE-007). The gap is now the shared tRPC/API chunk set — per-platform catalog splits are the long-term lever.
 
-### 9.3 No staging environment (Medium)
+### 9.3 Staging environment (Medium — RESOLVED 2026-10-28)
 
-**Symptom:** risky changes ride against the shared dev DB; the local API suite also runs `env=test` against it (contention + seed pollution — the advisor "weekly rising category" test flakes locally, and Playwright logins can fail while the suite hammers the DB). CI's isolated DB is clean.
-**Path:** compose override + snapshot/restore script (roadmap A3).
+**Resolution (#563):** a staging environment with TLS + monitoring was provisioned in the reels launch-gate. Residual: prod-clone drift risk stays until the first real deploy — keep the snapshot/restore script from the P2-02 drill.
 
 ### 9.4 Role-less store owners (Low, by design)
 
@@ -120,4 +118,4 @@ tsc/lint, web, shared, and ui type-checks all green.
 
 ### 9.5 Single points of failure (Low, pre-production)
 
-One PostgreSQL, one Redis, no failover, no scheduled backups outside the compose script — acceptable for dev/staging, mandatory to fix before launch (roadmap B1).
+One PostgreSQL, one Redis, no failover — acceptable for dev/staging. Scheduled backups shipped (#561 backup cron, 2026-10-28); a real restore drill ran 2026-08-17 (P2-02). Failover remains mandatory to fix before launch (roadmap B1).
