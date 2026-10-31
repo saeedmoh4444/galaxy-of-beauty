@@ -33,6 +33,10 @@ test.describe('Vendor Portal (vendor route group)', () => {
 
   test('store owner reaching /vendor-portal gets the portal', async ({ page }) => {
     await loginAsCustomer(page);
+    // Switch accounts: /login now correctly redirects authenticated
+    // users (no more year-long immutable HTML masking the bounce), so
+    // drop the customer session before re-entering the login form.
+    await page.context().clearCookies();
     // Use the store owner account for the ownership-positive path.
     await page.goto('/login');
     await page.getByPlaceholder('example@email.com').fill(STORE_EMAIL);
