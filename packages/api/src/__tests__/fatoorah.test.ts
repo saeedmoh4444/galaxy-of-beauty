@@ -35,6 +35,13 @@ function okData(data: unknown): Record<string, unknown> {
 }
 
 describe('fatoorah config', () => {
+  beforeEach(() => {
+    // The vitest env block seeds FATOORAH_SIMULATE for the payCart
+    // suites — this suite's fail-closed contract needs it absent.
+    delete process.env['FATOORAH_API_TOKEN'];
+    delete process.env['FATOORAH_BASE_URL'];
+    delete process.env['FATOORAH_SIMULATE'];
+  });
   afterEach(() => {
     delete process.env['FATOORAH_API_TOKEN'];
     delete process.env['FATOORAH_BASE_URL'];
