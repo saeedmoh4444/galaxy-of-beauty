@@ -710,9 +710,17 @@ export const paymentRouter = router({
           // B3b — low-stock crossing alerts fire after commit only (never
           // inside the transaction: a later rollback must not leave orphan
           // notifications).
-          await notifyLowStockAlerts(checkout.lowStockAlerts);
-          // F1 — new-order inbox notifications after commit.
-          await notifyOrderPlaced(checkout.orders);
+          //
+          // M13 — post-commit notifications are fire-and-forget: the money
+          // has already moved, so a notify failure must never surface as a
+          // payment failure (the customer would retry and double-purchase).
+          try {
+            await notifyLowStockAlerts(checkout.lowStockAlerts);
+            // F1 — new-order inbox notifications after commit.
+            await notifyOrderPlaced(checkout.orders);
+          } catch (notifyErr) {
+            console.error('[payCart] post-commit notifications failed (non-fatal):', notifyErr);
+          }
           return {
             checkoutId: checkout.created.id,
             method: 'wallet',
@@ -765,9 +773,17 @@ export const paymentRouter = router({
           return { created, lowStockAlerts: p.lowStockAlerts, orders: p.orders };
         });
         // B3b — low-stock crossing alerts fire after commit only.
-        await notifyLowStockAlerts(placed.lowStockAlerts);
-        // F1 — new-order inbox notifications after commit.
-        await notifyOrderPlaced(placed.orders);
+        //
+        // M13 — same fire-and-forget guard as the wallet branch: the
+        // invoice/checkout already exist, so notify failures must not
+        // read as payment failures.
+        try {
+          await notifyLowStockAlerts(placed.lowStockAlerts);
+          // F1 — new-order inbox notifications after commit.
+          await notifyOrderPlaced(placed.orders);
+        } catch (notifyErr) {
+          console.error('[payCart] post-commit notifications failed (non-fatal):', notifyErr);
+        }
         checkoutId = placed.created.id;
       } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
