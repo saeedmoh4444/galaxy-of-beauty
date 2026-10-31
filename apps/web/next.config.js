@@ -50,17 +50,22 @@ const nextConfig = {
             key: 'Permissions-Policy',
             value: 'camera=(self), microphone=(self), geolocation=(self), payment=()',
           },
-          // Cache static assets aggressively
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
         ],
       },
-      // API + dynamic pages: never cache
+      // Cache ONLY build-hashed static assets aggressively — the previous
+      // rule matched /(.*) and served year-long immutable HTML (audit B3).
+      {
+        source: '/_next/static/(.*)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      // API + dynamic/personalized pages: never cache. Covers every
+      // authenticated area (audit B3: /vendor-portal, /store, /orders,
+      // /favorites, /settings, /notifications, /addresses, /disputes and
+      // /subscriptions were missing from the old list and inherited the
+      // immutable HTML rule).
       {
         source:
-          '/(api|login|register|dashboard|admin|bookings|wallet|profile|tech|cart|checkout|payments|2fa)/(.*)',
+          '/(api|login|register|dashboard|admin|bookings|wallet|profile|tech|cart|checkout|payments|2fa|addresses|notifications|favorites|disputes|subscriptions|orders|settings|vendor-portal|store|vendor)/(.*)',
         headers: [{ key: 'Cache-Control', value: 'no-store, max-age=0' }],
       },
       // Content Security Policy
