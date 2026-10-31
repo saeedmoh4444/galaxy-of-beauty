@@ -5,6 +5,7 @@ import type { Prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
 import { publicProcedure, adminProcedure, technicianProcedure, router } from '../trpc';
 import { addTechnicianServiceSchema } from '../validators/catalog';
+import { getSignedFileUrl } from '../lib/storage';
 
 /** Shared pagination / filter input for the technician list endpoint. */
 const technicianListSchema = z.object({
@@ -462,7 +463,20 @@ export const technicianRouter = router({
       });
     }
 
-    return technician;
+    return {
+      kycStatus: technician.kycStatus,
+      kycNotes: technician.kycNotes,
+      // B1 — private objects: sign display URLs on read (legacy full
+      // URLs pass through untouched).
+      kycDocuments: await Promise.all(
+        ((technician.kycDocuments ?? []) as Array<{ type: string; url: string }>).map(
+          async (d) => ({
+            type: d.type,
+            url: (await getSignedFileUrl(d.url)) ?? d.url,
+          }),
+        ),
+      ),
+    };
   }),
 
   // ---------------------------------------------------------------------------
