@@ -26,8 +26,19 @@ export const serviceRouter = router({
     const where: Record<string, unknown> = { isActive: true, isStoreService: false };
 
     if (categoryId) {
-      where.categoryId = categoryId;
+      // E1 — services attach to ROOT categories; a subcategory chip
+      // resolves to its parent so the browse filter works from any
+      // category level (the chips previously returned empty lists).
+      const cat = await prisma.category.findUnique({
+        where: { id: categoryId },
+        select: { parentId: true },
+      });
+      where.categoryId = cat?.parentId ?? categoryId;
     }
+
+    // E1 — the catalog is women-only; the legacy mens-grooming rows stay
+    // in the DB (admin/data safety) but are excluded from public browse.
+    where.category = { slug: { not: 'mens-grooming' } };
 
     // E6d — trust badge filters.
     if (input.womenOnly) where.isWomenOnlyStaff = true;

@@ -29,7 +29,9 @@ export const categoryRouter = router({
   list: publicProcedure.query(async () => {
     return cached('categories:list', () =>
       prisma.category.findMany({
-        where: { parentId: null, isActive: true },
+        // E1 — women-only public catalog: the legacy mens-grooming rows
+        // stay in the DB but never surface in the browse (chips + lists).
+        where: { parentId: null, isActive: true, slug: { not: 'mens-grooming' } },
         orderBy: { sortOrder: 'asc' },
         include: {
           children: {
