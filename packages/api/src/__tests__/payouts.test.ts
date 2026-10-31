@@ -410,6 +410,35 @@ describe('Payout router (integration)', () => {
       expect(rows).toHaveLength(1); // re-calc deletes the old PENDING row first
       expect(Number(rows[0]!.amount)).toBe(467);
     });
+
+    it('technician recalculation leaves vendor payouts in the same window alone (audit M13)', async () => {
+      const vendor = await prisma.vendor.findFirst();
+      expect(vendor).toBeTruthy();
+      const vendorRow = await prisma.payout.create({
+        data: {
+          technicianId: null,
+          vendorId: vendor!.id,
+          periodStart: WINDOW_START,
+          periodEnd: WINDOW_END,
+          amount: 999,
+          fee: 99,
+          status: 'PENDING',
+        },
+      });
+
+      const a = await caller(admin);
+      await a.payouts.calculate({
+        periodStart: WINDOW_START.toISOString(),
+        periodEnd: WINDOW_END.toISOString(),
+      });
+
+      const after = await prisma.payout.findUnique({ where: { id: vendorRow.id } });
+      expect(after).not.toBeNull();
+      expect(after!.status).toBe('PENDING');
+      expect(after!.vendorId).toBe(vendor!.id);
+
+      await prisma.payout.delete({ where: { id: vendorRow.id } });
+    });
   });
 
   // ── process (admin) ──────────────────────────────────────────────────

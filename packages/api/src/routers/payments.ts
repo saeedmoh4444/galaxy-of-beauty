@@ -220,6 +220,15 @@ export const paymentRouter = router({
       };
     } catch (err) {
       if (err instanceof TRPCError) throw err;
+      // Concurrent authorize on the same booking (or a duplicate key)
+      // races on the unique constraints — surface a typed conflict
+      // instead of a generic 500 (audit M11).
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Payment already exists for this booking',
+        });
+      }
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to authorize payment',
@@ -492,6 +501,24 @@ export const paymentRouter = router({
       }
 
       // PAID — verified capture: payment CAPTURED + booking PAID.
+      // Amount gate (audit M9): the gateway-reported value must match the
+      // payment record — a tampered/short-paid invoice must never flip a
+      // booking to PAID.
+      if (
+        status.invoiceValue !== undefined &&
+        Math.round(Number(status.invoiceValue) * 100) !== Math.round(Number(payment.amount) * 100)
+      ) {
+        await prisma.payment.update({
+          where: { id: payment.id },
+          data: { status: 'FAILED' },
+        });
+        return {
+          received: true,
+          processed: true,
+          reason: 'Amount mismatch — payment rejected',
+        };
+      }
+
       const updated = await prisma.payment.update({
         where: { id: payment.id },
         data: { status: 'CAPTURED' },
