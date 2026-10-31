@@ -149,18 +149,24 @@ describe('fabricated-analytics fail-closed contracts', () => {
     expect(r.sessionId).toBeNull();
   });
 
-  it('kidsServices.book no longer returns a CONFIRMED booking', async () => {
+  it('kidsServices.book never fabricates a booking for unknown services', async () => {
+    // C1a: book now goes through the REAL pipeline (seeded service +
+    // booking.create) — the fail-closed contract is that an unmapped
+    // facade item yields NOT_FOUND, never a fake success.
     const c = await customer();
-    const r = await c.kidsServices.book({
-      serviceId: 'bb1',
-      category: 'baby',
-      childName: 'نورة',
-      childAge: 3,
-    });
-    expect(r.booked).toBe(false);
-    expect(r.status).toBe('NOT_CREATED');
-    expect(r).not.toHaveProperty('bookingId');
-    expect(r).not.toHaveProperty('message');
+    const startAt = new Date(Date.now() + 3 * 86_400_000);
+    await expect(
+      c.kidsServices.book({
+        serviceId: 'nope',
+        category: 'baby',
+        childName: 'نورة',
+        childAge: 3,
+        addressId: 1,
+        startAt: startAt.toISOString(),
+        endAt: new Date(startAt.getTime() + 30 * 60_000).toISOString(),
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
   });
 
   it('womensServices.book no longer returns a CONFIRMED booking', async () => {
