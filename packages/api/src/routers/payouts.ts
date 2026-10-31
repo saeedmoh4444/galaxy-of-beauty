@@ -101,6 +101,10 @@ export const payoutRouter = router({
             periodStart,
             periodEnd,
             status: 'PENDING',
+            // Scope to technician rows (audit M13) — a technician
+            // recalculation must not wipe pending VENDOR payouts that
+            // happen to share the window.
+            technicianId: { not: null },
           },
         });
         await prisma.payout.createMany({
