@@ -1,5 +1,10 @@
+import crypto from 'crypto';
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
+import { prisma } from '@galaxy/db';
+import { DEFAULT_PLATFORM_FEE_SAR } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
+import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 
 const KIDS_CATEGORIES = {
   baby: {
@@ -47,8 +52,8 @@ const KIDS_CATEGORIES = {
         id: 'td1',
         nameAr: 'قص شعر أطفال',
         nameEn: 'Kids Haircut',
-        price: 70,
-        durationMin: 20,
+        price: 60,
+        durationMin: 30,
         ageMin: 3,
         emoji: '💇',
       },
@@ -160,8 +165,8 @@ const KIDS_CATEGORIES = {
       },
       {
         id: 'tn4',
-        nameAr: 'مانيكير',
-        nameEn: 'Manicure',
+        nameAr: 'مانيكير مراهقات',
+        nameEn: 'Teen Manicure',
         price: 80,
         durationMin: 25,
         ageMin: 13,
@@ -205,24 +210,97 @@ export const kidsServicesRouter = router({
         childName: z.string().min(1),
         childAge: z.number().min(0).max(17),
         parentNotes: z.string().optional(),
-        preferredDate: z.string().optional(),
+        // C1a — real booking fields (the stub never booked anything).
+        addressId: z.number().int().positive(),
+        startAt: z.string().datetime(),
+        endAt: z.string().datetime(),
+        idempotencyKey: z.string().uuid(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
+      // Idempotency replay — the caller's own booking comes back, never
+      // a second row.
+      const existing = await prisma.booking.findUnique({
+        where: { idempotencyKey: input.idempotencyKey },
+        select: { id: true, bookingCode: true, status: true, totalAmount: true },
+      });
+      if (existing) {
+        return {
+          booked: true,
+          bookingId: existing.id,
+          bookingCode: existing.bookingCode,
+          status: existing.status,
+          childName: input.childName,
+          price: Number(existing.totalAmount),
+        };
+      }
+
       const cat = KIDS_CATEGORIES[input.category as keyof typeof KIDS_CATEGORIES];
       const svc = cat?.subServices.find((s) => s.id === input.serviceId);
-      if (!svc) throw new Error('الخدمة غير موجودة');
+      if (!svc) throw new TRPCError({ code: 'NOT_FOUND', message: 'Kids service not found' });
 
-      // The kids catalog is not mapped to Service rows and there is no kids
-      // booking pipeline — never confirm a booking that was not created.
+      // C1a — the facade resolves to the REAL seeded service by exact
+      // titleJson.en match (seed guarantees one row per facade entry).
+      const service = await prisma.service.findFirst({
+        where: {
+          titleJson: { path: ['en'], equals: svc.nameEn },
+          isActive: true,
+        },
+      });
+      if (!service) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Kids service is not bookable yet',
+        });
+      }
+
+      // Jummah window — same rule as the main booking flow.
+      const blocked = isJummahBlocked(new Date(input.startAt), new Date(input.endAt));
+      if (blocked) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: JUMMAH_BLOCK_REASON });
+      }
+
+      // Technician auto-assign: the platform assigns the first available
+      // technician until the B.4 selection flow lands (same convention as
+      // the mobile booking create). Inactive = suspended.
+      const technician = await prisma.technician.findFirst({
+        where: { suspendedAt: null },
+        orderBy: { id: 'asc' },
+        select: { userId: true },
+      });
+      if (!technician) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No technician available' });
+      }
+
+      const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
+      const booking = await prisma.booking.create({
+        data: {
+          bookingCode,
+          customerId: ctx.user.id,
+          technicianId: technician.userId,
+          serviceId: service.id,
+          addressId: input.addressId,
+          startAt: new Date(input.startAt),
+          endAt: new Date(input.endAt),
+          status: 'REQUESTED',
+          totalAmount: service.basePrice,
+          platformFee: Number(process.env['PLATFORM_FEE_SAR']) || DEFAULT_PLATFORM_FEE_SAR,
+          paymentFee: 0,
+          idempotencyKey: input.idempotencyKey,
+          notes: [`Kids booking: ${input.childName} (age ${input.childAge})`, input.parentNotes]
+            .filter(Boolean)
+            .join(' — '),
+        },
+      });
+
       return {
-        booked: false,
-        status: 'NOT_CREATED',
-        reason: 'BOOKING_NOT_CREATED',
+        booked: true,
+        bookingId: booking.id,
+        bookingCode: booking.bookingCode,
+        status: booking.status,
         childName: input.childName,
-        service: svc.nameAr,
-        price: svc.price,
-        durationMin: svc.durationMin,
+        price: Number(service.basePrice),
+        durationMin: service.durationMin,
         tip: svc.ageMin > 0 ? `مناسبة من عمر ${svc.ageMin} سنوات` : 'مناسبة لجميع الأعمار',
       };
     }),
