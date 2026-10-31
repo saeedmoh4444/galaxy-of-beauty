@@ -8,16 +8,23 @@
  * listed in scripts/static-arabic-allowlist.txt are exempt — the sweep
  * migrates screens slice by slice and removes them from the list.
  *
- * Usage: node scripts/find-static-arabic.mjs [--check]
+ * Usage: node scripts/find-static-arabic.mjs [--check] [--web] [--files]
+ *   --web     scan apps/web/src with static-arabic-web-allowlist.txt (F4)
  *   --check   CI gate mode: exit 1 when findings exist outside the allowlist
+ *   --files   print only the file list (allowlist seeding)
+ * The CI gate runs through find-static-arabic.test.mjs (node --test
+ * scripts/*.test.mjs in the Architecture Gates job).
  */
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const ARABIC = /[\u0600-\u06FF]/;
-const ROOT = join(process.cwd(), 'apps/mobile/src');
-const ALLOWLIST = join(process.cwd(), 'scripts/static-arabic-allowlist.txt');
+const MOBILE_ROOT = join(process.cwd(), 'apps/mobile/src');
+const MOBILE_ALLOWLIST = join(process.cwd(), 'scripts/static-arabic-allowlist.txt');
+// F4 — the same gate for the web app (ratcheted via its own allowlist).
+const WEB_ROOT = join(process.cwd(), 'apps/web/src');
+const WEB_ALLOWLIST = join(process.cwd(), 'scripts/static-arabic-web-allowlist.txt');
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -91,10 +98,10 @@ function inSpan(idx, spans) {
   return spans.some(([s, e]) => idx >= s && idx < e);
 }
 
-export function scan(dir = ROOT) {
-  const allow = existsSync(ALLOWLIST)
+export function scan(dir = MOBILE_ROOT, allowlistPath = MOBILE_ALLOWLIST) {
+  const allow = existsSync(allowlistPath)
     ? new Set(
-        readFileSync(ALLOWLIST, 'utf8')
+        readFileSync(allowlistPath, 'utf8')
           .split('\n')
           .map((l) => l.trim())
           .filter(Boolean),
@@ -123,7 +130,8 @@ export function scan(dir = ROOT) {
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
-  const { findings } = scan();
+  const web = process.argv.includes('--web');
+  const { findings } = scan(web ? WEB_ROOT : MOBILE_ROOT, web ? WEB_ALLOWLIST : MOBILE_ALLOWLIST);
   const files = [...new Set(findings.map((f) => f.file))];
   if (process.argv.includes('--files')) {
     for (const f of files) console.log(f);
