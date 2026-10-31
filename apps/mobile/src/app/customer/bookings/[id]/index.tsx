@@ -52,6 +52,18 @@ export default function BookingDetailScreen(): JSX.Element {
     },
   });
 
+  // D2b — review creation on completed bookings (the screen had NPS only).
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const reviewMut = trpc.reviews.create.useMutation({
+    onSuccess: () => {
+      void utils.reviews.list.invalidate();
+      void utils.bookings.getById.invalidate({ id: Number(id) });
+      setComment('');
+    },
+  });
+
   const statusLabels: Record<string, string> = {
     REQUESTED: t('booking.status.REQUESTED'),
     ACCEPTED: t('booking.status.ACCEPTED'),
