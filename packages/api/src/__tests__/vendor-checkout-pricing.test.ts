@@ -5,9 +5,10 @@
  * evaluateVendorRules (variant deltas add BEFORE multipliers).
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
+import crypto from 'crypto';
 import { buildUser } from './factories';
 
 const createdUserIds: number[] = [];
@@ -24,6 +25,31 @@ let healthyProduct: number;
 
 async function caller(user: JwtPayload | null) {
   return (appRouter as any).createCaller({ user, ip: '127.0.0.1' });
+}
+
+// A5 — buyCart was removed (unpaid orders are gone). Tests purchase
+// through the REAL wallet checkout instead.
+const SHIPPING = {
+  personName: 'Saeed Test',
+  mobile: '0500000000',
+  lineAddress: 'Test Street 1',
+  cityName: 'RIYADH',
+  postalCode: '12345',
+  countryCode: 'SA',
+  shippingMethod: 1 as const,
+};
+
+async function buyWithWallet(c: ReturnType<typeof caller>, userId: number) {
+  await prisma.wallet.upsert({
+    where: { userId },
+    create: { userId, balance: new Prisma.Decimal(100000) },
+    update: { balance: new Prisma.Decimal(100000) },
+  });
+  return c.payments.payCart({
+    idempotencyKey: crypto.randomUUID(),
+    method: 'wallet',
+    shipping: SHIPPING,
+  });
 }
 
 beforeAll(async () => {
@@ -83,6 +109,13 @@ afterAll(async () => {
   await prisma.vendorPriceRule.deleteMany({ where: { id: { in: createdRuleIds } } });
   await prisma.product.deleteMany({ where: { id: { in: createdProductIds } } });
   await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+  // A5 — wallet purchases create checkouts/wallet rows referencing the
+  // customer (onDelete Restrict) — clear before the users go.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
+  await prisma.walletTransaction.deleteMany({
+    where: { wallet: { userId: { in: createdUserIds } } },
+  });
+  await prisma.wallet.deleteMany({ where: { userId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
 }, 30000);
 
@@ -96,11 +129,11 @@ describe('C3c — checkout-time pricing', () => {
     await c.marketplace.removeFromCart({ productId: lowProduct });
   });
 
-  it('buyCart charges the effective price for the below-threshold product', async () => {
+  it('a wallet purchase charges the effective price for the below-threshold product', async () => {
     const c = await caller(customer);
     await c.marketplace.addToCart({ productId: lowProduct, quantity: 2 });
     await c.marketplace.addToCart({ productId: healthyProduct, quantity: 1 });
-    await c.marketplace.buyCart({});
+    await buyWithWallet(c, customer.id);
 
     const order = await prisma.storeOrder.findFirst({
       where: { vendorId: ownerVendorId },

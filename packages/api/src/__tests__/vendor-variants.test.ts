@@ -5,9 +5,10 @@
  * level).
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
+import crypto from 'crypto';
 import { buildUser } from './factories';
 
 const createdUserIds: number[] = [];
@@ -26,6 +27,31 @@ let price: number;
 
 async function caller(user: JwtPayload | null) {
   return (appRouter as any).createCaller({ user, ip: '127.0.0.1' });
+}
+
+// A5 — buyCart was removed (unpaid orders are gone). Tests purchase
+// through the REAL wallet checkout instead.
+const SHIPPING = {
+  personName: 'Saeed Test',
+  mobile: '0500000000',
+  lineAddress: 'Test Street 1',
+  cityName: 'RIYADH',
+  postalCode: '12345',
+  countryCode: 'SA',
+  shippingMethod: 1 as const,
+};
+
+async function buyWithWallet(c: ReturnType<typeof caller>, userId: number) {
+  await prisma.wallet.upsert({
+    where: { userId },
+    create: { userId, balance: new Prisma.Decimal(100000) },
+    update: { balance: new Prisma.Decimal(100000) },
+  });
+  return c.payments.payCart({
+    idempotencyKey: crypto.randomUUID(),
+    method: 'wallet',
+    shipping: SHIPPING,
+  });
 }
 
 beforeAll(async () => {
@@ -82,6 +108,13 @@ afterAll(async () => {
   await prisma.productVariant.deleteMany({ where: { id: { in: createdVariantIds } } });
   await prisma.product.deleteMany({ where: { id: { in: createdProductIds } } });
   await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+  // A5 — wallet purchases create checkouts/wallet rows referencing the
+  // customer (onDelete Restrict) — clear before the users go.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
+  await prisma.walletTransaction.deleteMany({
+    where: { wallet: { userId: { in: createdUserIds } } },
+  });
+  await prisma.wallet.deleteMany({ where: { userId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
 }, 30000);
 
@@ -157,7 +190,7 @@ describe('C1 — variant checkout', () => {
 
     const cart = await caller(customer);
     await cart.marketplace.addToCart({ productId, variantId: v.id, quantity: 2 });
-    await cart.marketplace.buyCart({});
+    await buyWithWallet(cart, customer.id);
 
     const item = await prisma.storeOrderItem.findFirst({
       where: { productId, variantId: v.id },
@@ -188,7 +221,7 @@ describe('C1 — variant checkout', () => {
 
     const cart = await caller(customer);
     await cart.marketplace.addToCart({ productId, variantId: v.id, quantity: 2 }); // 6 → 4
-    await cart.marketplace.buyCart({});
+    await buyWithWallet(cart, customer.id);
 
     const notifs = await prisma.notification.findMany({
       where: { userId: owner.id, type: 'store_low_stock' },
@@ -233,7 +266,7 @@ describe('C1 — variant checkout', () => {
   it('keeps the no-variant base line working (regression)', async () => {
     const cart = await caller(customer);
     await cart.marketplace.addToCart({ productId, quantity: 1 });
-    await cart.marketplace.buyCart({});
+    await buyWithWallet(cart, customer.id);
 
     const product = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
     expect(product.stock).toBe(9); // 10 - 1 (base line decrements base stock)

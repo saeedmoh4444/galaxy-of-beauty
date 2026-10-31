@@ -607,7 +607,6 @@ marketplace.becomeClinic	mutation	protected
 marketplace.becomeGym	mutation	protected
 marketplace.becomeNailBar	mutation	protected
 marketplace.becomeVendor	mutation	protected
-marketplace.buyCart	mutation	customer
 marketplace.cart	query	protected
 marketplace.productCategories	query	public
 marketplace.productDetail	query	public

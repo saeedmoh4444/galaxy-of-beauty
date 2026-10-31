@@ -1,13 +1,14 @@
 /**
- * vendorPortal + marketplace.buyCart tests — B.3. The router used to be an
+ * vendorPortal + marketplace purchase tests — B.3. The router used to be an
  * in-memory array (products vanished on restart); now backed by the
  * Product/Vendor models. Covers persistence, per-vendor isolation, the buy
  * flow (stock/sales/vendor revenue), and cart clearing.
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
+import crypto from 'crypto';
 import { buildUser } from './factories';
 
 let customer: JwtPayload;
@@ -18,6 +19,31 @@ const createdVendorIds: number[] = [];
 
 async function caller(user: JwtPayload | null) {
   return (appRouter as any).createCaller({ user, ip: '127.0.0.1' });
+}
+
+// A5 — buyCart was removed (unpaid orders are gone). Tests purchase
+// through the REAL wallet checkout instead.
+const SHIPPING = {
+  personName: 'Saeed Test',
+  mobile: '0500000000',
+  lineAddress: 'Test Street 1',
+  cityName: 'RIYADH',
+  postalCode: '12345',
+  countryCode: 'SA',
+  shippingMethod: 1 as const,
+};
+
+async function buyWithWallet(c: ReturnType<typeof caller>, userId: number) {
+  await prisma.wallet.upsert({
+    where: { userId },
+    create: { userId, balance: new Prisma.Decimal(100000) },
+    update: { balance: new Prisma.Decimal(100000) },
+  });
+  return c.payments.payCart({
+    idempotencyKey: crypto.randomUUID(),
+    method: 'wallet',
+    shipping: SHIPPING,
+  });
 }
 
 async function makeVendor(userId: number, storeName: string, slug: string) {
@@ -152,7 +178,7 @@ describe('vendorPortal + buy flow (B.3)', () => {
     expect(row.isActive).toBe(false);
   });
 
-  it('buyCart decrements stock, increments sales, credits revenue, clears cart', async () => {
+  it('a wallet purchase decrements stock, increments sales, credits revenue, clears cart', async () => {
     // Fresh product for the buy flow.
     const vendor = await prisma.vendor.findUnique({ where: { userId: customer.id } });
     const product = await prisma.product.create({
@@ -169,9 +195,14 @@ describe('vendorPortal + buy flow (B.3)', () => {
     const c = await caller(customer);
     await c.marketplace.addToCart({ productId: product.id, quantity: 2 });
 
-    const res = await c.marketplace.buyCart({});
-    expect(res.items).toBe(2);
-    expect(res.total).toBe(160);
+    const res = await buyWithWallet(c, customer.id);
+    expect(res.status).toBe('PAID');
+    const order = await prisma.storeOrder.findFirstOrThrow({
+      where: { customerId: customer.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    expect(order.itemCount).toBe(2);
+    expect(Number(order.totalAmount)).toBe(160);
 
     const updated = await prisma.product.findUniqueOrThrow({ where: { id: product.id } });
     expect(updated.stock).toBe(8);
@@ -184,7 +215,7 @@ describe('vendorPortal + buy flow (B.3)', () => {
     expect(cart.length).toBe(0);
   });
 
-  it('buyCart rejects purchases beyond stock and leaves everything intact', async () => {
+  it('a wallet purchase rejects purchases beyond stock and leaves everything intact', async () => {
     const vendor = await prisma.vendor.findUnique({ where: { userId: customer.id } });
     const product = await prisma.product.create({
       data: {
@@ -200,7 +231,7 @@ describe('vendorPortal + buy flow (B.3)', () => {
     const c = await caller(customer);
     await c.marketplace.addToCart({ productId: product.id, quantity: 5 });
 
-    await expect(c.marketplace.buyCart({})).rejects.toThrow(/stock/i);
+    await expect(buyWithWallet(c, customer.id)).rejects.toThrow(/stock/i);
 
     const updated = await prisma.product.findUniqueOrThrow({ where: { id: product.id } });
     expect(updated.stock).toBe(1);

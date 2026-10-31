@@ -18,6 +18,10 @@ export default defineConfig({
         process.env['JWT_ACCESS_SECRET'] || 'dev-access-secret-at-least-32-chars-long',
       JWT_REFRESH_SECRET:
         process.env['JWT_REFRESH_SECRET'] || 'dev-refresh-secret-at-least-32-chars-long',
+      // Wallet purchases in tests go through payments.payCart, which calls
+      // the Fatoorah shipping calc — simulate mode keeps them hermetic
+      // (matching the dev environment).
+      FATOORAH_SIMULATE: process.env['FATOORAH_SIMULATE'] || 'true',
     },
     // ── Coverage (TEST-005) ──────────────────────────────
     coverage: {
