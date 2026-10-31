@@ -1,22 +1,22 @@
 # Launch Readiness Report — Galaxy of Beauty
 
-**Date:** 2026-10-09
-**Version:** 2.3.0
+**Date:** 2026-10-31
+**Version:** 2.4.0
 **Status:** 🟡 Feature-complete and verifiably correct — launch gated on user credentials + ops hardening
 
 ---
 
-## I. Platform Health (measured 2026-10-08/09)
+## I. Platform Health (measured 2026-10-31, refreshed during the audit build-out)
 
-| Check                 | Result                            | Evidence                                                    |
-| --------------------- | --------------------------------- | ----------------------------------------------------------- |
-| TypeScript Type Check | ✅ 6/6 workspaces                 | web, mobile, api, db, shared, ui — all green                |
-| Build                 | ✅ full Turborepo build           | Next.js 16 (319 routes) + Expo + API + DB + Shared          |
-| Unit Tests            | ✅ 173 files / 1,497 tests        | Full API suite green on CI's isolated DB                    |
-| E2E Tests             | ✅ 27 specs × 3 browser projects  | chromium + firefox + mobile Chrome, incl. axe a11y gate     |
-| Lint                  | ✅ 0 errors (warnings tolerated)  | ~27–174 pre-existing warnings per package                   |
-| Contract gates        | ✅ 266 routers / 1,114 procedures | counts + detail list + sha256 hash, money-integrity, i18n   |
-| Size budgets          | ✅ gate green vs baseline         | 221/213/298/226 KB per class (targets 100–150 KB — see §IX) |
+| Check                 | Result                            | Evidence                                                                                 |
+| --------------------- | --------------------------------- | ---------------------------------------------------------------------------------------- |
+| TypeScript Type Check | ✅ 6/6 workspaces                 | web, mobile, api, db, shared, ui — all green                                             |
+| Build                 | ✅ full Turborepo build           | Next.js 16 (319 routes) + Expo + API + DB + Shared                                       |
+| Unit Tests            | ✅ ~1,905 test cases              | Full API suite green on CI's isolated DB; coverage ratchet enforced (63/55/53/65 floors) |
+| E2E Tests             | ✅ 356 tests × 3 browser projects | chromium + firefox + mobile Chrome, incl. axe a11y gate                                  |
+| Lint                  | ✅ 0 errors (warnings tolerated)  | 27 mobile / 3 web pre-existing warnings                                                  |
+| Contract gates        | ✅ 266 routers / 1,204 procedures | counts + detail list + sha256 hash, money-integrity, i18n                                |
+| Size budgets          | ✅ gate green vs baseline         | 221/213/298/226 KB per class (targets 100–150 KB — see §IX)                              |
 
 ## II. Feature Inventory
 
@@ -25,7 +25,8 @@
 | Core booking & services     | ✅                                                                                                                                                                                                |
 | Marketplace & payments      | ✅ (payments on dev stubs until the Fatoorah token lands)                                                                                                                                         |
 | **Store & provider system** | ✅ — unified provider model (stores/clinics/gyms/nail bars/at-home), KSA registration + admin approval, `/store` dashboards, commission settlements + admin rate editor, ratings, mobile browsing |
-| Loyalty, referrals, BNPL    | ✅                                                                                                                                                                                                |
+| Loyalty, referrals          | ✅                                                                                                                                                                                                |
+| **BNPL (Tabby/Tamara)**     | ⚠️ advertised in the checkout UI but non-functional — `eligible:false, PROVIDER_NOT_CONFIGURED` until provider keys land (user-gated)                                                             |
 | AI & experiences            | ✅ (OpenAI features dormant without a key)                                                                                                                                                        |
 | Compliance (ZATCA/PDPL)     | ✅ (ZATCA in sim mode until real portal onboarding)                                                                                                                                               |
 | Admin & operations          | ✅ incl. queues dashboard, audit log, analytics                                                                                                                                                   |
@@ -56,16 +57,17 @@
 
 ## V. Infrastructure
 
-| Component                    | Status                                  |
-| ---------------------------- | --------------------------------------- |
-| Docker Compose (5 services)  | ✅ (dev; production profile exists)     |
-| PostgreSQL 15 / Redis 7      | ✅                                      |
-| Nginx config + SSL (certbot) | ✅ configs exist — need a real server   |
-| PM2 process manager          | ✅ configs exist                        |
-| Deployment runbook           | ✅ (docs/DEPLOYMENT.md)                 |
-| Scheduled DB backups         | ⚠️ script exists, nothing schedules it  |
-| Alerting                     | ❌ Sentry catches errors; no paging     |
-| Staging environment          | ❌ none — risky changes ride the dev DB |
+| Component                    | Status                                |
+| ---------------------------- | ------------------------------------- |
+| Docker Compose (5 services)  | ✅ (dev; production profile exists)   |
+| PostgreSQL 15 / Redis 7      | ✅                                    |
+| Nginx config + SSL (certbot) | ✅ configs exist — need a real server |
+| PM2 process manager          | ✅ configs exist                      |
+| Deployment runbook           | ✅ (docs/DEPLOYMENT.md)               |
+| Scheduled DB backups         | ✅ backup cron shipped (#561)         |
+| Alerting                     | ✅ queue/disk/payment alerting (#562) |
+| Staging environment          | ✅ staging + TLS + monitoring (#563)  |
+| Prometheus metrics           | ✅ prom metrics endpoint (#564)       |
 
 ## VI. Compliance
 
@@ -87,11 +89,11 @@
 
 **Engineering (ordered by leverage):**
 
-- [ ] Circuit breakers for external gateways (roadmap A2)
-- [ ] Scheduled DB backups + restore drill (B1)
-- [ ] Alerting (B3)
-- [ ] Staging environment (A3)
-- [ ] Bundle slimming toward FE-007 targets — `sideEffects: false` landed, numbers unmeasured (Q1)
+- [x] Circuit breakers for external gateways (#560)
+- [x] Scheduled DB backups (#561) — restore drill done 2026-08-17
+- [x] Alerting (#562)
+- [x] Staging environment + TLS + monitoring (#563)
+- [ ] Bundle slimming toward FE-007 targets — measured 221/213/298/226 KB (baseline + CI gate live; targets unmet)
 - [ ] k6 load test @1K concurrent (C2)
 - [ ] Third-party pentest + NCA-ECC (D3)
 
