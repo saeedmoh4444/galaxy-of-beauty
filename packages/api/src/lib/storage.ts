@@ -50,6 +50,18 @@ function getS3Bucket(): string | null {
   return process.env['AWS_S3_BUCKET'] || null;
 }
 
+/**
+ * B1 — the private bucket for KYC/identity documents. National IDs and
+ * medical licenses must never sit in the public avatar bucket with a
+ * permanent unsigned URL; when configured they go to a private bucket
+ * and are only ever served through short-lived signed GETs.
+ * (Unset → falls back to the main bucket so dev keeps working; the
+ * production requirement is documented in .env.example.)
+ */
+function getKycBucket(): string | null {
+  return process.env['AWS_KYC_BUCKET'] || getS3Bucket();
+}
+
 function getS3Region(): string {
   return process.env['AWS_REGION'] || 'me-south-1';
 }
@@ -77,12 +89,13 @@ export async function uploadFile(
   originalName: string,
   folder: string,
   mimeType = 'application/octet-stream',
+  opts?: { private?: boolean },
 ): Promise<UploadResult> {
   const ext = path.extname(originalName) || '.bin';
   const key = `${folder}/${crypto.randomUUID()}${ext}`;
 
   const s3 = await getS3Client();
-  const bucket = getS3Bucket();
+  const bucket = opts?.private ? getKycBucket() : getS3Bucket();
 
   if (!s3 || !bucket) {
     // Local fallback
@@ -100,12 +113,16 @@ export async function uploadFile(
         Key: key,
         Body: buffer,
         ContentType: mimeType,
-        CacheControl: 'public, max-age=31536000, immutable',
+        // Private objects carry no public cache headers.
+        CacheControl: opts?.private ? 'private, max-age=0' : 'public, max-age=31536000, immutable',
       }),
     );
 
     return {
-      url: `https://${bucket}.s3.${getS3Region()}.amazonaws.com/${key}`,
+      // B1: a private object must never expose a permanent public URL —
+      // the caller stores the KEY and resolves display URLs on read via
+      // getSignedFileUrl (admin KYC review, technician status views).
+      url: opts?.private ? key : `https://${bucket}.s3.${getS3Region()}.amazonaws.com/${key}`,
       key,
       bucket,
     };
@@ -116,6 +133,32 @@ export async function uploadFile(
     ensureDir(dir);
     await fs.promises.writeFile(path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key), buffer);
     return { url: localUrl(key), key };
+  }
+}
+
+/**
+ * B1 — short-lived signed GET for a private object. Accepts a stored key
+ * (or a legacy full URL, which passes through untouched) and resolves it
+ * against the private bucket. Local dev falls back to the local uploads
+ * route.
+ */
+export async function getSignedFileUrl(key: string, expiresIn = 900): Promise<string | null> {
+  if (key.startsWith('http://') || key.startsWith('https://')) return key;
+
+  const s3 = await getS3Client();
+  const bucket = getKycBucket();
+
+  if (!s3 || !bucket) {
+    return localUrl(key);
+  }
+
+  try {
+    const sdk = await Function('return import("@aws-sdk/client-s3")')();
+    const presigner = await Function('return import("@aws-sdk/s3-request-presigner")')();
+    const cmd = new sdk.GetObjectCommand({ Bucket: bucket, Key: key });
+    return await presigner.getSignedUrl(s3, cmd, { expiresIn });
+  } catch {
+    return null;
   }
 }
 
