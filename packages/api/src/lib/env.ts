@@ -75,6 +75,10 @@ const envSchema = z.object({
   // ── AWS S3 (Uploads) ──────────────────────────────────
   AWS_REGION: z.string().optional(),
   AWS_S3_BUCKET: z.string().optional(),
+  // B1 — private bucket for KYC/identity documents (national IDs,
+  // medical licenses). Required in production: without it, private
+  // documents fall back to the public uploads bucket.
+  AWS_KYC_BUCKET: z.string().optional(),
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
 
