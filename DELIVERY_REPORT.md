@@ -85,7 +85,7 @@ All sensitive values are commented out in `.env.example`. Production startup val
 
 ## Known Issues
 
-**NONE** — all issues identified in the evaluation report have been either resolved or documented with compensating controls and target dates.
+**NONE from the original evaluation report** — all issues identified there have been either resolved or documented with compensating controls and target dates. (This report is a historical snapshot; the LIVE register is [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) and [docs/TECHNICAL_DEBT.md](docs/TECHNICAL_DEBT.md), refreshed 2026-10-31.)
 
 ### Resolved (20 items)
 
