@@ -27,9 +27,18 @@ import {
 
 // C5 — exported so the vendor flow (vendorPortal.updateServiceBooking)
 // reuses the SAME state machine instead of drifting a parallel one.
+// Every money-bearing status is a legal origin: PAID / CONFIRMED_OFFLINE /
+// PAYMENT_AUTHORIZED bookings must be able to start, cancel, and complete
+// (payment states themselves are set directly by payments.ts, not here).
 export const VALID_TRANSITIONS: Record<string, string[]> = {
   REQUESTED: ['ACCEPTED', 'REJECTED', 'CANCELLED'],
-  ACCEPTED: ['IN_PROGRESS', 'CANCELLED', 'PAYMENT_AUTHORIZED'],
+  ACCEPTED: ['IN_PROGRESS', 'CANCELLED'],
+  CONFIRMED_OFFLINE: ['IN_PROGRESS', 'CANCELLED'],
+  PAYMENT_AUTHORIZED: ['CANCELLED'],
+  // COMPLETED is reachable from PAID because capture flips the booking to
+  // PAID even when the service already started (cash at the venue). The
+  // complete-payment gate below still requires a CAPTURED payment.
+  PAID: ['IN_PROGRESS', 'COMPLETED', 'CANCELLED'],
   IN_PROGRESS: ['COMPLETED', 'NO_SHOW'],
 };
 
@@ -752,6 +761,21 @@ export const bookingRouter = router({
 
       // Perform the transition
       const updatedBooking = await prisma.$transaction(async (tx) => {
+        // Payment gate: a booking may only complete once its payment is
+        // CAPTURED (online = verified callback; cash = the technician's
+        // receipt confirmation). Without this, unpaid completions flow
+        // into payouts and technicians get paid for work that never
+        // collected money.
+        if (input.action === 'complete') {
+          const payment = await tx.payment.findUnique({ where: { bookingId: booking.id } });
+          if (!payment || payment.status !== 'CAPTURED') {
+            throw new TRPCError({
+              code: 'PRECONDITION_FAILED',
+              message: 'Payment must be captured before completing the booking',
+            });
+          }
+        }
+
         // Free the slot on cancel or reject
         if (input.action === 'cancel' || input.action === 'reject') {
           if (booking.slot) {
