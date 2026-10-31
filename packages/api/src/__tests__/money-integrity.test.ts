@@ -147,6 +147,26 @@ describe('payments.statusCallback — verified status only', () => {
     expect(booking?.status).toBe('PAID');
     await cleanupStatusBooking(bookingId);
   });
+
+  it('rejects a Paid status whose invoice value does not match the payment', async () => {
+    const bookingId = await seedStatusBooking();
+    const payment = await prisma.payment.findUnique({ where: { bookingId } });
+    getPaymentStatusMock.mockResolvedValue({
+      invoiceId: payment!.gatewayRef!,
+      invoiceStatus: 'Paid',
+      invoiceValue: 1, // short-paid / tampered — must never flip to PAID
+    });
+    const anon = await anonCaller();
+    const result = await anon.payments.statusCallback({ paymentId: 'P-CB-3' });
+    expect(result).toMatchObject({ received: true, processed: true });
+    expect(result.reason).toContain('Amount mismatch');
+
+    const after = await prisma.payment.findUnique({ where: { bookingId } });
+    expect(after?.status).toBe('FAILED');
+    const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+    expect(booking?.status).not.toBe('PAID');
+    await cleanupStatusBooking(bookingId);
+  });
 });
 
 async function seedStatusBooking(): Promise<number> {
