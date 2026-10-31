@@ -8,7 +8,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, paidCheckoutForOrder } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -45,6 +45,9 @@ describe('store settlement', { sequential: true }, () => {
     const fulfilled = await prisma.storeOrder.create({
       data: { vendorId, customerId: cust.id, totalAmount: 200, status: 'FULFILLED' },
     });
+    // The dispute-refund test below must credit a wallet — the order needs
+    // a PAID wallet checkout for the refund path (audit #3/#4).
+    await paidCheckoutForOrder(fulfilled.id);
     const pending = await prisma.storeOrder.create({
       data: { vendorId, customerId: cust.id, totalAmount: 100, status: 'PENDING_FULFILLMENT' },
     });
@@ -66,6 +69,10 @@ describe('store settlement', { sequential: true }, () => {
     } catch {}
     try {
       await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+    } catch {}
+    try {
+      // Checkouts reference customers (onDelete Restrict) — clear before users.
+      await prisma.storeCheckout.deleteMany({ where: { customerId: { in: userIds } } });
     } catch {}
     try {
       await prisma.user.deleteMany({ where: { id: { in: userIds } } });
@@ -173,6 +180,7 @@ describe('store settlement', { sequential: true }, () => {
       data: { vendorId, customerId: customer.id, totalAmount: 60, status: 'PENDING_FULFILLMENT' },
     });
     orderIds.push(order.id);
+    await paidCheckoutForOrder(order.id);
 
     const results = await Promise.allSettled([
       ownerCaller.vendorPortal.fulfillOrder({ orderId: order.id }),
@@ -195,6 +203,7 @@ describe('store settlement', { sequential: true }, () => {
       data: { vendorId, customerId: customer.id, totalAmount: 70, status: 'PENDING_FULFILLMENT' },
     });
     orderIds.push(order.id);
+    await paidCheckoutForOrder(order.id);
     const key = `fulfill-${order.id}-${Date.now()}`;
 
     await ownerCaller.vendorPortal.fulfillOrder({ orderId: order.id, idempotencyKey: key });

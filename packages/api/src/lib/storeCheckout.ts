@@ -5,11 +5,11 @@ import { notifyUser } from './notify';
 import { enqueueWebhookEvents } from './webhookDelivery';
 import { evaluateVendorRules, toRuleLike } from './vendorPricing';
 
-// Shared cart → StoreOrder placement used by marketplace.buyCart (no
-// checkout) and payments.payCart (with a StoreCheckout shipping+payment
-// record). One StoreOrder per vendor; stock decrement + sales increments
-// happen inside the caller's transaction so payment stays atomic with
-// order placement.
+// Shared cart → StoreOrder placement used by payments.payCart (with a
+// StoreCheckout shipping+payment record — marketplace.buyCart, the
+// checkout-less path, was removed in audit A5/M3). One StoreOrder per
+// vendor; stock decrement + sales increments happen inside the caller's
+// transaction so payment stays atomic with order placement.
 
 export interface CartLine {
   productId: number;

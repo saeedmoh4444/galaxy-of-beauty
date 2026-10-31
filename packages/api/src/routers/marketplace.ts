@@ -14,12 +14,6 @@ import { gatherStoreHealthFactors } from '../lib/storeHealth';
 import { evaluateVendorRules, toRuleLike } from '../lib/vendorPricing';
 import { computeVendorTierBadges, computeTopRated } from '../lib/vendorTiers';
 import { noonUtcDay } from '../workers/handlers';
-import {
-  readCartForCheckout,
-  placeStoreOrders,
-  notifyLowStockAlerts,
-  notifyOrderPlaced,
-} from '../lib/storeCheckout';
 
 export const marketplaceRouter = router({
   // ── Products ──────────────────────────────────────────
@@ -221,31 +215,11 @@ export const marketplaceRouter = router({
     }),
 
   // ── Buy (B.3) ───────────────────────────────────────────
-  /**
-   * buyCart — purchase everything in the caller's cart.
-   * Transactionally checks stock, decrements it, increments product sales
-   * and vendor totalSales, then clears the cart. On insufficient stock the
-   * whole purchase is rejected and the cart is kept for correction.
-   * (Checkout pages now use payments.payCart, which adds shipping +
-   * payment on top of the same order placement.)
-   */
-  buyCart: customerProcedure.input(z.object({})).mutation(async ({ ctx }) => {
-    const lines = await readCartForCheckout(ctx.user.id);
-
-    const placed = await prisma.$transaction(async (tx) => {
-      return placeStoreOrders(tx, ctx.user.id, lines);
-    });
-
-    // B3b — after commit: low-stock crossing alerts to the vendors.
-    await notifyLowStockAlerts(placed.lowStockAlerts);
-    // F1 — after commit: new-order inbox notifications to the vendors.
-    await notifyOrderPlaced(placed.orders);
-
-    const total = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
-    const items = lines.reduce((sum, l) => sum + l.quantity, 0);
-
-    return { success: true, items, total };
-  }),
+  // buyCart was REMOVED (audit M3): it placed PENDING_FULFILLMENT orders
+  // with no payment at all — the fulfill/cancel/dispute gates (#569)
+  // made those orders economically dead, but the endpoint itself had to
+  // go. The real purchase path is payments.payCart (wallet/online with a
+  // StoreCheckout).
 
   // ── Categories ────────────────────────────────────────
   productCategories: publicProcedure.query(async () => {
