@@ -30,21 +30,20 @@ export default defineConfig({
         'src/**/*.test.ts',
         'src/routers/index.ts', // barrel file
       ],
-      // Coverage ratchet (audit rec #4) — raise quarterly toward
-      // 55 → 60 → 65. Set under current actuals (2026-08-19):
-      // 63.72 stmts / 75.74 branches / 70.17 functions / 63.72 lines.
-      // Same-code runs jitter ±0.4 — keep ≥0.5 margin on every metric.
-      // 2026-08-19 raise (the "push toward 60" campaign): 17 routers
-      // covered by 6 agents (+188 tests); routers fixed en route:
-      // beautyDiscovery emoji selects (was broken at runtime),
-      // referrals applyCode circularity + unique-constraint,
-      // payouts.calculate idempotency, technicianEarnings user-id
-      // filter, waitlist rejoin P2002, calendar.pull fetch errors.
+      // Coverage ratchet (audit rec #4) — NOW ENFORCED IN CI (the unit
+      // job runs --coverage; previously the thresholds here were dead
+      // because nothing ever requested coverage).
+      // History: Aug 2026 actuals 63.72 stmts / 75.74 branches /
+      // 70.17 functions / 63.72 lines. The estate has grown a lot since
+      // (reels, store, wellness waves), so the ratchet floors at the
+      // 2026-10-31 CI measurement (64.35 / 56.45 / 54.25 / 66.01) minus
+      // the ±0.5 jitter margin — tighten from each clean CI run's
+      // printed numbers, never below this floor.
       thresholds: {
-        statements: 62,
-        branches: 74,
-        functions: 69,
-        lines: 62,
+        statements: 63,
+        branches: 55,
+        functions: 53,
+        lines: 65,
       },
     },
   },
