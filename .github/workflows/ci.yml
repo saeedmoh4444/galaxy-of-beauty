@@ -164,7 +164,15 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
         uses: rharkor/caching-for-turbo@v2.5.2
+      # C2: the root layout no longer force-dynamics every route, so Next
+      # prerenders pages at build and page modules may touch the API env
+      # schema. CI build secrets are placeholders — they only satisfy
+      # validation, nothing connects at build time.
       - run: pnpm turbo run build
+        env:
+          DATABASE_URL: 'postgresql://ci_build:ci_build_pass@localhost:5432/ci_build_db?schema=public'
+          JWT_ACCESS_SECRET: 'ci-build-access-key-0123456789abcdef-not-for-prod'
+          JWT_REFRESH_SECRET: 'ci-build-refresh-key-fedcba9876543210-not-for-prod'
       - run: node scripts/check-size-budgets.mjs
 
   # ── E2E Tests ─────────────────────────────────────────────
