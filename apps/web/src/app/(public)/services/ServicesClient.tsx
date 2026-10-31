@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
@@ -38,12 +38,20 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
   const [compareMode, setCompareMode] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
+  // E2 — the category chips link to /services?categoryId=X; read the
+  // param and filter the client query by it (the SSR fetch does the same).
+  const searchParams = useSearchParams();
+  const categoryIdParam = searchParams.get('categoryId');
+  const categoryId = categoryIdParam ? Number(categoryIdParam) : undefined;
+  const activeCategoryId = categoryId ?? null;
+
   // Client-side queries — initial SSR data renders first, then hydrates
   const svcQuery = api.services.list.useQuery({
     search: debouncedSearch || undefined,
     sort: sort as 'newest',
     page,
     limit: 12,
+    ...(categoryId ? { categoryId } : {}),
   });
   const catsQuery = api.categories.list.useQuery();
 
@@ -115,15 +123,22 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
           </select>
           {cats.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {cats.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/services?categoryId=${c.id}`}
-                  className="rounded-full bg-surface-muted px-3 py-1 text-xs"
-                >
-                  {localize(c.nameJson, locale)}
-                </Link>
-              ))}
+              {cats.map((c) => {
+                const isActive = activeCategoryId === c.id;
+                return (
+                  <Link
+                    key={c.id}
+                    href={`/services?categoryId=${c.id}`}
+                    className={`rounded-full px-3 py-1 text-xs ${
+                      isActive
+                        ? 'bg-brand-600 text-white'
+                        : 'bg-surface-muted hover:bg-surface-elevated'
+                    }`}
+                  >
+                    {localize(c.nameJson, locale)}
+                  </Link>
+                );
+              })}
             </div>
           )}
           <button
