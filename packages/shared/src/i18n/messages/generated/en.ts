@@ -3487,17 +3487,23 @@ export const enWebMessages: Record<string, string> = {
   'marketing.whatsapp-bot.subtitle':
     'Book, ask, and track your appointments — everything via WhatsApp',
   'marketing.whatsapp-bot.title': 'WhatsApp Bot',
+  'marketing.womens-services.address': 'Address',
   'marketing.womens-services.back': 'Back',
   'marketing.womens-services.back-to-categories': '← Back to categories',
   'marketing.womens-services.book': 'Book',
   'marketing.womens-services.booked-title': 'Booked!',
+  'marketing.womens-services.booking-code': 'Booking code: {code}',
+  'marketing.womens-services.date': 'Date',
   'marketing.womens-services.duration-min': '{count} minutes',
   'marketing.womens-services.load-error': 'Failed to load services',
   'marketing.womens-services.login-cta': 'Log in to book',
   'marketing.womens-services.price-sar': '{price} SAR',
+  'marketing.womens-services.requested':
+    'Booking request received — a technician will confirm shortly',
   'marketing.womens-services.services-count': '{count} services',
   'marketing.womens-services.subtitle':
     'Specialized services for women — care, beauty, and wellness at every stage of your life',
+  'marketing.womens-services.time': 'Time',
   'marketing.womens-services.tips-title': 'Important tips',
   'marketing.womens-services.title': "Women's services",
   'marketplace.add': 'Add',
