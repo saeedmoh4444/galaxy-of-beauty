@@ -103,6 +103,15 @@ export const walletRouter = router({
   // -----------------------------------------------------------------------
   withdraw: technicianMutation.input(walletWithdrawSchema).mutation(async ({ ctx, input }) => {
     try {
+      // 0. Idempotency replay (audit M7): a repeat call with the same key
+      // must return the stored transaction — never debit twice.
+      const existingTxn = await prisma.walletTransaction.findUnique({
+        where: { idempotencyKey: input.idempotencyKey },
+      });
+      if (existingTxn) {
+        return existingTxn;
+      }
+
       // 1. Ensure wallet exists and check minimum balance
       const wallet = await ensureWallet(ctx.user.id);
 
@@ -134,38 +143,48 @@ export const walletRouter = router({
       const fee = Math.round(input.amount * WITHDRAWAL_FEE_RATE * 100) / 100;
       const netAmount = input.amount - fee;
 
-      // 5. Deduct from wallet balance
-      await prisma.wallet.update({
-        where: { id: wallet.id },
-        data: { balance: { decrement: input.amount } },
-      });
+      // 5-7. Debit + ledger + payout in ONE transaction (audit M7 — the
+      // three writes were separate: a duplicate idempotency key failed on
+      // the unique ledger insert AFTER the balance was already debited,
+      // losing funds). The conditional debit also makes a concurrent
+      // withdrawal race lose cleanly instead of overdrawing.
+      return prisma.$transaction(async (tx) => {
+        const debited = await tx.wallet.updateMany({
+          where: { id: wallet.id, balance: { gte: input.amount } },
+          data: { balance: { decrement: input.amount } },
+        });
+        if (debited.count === 0) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: `Insufficient balance. Available: ${Number(wallet.balance).toFixed(2)} SAR, Requested: ${input.amount} SAR`,
+          });
+        }
 
-      // 6. Create wallet transaction (DEBIT, WITHDRAWAL)
-      const transaction = await prisma.walletTransaction.create({
-        data: {
-          walletId: wallet.id,
-          type: 'DEBIT',
-          source: 'WITHDRAWAL',
-          amount: input.amount,
-          description: `Withdrawal of ${input.amount} SAR (fee: ${fee} SAR, net: ${netAmount} SAR)`,
-          idempotencyKey: input.idempotencyKey,
-        },
-      });
+        const transaction = await tx.walletTransaction.create({
+          data: {
+            walletId: wallet.id,
+            type: 'DEBIT',
+            source: 'WITHDRAWAL',
+            amount: input.amount,
+            description: `Withdrawal of ${input.amount} SAR (fee: ${fee} SAR, net: ${netAmount} SAR)`,
+            idempotencyKey: input.idempotencyKey,
+          },
+        });
 
-      // 7. Create Payout record (PENDING)
-      await prisma.payout.create({
-        data: {
-          technicianId: ctx.user.id,
-          periodStart: new Date(),
-          periodEnd: new Date(),
-          amount: netAmount,
-          fee,
-          status: 'PENDING',
-          reference: null,
-        },
-      });
+        await tx.payout.create({
+          data: {
+            technicianId: ctx.user.id,
+            periodStart: new Date(),
+            periodEnd: new Date(),
+            amount: netAmount,
+            fee,
+            status: 'PENDING',
+            reference: null,
+          },
+        });
 
-      return transaction;
+        return transaction;
+      });
     } catch (err) {
       if (err instanceof TRPCError) throw err;
       throw new TRPCError({
