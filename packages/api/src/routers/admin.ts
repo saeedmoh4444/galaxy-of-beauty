@@ -4,6 +4,7 @@ import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
+import { getSignedFileUrl } from '../lib/storage';
 
 export const adminRouter = router({
   dashboardStats: adminProcedure.query(async () => {
@@ -114,21 +115,30 @@ export const adminRouter = router({
       ]);
 
       return {
-        items: items.map((t) => ({
-          id: t.id,
-          userId: t.userId,
-          city: t.city,
-          area: t.area,
-          kycStatus: t.kycStatus,
-          kycDocuments: t.kycDocuments,
-          kycNotes: t.kycNotes,
-          isEcoFriendly: t.isEcoFriendly,
-          completedBookings: t.completedBookings,
-          ratingAvg: t.ratingAvg.toNumber(),
-          hourlyRate: t.hourlyRate.toNumber(),
-          suspendedAt: t.suspendedAt,
-          user: t.user,
-        })),
+        items: await Promise.all(
+          items.map(async (t) => ({
+            id: t.id,
+            userId: t.userId,
+            city: t.city,
+            area: t.area,
+            kycStatus: t.kycStatus,
+            // B1 — KYC documents are private objects; sign display URLs
+            // on read (legacy full URLs pass through untouched).
+            kycDocuments: await Promise.all(
+              ((t.kycDocuments ?? []) as Array<{ type: string; url: string }>).map(async (d) => ({
+                type: d.type,
+                url: (await getSignedFileUrl(d.url)) ?? d.url,
+              })),
+            ),
+            kycNotes: t.kycNotes,
+            isEcoFriendly: t.isEcoFriendly,
+            completedBookings: t.completedBookings,
+            ratingAvg: t.ratingAvg.toNumber(),
+            hourlyRate: t.hourlyRate.toNumber(),
+            suspendedAt: t.suspendedAt,
+            user: t.user,
+          })),
+        ),
         total,
         page: input.page,
         limit: input.limit,
