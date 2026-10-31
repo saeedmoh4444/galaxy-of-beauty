@@ -1996,14 +1996,27 @@ export const vendorPortalRouter = router({
         }
 
         // B2 — restore stock + sales, reversing the checkout-time effects.
-        const items = await tx.storeOrderItem.findMany({ where: { orderId: input.orderId } });
+        // Variant-aware (audit M12): a variant line decremented variant
+        // stock at placement — restoring only the base product inflated it.
+        const items = await tx.storeOrderItem.findMany({
+          where: { orderId: input.orderId },
+          select: { productId: true, quantity: true, variantId: true },
+        });
         for (const item of items) {
+          if (item.variantId) {
+            await tx.productVariant.update({
+              where: { id: item.variantId },
+              data: { stock: { increment: item.quantity } },
+            });
+          } else {
+            await tx.product.update({
+              where: { id: item.productId },
+              data: { stock: { increment: item.quantity } },
+            });
+          }
           await tx.product.update({
             where: { id: item.productId },
-            data: {
-              stock: { increment: item.quantity },
-              sales: { decrement: item.quantity },
-            },
+            data: { sales: { decrement: item.quantity } },
           });
         }
         await tx.vendor.update({

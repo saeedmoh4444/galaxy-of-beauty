@@ -230,4 +230,65 @@ describe('store order cancellation (B2a)', { sequential: true }, () => {
       /Store not found|Order not found/i,
     );
   });
+
+  it('cancelling a variant line restores variant stock, not base stock (audit M12)', async () => {
+    const variant = await prisma.productVariant.create({
+      data: {
+        productId,
+        nameJson: { ar: '٥٠ مل', en: '50ml' },
+        priceDelta: 5,
+        stock: 10,
+        isActive: true,
+      },
+    });
+    // Earlier tests in this file can leak sales (a rejected cancel never
+    // reverses its fixture increment) — capture the baselines BEFORE the
+    // simulated placement and assert the RELATIVE change.
+    const baseline = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
+    const baseStockBefore = baseline.stock;
+    const salesBefore = baseline.sales;
+
+    // Simulate the placement effects: variant stock down, sales up.
+    await prisma.productVariant.update({
+      where: { id: variant.id },
+      data: { stock: { decrement: 2 } },
+    });
+    await prisma.product.update({
+      where: { id: productId },
+      data: { sales: { increment: 2 } },
+    });
+
+    const order = await prisma.storeOrder.create({
+      data: {
+        vendorId,
+        customerId: customer.id,
+        totalAmount: 60,
+        itemCount: 2,
+        status: 'PENDING_FULFILLMENT',
+      },
+    });
+    orderIds.push(order.id);
+    await prisma.storeOrderItem.create({
+      data: {
+        orderId: order.id,
+        productId,
+        variantId: variant.id,
+        nameSnapshot: { ar: 'سيروم', en: 'Serum' },
+        priceSnapshot: 30,
+        quantity: 2,
+      },
+    });
+
+    const ownerCaller = await caller(owner);
+    const cancelled = await ownerCaller.vendorPortal.cancelOrder({ orderId: order.id });
+    expect(cancelled.status).toBe('CANCELLED');
+
+    const afterVariant = await prisma.productVariant.findUniqueOrThrow({
+      where: { id: variant.id },
+    });
+    expect(afterVariant.stock).toBe(10); // variant stock restored
+    const product = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
+    expect(product.stock).toBe(baseStockBefore); // base stock untouched
+    expect(product.sales).toBe(salesBefore); // sales reversed back to baseline
+  });
 });
