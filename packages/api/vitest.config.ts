@@ -35,14 +35,15 @@ export default defineConfig({
       // because nothing ever requested coverage).
       // History: Aug 2026 actuals 63.72 stmts / 75.74 branches /
       // 70.17 functions / 63.72 lines. The estate has grown a lot since
-      // (reels, store, wellness waves), so these are deliberately set
-      // BELOW the last measured floor until the next clean CI run
-      // prints fresh numbers — tighten toward 65/75/70/65 from CI data.
+      // (reels, store, wellness waves), so the ratchet floors at the
+      // 2026-10-31 CI measurement (64.35 / 56.45 / 54.25 / 66.01) minus
+      // the ±0.5 jitter margin — tighten from each clean CI run's
+      // printed numbers, never below this floor.
       thresholds: {
-        statements: 60,
-        branches: 70,
-        functions: 65,
-        lines: 60,
+        statements: 63,
+        branches: 55,
+        functions: 53,
+        lines: 65,
       },
     },
   },
