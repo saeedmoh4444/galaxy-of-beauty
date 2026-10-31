@@ -49,11 +49,13 @@ describe('Services — Browse & Search', () => {
   it('should filter services by category', async () => {
     const caller = await anonCaller();
     const cats = await caller.categories.list();
-    const catId = cats[0]?.id;
-    if (catId) {
-      const result = await caller.services.list({ page: 1, limit: 10, categoryId: catId });
-      expect(result.items.length).toBeGreaterThan(0);
-    }
+    // E1 — pin a REAL seeded category: long-lived dev DBs accumulate
+    // sortOrder-0 test-fixture categories that outrank the seed rows,
+    // so cats[0] is not deterministic (the old assertion flaked).
+    const cat = cats.find((c: { slug?: string }) => c.slug === 'hair-care');
+    expect(cat).toBeTruthy();
+    const result = await caller.services.list({ page: 1, limit: 10, categoryId: cat!.id });
+    expect(result.items.length).toBeGreaterThan(0);
   });
 
   it('should get service by ID with detail', async () => {
