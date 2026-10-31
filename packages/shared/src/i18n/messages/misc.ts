@@ -2678,6 +2678,10 @@ export const miscMessages = {
     ar: 'اشرح سبب النزاع بالتفصيل...',
     en: 'Explain the dispute reason in detail...',
   },
+  'disputes.descriptionPlaceholder': {
+    ar: 'تفاصيل إضافية (اختياري)',
+    en: 'Additional details (optional)',
+  },
   'disputes.submit': { ar: 'إرسال النزاع', en: 'Submit Dispute' },
   'cart.title': { ar: 'سلة التسوق', en: 'Shopping Cart' },
   'cart.subtitle': { ar: 'منتجات التجميل في سلتكِ', en: 'Beauty products in your cart' },
