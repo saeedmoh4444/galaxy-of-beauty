@@ -1,6 +1,12 @@
 # PLATFORM_TEST_PLAN.md — Honest Status Report
 
-> Date: 2026-08-03 | 63 commits | 297 tests | Authored by system audit
+> **HISTORICAL SNAPSHOT — 2026-08-03** | 63 commits | 297 tests | Authored by system audit
+>
+> **Superseded (2026-10-31):** the suite has grown to ~1,905 test cases with the
+> coverage ratchet enforced in CI — see
+> [AUDIT_2026-10-30.md](AUDIT_2026-10-30.md) and [LAUNCH_READINESS.md](LAUNCH_READINESS.md)
+> for current numbers. This file is kept as the historical record of the original
+> 3-phase test plan.
 
 ---
 

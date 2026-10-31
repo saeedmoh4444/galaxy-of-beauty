@@ -1,6 +1,6 @@
 # API Reference — Galaxy of Beauty
 
-> **242 tRPC routers, 14 domain modules**
+> **266 top-level tRPC routers (271 with nested), 1,204 procedures, 15 domain modules** (2026-10-31 — pinned by the router-inventory contract gate)
 > All endpoints are type-safe. No REST endpoints. Use the tRPC client.
 
 ---
