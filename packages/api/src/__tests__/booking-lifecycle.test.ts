@@ -5,6 +5,7 @@
  */
 import { describe, it, expect, beforeAll } from 'vitest';
 import { prisma } from '@galaxy/db';
+import crypto from 'crypto';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
@@ -151,10 +152,21 @@ describe('Booking lifecycle', () => {
     ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
   });
 
-  it('should run the full REQUESTED -> ACCEPTED -> IN_PROGRESS -> COMPLETED lifecycle', async () => {
+  it('should run the full REQUESTED -> ACCEPTED -> PAID -> IN_PROGRESS -> COMPLETED lifecycle', async () => {
     const booking = await createBooking();
     const techCaller = await authCaller(technician);
     await techCaller.bookings.transition({ id: booking.id, action: 'accept' });
+
+    // Cash at the venue: customer authorizes, technician confirms receipt.
+    const customerCaller = await authCaller(customer);
+    await customerCaller.payments.authorize({
+      bookingId: booking.id,
+      method: 'cash',
+      idempotencyKey: crypto.randomUUID(),
+    });
+    const captured = await techCaller.payments.capture({ bookingId: booking.id });
+    expect(captured.status).toBe('CAPTURED');
+
     await techCaller.bookings.transition({ id: booking.id, action: 'start' });
     const completed = await techCaller.bookings.transition({
       id: booking.id,
@@ -167,6 +179,57 @@ describe('Booking lifecycle', () => {
       where: { id: technicianRecordId },
     });
     expect(tech!.completedBookings).toBeGreaterThan(0);
+  });
+
+  it('should refuse to complete a booking whose payment was never captured', async () => {
+    const booking = await createBooking();
+    const techCaller = await authCaller(technician);
+    await techCaller.bookings.transition({ id: booking.id, action: 'accept' });
+    await techCaller.bookings.transition({ id: booking.id, action: 'start' });
+    await expect(
+      techCaller.bookings.transition({ id: booking.id, action: 'complete' }),
+    ).rejects.toMatchObject({ code: 'PRECONDITION_FAILED' });
+  });
+
+  it('should let a cash booking start before receipt capture but complete after it', async () => {
+    const booking = await createBooking();
+    const techCaller = await authCaller(technician);
+    const customerCaller = await authCaller(customer);
+    await techCaller.bookings.transition({ id: booking.id, action: 'accept' });
+    await customerCaller.payments.authorize({
+      bookingId: booking.id,
+      method: 'cash',
+      idempotencyKey: crypto.randomUUID(),
+    });
+    // CONFIRMED_OFFLINE -> IN_PROGRESS works; completion still needs capture.
+    const started = await techCaller.bookings.transition({ id: booking.id, action: 'start' });
+    expect(started.status).toBe('IN_PROGRESS');
+    await techCaller.payments.capture({ bookingId: booking.id });
+    const completed = await techCaller.bookings.transition({
+      id: booking.id,
+      action: 'complete',
+    });
+    expect(completed.status).toBe('COMPLETED');
+  });
+
+  it('should let the customer cancel a PAID booking', async () => {
+    const booking = await createBooking();
+    const techCaller = await authCaller(technician);
+    const customerCaller = await authCaller(customer);
+    await techCaller.bookings.transition({ id: booking.id, action: 'accept' });
+    await customerCaller.payments.authorize({
+      bookingId: booking.id,
+      method: 'cash',
+      idempotencyKey: crypto.randomUUID(),
+    });
+    await techCaller.payments.capture({ bookingId: booking.id });
+
+    const cancelled = await customerCaller.bookings.transition({
+      id: booking.id,
+      action: 'cancel',
+      reason: 'خطأ في الحجز',
+    });
+    expect(cancelled.status).toBe('CANCELLED');
   });
 
   it('should let the customer cancel an ACCEPTED booking and free the slot', async () => {
