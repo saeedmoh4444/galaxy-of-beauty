@@ -32,11 +32,29 @@ test('scan flags hardcoded Arabic but skips t() keys and comments', () => {
 });
 
 test('whole app has zero static Arabic outside the allowlist (gate)', () => {
-  const { findings } = scan(join(here, '../apps/mobile/src'));
+  const { findings } = scan(
+    join(here, '../apps/mobile/src'),
+    join(here, 'static-arabic-allowlist.txt'),
+  );
   assert.deepEqual(
     findings,
     [],
     `static Arabic outside t()/allowlist:\n${findings
+      .slice(0, 20)
+      .map((f) => `${f.file}:${f.line}`)
+      .join('\n')}`,
+  );
+});
+
+test('web app has zero static Arabic outside the web allowlist (F4 gate)', () => {
+  const { findings } = scan(
+    join(here, '../apps/web/src'),
+    join(here, 'static-arabic-web-allowlist.txt'),
+  );
+  assert.deepEqual(
+    findings,
+    [],
+    `web static Arabic outside t()/allowlist:\n${findings
       .slice(0, 20)
       .map((f) => `${f.file}:${f.line}`)
       .join('\n')}`,
