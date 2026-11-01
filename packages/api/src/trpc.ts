@@ -3,7 +3,7 @@ import { ZodError } from 'zod';
 import superjson from 'superjson';
 import { prisma } from '@galaxy/db';
 import type { Context } from './context';
-import { verifyCsrfToken } from './lib/csrf';
+import { verifyCsrfToken, shouldSkipCsrf } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
 import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/requestCounters';
 import { httpRequestsTotal, httpErrorsTotal } from './lib/metrics';
@@ -66,7 +66,9 @@ const csrfGuard = middleware(({ ctx, next }) => {
   // and have no ambient cookie jar for an attacker to ride, so the
   // browser CSRF threat model doesn't apply — skip the guard for them.
   // Browsers always send Origin on POST (fetch and form submissions).
-  if (!ctx.origin) return next();
+  // Native first-party clients (x-client-platform) are exempt — see
+  // shouldSkipCsrf in lib/csrf.ts.
+  if (shouldSkipCsrf(ctx.origin, ctx.clientPlatform)) return next();
 
   // Read CSRF cookie and header from the context
   const cookieToken = ctx.csrfCookie ?? null;
@@ -93,7 +95,7 @@ const csrfGuard = middleware(({ ctx, next }) => {
  */
 const procedureWithCsrf = procedure.use(({ ctx, next, type }) => {
   if (type !== 'mutation') return next();
-  if (!ctx.origin) return next();
+  if (shouldSkipCsrf(ctx.origin, ctx.clientPlatform)) return next();
   const cookieToken = ctx.csrfCookie ?? null;
   const headerToken = ctx.csrfHeader ?? null;
   if (!verifyCsrfToken(cookieToken, headerToken)) {
