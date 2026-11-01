@@ -67,6 +67,20 @@ export function isCsrfRequired(method: string): boolean {
   return !CSRF_SAFE_METHODS.has(method.toUpperCase());
 }
 
+/**
+ * Whether the CSRF pair check can be skipped for a request.
+ * - No Origin header → not a browser (native apps, curl, server-to-server):
+ *   there is no ambient cookie jar for an attacker to ride.
+ * - X-Client-Platform header → a first-party native client. Browsers can
+ *   never set custom headers in a cross-site form/fetch attack without a
+ *   CORS preflight, and the strict CORS allowlist refuses the preflight
+ *   from hostile origins — so the header's presence is itself the
+ *   cross-site defense.
+ */
+export function shouldSkipCsrf(origin: string | null, clientPlatform: string | null): boolean {
+  return !origin || !!clientPlatform;
+}
+
 // ── Cookie Setter ──────────────────────────────────────────
 
 /**

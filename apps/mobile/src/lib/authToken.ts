@@ -59,7 +59,12 @@ export function getAuthToken(): string | null {
 
 /** Headers to attach to every tRPC HTTP request. */
 export function getAuthHeaders(): Record<string, string> {
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  // x-client-platform marks first-party native requests: the API exempts
+  // them from the browser CSRF pair check (see shouldSkipCsrf). Browsers
+  // cannot forge this cross-site (CORS preflight + strict allowlist).
+  return token
+    ? { Authorization: `Bearer ${token}`, 'x-client-platform': 'expo' }
+    : { 'x-client-platform': 'expo' };
 }
 
 // ── Refresh token (mobile session longevity — audit D1) ─────────

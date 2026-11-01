@@ -46,6 +46,9 @@ const handler = async (req: NextRequest) => {
   // ── Origin header (null for non-browser clients like the mobile app) ──
   const origin = req.headers.get('origin') ?? null;
 
+  // ── First-party native client marker (CSRF exemption) ──
+  const clientPlatform = req.headers.get('x-client-platform') ?? null;
+
   // ── Correlation ID for request tracing ──
   const correlationId = req.headers.get('x-request-id') ?? crypto.randomUUID?.() ?? 'unknown';
 
@@ -73,6 +76,7 @@ const handler = async (req: NextRequest) => {
         csrfHeader,
         apiKey,
         origin,
+        clientPlatform,
         isProduction,
         clientIp,
         correlationId,

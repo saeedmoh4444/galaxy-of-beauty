@@ -3,10 +3,25 @@ import {
   generateCsrfToken,
   verifyCsrfToken,
   isCsrfRequired,
+  shouldSkipCsrf,
   buildCsrfCookie,
   getCsrfCookieName,
   getCsrfHeaderName,
 } from '../lib/csrf';
+
+describe('shouldSkipCsrf', () => {
+  it('skips for non-browser requests without an Origin header', () => {
+    expect(shouldSkipCsrf(null, null)).toBe(true);
+  });
+
+  it('skips for first-party native clients even when Origin is present', () => {
+    expect(shouldSkipCsrf('exp://192.168.179.1:8083', 'expo')).toBe(true);
+  });
+
+  it('enforces for browser requests without the platform marker', () => {
+    expect(shouldSkipCsrf('http://localhost:3000', null)).toBe(false);
+  });
+});
 
 describe('CSRF Token', () => {
   describe('generateCsrfToken', () => {
