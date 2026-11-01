@@ -11,7 +11,11 @@ import { OfflineBanner } from '@/components/OfflineBanner';
 import { ToastProvider, DEFAULT_LOCAL_URL } from '@galaxy/ui';
 import './globals.css';
 
-export const dynamic = 'force-dynamic';
+// NOTE (audit C2): no explicit `dynamic = 'force-dynamic'` here anymore.
+// Routes are dynamic whenever the tree reads request data — this layout
+// reads cookies() for the locale, so every route already renders
+// per-request. Per-page `revalidate`/ISR stays neutralized by that read
+// until locales move to URL paths (see lib/seo.ts hreflang note).
 
 export const viewport: Viewport = {
   // Brand status-bar color — matches the mobile splash/android background.

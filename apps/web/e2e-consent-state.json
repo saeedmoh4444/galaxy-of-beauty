@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "gob_cookie_consent",
+          "value": "{\"level\":\"necessary\",\"date\":\"2026-11-01T00:00:00.000Z\"}"
+        }
+      ]
+    }
+  ]
+}

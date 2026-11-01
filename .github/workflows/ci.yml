@@ -164,7 +164,15 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
         uses: rharkor/caching-for-turbo@v2.5.2
+      # C2: the root layout no longer force-dynamics every route, so Next
+      # prerenders pages at build and page modules may touch the API env
+      # schema. CI build secrets are placeholders — they only satisfy
+      # validation, nothing connects at build time.
       - run: pnpm turbo run build
+        env:
+          DATABASE_URL: 'postgresql://ci_build:ci_build_pass@localhost:5432/ci_build_db?schema=public'
+          JWT_ACCESS_SECRET: 'ci-build-access-key-0123456789abcdef-not-for-prod'
+          JWT_REFRESH_SECRET: 'ci-build-refresh-key-fedcba9876543210-not-for-prod'
       - run: node scripts/check-size-budgets.mjs
 
   # ── E2E Tests ─────────────────────────────────────────────
@@ -173,9 +181,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     # 2026-10-22: the suite outgrew 35min (315 tests × 3 browser projects
-    # ≈ 40min) and the job was being killed mid-pass. 60 buys headroom;
-    # per-project sharding is the follow-up (see docs/architecture notes).
-    timeout-minutes: 60
+    # ≈ 40min) and the job was being killed mid-pass. 60 no longer buys
+    # headroom (the suite passed 440 tests + the consent-banner epoch);
+    # 90 buys it; per-project sharding is the follow-up.
+    timeout-minutes: 90
     services:
       postgres:
         image: postgres:15-alpine
