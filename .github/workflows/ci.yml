@@ -181,9 +181,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     # 2026-10-22: the suite outgrew 35min (315 tests × 3 browser projects
-    # ≈ 40min) and the job was being killed mid-pass. 60 buys headroom;
-    # per-project sharding is the follow-up (see docs/architecture notes).
-    timeout-minutes: 60
+    # ≈ 40min) and the job was being killed mid-pass. 60 no longer buys
+    # headroom (the suite passed 440 tests + the consent-banner epoch);
+    # 90 buys it; per-project sharding is the follow-up.
+    timeout-minutes: 90
     services:
       postgres:
         image: postgres:15-alpine

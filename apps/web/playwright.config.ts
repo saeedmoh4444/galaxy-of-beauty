@@ -11,6 +11,10 @@ export default defineConfig({
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // C2 — the PDPL consent banner (fixed-bottom overlay) is mounted on
+    // every page; pre-seed consent so tests exercise content instead of
+    // the banner covering bottom-anchored controls.
+    storageState: './e2e-consent-state.json',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
