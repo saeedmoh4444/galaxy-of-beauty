@@ -164,6 +164,18 @@ export function getDisputesQueue(): Queue | null {
   }
 }
 
+// C1 — payment reconciliation (daily gateway-vs-local diff).
+let _reconciliationQueue: Queue | null = null;
+export function getReconciliationQueue(): Queue | null {
+  if (_reconciliationQueue) return _reconciliationQueue;
+  try {
+    _reconciliationQueue = createQueue('gob-reconciliation');
+    return _reconciliationQueue;
+  } catch {
+    return null;
+  }
+}
+
 // B3 — review reply reminder sweep (unanswered reviews past 48h).
 let _reviewsQueue: Queue | null = null;
 export function getReviewsQueue(): Queue | null {
@@ -229,5 +241,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     disputes: getDisputesQueue(),
     reviews: getReviewsQueue(),
     media: getMediaQueue(),
+    reconciliation: getReconciliationQueue(),
   };
 }
