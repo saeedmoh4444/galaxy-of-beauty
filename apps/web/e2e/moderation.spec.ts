@@ -12,6 +12,15 @@ async function loginAsAdmin(page: import('@playwright/test').Page) {
   await page.getByPlaceholder('example@email.com').fill(ADMIN_EMAIL);
   await page.getByPlaceholder('••••••••').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'دخول' }).click();
+  // Pre-hydration click flake: the first click can fire before the page
+  // hydrates (native GET, no POST) — retry once if the URL didn't move.
+  const moved = await page
+    .waitForURL(/\/admin\//, { timeout: 15_000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!moved) {
+    await page.getByRole('button', { name: 'دخول' }).click();
+  }
   await expect(page).toHaveURL(/\/admin\//, { timeout: 60_000 });
 }
 
@@ -41,8 +50,8 @@ test('admin resolves a report: hide removes the content from the public feed', a
   const before = await publicFeedContents(page);
   expect(before).toContain(FIXTURE_CONTENT);
 
-  // Hide it.
-  await reportRow.first().getByRole('button', { name: 'إخفاء' }).click();
+  // Hide it. (exact: the "hide + suspend" button also contains "إخفاء".)
+  await reportRow.first().getByRole('button', { name: 'إخفاء', exact: true }).click();
 
   // The queue empties (this row is gone).
   await expect(page.getByText(FIXTURE_CONTENT)).toHaveCount(0, { timeout: 15_000 });
