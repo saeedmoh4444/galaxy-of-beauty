@@ -9,6 +9,7 @@ import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/
 import { httpRequestsTotal, httpErrorsTotal } from './lib/metrics';
 import { recordSloRequest, recordSloError, recordSloLatency } from './lib/slo';
 import { startProcedureSpan } from './lib/tracing';
+import { requestContext } from './lib/requestContext';
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -44,18 +45,22 @@ const requestCounter = t.middleware(async ({ next, path }) => {
 
 // ── 7.3 Tracing Middleware — span per procedure (noop when OTEL off) ──
 const tracingGuard = t.middleware(async ({ ctx, path, type, next }) => {
-  const span = startProcedureSpan(path, type as 'query' | 'mutation', {
-    'user.id': ctx.user?.id ?? 'anonymous',
+  // B2 — every procedure runs inside the ambient request context so deep
+  // call chains (notify, jobs) can read the correlation id.
+  return requestContext.run({ correlationId: ctx.correlationId ?? null }, async () => {
+    const span = startProcedureSpan(path, type as 'query' | 'mutation', {
+      'user.id': ctx.user?.id ?? 'anonymous',
+    });
+    try {
+      // tRPC v11: downstream errors do NOT reject next() — they arrive as
+      // result.ok === false, so record the exception from the result.
+      const result = await next();
+      if (!result.ok) span.recordException(result.error as Error);
+      return result;
+    } finally {
+      span.end();
+    }
   });
-  try {
-    // tRPC v11: downstream errors do NOT reject next() — they arrive as
-    // result.ok === false, so record the exception from the result.
-    const result = await next();
-    if (!result.ok) span.recordException(result.error as Error);
-    return result;
-  } finally {
-    span.end();
-  }
 });
 
 export const { router, procedure, middleware, mergeRouters } = t;

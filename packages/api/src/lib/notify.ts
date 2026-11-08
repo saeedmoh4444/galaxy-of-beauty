@@ -14,6 +14,7 @@
  */
 import { prisma } from '@galaxy/db';
 import { getNotificationQueue } from '../queues';
+import { getCorrelationId } from '../lib/requestContext';
 
 export type NotifyVars = Record<string, string | number>;
 
@@ -113,6 +114,7 @@ export async function notifyUser({
           channels: external,
           link,
           data,
+          correlationId: getCorrelationId() ?? undefined,
           skipInApp: true, // the row above already exists
         },
         { attempts: 3, backoff: { type: 'exponential', delay: 1000 } },

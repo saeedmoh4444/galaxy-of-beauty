@@ -24,6 +24,7 @@ import { ensureStoreTechnician } from '../lib/storeServices';
 // bookings.ts) instead of drifting a parallel one.
 import { VALID_TRANSITIONS, ACTION_TO_STATUS } from './bookings';
 import { emitToUser, emitToAdmin } from '../socket/index';
+import { getCorrelationId } from '../lib/requestContext';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -2888,6 +2889,7 @@ export const vendorPortalRouter = router({
         vendorId: vendor.id,
         userId: ctx.user.id,
         csv: input.csv,
+        correlationId: getCorrelationId() ?? undefined,
       });
       return { jobId: String(job.id) };
     }),

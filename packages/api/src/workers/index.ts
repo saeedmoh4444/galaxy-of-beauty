@@ -11,6 +11,7 @@
 
 import { Worker, type Job } from 'bullmq';
 import { getRedisForBull } from '../lib/redis';
+import { requestContext } from '../lib/requestContext';
 import {
   handleWalletJob,
   handleLoyaltyJob,
@@ -59,19 +60,38 @@ function createWorker(
     console.warn(`[Worker] Redis unavailable — cannot create worker for "${queueName}"`);
     return null;
   }
-  const worker = new Worker(queueName, handler, {
-    connection: redis,
-    concurrency,
-    autorun: true,
-    removeOnComplete: { age: 3600 * 24 },
-    removeOnFail: { age: 3600 * 24 * 7 },
-  });
+  const worker = new Worker(
+    queueName,
+    // B2 — re-establish the ambient request context from the job's own
+    // correlationId so jobs that enqueue further jobs keep the chain's id.
+    (job) =>
+      requestContext.run(
+        {
+          correlationId:
+            (job.data as { correlationId?: string } | undefined)?.correlationId ?? null,
+        },
+        () => handler(job),
+      ),
+    {
+      connection: redis,
+      concurrency,
+      autorun: true,
+      removeOnComplete: { age: 3600 * 24 },
+      removeOnFail: { age: 3600 * 24 * 7 },
+    },
+  );
 
   worker.on('completed', (job) => {
-    console.log(`[Worker]  ${queueName} #${job.id} completed (${job.name})`);
+    const cid = (job.data as { correlationId?: string } | undefined)?.correlationId;
+    console.log(
+      `[Worker] ${cid ? `[${cid}] ` : ''}${queueName} #${job.id} completed (${job.name})`,
+    );
   });
   worker.on('failed', (job, err) => {
-    console.error(`[Worker]  ${queueName} #${job?.id} failed: ${err.message}`);
+    const cid = (job?.data as { correlationId?: string } | undefined)?.correlationId;
+    console.error(
+      `[Worker] ${cid ? `[${cid}] ` : ''}${queueName} #${job?.id} failed: ${err.message}`,
+    );
   });
   worker.on('error', (err) => {
     console.error(`[Worker]  ${queueName} error: ${err.message}`);

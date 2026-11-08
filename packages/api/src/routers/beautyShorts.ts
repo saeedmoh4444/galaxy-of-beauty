@@ -10,6 +10,7 @@ import {
 } from '../trpc';
 import { resolveVendorActor } from './vendorPortal';
 import { getMediaQueue } from '../queues';
+import { getCorrelationId } from '../lib/requestContext';
 
 const db = prisma;
 
@@ -436,7 +437,7 @@ export const beautyShortsRouter = router({
         const mediaQueue = getMediaQueue();
         void mediaQueue?.add(
           'media.process-short',
-          { shortId: created.id },
+          { shortId: created.id, correlationId: getCorrelationId() ?? undefined },
           { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
         );
       }
