@@ -346,7 +346,7 @@ export const marketplaceRouter = router({
     // B3 — recent reviews WITH owner replies (the loop customers see).
     const recentReviews = (
       await prisma.productReview.findMany({
-        where: { product: { vendorId: vendor.id } },
+        where: { product: { vendorId: vendor.id }, isHidden: false },
         orderBy: { createdAt: 'desc' },
         take: 5,
         select: {
@@ -812,7 +812,7 @@ export const marketplaceRouter = router({
       const skip = (input.page - 1) * input.limit;
       const [items, total] = await Promise.all([
         prisma.productReview.findMany({
-          where: { productId: input.productId },
+          where: { productId: input.productId, isHidden: false },
           include: { user: { select: { name: true, avatarUrl: true } } },
           orderBy: { createdAt: 'desc' },
           skip,

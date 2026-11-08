@@ -31,11 +31,12 @@ export const communityRouter = router({
       const skip = (input.page - 1) * input.limit;
       const [posts, total] = await Promise.all([
         db.communityPost.findMany({
+          where: { isHidden: false },
           orderBy: { createdAt: 'desc' },
           skip,
           take: input.limit,
         }),
-        db.communityPost.count(),
+        db.communityPost.count({ where: { isHidden: false } }),
       ]);
       const commentCounts = await db.communityComment.groupBy({
         by: ['postId'],
@@ -103,7 +104,7 @@ export const communityRouter = router({
     )
     .query(async ({ input }) => {
       const rows = await db.communityComment.findMany({
-        where: { postId: input.postId },
+        where: { postId: input.postId, isHidden: false },
         orderBy: { createdAt: 'asc' },
         take: input.limit,
       });
@@ -130,7 +131,7 @@ export const communityRouter = router({
   trending: protectedProcedure.query(async () => {
     const weekAgo = new Date(Date.now() - MS_PER_WEEK);
     const posts = await db.communityPost.findMany({
-      where: { createdAt: { gte: weekAgo } },
+      where: { createdAt: { gte: weekAgo }, isHidden: false },
       orderBy: { likes: 'desc' },
       take: SMALL_PAGE_SIZE,
     });
