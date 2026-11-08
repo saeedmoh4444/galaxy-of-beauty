@@ -20,7 +20,7 @@ async function publicFeedContents(page: import('@playwright/test').Page): Promis
   const batch = await page.evaluate(async () => {
     const url =
       '/api/trpc/community.feed?batch=1&input=' +
-      encodeURIComponent(JSON.stringify({ '0': { json: null } }));
+      encodeURIComponent(JSON.stringify({ '0': { json: {} } }));
     const res = await fetch(url, { credentials: 'include' });
     return res.json();
   });
