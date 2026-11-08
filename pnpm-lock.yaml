@@ -91,8 +91,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/ui
       '@lottiefiles/dotlottie-react':
-        specifier: ^0.20.0
-        version: 0.20.0(react@19.3.1)
+        specifier: ^0.21.0
+        version: 0.21.1(react@19.3.1)
       '@react-native-async-storage/async-storage':
         specifier: 2.2.0
         version: 2.2.0(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1))
@@ -158,7 +158,7 @@ importers:
         version: 58.0.13(expo@58.0.21)(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       lottie-react-native:
         specifier: ~7.5.0
-        version: 7.5.0(@lottiefiles/dotlottie-react@0.20.0(react@19.3.1))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
+        version: 7.5.0(@lottiefiles/dotlottie-react@0.21.1(react@19.3.1))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -1782,14 +1782,14 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@lottiefiles/dotlottie-react@0.20.0':
-    resolution: {integrity: sha512-M4HLo6RxNTbYwByZw7ns2zaGgPx0PpGZU1xfyMdj8VEoTasSJ1uhsJZjl+l55TPQ7g0soF7JVHEJLTOv1TIeMA==}
+  '@lottiefiles/dotlottie-react@0.21.1':
+    resolution: {integrity: sha512-y5ec2Ipko1TvUfoUmS9zn+g0Ud+oYtUEJS5Xj27edv1kO8ZAowoA2v6DUWNniZ/+A9m5wjEswqPzShOK6+pdAw==}
     engines: {node: '>=18.17.0', npm: '>=9.5.0'}
     peerDependencies:
       react: ^17 || ^18 || ^19
 
-  '@lottiefiles/dotlottie-web@0.81.0':
-    resolution: {integrity: sha512-BmX/+0eaK2unVexuB0VZLvBsax2BS8fLwwIdUqF4AO9C7tFw97eTi90C//20QVK4q08SDhnnszysCGX0Qt7XPA==}
+  '@lottiefiles/dotlottie-web@0.82.1':
+    resolution: {integrity: sha512-hLPdAL0dUeHKvQvXqw1p3FtvzZUHRtBsTMt3FLLgphFThsUPNUj2+U+GyttJ5H5qSt5JreLzoaD+IaKO8H/VnA==}
     engines: {node: '>=18.17.0', npm: '>=9.5.0'}
 
   '@mediapipe/tasks-vision@1.2.0':
@@ -9328,12 +9328,12 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@lottiefiles/dotlottie-react@0.20.0(react@19.3.1)':
+  '@lottiefiles/dotlottie-react@0.21.1(react@19.3.1)':
     dependencies:
-      '@lottiefiles/dotlottie-web': 0.81.0
+      '@lottiefiles/dotlottie-web': 0.82.1
       react: 19.3.1
 
-  '@lottiefiles/dotlottie-web@0.81.0': {}
+  '@lottiefiles/dotlottie-web@0.82.1': {}
 
   '@mediapipe/tasks-vision@1.2.0': {}
 
@@ -13634,12 +13634,12 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
-  lottie-react-native@7.5.0(@lottiefiles/dotlottie-react@0.20.0(react@19.3.1))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1):
+  lottie-react-native@7.5.0(@lottiefiles/dotlottie-react@0.21.1(react@19.3.1))(react-native@0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1):
     dependencies:
       react: 19.3.1
       react-native: 0.88.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.1)
     optionalDependencies:
-      '@lottiefiles/dotlottie-react': 0.20.0(react@19.3.1)
+      '@lottiefiles/dotlottie-react': 0.21.1(react@19.3.1)
 
   lottie-react@3.1.2(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
