@@ -101,6 +101,10 @@ const handler = async (req: NextRequest) => {
     response.headers.append('Set-Cookie', buildCsrfCookie(token, isProduction));
   }
 
+  // B2 — echo the correlation id so clients can attach it to their own
+  // error reports (Sentry extras, support tickets).
+  response.headers.set('X-Request-ID', correlationId);
+
   return response;
 };
 

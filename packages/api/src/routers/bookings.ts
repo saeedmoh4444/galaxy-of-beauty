@@ -14,6 +14,7 @@ import { creditLoyaltyPoints, LOYALTY_REFERRAL_POINTS } from '../lib/loyalty';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
 import { notifyUser } from '../lib/notify';
+import { getCorrelationId } from '../lib/requestContext';
 import {
   getWalletQueue,
   getLoyaltyQueue,
@@ -542,6 +543,7 @@ export const bookingRouter = router({
           bookingId: booking.id,
           amount: cashback,
           idempotencyKey: idemKey ? `${idemKey}_cashback` : undefined,
+          correlationId: getCorrelationId() ?? undefined,
         } as CashbackJob),
 
         // Loyalty points
@@ -551,6 +553,7 @@ export const bookingRouter = router({
           points,
           reason: 'booking',
           idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
+          correlationId: getCorrelationId() ?? undefined,
         } as LoyaltyPointsJob),
 
         // Notification to technician (template-driven)
@@ -580,6 +583,7 @@ export const bookingRouter = router({
           endAt: input.endAt,
           summary: `Booking #${booking.bookingCode}`,
           idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
+          correlationId: getCorrelationId() ?? undefined,
         } as CalendarSyncJob),
       ]);
 
@@ -594,7 +598,12 @@ export const bookingRouter = router({
           if (delay > 0) {
             await reminderQueue.add(
               'booking.reminder',
-              { bookingId: booking.id, date: notifVars.date, time: notifVars.time },
+              {
+                bookingId: booking.id,
+                date: notifVars.date,
+                time: notifVars.time,
+                correlationId: getCorrelationId() ?? undefined,
+              },
               { delay, jobId: `reminder_${booking.id}_${hoursBefore}h` },
             );
           }

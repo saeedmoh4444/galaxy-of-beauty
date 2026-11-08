@@ -5,6 +5,7 @@
  */
 import { prisma } from '@galaxy/db';
 import { getWebhooksQueue } from '../queues';
+import { getCorrelationId } from '../lib/requestContext';
 
 export type WebhookEventName = 'order.placed' | 'order.fulfilled' | 'stock.low';
 
@@ -27,7 +28,7 @@ export async function enqueueWebhookEvents(
     try {
       await queue.add(
         'webhook.deliver',
-        { webhookId: webhook.id, event, payload },
+        { webhookId: webhook.id, event, payload, correlationId: getCorrelationId() ?? undefined },
         { attempts: 5, backoff: { type: 'exponential', delay: 2000 } },
       );
     } catch {
