@@ -22,5 +22,8 @@ test('the built web bundle ships the Sentry client SDK (DSN-gated)', async ({ pa
       return res.ok() ? res.text() : '';
     }),
   );
-  expect(bodies.join('')).toContain('Sentry.init');
+  // The imported namespace gets renamed by minification, so don't assert
+  // the literal "Sentry.init" — object-literal keys survive terser, and
+  // this one only exists in our client config.
+  expect(bodies.join('')).toContain('replaysOnErrorSampleRate');
 });
