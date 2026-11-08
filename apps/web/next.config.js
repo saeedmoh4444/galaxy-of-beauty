@@ -140,10 +140,13 @@ const nextConfig = {
 // build-time source-map upload). Upload only happens when a token exists;
 // without one the plugin is inert and the SDK still no-ops at runtime
 // (DSN-gated configs).
-import sentryPkg from '@sentry/nextjs'; // CJS package — interop varies across Next loaders
-const sentryModule =
-  sentryPkg && typeof sentryPkg.withSentryConfig === 'function' ? sentryPkg : sentryPkg.default;
-const { withSentryConfig } = sentryModule;
+// @sentry/nextjs ships CJS; Next 16's config loader interops ESM imports
+// of it inconsistently (named import, default import, and default.default
+// all failed in CI). createRequire is the one loading path that cannot
+// be re-interpreted.
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { withSentryConfig } = require('@sentry/nextjs');
 
 export default withSentryConfig(nextConfig, {
   silent: true,
