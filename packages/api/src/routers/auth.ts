@@ -248,42 +248,44 @@ export const authRouter = router({
   // ──────────────────────────────────────────────────────
   login: publicMutation.input(loginSchema).mutation(async ({ input, ctx }) => {
     try {
-      // ── Rate limiting: 5 attempts per 15 minutes per email ──
       const lockoutKey = `login_attempts:${input.email}`;
-      const attempts = await incrementAttempts(lockoutKey, 900); // 15 min window
-      if (attempts > MAX_AUTH_ATTEMPTS) {
-        audit({
-          event: 'LOGIN_LOCKOUT',
-          targetType: 'User',
-          outcome: 'failure',
-          metadata: { email: input.email },
-          clientIp: ctx.clientIp,
-        });
-        throw new TRPCError({
-          code: 'TOO_MANY_REQUESTS',
-          message: 'Too many login attempts. Please try again in 15 minutes.',
-        });
-      }
 
       // ── Find user ──
       const user = await prisma.user.findUnique({
         where: { email: input.email },
       });
-      if (!user) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Invalid email or password',
-        });
-      }
 
       // ── Verify password ──
-      const valid = await verifyPassword(input.password, user.passwordHash);
-      if (!valid) {
+      const valid = user ? await verifyPassword(input.password, user.passwordHash) : false;
+
+      // Rate limiting: 5 FAILED attempts per 15 minutes per email.
+      // Counting only failures (and resetting on success) keeps the
+      // lockout a brute-force defense — successful logins must never
+      // accumulate toward it. The old counter incremented on every
+      // attempt, so parallel test/browser traffic tripped the lockout
+      // on legitimate users.
+      if (!user || !valid) {
+        const attempts = await incrementAttempts(lockoutKey, 900); // 15 min window
+        if (attempts > MAX_AUTH_ATTEMPTS) {
+          audit({
+            event: 'LOGIN_LOCKOUT',
+            targetType: 'User',
+            outcome: 'failure',
+            metadata: { email: input.email },
+            clientIp: ctx.clientIp,
+          });
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many login attempts. Please try again in 15 minutes.',
+          });
+        }
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'Invalid email or password',
         });
       }
+      // Success clears the failed-attempt streak.
+      await resetAttempts(lockoutKey);
 
       if (!user.isActive) {
         throw new TRPCError({
