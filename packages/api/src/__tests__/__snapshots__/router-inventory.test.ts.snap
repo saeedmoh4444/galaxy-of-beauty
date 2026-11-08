@@ -622,6 +622,10 @@ menopause.library	query	customer
 menopause.logSymptom	mutation	customer
 menopause.setMode	mutation	customer
 menopause.status	query	customer
+moderation.myReports	query	customer
+moderation.queue	query	admin
+moderation.report	mutation	customer
+moderation.resolve	mutation	admin
 monitoring.errorsFeed	query	admin
 monitoring.health	query	admin
 monitoring.quickStatus	query	admin

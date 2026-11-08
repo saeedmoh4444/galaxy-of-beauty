@@ -116,6 +116,9 @@ import {
 // Safety
 import { safetyRouter } from '../domains/safety';
 
+// Moderation
+import { moderationRouter } from '../domains/moderation';
+
 // Admin
 import {
   adminRouter,
@@ -508,6 +511,7 @@ export const appRouter = router({
   aiFeatures: aiFeaturesRouter,
   aiRoutine: aiRoutineRouter,
   skinAnalysis: skinAnalysisRouter,
+  moderation: moderationRouter,
   virtualTryOn: virtualTryOnRouter,
   contentGen: contentGenRouter,
   hairColorSim: hairColorSimRouter,
