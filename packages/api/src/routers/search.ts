@@ -48,16 +48,26 @@ export const searchRouter = router({
     };
 
     // If ILIKE search is available, use it for better Arabic matching
+    let relevanceIds: number[] | null = null;
+    let titleMatchIds: number[] = [];
     try {
-      const ilikeResults = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
-        `SELECT id FROM services WHERE "isActive" = true AND (${jsonbPath} ILIKE $1 OR ${descPath} ILIKE $1) LIMIT $2`,
+      const titleMatches = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+        `SELECT id FROM services WHERE "isActive" = true AND ${jsonbPath} ILIKE $1 LIMIT $2`,
         `%${query}%`,
-        limit,
+        200,
       );
-      if (ilikeResults.length > 0) {
-        // Boost ILIKE-matched services to the top
-        const ilikeIds = ilikeResults.map((r) => r.id);
-        serviceWhere['id'] = { in: ilikeIds };
+      titleMatchIds = titleMatches.map((r) => r.id);
+      const descMatches = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+        `SELECT id FROM services WHERE "isActive" = true AND ${descPath} ILIKE $1 AND NOT (${jsonbPath} ILIKE $1) LIMIT $2`,
+        `%${query}%`,
+        200,
+      );
+      const combined = [...titleMatchIds, ...descMatches.map((r) => r.id)];
+      if (combined.length > 0) {
+        // C3 — title matches rank before description-only matches; the
+        // narrowed set is ordered in memory (see below).
+        relevanceIds = combined;
+        serviceWhere['id'] = { in: combined };
       }
     } catch {
       // ILIKE not available or failed — fall back to Prisma string_contains
@@ -83,16 +93,36 @@ export const searchRouter = router({
         orderBy = { createdAt: 'desc' };
     }
 
-    const [services, serviceTotal] = await Promise.all([
+    // C3 relevance: when ILIKE narrowing is active, rank title matches
+    // first and description-only matches after, then paginate in memory.
+    // Fetch an over-window (skip + 2×limit) so the JS sort sees enough
+    // rows; the narrowed set is bounded by the raw LIMIT 200 above.
+    const fetchTake = relevanceIds ? (skip + limit) * 2 : limit;
+    const fetchSkip = relevanceIds ? 0 : skip;
+
+    const [servicesRaw, serviceTotal] = await Promise.all([
       prisma.service.findMany({
         where: serviceWhere as never,
         include: { category: { select: { id: true, nameJson: true } } },
         orderBy: orderBy as never,
-        skip,
-        take: limit,
+        skip: fetchSkip,
+        take: fetchTake,
       }),
       prisma.service.count({ where: serviceWhere as never }),
     ]);
+
+    let services = servicesRaw;
+    if (relevanceIds) {
+      const titleSet = new Set(titleMatchIds);
+      services = [...servicesRaw]
+        .sort((a, b) => {
+          const aTitle = titleSet.has(a.id) ? 0 : 1;
+          const bTitle = titleSet.has(b.id) ? 0 : 1;
+          if (aTitle !== bTitle) return aTitle - bTitle;
+          return Number(b.createdAt.getTime() - a.createdAt.getTime());
+        })
+        .slice(skip, skip + limit);
+    }
 
     const techWhere: Record<string, unknown> = {
       user: { isActive: true, role: 'TECHNICIAN' },
