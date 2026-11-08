@@ -342,11 +342,13 @@ jobs:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
           JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
           JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
+      - name: Install k6 (runner network — the action's container can't reach localhost)
+        run: |
+          curl -sSL https://github.com/grafana/k6/releases/download/v2.3.0/k6-v2.3.0-linux-amd64.tar.gz | tar xz
+          sudo mv k6-v2.3.0-linux-amd64/k6 /usr/local/bin/k6
+          k6 version
       - name: Run k6 Gate
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: scripts/load/ci-gate.js
-          flags: --env TARGET_URL=http://localhost:3000
+        run: k6 run scripts/load/ci-gate.js --env TARGET_URL=http://localhost:3000
 
   # ── Docker Build ──────────────────────────────────────────
   docker:
