@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { notFound, forbidden } from '../lib/errors';
+import { matchesBlocklist } from '../lib/moderationBlocklist';
 import { creditLoyaltyPoints, LOYALTY_REVIEW_POINTS } from '../lib/loyalty';
 import {
   router,
@@ -44,6 +45,13 @@ export const reviewRouter = router({
         throw new TRPCError({
           code: 'PRECONDITION_FAILED',
           message: 'Can only review completed bookings',
+        });
+      }
+
+      if (matchesBlocklist(comment ?? '')) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Content violates our community guidelines',
         });
       }
 
