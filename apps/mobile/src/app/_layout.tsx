@@ -10,6 +10,11 @@ import { loadAuthToken, loadAuthRefreshToken } from '@/lib/authToken';
 import { useNotifications } from '@/hooks/useNotifications';
 import { LocaleProvider, useLocale } from '@/components/LocaleProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { initSentry } from '@/lib/sentry';
+
+// B1 — Sentry must be live before any screen renders (crash coverage for
+// the render tree). No-op without EXPO_PUBLIC_SENTRY_DSN.
+initSentry();
 
 function RootNavigator() {
   const { t } = useLocale();
