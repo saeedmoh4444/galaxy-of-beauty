@@ -140,8 +140,10 @@ const nextConfig = {
 // build-time source-map upload). Upload only happens when a token exists;
 // without one the plugin is inert and the SDK still no-ops at runtime
 // (DSN-gated configs).
-import sentryPkg from '@sentry/nextjs'; // CJS package — named exports break under ESM configs
-const { withSentryConfig } = sentryPkg;
+import sentryPkg from '@sentry/nextjs'; // CJS package — interop varies across Next loaders
+const sentryModule =
+  sentryPkg && typeof sentryPkg.withSentryConfig === 'function' ? sentryPkg : sentryPkg.default;
+const { withSentryConfig } = sentryModule;
 
 export default withSentryConfig(nextConfig, {
   silent: true,
