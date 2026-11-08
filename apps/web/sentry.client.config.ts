@@ -16,3 +16,13 @@ Sentry.init({
     return event;
   },
 });
+
+// B1 smoke marker — the E2E gate polls this to prove the config actually
+// ran in the browser (v11 no longer stamps __SENTRY__ at module load).
+window.__GOB_SENTRY_READY__ = true;
+
+declare global {
+  interface Window {
+    __GOB_SENTRY_READY__?: boolean;
+  }
+}
