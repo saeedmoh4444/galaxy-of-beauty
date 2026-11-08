@@ -328,11 +328,16 @@ jobs:
         run: |
           pnpm --filter @galaxy/web exec next start --port 3000 &
           SERVER_PID=$!
-          for i in $(seq 1 30); do
-            if curl -sf http://localhost:3000/api/trpc/health; then break; fi
+          READY=0
+          for i in $(seq 1 90); do
+            if curl -sf http://localhost:3000/api/trpc/health >/dev/null 2>&1; then READY=1; break; fi
             if ! kill -0 $SERVER_PID 2>/dev/null; then echo "Server exited early"; exit 1; fi
             sleep 1
           done
+          if [ "$READY" != "1" ]; then
+            echo "Server never became healthy — aborting before k6"
+            exit 1
+          fi
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
           JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
