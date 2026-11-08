@@ -1,7 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
-const SLOW_QUERY_THRESHOLD_MS = 500;
+// B4 — env-tunable threshold (default 500ms); set SLOW_QUERY_THRESHOLD_MS=0
+// to disable the SLO logging entirely.
+const SLOW_QUERY_THRESHOLD_MS = (() => {
+  const raw = process.env['SLOW_QUERY_THRESHOLD_MS'];
+  if (raw === undefined || raw === '') return 500;
+  const n = Number(raw);
+  return Number.isFinite(n) && n >= 0 ? n : 500;
+})();
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
