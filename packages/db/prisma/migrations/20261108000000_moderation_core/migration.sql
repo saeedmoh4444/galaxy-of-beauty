@@ -30,3 +30,6 @@ ALTER TABLE "community_posts" ADD COLUMN "isHidden" BOOLEAN NOT NULL DEFAULT fal
 ALTER TABLE "community_comments" ADD COLUMN "isHidden" BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE "beauty_post_comments" ADD COLUMN "isHidden" BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE "product_reviews" ADD COLUMN "isHidden" BOOLEAN NOT NULL DEFAULT false;
+
+-- B4 — the community feed query filters isHidden and orders by createdAt.
+CREATE INDEX "community_posts_isHidden_createdAt_idx" ON "community_posts"("isHidden", "createdAt");

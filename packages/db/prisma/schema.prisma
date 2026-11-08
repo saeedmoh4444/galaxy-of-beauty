@@ -2528,6 +2528,7 @@ model CommunityPost {
   isHidden    Boolean  @default(false) // A2 moderation
   createdAt   DateTime @default(now())
 
+  @@index([isHidden, createdAt]) // A2/B4 — feed filters isHidden, orders by createdAt
   @@index([createdAt])
   @@map("community_posts")
 }
