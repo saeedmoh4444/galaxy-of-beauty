@@ -135,4 +135,18 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// B1 — Sentry wiring. The sentry.*.config.ts files are dead code unless
+// the build wraps withSentryConfig (it bundles the client config and the
+// build-time source-map upload). Upload only happens when a token exists;
+// without one the plugin is inert and the SDK still no-ops at runtime
+// (DSN-gated configs).
+import { withSentryConfig } from '@sentry/nextjs';
+
+export default withSentryConfig(nextConfig, {
+  silent: true,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  widenClientFileUpload: true,
+  sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+});
