@@ -221,7 +221,7 @@ export const beautyPostsRouter = router({
     .input(z.object({ postId: z.number().int().positive() }))
     .query(async ({ input }) => {
       const rows = await prisma.beautyPostComment.findMany({
-        where: { postId: input.postId },
+        where: { postId: input.postId, isHidden: false },
         orderBy: { createdAt: 'asc' },
         take: 50,
       });

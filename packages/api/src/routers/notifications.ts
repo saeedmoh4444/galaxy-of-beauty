@@ -25,7 +25,10 @@ export const notificationRouter = router({
           where,
           skip,
           take: limit,
-          orderBy: { createdAt: 'desc' },
+          // id as tiebreak: createdAt has millisecond resolution, so rows
+          // created back-to-back (same ms) tie — id desc keeps the sort
+          // deterministic (newest first) for pagination.
+          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
         }),
         prisma.notification.count({ where }),
       ]);

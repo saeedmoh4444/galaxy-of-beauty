@@ -197,6 +197,8 @@ model User {
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
   influencerProfiles Influencer[]
+  contentReportsMade ContentReport[] @relation("ContentReportsMade")
+  contentReportsHandled ContentReport[] @relation("ContentReportsHandled")
   kindnessAccount   KindnessAccount?
   beautyCircleMembers BeautyCircleMember[]
   clinicConsultations ClinicConsultation[]
@@ -2084,6 +2086,7 @@ model ProductReview {
   userId    Int
   rating    Int      // 1-5
   comment   String?
+  isHidden  Boolean  @default(false) // A2 moderation
   createdAt DateTime @default(now())
 
   // E4 — merchant reply (bilingual Json, expand-contract).
@@ -2522,8 +2525,10 @@ model CommunityPost {
   content     String
   imageUrl    String?
   likes       Int      @default(0)
+  isHidden    Boolean  @default(false) // A2 moderation
   createdAt   DateTime @default(now())
 
+  @@index([isHidden, createdAt]) // A2/B4 — feed filters isHidden, orders by createdAt
   @@index([createdAt])
   @@map("community_posts")
 }
@@ -2543,6 +2548,7 @@ model CommunityComment {
   postId    Int
   userId    Int
   content   String
+  isHidden  Boolean  @default(false) // A2 moderation
   createdAt DateTime @default(now())
   @@index([postId])
   @@map("community_comments")
@@ -2584,6 +2590,7 @@ model BeautyPostComment {
   postId    Int
   userId    Int
   content   String   @db.VarChar(500)
+  isHidden  Boolean  @default(false) // A2 moderation
   createdAt DateTime @default(now())
 
   @@index([postId, createdAt])
@@ -2732,6 +2739,32 @@ model ShortReport {
   @@unique([shortId, userId])
   @@index([shortId])
   @@map("short_reports")
+}
+
+// A2 — unified moderation (PLATFORM_IMPROVEMENT_PLAN): one report per
+// reporter per target across every UGC surface except shorts (which keep
+// their dedicated ShortReport flow). status/action/handledBy make the
+// admin queue a real workflow instead of a dead-end log.
+model ContentReport {
+  id         Int      @id @default(autoincrement())
+  targetType String // review | community_post | community_comment | beauty_post | beauty_post_comment | gallery_image | product_review
+  targetId   Int
+  reporterId Int
+  reason     String // inappropriate | spam | privacy | other
+  note       String?
+  status     String   @default("open") // open | dismissed | actioned
+  action     String? // hidden | removed | user_suspended — set when status=actioned
+  autoAction Boolean  @default(false) // A2c blocklist triage acted without human review
+  handledById Int?
+  handledAt  DateTime?
+  createdAt  DateTime @default(now())
+
+  reporter User  @relation("ContentReportsMade", fields: [reporterId], references: [id], onDelete: Cascade)
+  handler  User? @relation("ContentReportsHandled", fields: [handledById], references: [id], onDelete: SetNull)
+
+  @@unique([targetType, targetId, reporterId])
+  @@index([status, createdAt])
+  @@map("content_reports")
 }
 
 // P2 — watch analytics (REELS_SHOPPABLE_PLAN Phase 2): one row per
