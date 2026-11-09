@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
-import { useAuth } from '@galaxy/ui';
+import { useAuth, useHydrated } from '@galaxy/ui';
 import { SocialLogin } from '@/components/SocialLogin';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -21,6 +21,10 @@ export default function LoginPage(): JSX.Element {
   const [totpToken, setTotpToken] = useState('');
   const [error, setError] = useState('');
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
+  // Hydration gate: the submit button stays disabled in the SSR HTML until
+  // React attaches the handler — clicks can no longer land pre-hydration
+  // (the lost-click race that flaked the E2E suite under CI CPU load).
+  const hydrated = useHydrated();
 
   const mutation = api.auth.login.useMutation({
     onSuccess: async (data) => {
@@ -160,7 +164,12 @@ export default function LoginPage(): JSX.Element {
             </div>
           )}
 
-          <Button type="submit" className="w-full" loading={mutation.isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            loading={mutation.isPending}
+            disabled={!hydrated}
+          >
             {twoFactorRequired ? t('auth.verify') : t('auth.loginShort')}
           </Button>
         </form>

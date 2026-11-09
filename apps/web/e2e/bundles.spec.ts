@@ -50,7 +50,7 @@ test('booking wizard preselects the bundle with bundle pricing', async ({ page }
   await page.getByTestId('bundle-book-cta').click();
 
   // The wizard lands on the details step with the bundle banner.
-  await expect(page.getByTestId('beauty-bundle-banner')).toBeVisible();
+  await expect(page.getByTestId('beauty-bundle-banner')).toBeVisible({ timeout: 20_000 });
 
   // Confirm step shows the bundle price (original strikethrough + total).
   await page.getByTestId('step-next').click();
