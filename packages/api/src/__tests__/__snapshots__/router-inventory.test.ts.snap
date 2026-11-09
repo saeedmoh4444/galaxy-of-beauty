@@ -672,6 +672,7 @@ payments.authorize	mutation	customer
 payments.capture	mutation	technician
 payments.getByBooking	query	protected
 payments.payCart	mutation	customer
+payments.reconciliation	query	admin
 payments.refund	mutation	admin
 payments.shippingCharge	query	public
 payments.shippingCities	query	public

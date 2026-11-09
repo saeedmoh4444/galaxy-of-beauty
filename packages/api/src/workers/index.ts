@@ -28,6 +28,7 @@ import {
   handleQueueHealthCheck,
   handleWebhookDelivery,
   handleShortMediaJob,
+  handleReconciliationJob,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -117,6 +118,7 @@ export const reviewsWorker = createWorker('gob-reviews', handleReviewReplyRemind
 export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1);
 export const webhooksWorker = createWorker('gob-webhooks', handleWebhookDelivery, 2);
 export const mediaWorker = createWorker('gob-media', handleShortMediaJob, 1);
+export const reconciliationWorker = createWorker('gob-reconciliation', handleReconciliationJob, 1);
 
 /**
  * D2 — register the queue-health monitor: fires every 10 minutes and
@@ -206,6 +208,15 @@ export async function registerAnalyticsScheduler(): Promise<void> {
       'review-reminder-daily',
       { pattern: '15 9 * * *' },
       { name: 'reviews.remind', data: {} },
+    );
+  }
+  // C1 — daily payment reconciliation (09:20 UTC, after the morning sweeps).
+  const reconciliationQueue = (await import('../queues')).getReconciliationQueue();
+  if (reconciliationQueue) {
+    await reconciliationQueue.upsertJobScheduler(
+      'reconciliation-daily',
+      { pattern: '20 9 * * *' },
+      { name: 'reconciliation.daily', data: {} },
     );
   }
   console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
