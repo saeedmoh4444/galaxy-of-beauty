@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
+import { matchesBlocklist } from '../lib/moderationBlocklist';
 import {
   publicProcedure,
   protectedProcedure,
@@ -156,6 +157,12 @@ export const beautyPostsRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (matchesBlocklist(input.caption ?? '')) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Content violates our community guidelines',
+        });
+      }
       // Shoppable tags must reference real, active items.
       if (input.productIds.length > 0) {
         const found = await prisma.product.count({
@@ -241,11 +248,17 @@ export const beautyPostsRouter = router({
 
   addComment: customerProcedure
     .input(z.object({ postId: z.number().int().positive(), content: z.string().min(1).max(500) }))
-    .mutation(({ ctx, input }) =>
-      prisma.beautyPostComment.create({
+    .mutation(async ({ ctx, input }) => {
+      if (matchesBlocklist(input.content)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Content violates our community guidelines',
+        });
+      }
+      return prisma.beautyPostComment.create({
         data: { postId: input.postId, userId: ctx.user.id, content: input.content },
-      }),
-    ),
+      });
+    }),
 
   // View counting — shorts precedent (counter increment, no per-user dedupe).
   viewed: publicProcedure
