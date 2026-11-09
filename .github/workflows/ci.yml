@@ -333,7 +333,7 @@ jobs:
           pnpm --filter @galaxy/web exec next start --port 3000 &
           SERVER_PID=$!
           READY=0
-          for i in $(seq 1 90); do
+          for i in $(seq 1 180); do
             if curl -sf http://localhost:3000/api/trpc/health >/dev/null 2>&1; then READY=1; break; fi
             if ! kill -0 $SERVER_PID 2>/dev/null; then echo "Server exited early"; exit 1; fi
             sleep 1
