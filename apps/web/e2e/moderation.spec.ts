@@ -1,28 +1,33 @@
 import { test, expect } from '@playwright/test';
 
 const ADMIN_EMAIL = 'admin@galaxyofbeauty.sa';
-const ADMIN_PASSWORD = 'Admin@123456';
+const CUSTOMER_EMAIL = 'customer@test.com';
+const PASSWORD = 'Admin@123456';
 
 test.setTimeout(120_000);
 
-async function loginAsAdmin(page: import('@playwright/test').Page) {
+async function loginAs(page: import('@playwright/test').Page, email: string, target: RegExp) {
   await page.goto('/login');
-  await page.getByPlaceholder('example@email.com').fill(ADMIN_EMAIL);
-  await page.getByPlaceholder('••••••••').fill(ADMIN_PASSWORD);
+  await page.getByPlaceholder('example@email.com').fill(email);
+  await page.getByPlaceholder('••••••••').fill(PASSWORD);
   await page.getByRole('button', { name: 'دخول' }).click();
   // Pre-hydration click flake: the first click can fire before the page
   // hydrates (native GET, no POST) — retry once if the URL didn't move.
   const moved = await page
-    .waitForURL(/\/admin\//, { timeout: 15_000 })
+    .waitForURL(target, { timeout: 15_000 })
     .then(() => true)
     .catch(() => false);
   if (!moved) {
     await page.getByRole('button', { name: 'دخول' }).click();
   }
-  await expect(page).toHaveURL(/\/admin\//, { timeout: 60_000 });
+  await expect(page).toHaveURL(target, { timeout: 60_000 });
 }
 
-/** Run a tRPC mutation through the app's own route (authed session cookie). */
+/**
+ * Run a tRPC mutation through the app's own route (authed session cookie).
+ * The web API enforces CSRF on browser POSTs (x-csrf-token from the cookie),
+ * so the raw fetch replays the app client's header.
+ */
 async function trpcMutation(
   page: import('@playwright/test').Page,
   path: string,
@@ -33,7 +38,12 @@ async function trpcMutation(
       const url =
         `/api/trpc/${path}?batch=1&input=` +
         encodeURIComponent(JSON.stringify({ '0': { json: input } }));
-      const res = await fetch(url, { method: 'POST', credentials: 'include' });
+      const csrf = document.cookie.match(/(?:^|;\s*)csrf-token=([^;]*)/)?.[1] ?? '';
+      const res = await fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: csrf ? { 'x-csrf-token': csrf } : undefined,
+      });
       return res.json();
     },
     { path, input },
@@ -51,7 +61,11 @@ async function publicFeedContents(page: import('@playwright/test').Page): Promis
     const url =
       '/api/trpc/community.feed?batch=1&input=' +
       encodeURIComponent(JSON.stringify({ '0': { json: {} } }));
-    const res = await fetch(url, { credentials: 'include' });
+    const csrf = document.cookie.match(/(?:^|;\s*)csrf-token=([^;]*)/)?.[1] ?? '';
+    const res = await fetch(url, {
+      credentials: 'include',
+      headers: csrf ? { 'x-csrf-token': csrf } : undefined,
+    });
     return res.json();
   });
   const first = (batch as Array<{ result?: { data?: { json?: unknown } } }>)[0];
@@ -66,7 +80,10 @@ test('admin resolves a report: hide removes the content from the public feed', a
   // is consumed by whichever project runs first, so sharing it leaks
   // state across projects.
   const fixture = `mod-e2e-${Date.now()}`;
-  await loginAsAdmin(page);
+
+  // community.create and moderation.report are customer-scoped — create and
+  // report the fixture as the customer, then resolve it as the admin.
+  await loginAs(page, CUSTOMER_EMAIL, /\/dashboard/);
 
   const post = (await trpcMutation(page, 'community.create', {
     content: fixture,
@@ -78,13 +95,15 @@ test('admin resolves a report: hide removes the content from the public feed', a
     reason: 'inappropriate',
   });
 
-  await page.goto('/admin/moderation');
-  const reportRow = page.locator('div', { hasText: fixture });
-  await expect(reportRow.first()).toBeVisible({ timeout: 30_000 });
-
   // Sanity: the fixture is publicly visible before moderation acts.
   const before = await publicFeedContents(page);
   expect(before).toContain(fixture);
+
+  // Admin resolves: hide removes the content from the public feed.
+  await loginAs(page, ADMIN_EMAIL, /\/admin\//);
+  await page.goto('/admin/moderation');
+  const reportRow = page.locator('div', { hasText: fixture });
+  await expect(reportRow.first()).toBeVisible({ timeout: 30_000 });
 
   // Hide it. (exact: the "hide + suspend" button also contains "إخفاء".)
   await reportRow.first().getByRole('button', { name: 'إخفاء', exact: true }).click();
