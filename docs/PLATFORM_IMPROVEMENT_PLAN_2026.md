@@ -4,27 +4,29 @@
 
 **Status:** IN EXECUTION since 2026-11-08 (boss: "start working"). Live tracker below — each slice is a PR, merged on CI-green.
 
-## 0. Execution tracker (2026-11-08)
+## 0. Execution tracker (2026-11-09)
 
-| Slice                                               | PR   | Status                                                                                                                                             |
-| --------------------------------------------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Plan doc                                            | #601 | ✅ MERGED                                                                                                                                          |
-| A2a moderation core (reports, queue, hidden flags)  | #602 | 🔄 in CI (stacked base for #608/#604)                                                                                                              |
-| A2b admin queue UI + mobile report flow + E2E       | #608 | ⏳ stacked on #602                                                                                                                                 |
-| A2c creation-time blocklist guards                  | #604 | ⏳ stacked on #608                                                                                                                                 |
-| A4 rate-limit sweep                                 | —    | ✅ VERIFIED: universal via procedure chains (0 un-tiered procedures in the inventory gate; 20/60/300 per-minute windows) — no code needed          |
-| B1 Sentry activation (mobile + web smoke)           | #605 | 🔄 in CI                                                                                                                                           |
-| B2 correlation ids (ALS, jobs, responses)           | #606 | 🔄 in CI                                                                                                                                           |
-| B3 k6 load gate on every PR                         | #607 | 🔄 in CI                                                                                                                                           |
-| B4 restore-drill runbook + slow-query tuning        | #609 | 🔄 in CI                                                                                                                                           |
-| B5 E2E login flake root-cause (bcrypt cost)         | #610 | ✅ MERGED                                                                                                                                          |
-| C1 payment reconciliation (token-independent half)  | #612 | 🔄 in CI                                                                                                                                           |
-| C2 abandoned-cart/reminders/post-service automation | —    | ✅ VERIFIED: already shipped (8.3 automation: abandonedCart, postBooking, birthday, checkoutExpiry, seasonalMarketing, welcomeSeries — all tested) |
-| C3 search relevance + contract tests                | #611 | 🔄 in CI                                                                                                                                           |
-| D2 facade deletion (289-item catalog single source) | —    | ⏳ deferred to next session (289-row seed migration)                                                                                               |
-| D3 cache layer                                      | —    | ⏳ deferred                                                                                                                                        |
-| E1-E3 mobile release wave                           | —    | ⏳ deferred (E1 needs Apple account)                                                                                                               |
-| F1-F3 docs cadence                                  | —    | ⏳ ongoing (this tracker)                                                                                                                          |
+| Slice                                                | PR   | Status                                                                                                                                                                                     |
+| ---------------------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Plan doc                                             | #601 | ✅ MERGED                                                                                                                                                                                  |
+| A2a moderation core (reports, queue, hidden flags)   | #602 | ✅ MERGED                                                                                                                                                                                  |
+| A2b admin queue UI + mobile report flow + E2E        | #608 | 🔄 in CI (rebuilt on clean master — B1-stack contamination purged; E2E spec fixed: POST bodies + CSRF + customer-phase fixture + hydration wait)                                           |
+| A2c creation-time blocklist guards                   | #604 | ✅ MERGED                                                                                                                                                                                  |
+| A4 rate-limit sweep                                  | —    | ✅ VERIFIED: universal via procedure chains (0 un-tiered procedures in the inventory gate; 20/60/300 per-minute windows) — no code needed                                                  |
+| B1 Sentry activation (mobile + web smoke)            | #605 | 🔄 in CI                                                                                                                                                                                   |
+| B2 correlation ids (ALS, jobs, responses)            | #606 | ✅ MERGED                                                                                                                                                                                  |
+| B3 k6 load gate on every PR                          | #607 | ✅ MERGED                                                                                                                                                                                  |
+| B4 restore-drill runbook + slow-query tuning         | #609 | ✅ MERGED                                                                                                                                                                                  |
+| B5 E2E login flake root-cause (bcrypt cost)          | #610 | ✅ MERGED                                                                                                                                                                                  |
+| B6 login lockout counts failures only                | #614 | ✅ MERGED                                                                                                                                                                                  |
+| C1 payment reconciliation (token-independent half)   | #612 | ✅ MERGED                                                                                                                                                                                  |
+| C2 abandoned-cart/reminders/post-service automation  | —    | ✅ VERIFIED: already shipped (8.3 automation: abandonedCart, postBooking, birthday, checkoutExpiry, seasonalMarketing, welcomeSeries — all tested)                                         |
+| C3 search relevance + contract tests                 | #611 | ✅ MERGED                                                                                                                                                                                  |
+| D2 facade deletion (289-item catalog single source)  | #617 | 🔄 in CI (289 seeded services + mapping table + book()-by-id)                                                                                                                              |
+| D3 cache layer                                       | #621 | 🔄 in CI (typed keys, cached services/bundles/technicians, write invalidation, k6 hit gate)                                                                                                |
+| E2E determinism: hydrate-gated controls (flakestorm) | #620 | ✅ MERGED — root cause of the 37-flaky/2-failed storm: pre-hydration lost clicks + fetch-gated asserts; login/search disabled until hydration; wellness tabs in SSR HTML; 20s data windows |
+| E1-E3 mobile release wave                            | —    | ⏳ next (E1 needs Apple account)                                                                                                                                                           |
+| F1-F3 docs cadence                                   | —    | ⏳ ongoing (this tracker)                                                                                                                                                                  |
 
 **User-gated (no code until the boss provides):** A1 secrets (Fatoorah token, Sentry DSN, AWS console, Apple account), A2d S3 lifecycle config, A3 pentest execution (scope doc shipped), C1 live-token activation + ZATCA.
 
