@@ -46,6 +46,10 @@ jobs:
       - run: node scripts/check-image-urls.mjs
       # E2 — mobile app-size trim: shipped assets stay under budget
       - run: node scripts/check-mobile-assets.mjs
+      # F2 — the tRPC contract must stay generatable (the generator exits
+      # non-zero if the router tree or a zod schema breaks). Local lint:
+      # `postman spec lint postman/openapi.json`.
+      - run: pnpm --filter @galaxy/api exec tsx ../../scripts/gen-openapi.mjs
 
   # ── Architecture Gates (ARCH-003 + circular deps) ──────────
   cycles:
