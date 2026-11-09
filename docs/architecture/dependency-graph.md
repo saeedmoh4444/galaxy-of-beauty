@@ -11,6 +11,7 @@ flowchart LR
   pkg__galaxy_api["@galaxy/api"] --> pkg__galaxy_db["@galaxy/db"]
   pkg__galaxy_api["@galaxy/api"] --> pkg__galaxy_shared["@galaxy/shared"]
   pkg__galaxy_db["@galaxy/db"] -.-> pkg__galaxy_config["@galaxy/config"]
+  pkg__galaxy_db["@galaxy/db"] --> pkg__galaxy_shared["@galaxy/shared"]
   pkg__galaxy_mobile["@galaxy/mobile"] --> pkg__galaxy_api["@galaxy/api"]
   pkg__galaxy_mobile["@galaxy/mobile"] -.-> pkg__galaxy_config["@galaxy/config"]
   pkg__galaxy_mobile["@galaxy/mobile"] --> pkg__galaxy_db["@galaxy/db"]

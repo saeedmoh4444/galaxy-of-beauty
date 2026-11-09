@@ -273,7 +273,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
           </div>
         )}
         {total > 12 && (
-          <div className="mt-6 flex justify-center gap-2">
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
             {Array.from({ length: Math.ceil(total / 12) }, (_, i) => (
               <button
                 key={i}

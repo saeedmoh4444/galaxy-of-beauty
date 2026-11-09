@@ -17,7 +17,8 @@
     "./i18n-web": "./src/i18n/web.ts",
     "./i18n-mobile": "./src/i18n/mobile.ts",
     "./i18n-all": "./src/i18n/index.ts",
-    "./tryOn": "./src/tryOn/index.ts"
+    "./tryOn": "./src/tryOn/index.ts",
+    "./catalog/womens": "./src/catalog/womens/womensServicesData.ts"
   },
   "scripts": {
     "build": "tsc",

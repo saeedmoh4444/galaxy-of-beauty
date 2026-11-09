@@ -22,9 +22,19 @@ test('service detail shows hero imagery, trust badges and image-backed related c
   await page.goto('/services');
 
   // Navigate via a real listing card (div[role="link"] → /services/:id).
+  // The card is a div[role="link"] — no native navigation — so a click
+  // before hydration attaches the router handler is a silent no-op. Retry
+  // until the URL moves (the pre-hydration flake-war lesson).
   const firstCard = page.locator('div[role="link"]:has(h3)').first();
   await expect(firstCard).toBeVisible();
-  await firstCard.click();
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    await firstCard.click();
+    const moved = await page
+      .waitForURL(/\/services\/\d+/, { timeout: 5_000 })
+      .then(() => true)
+      .catch(() => false);
+    if (moved) break;
+  }
   await expect(page).toHaveURL(/\/services\/\d+/);
 
   // Hero: real imagery or its graceful fallback — never an empty box.
