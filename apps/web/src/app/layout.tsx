@@ -8,6 +8,7 @@ import { LocaleProvider } from '@/components/LocaleProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
 import { OfflineBanner } from '@/components/OfflineBanner';
+import { SentryInit } from '@/components/SentryInit';
 import { ToastProvider, DEFAULT_LOCAL_URL } from '@galaxy/ui';
 import './globals.css';
 
@@ -101,6 +102,7 @@ export default async function RootLayout({
       <body className="min-h-screen bg-surface font-sans text-text-primary antialiased">
         <SkipLink />
         <OfflineBanner />
+        <SentryInit />
         <main id="main-content" tabIndex={-1}>
           <ErrorBoundary>
             <ToastProvider>
