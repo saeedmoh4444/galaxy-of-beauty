@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { JSX } from 'react';
 import type { TranslationKey } from '@galaxy/shared';
-import { Icon } from '@galaxy/ui';
+import { Icon, useHydrated } from '@galaxy/ui';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { BackToTop } from '@/components/BackToTop';
@@ -62,6 +62,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   const [moreOpen, setMoreOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const hydrated = useHydrated();
 
   // Close the More dropdown on click-outside and Escape (disclosure pattern).
   useEffect(() => {
@@ -154,7 +155,13 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               onChange={(e) => setNavQuery(e.target.value)}
               placeholder={t('nav.search')}
               aria-label={t('nav.search')}
-              className="w-full rounded-full border border-edge bg-surface-muted px-4 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:border-brand-400 focus:outline-none"
+              // Hydration gate: a submit (Enter) before React attaches the
+              // onSubmit handler falls through to a native GET — the URL
+              // changes without the router. Disabling until hydration makes
+              // every interaction deterministic (Playwright fill/type waits
+              // for enabled).
+              disabled={!hydrated}
+              className="w-full rounded-full border border-edge bg-surface-muted px-4 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:border-brand-400 focus:outline-none disabled:opacity-60"
             />
           </form>
 

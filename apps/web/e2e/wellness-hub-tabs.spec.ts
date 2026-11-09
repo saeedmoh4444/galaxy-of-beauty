@@ -31,12 +31,14 @@ test('wellness hub renders 5 tabs and switches panels', async ({ page }) => {
   await expect(tabs).toHaveCount(5);
 
   // Default: cycle panel visible; the others stay mounted but hidden.
-  await expect(page.getByTestId('hub-panel-cycle')).toBeVisible();
+  // 20s: the panel data resolves through tRPC — under CI CPU contention the
+  // 5s default lost the race (the pre-hydration flake war).
+  await expect(page.getByTestId('hub-panel-cycle')).toBeVisible({ timeout: 20_000 });
   await expect(page.getByTestId('hub-panel-mind')).toBeHidden();
 
   // Switch to the mind tab (last).
   await tabs.nth(4).click();
-  await expect(page.getByTestId('hub-panel-mind')).toBeVisible();
+  await expect(page.getByTestId('hub-panel-mind')).toBeVisible({ timeout: 20_000 });
   await expect(page.getByTestId('hub-panel-cycle')).toBeHidden();
 
   // Quick actions persist across tabs.
@@ -47,6 +49,6 @@ test('wellness hub ?tab=pamper deep link opens the pamper panel', async ({ page 
   await loginAsCustomer(page);
   await page.goto('/wellness-hub?tab=pamper');
 
-  await expect(page.getByTestId('hub-panel-pamper')).toBeVisible();
+  await expect(page.getByTestId('hub-panel-pamper')).toBeVisible({ timeout: 20_000 });
   await expect(page.getByTestId('hub-panel-cycle')).toBeHidden();
 });

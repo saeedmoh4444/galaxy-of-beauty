@@ -28,8 +28,10 @@ test('booking create page explains pay-at-venue vs online', async ({ page }) => 
   await page.goto('/bookings/create');
 
   // Step 1: pick the first service (jumps to step 2).
+  // 20s: the option list renders after the services tRPC fetch — under CI
+  // CPU contention the 5s default lost the race (the pre-hydration war).
   const firstOption = page.getByTestId('service-option').first();
-  await expect(firstOption).toBeVisible();
+  await expect(firstOption).toBeVisible({ timeout: 20_000 });
   await firstOption.click();
 
   // Step 2 → step 3: date/time have defaults; advance to confirm.

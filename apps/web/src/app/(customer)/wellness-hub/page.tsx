@@ -91,6 +91,24 @@ export default function WellnessHubPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-5xl space-y-6">
+          {/* Static tab bar in the SSR HTML — the tabs are fixed keys, so
+              they render before the data queries resolve. The E2E tab-count
+              and deep-link asserts no longer race the fetch (the flake war),
+              and early tab clicks still win over the post-data default. */}
+          <Tabs
+            tabs={WELLNESS_TABS.map((key) => t(WELLNESS_TAB_I18N[key]))}
+            active={t(WELLNESS_TAB_I18N.cycle)}
+            onChange={(label) =>
+              selectTab(
+                WELLNESS_TABS[
+                  WELLNESS_TABS.map((key) => t(WELLNESS_TAB_I18N[key])).indexOf(label)
+                ] ?? 'cycle',
+              )
+            }
+            tabListLabel={t('wellnessHub.title')}
+            idPrefix={HUB_ID_PREFIX}
+            className="justify-center"
+          />
           <DashboardSkeleton />
         </div>
       </DashboardLayout>
