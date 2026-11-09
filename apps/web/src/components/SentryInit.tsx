@@ -1,13 +1,20 @@
 'use client';
 
-// B1 — Turbopack does NOT auto-inject sentry.client.config.ts (the
-// webpack-era behavior); withSentryConfig alone left the SDK out of the
-// built chunks (proven by scripts/check-sentry-bundle.mjs). Importing
-// the config from a client component mounted in the root layout forces
-// it into the browser bundle — init + the ready marker run on load,
-// DSN-gated exactly as before.
-import '../../sentry.client.config';
+import dynamic from 'next/dynamic';
 
-export function SentryInit(): null {
-  return null;
+/**
+ * B1 — mounts the sentry client config in the browser. Turbopack does
+ * not auto-inject sentry.client.config.ts (webpack-era behavior), so it
+ * is imported here — DYNAMICALLY, so the SDK (~90 KB) lands in its own
+ * chunk and never weighs any page's initial bundle (the FE-007 size
+ * gate enforces that). The build gate greps the produced chunk for the
+ * config's ready-marker.
+ */
+const SentryBootstrap = dynamic(
+  () => import('../../sentry.client.config').then(() => ({ default: () => null })),
+  { ssr: false },
+);
+
+export function SentryInit() {
+  return <SentryBootstrap />;
 }
