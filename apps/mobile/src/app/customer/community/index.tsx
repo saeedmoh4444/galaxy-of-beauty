@@ -53,6 +53,13 @@ export default function CommunityScreen(): JSX.Element {
   const [showCreate, setShowCreate] = useState(false);
   const [commentId, setCommentId] = useState<number | null>(null);
   const [commentText, setCommentText] = useState('');
+  // A2 — moderation: inline report flow per post.
+  const [reportPostId, setReportPostId] = useState<number | null>(null);
+  const [reportReason, setReportReason] = useState<'inappropriate' | 'spam' | 'privacy' | 'other'>(
+    'inappropriate',
+  );
+  const [reportNote, setReportNote] = useState('');
+  const [reportMessage, setReportMessage] = useState<string | null>(null);
 
   const myLikesArr = (myLikesQ.data as MyLike[] | undefined) ?? [];
   const likedIds = new Set(myLikesArr.map((l) => l.postId));
@@ -83,6 +90,26 @@ export default function CommunityScreen(): JSX.Element {
       void feedQ.refetch();
     },
   });
+  const reportMut = trpc.moderation.report.useMutation({
+    onSuccess: (data) => {
+      setReportMessage(
+        data.alreadyReported
+          ? t('mobile.community.report.already')
+          : t('mobile.community.report.sent'),
+      );
+      setReportPostId(null);
+      setReportNote('');
+    },
+  });
+  const handleReport = (postId: number) => {
+    if (!reportReason) return;
+    reportMut.mutate({
+      targetType: 'community_post',
+      targetId: postId,
+      reason: reportReason,
+      note: reportNote || undefined,
+    });
+  };
   const handleLike = (postId: number) => {
     likeMut.mutate({ postId });
   };
@@ -218,7 +245,86 @@ export default function CommunityScreen(): JSX.Element {
             <TouchableOpacity onPress={() => handleDelete(p.id)} style={{ marginLeft: 'auto' }}>
               <Text style={{ color: '#9ca3af' }}>🗑️</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => setReportPostId(reportPostId === p.id ? null : p.id)}>
+              <Text style={{ color: '#9ca3af' }}>🚩</Text>
+            </TouchableOpacity>
           </View>
+          {reportPostId === p.id && (
+            <View
+              style={{
+                marginTop: 10,
+                paddingTop: 10,
+                borderTopWidth: 1,
+                borderTopColor: '#f3f4f6',
+              }}
+            >
+              <Text style={{ fontWeight: '700', fontSize: 13, marginBottom: 6 }}>
+                {t('mobile.community.report.title')}
+              </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+                {(['inappropriate', 'spam', 'privacy', 'other'] as const).map((reason) => (
+                  <TouchableOpacity
+                    key={reason}
+                    onPress={() => setReportReason(reason)}
+                    style={{
+                      backgroundColor: reportReason === reason ? '#db2777' : '#f9fafb',
+                      borderRadius: 14,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: reportReason === reason ? '#fff' : '#4b5563',
+                        fontSize: 12,
+                        fontWeight: '600',
+                      }}
+                    >
+                      {t(`mobile.community.report.reason.${reason}`)}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <TextInput
+                value={reportNote}
+                onChangeText={setReportNote}
+                placeholder={t('mobile.community.report.note')}
+                style={{
+                  backgroundColor: '#f9fafb',
+                  borderRadius: 8,
+                  paddingHorizontal: 12,
+                  paddingVertical: 8,
+                  fontSize: 12,
+                  marginBottom: 8,
+                }}
+                placeholderTextColor="#9ca3af"
+              />
+              <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'flex-end' }}>
+                <TouchableOpacity onPress={() => setReportPostId(null)}>
+                  <Text style={{ color: '#9ca3af', fontSize: 12, paddingVertical: 8 }}>
+                    {t('mobile.community.report.cancel')}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleReport(p.id)}
+                  disabled={reportMut.isPending}
+                  style={{
+                    backgroundColor: '#db2777',
+                    borderRadius: 8,
+                    paddingHorizontal: 14,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: '600', fontSize: 12 }}>
+                    {t('mobile.community.report.submit')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          {reportMessage && (
+            <Text style={{ marginTop: 8, fontSize: 12, color: '#059669' }}>{reportMessage}</Text>
+          )}
           {commentId === p.id && (
             <View
               style={{
