@@ -1269,3 +1269,36 @@ export async function handleShortMediaJob(
 
   return { durationSec: durationSec ?? short.durationSec, poster: posterUrl !== null };
 }
+
+/**
+ * C1 — daily payment reconciliation: diff recent local payments against
+ * the gateway's authoritative status. Never throws: mismatches are
+ * logged (with the ambient correlation id) so alerting can pick them up.
+ */
+export async function handleReconciliationJob(_job: Job<Record<string, never>>): Promise<{
+  configured: boolean;
+  checked: number;
+  mismatches: number;
+}> {
+  const { reconcileRecentPayments } = await import('../lib/reconciliation');
+  const { getCorrelationId } = await import('../lib/requestContext');
+  const result = await reconcileRecentPayments(36);
+  const cid = getCorrelationId();
+  if (!result.configured) {
+    console.log(`[Reconciliation] ${cid ? `[${cid}] ` : ''}skipped — Fatoorah not configured`);
+    return { configured: false, checked: 0, mismatches: 0 };
+  }
+  if (result.mismatches.length > 0) {
+    console.error(
+      `[Reconciliation] ${cid ? `[${cid}] ` : ''}${result.mismatches.length} mismatch(es) of ${result.checked} checked`,
+      JSON.stringify(result.mismatches.slice(0, 20)),
+    );
+  } else {
+    console.log(`[Reconciliation] ${cid ? `[${cid}] ` : ''}clean — ${result.checked} checked`);
+  }
+  return {
+    configured: true,
+    checked: result.checked,
+    mismatches: result.mismatches.length,
+  };
+}

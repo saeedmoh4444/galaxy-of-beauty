@@ -349,6 +349,16 @@ export const paymentRouter = router({
   }),
 
   // -----------------------------------------------------------------------
+  // reconciliation — C1: on-demand scan of recent payments vs the gateway
+  // -----------------------------------------------------------------------
+  reconciliation: adminProcedure
+    .input(z.object({ sinceHours: z.number().int().min(1).max(72).default(36) }).optional())
+    .query(async ({ input }) => {
+      const { reconcileRecentPayments } = await import('../lib/reconciliation');
+      return reconcileRecentPayments(input?.sinceHours ?? 36);
+    }),
+
+  // -----------------------------------------------------------------------
   // refund — Admin refunds a captured payment
   // -----------------------------------------------------------------------
   refund: adminProcedure.input(bookingIdSchema).mutation(async ({ input }) => {
