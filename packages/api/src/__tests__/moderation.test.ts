@@ -9,8 +9,15 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
+import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser, buildProduct, buildVendor, buildBeautyPost } from './factories';
+import {
+  buildUser,
+  buildProduct,
+  buildVendor,
+  buildBeautyPost,
+  markBookingPaid,
+} from './factories';
 
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
@@ -304,5 +311,103 @@ describe('moderation.myReports', () => {
 
     const others = await caller(reporter2).moderation.myReports({});
     expect(others.items.some((m) => m.targetId === postId)).toBe(false);
+  });
+});
+
+describe('A2c — creation-time blocking', () => {
+  it('rejects blocklisted community posts at create', async () => {
+    await expect(
+      caller(author).community.create({ content: 'Win big at the casino tonight' }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+  });
+
+  it('rejects blocklisted community comments at addComment', async () => {
+    const postId = await makeCommunityPost('Clean post for comment guard', author);
+    await expect(
+      caller(reporter).community.addComment({ postId, content: 'قمار مضمون الربح' }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+  });
+
+  it('rejects blocklisted beauty post captions at create', async () => {
+    await expect(
+      caller(author).beautyPosts.create({
+        imageUrl: 'https://images.example.com/blocked.jpg',
+        caption: 'casino tips inside',
+      }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+  });
+
+  it('rejects blocklisted beauty post comments at addComment', async () => {
+    const bp = await prisma.beautyPost.create({ data: buildBeautyPost({ userId: author.id }) });
+    createdBeautyPostIds.push(bp.id);
+    await expect(
+      caller(reporter).beautyPosts.addComment({ postId: bp.id, content: 'check my casino link' }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+  });
+});
+
+describe('A2c — booking review blocking', () => {
+  const CSRF = 'a'.repeat(64);
+
+  async function csrfCaller(user?: JwtPayload) {
+    const ctx = await createTRPCContext({ user, csrfCookie: CSRF, csrfHeader: CSRF });
+    return (appRouter as any).createCaller(ctx);
+  }
+
+  it('rejects blocklisted booking reviews at create', async () => {
+    // Reuse the seeded customer + technician/service (loyalty-earn pattern).
+    const anon = await csrfCaller();
+    const login = await anon.auth.login({ email: 'customer@test.com', password: 'Admin@123456' });
+    const customer = { id: login.user.id, role: login.user.role, email: login.user.email };
+
+    const tech = await prisma.technician.findFirst({
+      include: { user: true },
+      where: { user: { role: 'TECHNICIAN' } },
+    });
+    const service = await prisma.service.findFirst();
+    const slot = await prisma.availabilitySlot.create({
+      data: {
+        technicianId: tech!.id,
+        startAt: new Date(Date.now() + 86_400_000 * 3),
+        endAt: new Date(Date.now() + 86_400_000 * 3 + 3_600_000),
+        isBooked: false,
+      },
+    });
+    const address =
+      (await prisma.address.findFirst({ where: { userId: customer.id } })) ??
+      (await prisma.address.create({
+        data: {
+          userId: customer.id,
+          label: 'اختبار الإشراف',
+          city: 'الرياض',
+          area: 'التجريبي',
+          street: 'شارع الاختبار',
+        },
+      }));
+
+    const cust = await csrfCaller(customer);
+    const booking = await cust.bookings.create({
+      serviceId: service!.id,
+      technicianId: tech!.userId,
+      addressId: address.id,
+      slotId: slot.id,
+      startAt: slot.startAt.toISOString(),
+      endAt: slot.endAt.toISOString(),
+      idempotencyKey: `mod_${Date.now()}`,
+    });
+    const techUser = await prisma.user.findUnique({ where: { id: tech!.userId } });
+    const techCaller = await csrfCaller({
+      id: tech!.userId,
+      role: 'TECHNICIAN',
+      email: techUser!.email,
+    });
+    await techCaller.bookings.transition({ id: booking.id, action: 'accept' });
+    await techCaller.bookings.transition({ id: booking.id, action: 'start' });
+    await markBookingPaid(booking.id);
+    await techCaller.bookings.transition({ id: booking.id, action: 'complete' });
+
+    await expect(
+      cust.reviews.create({ bookingId: booking.id, rating: 5, comment: 'casino promo here' }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
   });
 });
