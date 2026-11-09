@@ -11,7 +11,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
 import { buildUser } from './factories';
-import { WOMENS_SERVICES } from '../routers/womensServicesData';
+import { WOMENS_SERVICES } from '@galaxy/shared/catalog/womens';
 import { resolveWomensService } from '../routers/womensServicesMap';
 
 const CSRF = 'a'.repeat(64);
@@ -48,6 +48,9 @@ beforeAll(async () => {
 }, 15000);
 
 afterAll(async () => {
+  // Cleanup order: bookings reference the address, so wipe any booking
+  // on it (including replays not tracked in createdBookingIds) first.
+  await prisma.booking.deleteMany({ where: { addressId } });
   await prisma.booking.deleteMany({ where: { id: { in: createdBookingIds } } });
   await prisma.address.deleteMany({ where: { id: addressId } });
   await prisma.user.deleteMany({ where: { id: userId } });
@@ -179,7 +182,7 @@ describe('womensServices.book — real booking', () => {
     const c = await caller(customer);
     const { startAt, endAt } = appt(3);
     const res = await c.womensServices.book({
-      serviceId: 'br1', // Golden Bride Package → Bridal Trial Package
+      serviceId: 'br1', // Golden Bride Package → its own seeded service (D2)
       category: 'bridal_prep',
       pregnancyTrimester: undefined,
       specialNotes: 'تفضل غرفة خاصة',
@@ -191,7 +194,10 @@ describe('womensServices.book — real booking', () => {
 
     expect(res.booked).toBe(true);
     expect(res.bookingCode).toMatch(/^GOB-/);
-    expect(res.mappedTo).toBe('Bridal Trial Package');
+    // D2: each facade item maps to its own seeded service row — the
+    // "maps to" note now names that row (Golden Bride Package itself),
+    // not the old shared-rule target.
+    expect(res.mappedTo).toBe('Golden Bride Package');
     expect(res.specialRequirements).toContain('تفضل غرفة خاصة');
     createdBookingIds.push(res.bookingId);
 
@@ -201,7 +207,8 @@ describe('womensServices.book — real booking', () => {
     expect(booking.addressId).toBe(addressId);
     expect(booking.notes).toContain('Golden Bride Package');
     const service = await prisma.service.findUniqueOrThrow({ where: { id: booking.serviceId } });
-    expect(service.titleJson).toMatchObject({ en: 'Bridal Trial Package' });
+    // D2: the booking lands on the facade item's OWN seeded service row.
+    expect(service.titleJson).toMatchObject({ en: 'Golden Bride Package' });
   });
 
   it('replays a duplicate idempotency key instead of double-booking', async () => {

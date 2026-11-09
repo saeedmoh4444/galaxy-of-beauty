@@ -55,6 +55,7 @@ async function main() {
     db.serviceTag.deleteMany(),
     db.servicePricing.deleteMany(),
     db.serviceBundle.deleteMany(),
+    db.womensServiceMapping.deleteMany(), // D2 — FK children of services
     db.service.deleteMany(),
     // 1.4 — seasonal services reference categories; wipe before them.
     db.seasonalService.deleteMany(),
@@ -4657,27 +4658,89 @@ async function main() {
     console.log(`    Shorts: ${err.message?.slice(0, 60)}`);
   }
 
-  // ---- A2 moderation fixture (E2E: admin queue → hide) ----
+  // ---- D2 (PLATFORM_IMPROVEMENT_PLAN) — women's catalog single source ----
+  // Every facade item in the 289-item static catalog gets a real Service
+  // row + a (category, facadeId) mapping. Idempotent: upserted per key.
   try {
-    const flaggedPost = await prisma.communityPost.create({
-      data: {
-        userId: customer.id,
-        content: 'منشور تجريبي للبلاغ — moderation E2E fixture',
+    const { WOMENS_SERVICES } = await import('@galaxy/shared/catalog/womens');
+    const womensCategory = await prisma.category.upsert({
+      where: { slug: 'womens-services' },
+      update: {},
+      create: {
+        nameJson: { ar: 'خدمات المرأة', en: "Women's Services" },
+        slug: 'womens-services',
       },
     });
-    await prisma.contentReport.create({
-      data: {
-        targetType: 'community_post',
-        targetId: flaggedPost.id,
-        reporterId: customer.id,
-        reason: 'inappropriate',
-        note: 'Seeded fixture for the moderation E2E spec',
-        status: 'open',
-      },
-    });
-    console.log(' Moderation fixture seeded (1 open report)');
+    let created = 0;
+    let mapped = 0;
+    for (const [categoryKey, cat] of Object.entries(
+      WOMENS_SERVICES as Record<
+        string,
+        {
+          nameAr: string;
+          nameEn: string;
+          description?: string;
+          subServices: Array<{
+            id: string;
+            nameAr: string;
+            nameEn: string;
+            price: number;
+            durationMin: number;
+          }>;
+        }
+      >,
+    )) {
+      for (const item of cat.subServices) {
+        const existing = await prisma.womensServiceMapping.findUnique({
+          where: { categoryKey_facadeId: { categoryKey, facadeId: item.id } },
+          select: { serviceId: true },
+        });
+        if (existing) {
+          mapped += 1;
+          continue;
+        }
+        const service = await prisma.service.create({
+          data: {
+            categoryId: womensCategory.id,
+            titleJson: { ar: item.nameAr, en: item.nameEn },
+            descriptionJson: { ar: cat.description ?? '', en: cat.description ?? '' },
+            basePrice: item.price,
+            durationMin: item.durationMin,
+            isActive: true,
+          },
+        });
+        await prisma.womensServiceMapping.create({
+          data: { categoryKey, facadeId: item.id, serviceId: service.id },
+        });
+        created += 1;
+      }
+    }
+    console.log(` D2 women's catalog: ${created} services created, ${mapped} already mapped`);
   } catch (err: any) {
-    console.log(`    Moderation fixture skipped: ${err.message?.slice(0, 60)}`);
+    console.log(`    D2 women's catalog skipped: ${err.message?.slice(0, 80)}`);
+    // ---- A2 moderation fixture (E2E: admin queue → hide) ----
+    try {
+      const flaggedPost = await prisma.communityPost.create({
+        data: {
+          userId: customer.id,
+          content: 'منشور تجريبي للبلاغ — moderation E2E fixture',
+        },
+      });
+      await prisma.contentReport.create({
+        data: {
+          targetType: 'community_post',
+          targetId: flaggedPost.id,
+          reporterId: customer.id,
+          reason: 'inappropriate',
+          note: 'Seeded fixture for the moderation E2E spec',
+          status: 'open',
+        },
+      });
+      console.log(' Moderation fixture seeded (1 open report)');
+    } catch (err: any) {
+      console.log(`    Moderation fixture skipped: ${err.message?.slice(0, 60)}`);
+    }
+    // close the D2 block's catch (the merge conflict shared its closing brace)
   }
 
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');

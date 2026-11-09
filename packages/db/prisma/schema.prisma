@@ -513,6 +513,7 @@ model Service {
   technicianServices TechnicianService[]
   bookings          Booking[]
   tags              ServiceTagAssignment[]
+  womensMappings    WomensServiceMapping[] // D2 — facade items that map onto this service
   wishlistItems     WishlistItem[]
   bundlesAsPrimary  ServiceBundle[] @relation("BundlePrimary")
   bundlesAsChild    ServiceBundle[] @relation("BundleChild")
@@ -4861,4 +4862,20 @@ model EventTicket {
   @@index([userId])
   @@index([eventId])
   @@map("event_tickets")
+}
+
+// D2 (PLATFORM_IMPROVEMENT_PLAN) — the 289-item static women's catalog
+// maps onto real Service rows so bookings and browsing share one source
+// of truth. Facade ids repeat across categories, hence the composite key.
+model WomensServiceMapping {
+  categoryKey String
+  facadeId    String
+  serviceId   Int
+  createdAt   DateTime @default(now())
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([categoryKey, facadeId])
+  @@index([serviceId])
+  @@map("womens_service_mappings")
 }
