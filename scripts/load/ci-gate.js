@@ -44,4 +44,22 @@ export default function () {
   const input = encodeURIComponent(JSON.stringify({ json: { page: 1, limit: 12 } }));
   const services = http.get(`${TARGET}/api/trpc/services.list?input=${input}`, { headers });
   check(services, { 'services.list 200': (r) => r.status === 200 });
+
+  // D3 — cache-hit gate: the second identical browse pass must be served
+  // from Redis. The health payload exposes the process-wide hit counters,
+  // so a hit on the warm pass shows up as an increase between the two
+  // health snapshots.
+  const healthBefore = http.get(`${TARGET}/api/trpc/health`, { headers });
+  const hitsBefore = healthBefore.json('result.data.json.cacheStats.hits') ?? 0;
+
+  const servicesWarm = http.get(`${TARGET}/api/trpc/services.list?input=${input}`, { headers });
+  check(servicesWarm, { 'services.list warm pass 200': (r) => r.status === 200 });
+
+  const healthAfter = http.get(`${TARGET}/api/trpc/health`, { headers });
+  const hitsAfter = healthAfter.json('result.data.json.cacheStats.hits') ?? 0;
+
+  check(
+    { hitsBefore, hitsAfter },
+    { 'catalog cache serves the warm pass (D3)': (s) => s.hitsAfter > s.hitsBefore },
+  );
 }

@@ -4,6 +4,8 @@ import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
 import { publicProcedure, adminProcedure, technicianProcedure, router } from '../trpc';
+import { cached, invalidateCachePrefix } from '../lib/cache';
+import { catalogCache } from '../lib/cacheKeys';
 import { addTechnicianServiceSchema } from '../validators/catalog';
 import { getSignedFileUrl } from '../lib/storage';
 
@@ -23,46 +25,49 @@ export const technicianRouter = router({
    * Ordered by average rating descending.
    */
   list: publicProcedure.input(technicianListSchema).query(async ({ input }) => {
-    const { city, serviceId, page, limit } = input;
-    const skip = (page - 1) * limit;
+    // D3 — hot read: the browse page paginates this; cache-aside per input.
+    return cached(catalogCache.technicians.list(input), async () => {
+      const { city, serviceId, page, limit } = input;
+      const skip = (page - 1) * limit;
 
-    // C5 — store pseudo-technicians (storeVendorId) never surface in the
-    // browse; their kycStatus stays PENDING as a second line of defense.
-    const where: Record<string, unknown> = { kycStatus: 'VERIFIED', storeVendorId: null };
+      // C5 — store pseudo-technicians (storeVendorId) never surface in the
+      // browse; their kycStatus stays PENDING as a second line of defense.
+      const where: Record<string, unknown> = { kycStatus: 'VERIFIED', storeVendorId: null };
 
-    if (city) {
-      where.city = city;
-    }
+      if (city) {
+        where.city = city;
+      }
 
-    if (serviceId) {
-      where.technicianServices = {
-        some: {
-          serviceId,
-          isActive: true,
-        },
-      };
-    }
+      if (serviceId) {
+        where.technicianServices = {
+          some: {
+            serviceId,
+            isActive: true,
+          },
+        };
+      }
 
-    const [items, total] = await Promise.all([
-      prisma.technician.findMany({
-        where,
-        orderBy: { ratingAvg: 'desc' },
-        skip,
-        take: limit,
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              avatarUrl: true,
+      const [items, total] = await Promise.all([
+        prisma.technician.findMany({
+          where,
+          orderBy: { ratingAvg: 'desc' },
+          skip,
+          take: limit,
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                avatarUrl: true,
+              },
             },
           },
-        },
-      }),
-      prisma.technician.count({ where }),
-    ]);
+        }),
+        prisma.technician.count({ where }),
+      ]);
 
-    return { items, total, page, limit };
+      return { items, total, page, limit };
+    });
   }),
 
   /**
@@ -251,6 +256,8 @@ export const technicianRouter = router({
         },
       });
 
+      // D3 — the browse listing derives from these writes.
+      invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
       return mapping;
     }),
 
@@ -405,6 +412,8 @@ export const technicianRouter = router({
         data.yearsOfExperience = input.yearsOfExperience;
       }
 
+      // D3 — the browse listing derives from these writes.
+      invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
       return prisma.technician.update({
         where: { userId: ctx.user.id },
         data,
@@ -511,6 +520,8 @@ export const technicianRouter = router({
         },
       });
 
+      // D3 — the browse listing derives from these writes.
+      invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
       return updated;
     }),
 
