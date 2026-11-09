@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { LARGE_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router } from '../trpc';
+import { cached, invalidateCachePrefix } from '../lib/cache';
+import { catalogCache } from '../lib/cacheKeys';
 import {
   createServiceSchema,
   updateServiceSchema,
@@ -18,81 +20,84 @@ export const serviceRouter = router({
    * Supports: categoryId, search (in titleJson), price range, sorting.
    */
   list: publicProcedure.input(serviceQuerySchema).query(async ({ input }) => {
-    const { search, categoryId, minPrice, maxPrice, sort, page, limit } = input;
-    const skip = (page - 1) * limit;
+    // D3 — hot read: cache-aside with the input hashed into the key.
+    return cached(catalogCache.services.list(input), async () => {
+      const { search, categoryId, minPrice, maxPrice, sort, page, limit } = input;
+      const skip = (page - 1) * limit;
 
-    // C5 — store services live on their storefront's Services tab, not in
-    // the general browse (platform services only here).
-    const where: Record<string, unknown> = { isActive: true, isStoreService: false };
+      // C5 — store services live on their storefront's Services tab, not in
+      // the general browse (platform services only here).
+      const where: Record<string, unknown> = { isActive: true, isStoreService: false };
 
-    if (categoryId) {
-      // E1 — services attach to ROOT categories; a subcategory chip
-      // resolves to its parent so the browse filter works from any
-      // category level (the chips previously returned empty lists).
-      const cat = await prisma.category.findUnique({
-        where: { id: categoryId },
-        select: { parentId: true },
-      });
-      where.categoryId = cat?.parentId ?? categoryId;
-    }
-
-    // E1 — the catalog is women-only; the legacy mens-grooming rows stay
-    // in the DB (admin/data safety) but are excluded from public browse.
-    where.category = { slug: { not: 'mens-grooming' } };
-
-    // E6d — trust badge filters.
-    if (input.womenOnly) where.isWomenOnlyStaff = true;
-    if (input.privateSuite) where.isPrivateSuite = true;
-    if (input.pregnancySafe) where.isPregnancySafe = true;
-    // K2 (kids plan) — mommy/kid-friendly filter.
-    if (input.mommyFriendly) where.isMommyFriendly = true;
-
-    if (minPrice !== undefined || maxPrice !== undefined) {
-      const priceFilter: Record<string, unknown> = {};
-      if (minPrice !== undefined) priceFilter.gte = minPrice;
-      if (maxPrice !== undefined) priceFilter.lte = maxPrice;
-      where.basePrice = priceFilter;
-    }
-
-    if (search) {
-      where.OR = [
-        { titleJson: { path: ['en'], string_contains: search } },
-        { titleJson: { path: ['ar'], string_contains: search } },
-      ];
-    }
-
-    const orderBy: Record<string, unknown> | Record<string, unknown>[] = (() => {
-      switch (sort) {
-        case 'price_asc':
-          return { basePrice: 'asc' as const };
-        case 'price_desc':
-          return { basePrice: 'desc' as const };
-        case 'popular':
-          return [{ isPopular: 'desc' as const }, { sortOrder: 'asc' as const }];
-        case 'duration':
-          return { durationMin: 'asc' as const };
-        case 'newest':
-        default:
-          return { createdAt: 'desc' as const };
+      if (categoryId) {
+        // E1 — services attach to ROOT categories; a subcategory chip
+        // resolves to its parent so the browse filter works from any
+        // category level (the chips previously returned empty lists).
+        const cat = await prisma.category.findUnique({
+          where: { id: categoryId },
+          select: { parentId: true },
+        });
+        where.categoryId = cat?.parentId ?? categoryId;
       }
-    })();
 
-    const [items, total] = await Promise.all([
-      prisma.service.findMany({
-        where,
-        orderBy,
-        skip,
-        take: limit,
-        include: {
-          category: { select: { id: true, nameJson: true, slug: true } },
-          variants: { where: { isActive: true } },
-          tags: { include: { tag: true } },
-        },
-      }),
-      prisma.service.count({ where }),
-    ]);
+      // E1 — the catalog is women-only; the legacy mens-grooming rows stay
+      // in the DB (admin/data safety) but are excluded from public browse.
+      where.category = { slug: { not: 'mens-grooming' } };
 
-    return { items, total, page, limit };
+      // E6d — trust badge filters.
+      if (input.womenOnly) where.isWomenOnlyStaff = true;
+      if (input.privateSuite) where.isPrivateSuite = true;
+      if (input.pregnancySafe) where.isPregnancySafe = true;
+      // K2 (kids plan) — mommy/kid-friendly filter.
+      if (input.mommyFriendly) where.isMommyFriendly = true;
+
+      if (minPrice !== undefined || maxPrice !== undefined) {
+        const priceFilter: Record<string, unknown> = {};
+        if (minPrice !== undefined) priceFilter.gte = minPrice;
+        if (maxPrice !== undefined) priceFilter.lte = maxPrice;
+        where.basePrice = priceFilter;
+      }
+
+      if (search) {
+        where.OR = [
+          { titleJson: { path: ['en'], string_contains: search } },
+          { titleJson: { path: ['ar'], string_contains: search } },
+        ];
+      }
+
+      const orderBy: Record<string, unknown> | Record<string, unknown>[] = (() => {
+        switch (sort) {
+          case 'price_asc':
+            return { basePrice: 'asc' as const };
+          case 'price_desc':
+            return { basePrice: 'desc' as const };
+          case 'popular':
+            return [{ isPopular: 'desc' as const }, { sortOrder: 'asc' as const }];
+          case 'duration':
+            return { durationMin: 'asc' as const };
+          case 'newest':
+          default:
+            return { createdAt: 'desc' as const };
+        }
+      })();
+
+      const [items, total] = await Promise.all([
+        prisma.service.findMany({
+          where,
+          orderBy,
+          skip,
+          take: limit,
+          include: {
+            category: { select: { id: true, nameJson: true, slug: true } },
+            variants: { where: { isActive: true } },
+            tags: { include: { tag: true } },
+          },
+        }),
+        prisma.service.count({ where }),
+      ]);
+
+      return { items, total, page, limit };
+    });
   }),
 
   /**
@@ -466,6 +471,10 @@ export const serviceRouter = router({
       data: data as Parameters<typeof prisma.service.create>[0]['data'],
     });
     return service;
+    // D3 — catalog writes invalidate the cached listings (services AND
+    // bundles, whose payloads embed service rows).
+    invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
+    invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
   }),
 
   /**
@@ -508,6 +517,10 @@ export const serviceRouter = router({
 
       const service = await prisma.service.update({ where: { id }, data });
       return service;
+      // D3 — catalog writes invalidate the cached listings (services AND
+      // bundles, whose payloads embed service rows).
+      invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
+      invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
     }),
 
   /**
@@ -533,6 +546,10 @@ export const serviceRouter = router({
       });
 
       return { success: true };
+      // D3 — catalog writes invalidate the cached listings (services AND
+      // bundles, whose payloads embed service rows).
+      invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
+      invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
     }),
 
   // ---------------------------------------------------------------------------

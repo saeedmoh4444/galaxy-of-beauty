@@ -4,6 +4,38 @@ import { logger } from './logger';
 
 const DEFAULT_TTL = CACHE_DEFAULT_TTL_S; // 5 minutes — good balance for catalog data
 
+// ── Hit/miss accounting (D3) ───────────────────────────────
+// In-process counters feed the health payload and the k6 cache-hit gate.
+// Per-process only — that is exactly what the single-server k6 assertion
+// needs; multi-instance production dashboards should use Redis-side INFO.
+
+type KeyCounters = { hits: number; misses: number };
+
+const counters: KeyCounters & { keys: Map<string, KeyCounters> } = {
+  hits: 0,
+  misses: 0,
+  keys: new Map(),
+};
+
+function record(key: string, kind: 'hit' | 'miss'): void {
+  counters[kind === 'hit' ? 'hits' : 'misses'] += 1;
+  const entry = counters.keys.get(key) ?? { hits: 0, misses: 0 };
+  entry[kind === 'hit' ? 'hits' : 'misses'] += 1;
+  counters.keys.set(key, entry);
+}
+
+/** Process-wide cache hit/miss totals (exposed on the health endpoint). */
+export function getCacheStats(): { hits: number; misses: number; entries: number } {
+  return { hits: counters.hits, misses: counters.misses, entries: counters.keys.size };
+}
+
+/** Test hook — zero the counters between assertions. */
+export function resetCacheStats(): void {
+  counters.hits = 0;
+  counters.misses = 0;
+  counters.keys.clear();
+}
+
 /**
  * Attempts to read from Redis cache. On miss, calls `fetcher()`,
  * stores the result, and returns it. Cache failures are silent
@@ -22,6 +54,7 @@ export async function cached<T>(
   try {
     const cached = await redis.get(cacheKey);
     if (cached !== null) {
+      record(key, 'hit');
       return JSON.parse(cached) as T;
     }
   } catch (err) {
@@ -34,6 +67,7 @@ export async function cached<T>(
   }
 
   const data = await fetcher();
+  record(key, 'miss');
 
   try {
     await redis.setex(cacheKey, ttl, JSON.stringify(data));
