@@ -249,6 +249,16 @@ jobs:
             if ! kill -0 $SERVER_PID 2>/dev/null; then echo "Server exited early"; exit 1; fi
             sleep 1
           done
+          # Warm the dynamic routes the suite interacts with first.
+          # `next start` compiles dynamic pages (login, search, …) on the
+          # FIRST request — a cold compile makes hydration miss the spec's
+          # first click/submit (the pre-hydration interaction flake that
+          # took down admin-nav, public-header, booking specs). Warming
+          # moves the compile cost out of the test window.
+          for route in / /login /search /services /bundles /vendor-portal /store /admin/login; do
+            curl -sf -o /dev/null "http://localhost:3000$route" || true
+          done
+          echo "warm-up done"
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
           # Strong, non-blacklisted secrets — next start runs in production mode
