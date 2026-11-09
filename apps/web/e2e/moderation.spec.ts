@@ -39,7 +39,10 @@ async function trpcMutation(
     { path, input },
   );
   const first = (batch as Array<{ result?: { data?: { json?: unknown } } }>)[0];
-  return first?.result?.data?.json;
+  // The web tRPC route uses the superjson transformer — mutation payloads
+  // come back as { json: <actual>, meta } — unwrap when present.
+  const raw = first?.result?.data?.json as { json?: unknown } | undefined;
+  return (raw && typeof raw === 'object' && 'json' in raw ? raw.json : raw) ?? {};
 }
 
 /** Read the public community feed through the app's own tRPC route. */
@@ -54,7 +57,11 @@ async function publicFeedContents(page: import('@playwright/test').Page): Promis
   const first = (
     batch as Array<{ result?: { data?: { json?: { items?: Array<{ content?: string }> } } } }>
   )[0];
-  return (first?.result?.data?.json?.items ?? []).map((p) => p.content ?? '');
+  const first = (batch as Array<{ result?: { data?: { json?: unknown } } }>)[0];
+  const raw = first?.result?.data?.json as { json?: unknown } | undefined;
+  const payload = (raw && typeof raw === 'object' && 'json' in raw ? raw.json : raw) as
+    { items?: Array<{ content?: string }> } | undefined;
+  return (payload?.items ?? []).map((p) => p.content ?? '');
 }
 
 test('admin resolves a report: hide removes the content from the public feed', async ({ page }) => {
