@@ -8341,4 +8341,27 @@ export const mobileCustomerBMessages = {
   'mobile.tech.gallery.date.aug5': { ar: '5 أغسطس', en: 'August 5' },
   'mobile.tech.gallery.date.aug10': { ar: '10 أغسطس', en: 'August 10' },
   'mobile.tech.gallery.date.aug12': { ar: '12 أغسطس', en: 'August 12' },
+
+  // ---- community moderation (A2) ----
+  'mobile.community.report': { ar: 'إبلاغ', en: 'Report' },
+  'mobile.community.report.title': { ar: 'الإبلاغ عن المنشور', en: 'Report post' },
+  'mobile.community.report.reason': { ar: 'سبب البلاغ', en: 'Reason' },
+  'mobile.community.report.note': {
+    ar: 'ملاحظات إضافية (اختياري)',
+    en: 'Additional notes (optional)',
+  },
+  'mobile.community.report.submit': { ar: 'إرسال البلاغ', en: 'Submit report' },
+  'mobile.community.report.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'mobile.community.report.sent': {
+    ar: 'تم استلام بلاغك، شكراً لكِ',
+    en: 'Report received, thank you',
+  },
+  'mobile.community.report.already': {
+    ar: 'سبق أن أبلغتِ عن هذا المنشور',
+    en: 'You already reported this post',
+  },
+  'mobile.community.report.reason.inappropriate': { ar: 'محتوى غير لائق', en: 'Inappropriate' },
+  'mobile.community.report.reason.spam': { ar: 'إزعاج', en: 'Spam' },
+  'mobile.community.report.reason.privacy': { ar: 'انتهاك خصوصية', en: 'Privacy' },
+  'mobile.community.report.reason.other': { ar: 'أخرى', en: 'Other' },
 } as const satisfies Record<string, { ar: string; en: string }>;
