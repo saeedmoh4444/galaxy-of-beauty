@@ -44,6 +44,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: node scripts/audit-check.mjs
       - run: node scripts/check-image-urls.mjs
+      # E2 — mobile app-size trim: shipped assets stay under budget
+      - run: node scripts/check-mobile-assets.mjs
 
   # ── Architecture Gates (ARCH-003 + circular deps) ──────────
   cycles:

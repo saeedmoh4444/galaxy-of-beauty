@@ -26,6 +26,18 @@ interface ExpoPushTicket {
 }
 
 /**
+ * E2 — classify Expo's per-ticket responses: a DeviceNotRegistered ticket
+ * means the app was uninstalled (or the token rotated) and every future
+ * send to it is wasted. Returns the indexes into the token array that must
+ * be pruned. Transient errors (MessageTooBig, etc.) are deliberately kept.
+ */
+export function invalidTokenIndexes(tickets: ExpoPushTicket[]): number[] {
+  return tickets
+    .map((t, i) => (t.status === 'error' && t.details?.error === 'DeviceNotRegistered' ? i : -1))
+    .filter((i) => i >= 0);
+}
+
+/**
  * Send a push notification via Expo's Push API.
  * Falls back to logging if EXPO_ACCESS_TOKEN is not configured.
  */
@@ -73,6 +85,26 @@ async function sendExpoPush(tokens: string[], message: PushMessage): Promise<voi
         { errorCount: errors.length, totalCount: tickets.data?.length },
         'Expo push ticket errors',
       );
+    }
+
+    // E2 — prune dead device tokens (app uninstalled / token rotated):
+    // every future send to them is a wasted request AND counts against the
+    // circuit breaker. Tickets align 1:1 with the message array.
+    const dead = invalidTokenIndexes(tickets.data || []);
+    if (dead.length > 0) {
+      const deadTokens = dead
+        .map((i) => tokens[i])
+        .filter((t): t is string => typeof t === 'string' && t.length > 0);
+      await prisma.pushToken
+        .deleteMany({ where: { token: { in: deadTokens } } })
+        .then((r) => {
+          if (r.count > 0) {
+            logger.warn({ pruned: r.count }, 'Pruned dead push tokens');
+          }
+        })
+        .catch((err) => {
+          logger.warn({ err }, 'Failed to prune dead push tokens');
+        });
     }
   } catch (err) {
     logger.error({ err }, 'Failed to send Expo push');
