@@ -1,7 +1,9 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE, MS_PER_WEEK } from '@galaxy/shared';
 import { protectedProcedure, customerProcedure, publicProcedure, router } from '../trpc';
+import { matchesBlocklist } from '../lib/moderationBlocklist';
 
 const db = prisma;
 
@@ -62,6 +64,12 @@ export const communityRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (matchesBlocklist(input.content)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Content violates our community guidelines',
+        });
+      }
       const post = await db.communityPost.create({
         data: { userId: ctx.user.id, ...input },
       });
@@ -114,6 +122,12 @@ export const communityRouter = router({
   addComment: customerProcedure
     .input(z.object({ postId: z.number(), content: z.string().min(1).max(500) }))
     .mutation(async ({ ctx, input }) => {
+      if (matchesBlocklist(input.content)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Content violates our community guidelines',
+        });
+      }
       const comment = await db.communityComment.create({
         data: { postId: input.postId, userId: ctx.user.id, content: input.content },
       });
