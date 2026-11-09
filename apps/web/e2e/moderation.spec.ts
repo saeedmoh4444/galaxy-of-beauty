@@ -54,9 +54,6 @@ async function publicFeedContents(page: import('@playwright/test').Page): Promis
     const res = await fetch(url, { credentials: 'include' });
     return res.json();
   });
-  const first = (
-    batch as Array<{ result?: { data?: { json?: { items?: Array<{ content?: string }> } } } }>
-  )[0];
   const first = (batch as Array<{ result?: { data?: { json?: unknown } } }>)[0];
   const raw = first?.result?.data?.json as { json?: unknown } | undefined;
   const payload = (raw && typeof raw === 'object' && 'json' in raw ? raw.json : raw) as
