@@ -308,6 +308,29 @@ Feed slide (virtualized, autoplay-muted)
 - **CI trigger gaps happen** — pushes occasionally don't create workflow runs; the recovery is the branch-update push (merge master, push — a real commit always triggers).
 - **Watchers die under memory pressure** — background CI pollers get reaped; one-shot checks on demand.
 
+### Platform-improvement-plan architecture deltas (2026-11-09)
+
+- **Hydration gate (the E2E flake war ender)**: interactive controls that
+  trigger client-only handlers (login submit, nav search) render DISABLED in
+  the SSR HTML and enable in a passive effect (`useHydrated`, @galaxy/ui).
+  Deterministic for Playwright (actionability waits for enabled) and for real
+  users on slow devices. Static content must render in the loading branch
+  (wellness tab bar) — never gate SSR-able content on fetches.
+- **Catalog cache-aside (D3)**: `lib/cacheKeys.ts` typed deterministic keys
+  (`catalog:<family>:list:<sha256>`), `cached()` with hit/miss counters on
+  the health payload (k6 asserts the second browse pass hits). Writes
+  invalidate whole families (services edits clear bundles too). The cache is
+  OFF in NODE_ENV=test unless GOB_TEST_CACHE=1 — the shared-DB suite inserts
+  via Prisma directly and must never read stale lists.
+- **Mobile parity smoke (E3)**: the Detox suite is iOS-simulator-only; CI
+  runs the Expo web export of the MOBILE app at a phone viewport against the
+  API (mobile-smoke job). The mobile client's `x-client-platform` header is
+  first-party — the API CORS allowlist must include it for web parity.
+- **Pagination rows wrap** (`flex-wrap`) — an unwrapped page-number row
+  overflows the mobile viewport when the catalog grows; RTL horizontal scroll
+  shifts element positions and breaks Playwright clicks ("<html> intercepts
+  pointer events"). The no-overflow regression spec guards it.
+
 ### The Next Leap
 
 1. **Production infra** — CDN for reel video, S3 lifecycle, RDS + read replica, ElastiCache.
