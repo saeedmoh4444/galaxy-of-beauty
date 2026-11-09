@@ -26,7 +26,6 @@ async function main() {
     db.communityLike.deleteMany(),
     db.communityComment.deleteMany(),
     db.communityPost.deleteMany(),
-    db.contentReport.deleteMany(),
     db.courseEnrollment.deleteMany(),
     db.beautyPackageService.deleteMany(),
     db.groupBookingMember.deleteMany(),
@@ -4655,29 +4654,6 @@ async function main() {
     }
   } catch (err: any) {
     console.log(`    Shorts: ${err.message?.slice(0, 60)}`);
-  }
-
-  // ---- A2 moderation fixture (E2E: admin queue → hide) ----
-  try {
-    const flaggedPost = await prisma.communityPost.create({
-      data: {
-        userId: customer.id,
-        content: 'منشور تجريبي للبلاغ — moderation E2E fixture',
-      },
-    });
-    await prisma.contentReport.create({
-      data: {
-        targetType: 'community_post',
-        targetId: flaggedPost.id,
-        reporterId: customer.id,
-        reason: 'inappropriate',
-        note: 'Seeded fixture for the moderation E2E spec',
-        status: 'open',
-      },
-    });
-    console.log(' Moderation fixture seeded (1 open report)');
-  } catch (err: any) {
-    console.log(`    Moderation fixture skipped: ${err.message?.slice(0, 60)}`);
   }
 
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');
