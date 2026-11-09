@@ -41,11 +41,29 @@ export function resetCacheStats(): void {
  * stores the result, and returns it. Cache failures are silent
  * (falls back to fetcher).
  */
+/**
+ * Test-env safety gate: the API unit suite shares one seeded DB across
+ * hundreds of test files that insert rows through Prisma directly (no
+ * router mutation → no invalidation), so a 5-minute cache would serve
+ * stale lists between tests. The cache is therefore OFF when
+ * NODE_ENV=test unless a test opts in via GOB_TEST_CACHE=1 (the D3 cache
+ * tests do exactly that).
+ */
+function cacheEnabled(): boolean {
+  return process.env.NODE_ENV !== 'test' || process.env.GOB_TEST_CACHE === '1';
+}
+
+/**
+ * Attempts to read from Redis cache. On miss, calls `fetcher()`,
+ * stores the result, and returns it. Cache failures are silent
+ * (falls back to fetcher).
+ */
 export async function cached<T>(
   key: string,
   fetcher: () => Promise<T>,
   ttl: number = DEFAULT_TTL,
 ): Promise<T> {
+  if (!cacheEnabled()) return fetcher();
   const redis = getRedis();
   if (!redis) return fetcher();
 

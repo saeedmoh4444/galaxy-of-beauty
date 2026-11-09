@@ -29,6 +29,9 @@ async function adminCaller() {
 }
 
 beforeAll(async () => {
+  // The suite runs in the test env, where cached() is OFF by default —
+  // these router-level cache tests opt in.
+  process.env.GOB_TEST_CACHE = '1';
   const r = getRedis();
   if (r) {
     try {

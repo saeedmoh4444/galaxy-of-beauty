@@ -26,9 +26,31 @@ beforeAll(async () => {
   }
 });
 
+/** The suite runs in the test env, where cached() is OFF by default —
+ * the D3 cache tests opt in per test. */
+function enableCache(): void {
+  process.env.GOB_TEST_CACHE = '1';
+}
+
 describe('cache stats + invalidation', () => {
+  it('bypasses the cache in the test env unless opted in (shared-DB safety)', async () => {
+    delete process.env.GOB_TEST_CACHE;
+    let fetches = 0;
+    const fetch = async () => {
+      fetches += 1;
+      return { value: fetches };
+    };
+    // Two identical reads must BOTH hit the fetcher — the test env never
+    // serves stale data to tests that mutate the shared DB directly.
+    await cached('d3-bypass-test', fetch, 60);
+    await cached('d3-bypass-test', fetch, 60);
+    expect(fetches).toBe(2);
+    enableCache();
+  });
+
   it('counts a miss then a hit across two identical reads', async (ctx) => {
     if (!redisAvailable) return;
+    enableCache();
     resetCacheStats();
     let fetches = 0;
     const fetch = async () => {
@@ -51,6 +73,7 @@ describe('cache stats + invalidation', () => {
 
   it('invalidateCache forces a re-fetch (stale-proof)', async (ctx) => {
     if (!redisAvailable) return;
+    enableCache();
     resetCacheStats();
     let fetches = 0;
     const fetch = async () => {
@@ -69,6 +92,7 @@ describe('cache stats + invalidation', () => {
 
   it('invalidateCachePrefix clears the whole family', async (ctx) => {
     if (!redisAvailable) return;
+    enableCache();
     const r = getRedis();
     if (!r) return;
 
