@@ -29,6 +29,7 @@
     "test:unit": "vitest run"
   },
   "dependencies": {
+    "@galaxy/shared": "workspace:*",
     "@prisma/adapter-pg": "^7.10.1",
     "dotenv": "^18.0.9",
     "@prisma/client": "^7.10.1",

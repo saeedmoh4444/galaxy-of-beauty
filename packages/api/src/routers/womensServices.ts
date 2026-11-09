@@ -5,8 +5,8 @@ import { prisma } from '@galaxy/db';
 import { DEFAULT_PLATFORM_FEE_SAR } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
-import { WOMENS_SERVICES } from './womensServicesData';
-import { resolveWomensService } from './womensServicesMap';
+import { WOMENS_SERVICES } from '@galaxy/shared/catalog/womens';
+import { resolveWomensServiceId } from './womensServicesMap';
 
 export const womensServicesRouter = router({
   categories: publicProcedure.query(() =>
@@ -75,22 +75,14 @@ export const womensServicesRouter = router({
         };
       }
 
-      // Resolve the facade item to a real seeded service: an exact
-      // titleJson.en match first (shared staples like "Relaxation
-      // Massage"), then the deterministic map (womensServicesMap.ts).
-      const service =
-        (await prisma.service.findFirst({
-          where: {
-            titleJson: { path: ['en'], equals: svc.nameEn },
-            isActive: true,
-          },
-        })) ??
-        (await prisma.service.findFirst({
-          where: {
-            titleJson: { path: ['en'], equals: resolveWomensService(svc.nameEn, input.category) },
-            isActive: true,
-          },
-        }));
+      // D2 — resolve the facade item to a real seeded service: the
+      // (category, facadeId) mapping table first (the single source of
+      // truth seeded for all 289 items), then the deterministic keyword
+      // rules as the fallback for unmapped ids.
+      const mappedServiceId = await resolveWomensServiceId(input.category, svc.id, svc.nameEn);
+      const service = await prisma.service.findFirst({
+        where: { id: mappedServiceId, isActive: true },
+      });
       if (!service) {
         throw new TRPCError({
           code: 'NOT_FOUND',
