@@ -92,7 +92,10 @@ backups/
 # local scratch / tooling
 .sweep-tmp/
 .postman/
-postman/
+postman/*
+# F2 — the generated tRPC contract is a versioned artifact
+!postman/openapi.json
+!postman/README.md
 .dependabot-merge.sh
 .screenshots/heroes/
 packages/db/generated/
