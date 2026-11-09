@@ -13,6 +13,8 @@
 // The requested facade item always travels in the booking notes, so the
 // technician sees exactly what the customer asked for.
 
+import { prisma } from '@galaxy/db';
+
 export const WOMENS_CATEGORY_OVERRIDES: Record<string, string> = {
   henna: 'Henna Art',
   hijab_care: 'Under-Hijab Scalp Treatment',
@@ -95,9 +97,8 @@ const KEYWORD_RULES: ReadonlyArray<{ re: RegExp; target: string; inCategory?: Re
 export const WOMENS_FALLBACK_SERVICE = 'Beauty Consultation';
 
 /**
- * Resolves a facade item to the `titleJson.en` of the real seeded
- * service that should carry its bookings. Never returns null — unmapped
- * items fall back to the consultation service.
+ * Pure rule resolution (no DB) — the legacy sweep pins that all 289
+ * items resolve to a target NAME. Booking uses the async id variant.
  */
 export function resolveWomensService(itemNameEn: string, categoryKey: string): string {
   const override = WOMENS_CATEGORY_OVERRIDES[categoryKey];
@@ -108,4 +109,36 @@ export function resolveWomensService(itemNameEn: string, categoryKey: string): s
     if (rule.re.test(itemNameEn)) return rule.target;
   }
   return WOMENS_FALLBACK_SERVICE;
+}
+
+/**
+ * D2 — resolves a facade item to the ID of the real seeded `Service`
+ * that carries its bookings. Order:
+ *   1. the (category, facadeId) mapping table — the single source of
+ *      truth seeded for all 289 items,
+ *   2. whole-category overrides + ordered keyword rules (legacy
+ *      fallback for unmapped ids), resolved by titleJson.en,
+ *   3. the 'Beauty Consultation' fallback service.
+ * Returns 0 when nothing at all resolves (caller surfaces NOT_FOUND).
+ */
+export async function resolveWomensServiceId(
+  categoryKey: string,
+  facadeId: string,
+  itemNameEn: string,
+): Promise<number> {
+  // 1. Mapping table first — deterministic and seeded for every item.
+  const mapped = await prisma.womensServiceMapping.findUnique({
+    where: { categoryKey_facadeId: { categoryKey, facadeId } },
+    select: { serviceId: true },
+  });
+  if (mapped) return mapped.serviceId;
+
+  // 2. Legacy rules, resolved by titleJson.en.
+  const target = resolveWomensService(itemNameEn, categoryKey);
+
+  const service = await prisma.service.findFirst({
+    where: { titleJson: { path: ['en'], equals: target }, isActive: true },
+    select: { id: true },
+  });
+  return service?.id ?? 0;
 }
