@@ -1,6 +1,7 @@
 import { router, publicProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
 import { getRedis } from '../lib/redis';
+import { getCacheStats } from '../lib/cache';
 
 // ── Domain exports ──
 // Each domain groups related feature routers.
@@ -365,6 +366,9 @@ export const appRouter = router({
       version: '2.2.0',
       uptime: Math.round(process.uptime()),
       checks,
+      // D3 — process-wide cache hit/miss totals; the k6 gate asserts a hit
+      // on the second identical browse pass.
+      cacheStats: getCacheStats(),
     };
   }),
 
