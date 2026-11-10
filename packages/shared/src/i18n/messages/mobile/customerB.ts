@@ -120,6 +120,18 @@ export const mobileCustomerBMessages = {
   'mobile.vendorPortal.title': { ar: 'بوابة البائعين', en: 'Vendor Portal' },
   'mobile.vendorPortal.products': { ar: 'منتجات', en: 'Products' },
   'mobile.vendorPortal.sar': { ar: 'ر.س', en: 'SAR' },
+  // ---- vendor-portal analytics (seller program D1) ----
+  'mobile.vendorPortal.analytics.title': { ar: 'التحليلات', en: 'Analytics' },
+  'mobile.vendorPortal.analytics.revenue': { ar: 'الإيرادات (ر.س)', en: 'Revenue (SAR)' },
+  'mobile.vendorPortal.analytics.orders': { ar: 'الطلبات', en: 'Orders' },
+  'mobile.vendorPortal.analytics.aov': { ar: 'متوسط الطلب (ر.س)', en: 'Avg order (SAR)' },
+  'mobile.vendorPortal.analytics.conversion': { ar: 'التحويل', en: 'Conversion' },
+  'mobile.vendorPortal.analytics.topProducts': { ar: 'الأكثر مبيعاً', en: 'Top products' },
+  'mobile.vendorPortal.analytics.units': { ar: 'قطعة', en: 'units' },
+  'mobile.vendorPortal.analytics.empty': {
+    ar: 'لا توجد بيانات بعد — تُبنى التحليلات من مبيعات المتجر',
+    en: 'No data yet — analytics build up from store sales',
+  },
   // ---- vendor-portal seller home (Wave E1) ----
   'mobile.vendorPortal.health': { ar: 'صحة المتجر', en: 'Store Health' },
   'mobile.vendorPortal.verified': { ar: 'متجر موثّق', en: 'Verified store' },
