@@ -54,8 +54,9 @@ test.describe('Payout requests (D2)', () => {
     await adminContext.close();
 
     // 4. The seller's request flips to approved (after a reload — the
-    //    dashboard has no polling by design).
+    //    dashboard has no polling by design). .first(): earlier browser
+    //    projects' approved requests share the same seeded store history.
     await page.reload();
-    await expect(card.getByText('مقبول')).toBeVisible({ timeout: 20_000 });
+    await expect(card.getByText('مقبول').first()).toBeVisible({ timeout: 20_000 });
   });
 });
