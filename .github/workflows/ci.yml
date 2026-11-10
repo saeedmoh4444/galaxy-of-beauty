@@ -389,7 +389,6 @@ jobs:
           name: mobile-smoke-report
           path: apps/mobile/test-results/
           retention-days: 7
-          retention-days: 7
 
   # ── k6 Load Gate (B3) ─────────────────────────────────────
   # PR-level load gate: boots the built app against real postgres/redis
