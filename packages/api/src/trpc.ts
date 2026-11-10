@@ -209,9 +209,13 @@ const hasRole = (...roles: string[]) =>
     return next({ ctx: { ...ctx, user: ctx.user } });
   });
 
+// R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — sellers are customers too: they keep
+// full customer-lane access and get a dedicated seller lane for
+// store-management procedures.
 export const customerProcedure = protectedProcedure
-  .use(hasRole('CUSTOMER'))
+  .use(hasRole('CUSTOMER', 'SELLER'))
   .meta({ tier: 'customer' });
+export const sellerProcedure = protectedProcedure.use(hasRole('SELLER')).meta({ tier: 'seller' });
 export const technicianProcedure = protectedProcedure
   .use(hasRole('TECHNICIAN'))
   .meta({ tier: 'technician' });
@@ -224,6 +228,7 @@ export const staffProcedure = protectedProcedure
  * Role-based mutations — require auth + role + CSRF.
  */
 export const customerMutation = customerProcedure.use(csrfGuard).meta({ tier: 'customer' });
+export const sellerMutation = sellerProcedure.use(csrfGuard).meta({ tier: 'seller' });
 export const technicianMutation = technicianProcedure.use(csrfGuard).meta({ tier: 'technician' });
 export const adminMutation = adminProcedure.use(csrfGuard).meta({ tier: 'admin' });
 

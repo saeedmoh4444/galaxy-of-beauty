@@ -37,7 +37,7 @@ export default function LoginPage(): JSX.Element {
           id: userData.id as number,
           email: userData.email as string,
           name: userData.name as string,
-          role: userData.role as string as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN',
+          role: userData.role as string as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN' | 'SELLER',
           preferredLanguage: (userData.preferredLanguage as 'ar' | 'en') || 'ar',
           phone: userData.phone as string | undefined,
           avatarUrl: userData.avatarUrl as string | undefined,
@@ -46,7 +46,9 @@ export default function LoginPage(): JSX.Element {
       const role = userData.role as string;
       if (role === 'ADMIN') router.push('/admin/dashboard');
       else if (role === 'TECHNICIAN') router.push('/tech/dashboard');
-      // S1 — store owners land on their store dashboard, not the customer one.
+      // R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — SELLER accounts land on the
+      // store dashboard; hasVendor stays as the legacy transition fallback.
+      else if (role === 'SELLER') router.push('/store');
       else if ((data as unknown as { hasVendor?: boolean }).hasVendor) router.push('/store');
       else router.push('/dashboard');
     },
