@@ -99,6 +99,15 @@ export default function VendorPortalScreen(): JSX.Element {
         <Text style={styles.earningsLabel}>{t('mobile.vendorPortal.earnings.title')}</Text>
         <Text style={styles.earningsArrow}>›</Text>
       </TouchableOpacity>
+      {/* D1 (SELLER_FIRST_CLASS_ROLE_PLAN) — the analytics mirror. */}
+      <TouchableOpacity
+        style={styles.earningsRow}
+        onPress={() => router.push('/vendor-portal/analytics')}
+      >
+        <Text style={styles.earningsEmoji}>📈</Text>
+        <Text style={styles.earningsLabel}>{t('mobile.vendorPortal.analytics.title')}</Text>
+        <Text style={styles.earningsArrow}>›</Text>
+      </TouchableOpacity>
       {/* E4b — social links editable from the phone (B6 fields). */}
       <TouchableOpacity
         style={styles.socialsRow}
