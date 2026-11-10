@@ -237,7 +237,7 @@ export default function proxy(request: NextRequest) {
       response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
       response.headers.set(
         'Access-Control-Allow-Headers',
-        'Content-Type, Authorization, X-CSRF-Token, Accept-Language',
+        'Content-Type, Authorization, X-CSRF-Token, Accept-Language, X-Client-Platform',
       );
     }
   }
