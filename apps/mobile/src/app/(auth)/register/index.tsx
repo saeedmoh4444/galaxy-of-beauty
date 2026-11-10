@@ -20,7 +20,7 @@ export default function RegisterScreen() {
     email: '',
     phone: '+9665',
     password: '',
-    role: 'CUSTOMER' as 'CUSTOMER' | 'TECHNICIAN',
+    role: 'CUSTOMER' as 'CUSTOMER' | 'TECHNICIAN' | 'SELLER',
     city: '',
   });
 
@@ -105,6 +105,15 @@ export default function RegisterScreen() {
         >
           <Text style={[styles.roleText, form.role === 'TECHNICIAN' && styles.roleTextActive]}>
             {t('auth.role-technician')}
+          </Text>
+        </TouchableOpacity>
+        {/* R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store owners. */}
+        <TouchableOpacity
+          style={[styles.roleBtn, form.role === 'SELLER' && styles.roleActive]}
+          onPress={() => set('role', 'SELLER')}
+        >
+          <Text style={[styles.roleText, form.role === 'SELLER' && styles.roleTextActive]}>
+            {t('auth.role-seller')}
           </Text>
         </TouchableOpacity>
       </View>

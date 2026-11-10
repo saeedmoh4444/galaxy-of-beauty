@@ -71,11 +71,14 @@ export default function RegisterPage(): JSX.Element {
           id: u.id as number,
           email: u.email as string,
           name: u.name as string,
-          role: u.role as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN',
+          role: u.role as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN' | 'SELLER',
           preferredLanguage: 'ar',
         },
       );
-      router.push('/dashboard');
+      // R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — sellers land in the store
+      // shell; a vendor-less seller is bounced into the portal wizard.
+      if (u.role === 'SELLER') router.push('/store');
+      else router.push('/dashboard');
     },
     onError: (err) => setError(err.message),
   });
@@ -162,6 +165,9 @@ export default function RegisterPage(): JSX.Element {
             >
               <option value="CUSTOMER">{t('auth.role-customer')}</option>
               <option value="TECHNICIAN">{t('auth.role-technician')}</option>
+              {/* R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store
+                  owners; store identity + KYC follow in the portal wizard. */}
+              <option value="SELLER">{t('auth.role-seller')}</option>
             </select>
           </div>
           {form.role === 'TECHNICIAN' && (

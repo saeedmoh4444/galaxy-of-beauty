@@ -36,6 +36,8 @@ export const authMessages = {
   'auth.account-type': { ar: 'نوع الحساب', en: 'Account Type' },
   'auth.role-customer': { ar: 'عميلة', en: 'Customer' },
   'auth.role-technician': { ar: 'مقدمة خدمة', en: 'Service Provider' },
+  // R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store owners.
+  'auth.role-seller': { ar: 'صاحبة متجر', en: 'Seller (store owner)' },
   'auth.city': { ar: 'المدينة', en: 'City' },
   'auth.agree-terms': { ar: 'أوافق على', en: 'I agree to the' },
   'auth.terms': { ar: 'الشروط والأحكام', en: 'Terms & Conditions' },
