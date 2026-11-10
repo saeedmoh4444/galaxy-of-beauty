@@ -15,6 +15,10 @@ enum UserRole {
   CUSTOMER
   TECHNICIAN
   ADMIN
+  // R1 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store owners.
+  // Sellers keep full customer access (customerProcedure accepts both);
+  // the Vendor row remains the store identity.
+  SELLER
 }
 
 enum BookingStatus {
