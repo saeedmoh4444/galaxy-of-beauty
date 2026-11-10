@@ -54,6 +54,9 @@ export default function LoginScreen() {
       setSocketToken(result.accessToken);
       if (u.role === 'ADMIN') router.replace('/admin/dashboard');
       else if (u.role === 'TECHNICIAN') router.replace('/tech/dashboard');
+      // R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — sellers land on the vendor
+      // portal (orders/earnings/inbox/socials tabs already exist).
+      else if (u.role === 'SELLER') router.replace('/vendor-portal');
       else router.replace('/(tabs)/home');
     },
     onError: (err) => {

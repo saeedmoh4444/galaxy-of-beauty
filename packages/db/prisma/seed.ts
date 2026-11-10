@@ -3568,7 +3568,10 @@ async function main() {
         phone: '+966599000001',
         passwordHash: customerPasswordHash,
         name: 'متجر جالاكسي التجريبي',
-        role: 'CUSTOMER',
+        // R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — the demo store owner is a
+        // first-class SELLER on fresh seeds (prod users are backfilled by
+        // the R1 migration).
+        role: 'SELLER',
         emailVerified: true,
         preferredLanguage: 'ar',
       },
