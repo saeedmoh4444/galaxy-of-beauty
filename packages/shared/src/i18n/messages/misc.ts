@@ -4085,6 +4085,25 @@ export const miscMessages = {
   'vendorPortal.earnings.net': { ar: 'الصافي', en: 'Net' },
   'vendorPortal.earnings.empty': { ar: 'لا توجد تسويات بعد', en: 'No settlements yet' },
   'vendorPortal.earnings.status.pending': { ar: 'معلق', en: 'Pending' },
+  // D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — payout requests.
+  'vendorPortal.earnings.requestTitle': {
+    ar: 'طلب سحب الرصيد المعلق',
+    en: 'Request a payout',
+  },
+  'vendorPortal.earnings.available': {
+    ar: 'الرصيد المتاح للسحب: {amount}',
+    en: 'Available to request: {amount}',
+  },
+  'vendorPortal.earnings.requestAmount': { ar: 'المبلغ (ر.س)', en: 'Amount (SAR)' },
+  'vendorPortal.earnings.requestButton': { ar: 'إرسال الطلب', en: 'Request payout' },
+  'vendorPortal.earnings.requestSent': {
+    ar: 'تم إرسال الطلب — سيراجعه فريق المنصة',
+    en: 'Request sent — the platform team will review it',
+  },
+  'vendorPortal.earnings.requestHistory': { ar: 'طلباتي السابقة', en: 'My requests' },
+  'vendorPortal.earnings.requestPending': { ar: 'قيد المراجعة', en: 'Under review' },
+  'vendorPortal.earnings.requestApproved': { ar: 'مقبول', en: 'Approved' },
+  'vendorPortal.earnings.requestRejected': { ar: 'مرفوض', en: 'Rejected' },
   'vendorPortal.earnings.status.processing': { ar: 'قيد المعالجة', en: 'Processing' },
   'vendorPortal.earnings.status.completed': { ar: 'مكتمل', en: 'Completed' },
   'vendorPortal.earnings.status.failed': { ar: 'فشل', en: 'Failed' },

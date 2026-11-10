@@ -228,6 +228,8 @@ export const LOYALTY_TIERS = {
 
 /** Wallet minimum withdrawal balance (SAR). */
 export const MIN_WITHDRAWAL_BALANCE = 200;
+/** D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — minimum seller payout request (SAR). */
+export const MIN_PAYOUT_REQUEST_SAR = 100;
 /** Wallet withdrawal fee rate. */
 export const WITHDRAWAL_FEE_RATE = 0.05;
 /** Wallet top-up amount bounds (SAR). */

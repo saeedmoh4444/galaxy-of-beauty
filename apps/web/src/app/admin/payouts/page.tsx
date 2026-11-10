@@ -59,6 +59,9 @@ export default function PayoutsPage(): JSX.Element {
     <>
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-text-primary">{t('admin.payouts.title')}</h1>
+        {/* D2 — seller payout-request queue (approve → manual transfer
+            recorded; reject with a note). */}
+        <RequestsQueue />
         {isLoading ? (
           <TableSkeleton rows={5} cols={5} />
         ) : isError ? (
@@ -106,5 +109,84 @@ export default function PayoutsPage(): JSX.Element {
         )}
       </div>
     </>
+  );
+}
+
+/**
+ * D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — the approval queue for seller-initiated
+ * payout requests. Approve records a MANUAL transfer reference on the covered
+ * payout rows; reject stores an admin note.
+ */
+function RequestsQueue(): JSX.Element | null {
+  const { t } = useLocale();
+  const { addToast } = useToast();
+  const utils = api.useUtils();
+  const { data } = api.payouts.listRequestsForAdmin.useQuery({ status: 'PENDING' });
+  const approveMut = api.payouts.approveRequest.useMutation({
+    onSuccess: () => {
+      void utils.payouts.listRequestsForAdmin.invalidate();
+      addToast('success', t('admin.payouts.requests-approved'));
+    },
+    onError: (err) => addToast('error', err.message),
+  });
+  const rejectMut = api.payouts.rejectRequest.useMutation({
+    onSuccess: () => {
+      void utils.payouts.listRequestsForAdmin.invalidate();
+      addToast('success', t('admin.payouts.requests-rejected'));
+    },
+    onError: (err) => addToast('error', err.message),
+  });
+
+  const items = data?.items ?? [];
+  if (items.length === 0) return null;
+
+  return (
+    <div data-testid="payout-requests-queue">
+      <Card padding="none">
+        <div className="border-b border-edge-muted p-4">
+          <h2 className="text-lg font-bold">{t('admin.payouts.requests-title')}</h2>
+        </div>
+        <table className="w-full text-sm">
+          <thead className="bg-surface-muted text-text-secondary dark:text-text-tertiary">
+            <tr>
+              <th className="p-3 text-end">{t('admin.payouts.requests-store')}</th>
+              <th className="p-3 text-end">{t('admin.payouts.amount-header')}</th>
+              <th className="p-3 text-end">{t('admin.payouts.date-header')}</th>
+              <th className="p-3 text-end">{t('admin.payouts.action-header')}</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-edge-muted">
+            {items.map((r) => (
+              <tr key={r.id}>
+                <td className="p-3 font-medium">{r.storeName}</td>
+                <td className="p-3 font-bold">{formatCurrency(r.amount)}</td>
+                <td className="p-3 text-text-tertiary">
+                  {new Date(r.createdAt).toLocaleDateString('ar-SA')}
+                </td>
+                <td className="p-3">
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => approveMut.mutate({ requestId: r.id })}
+                      loading={approveMut.isPending}
+                    >
+                      {t('admin.payouts.requests-approve')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => rejectMut.mutate({ requestId: r.id, adminNote: 'Rejected' })}
+                      loading={rejectMut.isPending}
+                    >
+                      {t('admin.payouts.requests-reject')}
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Card>
+    </div>
   );
 }

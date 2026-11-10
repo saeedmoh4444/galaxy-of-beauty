@@ -54,6 +54,13 @@ enum PayoutStatus {
   FAILED
 }
 
+// D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — seller-initiated payout requests.
+enum PayoutRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum DisputeStatus {
   OPEN
   UNDER_REVIEW
@@ -796,6 +803,28 @@ model Payout {
   @@index([vendorId, status])
   @@index([periodStart, periodEnd])
   @@map("payouts")
+}
+
+// D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — seller-initiated payout requests.
+// The request lifecycle (PENDING → APPROVED/REJECTED by an admin); on
+// approval the covered accrued payout rows flip to COMPLETED with a
+// MANUAL-<id> reference — simulate-safe: the admin performs the real
+// bank transfer outside the platform, the reference records it.
+model PayoutRequest {
+  id             Int                 @id @default(autoincrement())
+  vendorId       Int
+  amount         Decimal             @db.Decimal(10, 2)
+  status         PayoutRequestStatus @default(PENDING)
+  idempotencyKey String              @unique
+  adminNote      String?
+  processedAt    DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@index([vendorId, status])
+  @@map("payout_requests")
 }
 
 // D1 — vendor analytics read-model (VENDOR_DASHBOARD_ENHANCEMENT_PLAN
@@ -1681,6 +1710,7 @@ model Vendor {
   orders   StoreOrder[]
   deals    StoreDeal[]
   payouts  Payout[]
+  payoutRequests PayoutRequest[] // D2 — seller-initiated payout requests
   promoCodes PromoCode[]
   dailyStats VendorDailyStat[]
   clinicSlots         ClinicSlot[]

@@ -3594,6 +3594,19 @@ async function main() {
       },
     });
 
+    // D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — an accrued PENDING payout so the
+    // demo seller has a balance to request against in the E2E journey.
+    await prisma.payout.create({
+      data: {
+        vendorId: demoVendor.id,
+        amount: 500,
+        fee: 0,
+        periodStart: new Date(Date.now() - 7 * 86_400_000),
+        periodEnd: new Date(),
+        status: 'PENDING',
+      },
+    });
+
     // A1 — demo staff member for the E2E team-management flow
     // (staff-demo@galaxyofbeauty.sa / Admin@123456): an ACTIVE STAFF
     // with orders+products capabilities on the demo store.
