@@ -5,7 +5,7 @@ import type { JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
+import { Button, Input, Card, ErrorAlert, useHydrated } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -55,6 +55,11 @@ export default function RegisterPage(): JSX.Element {
   });
   const [error, setError] = useState('');
   const [accepted, setAccepted] = useState(false);
+  // Hydration gate (the #620 flake-war lesson): the submit stays disabled in
+  // the SSR HTML until React attaches the handler — the seller-registration
+  // E2E lost pre-hydration clicks under late-suite CI load and stayed on
+  // /register for 60s.
+  const hydrated = useHydrated();
   const mutation = api.auth.register.useMutation({
     onSuccess: async (data) => {
       // Tokens are now set as HttpOnly cookies by the server — no localStorage needed.
@@ -192,7 +197,12 @@ export default function RegisterPage(): JSX.Element {
               {t('marketing.privacy.title')}
             </Link>
           </label>
-          <Button type="submit" className="w-full" loading={mutation.isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            loading={mutation.isPending}
+            disabled={!hydrated}
+          >
             {t('auth.register')}
           </Button>
         </form>
