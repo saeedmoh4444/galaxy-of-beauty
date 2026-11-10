@@ -9,7 +9,8 @@ export interface AuthUser {
   id: number;
   email: string;
   name: string;
-  role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN';
+  // R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — SELLER is a first-class role.
+  role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN' | 'SELLER';
   phone?: string;
   avatarUrl?: string;
   preferredLanguage: 'ar' | 'en';

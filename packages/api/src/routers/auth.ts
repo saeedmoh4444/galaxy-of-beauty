@@ -5,6 +5,7 @@ import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
 import { publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
+import type { JwtPayload } from '../lib/jwt';
 import { sendWelcomeDay0 } from '../workers/welcomeSeries';
 import {
   hashPassword,
@@ -371,7 +372,7 @@ export const authRouter = router({
   refresh: publicMutation.input(refreshTokenSchema).mutation(async ({ input, ctx }) => {
     try {
       // Verify the JWT signature
-      let payload: { id: number; role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN'; email: string };
+      let payload: JwtPayload;
       try {
         payload = verifyRefreshToken(input.refreshToken);
       } catch {

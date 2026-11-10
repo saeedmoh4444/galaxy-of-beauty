@@ -4,7 +4,8 @@ import { getEnv } from './env';
 
 export interface JwtPayload {
   id: number;
-  role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN';
+  // R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — SELLER is a first-class claim.
+  role: 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN' | 'SELLER';
   email: string;
   name?: string;
 }

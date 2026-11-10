@@ -46,7 +46,9 @@ export const registerSchema = z.object({
   phone: saudiPhone,
   password,
   name: z.string().min(2).max(100),
-  role: z.enum(['CUSTOMER', 'TECHNICIAN']).default('CUSTOMER'),
+  // R2 (SELLER_FIRST_CLASS_ROLE_PLAN) — SELLER registers directly; the
+  // store identity + KYC still go through the vendor-portal wizard.
+  role: z.enum(['CUSTOMER', 'TECHNICIAN', 'SELLER']).default('CUSTOMER'),
   city: z.string().optional(),
   acceptedTerms: z.boolean().refine((v) => v === true, 'You must accept the terms'),
   termsVersion: z.string().default('1.0'),
