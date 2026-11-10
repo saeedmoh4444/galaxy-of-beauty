@@ -3,6 +3,7 @@ import type { ReactNode, ErrorInfo } from 'react';
 import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
+import { captureError } from '@/lib/sentry';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -63,6 +64,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
+    // B1 — render-tree crashes reach Sentry when a DSN is configured;
+    // still a no-op in dev/CI builds.
+    captureError(error, { componentStack: errorInfo.componentStack?.slice(0, 2000) });
     // eslint-disable-next-line no-console -- error boundary reporting must not throw
     console.error('[Mobile ErrorBoundary]', error.message);
   }

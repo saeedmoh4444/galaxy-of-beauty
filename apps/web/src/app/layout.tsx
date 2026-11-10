@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
@@ -8,6 +9,7 @@ import { LocaleProvider } from '@/components/LocaleProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
 import { OfflineBanner } from '@/components/OfflineBanner';
+import { SentryInit } from '@/components/SentryInit';
 import { ToastProvider, DEFAULT_LOCAL_URL } from '@galaxy/ui';
 import './globals.css';
 
@@ -101,6 +103,14 @@ export default async function RootLayout({
       <body className="min-h-screen bg-surface font-sans text-text-primary antialiased">
         <SkipLink />
         <OfflineBanner />
+        {/* B1 — the Sentry chunk is lazy; the Suspense boundary keeps its
+            suspension OUT of the layout's hydration. Without it, React
+            falls back to client-rendering the whole layout subtree when
+            the chunk resolves mid-hydration, duplicating DOM (two bottom
+            navs, dead login forms) — the B1 CI E2E hang. */}
+        <Suspense fallback={null}>
+          <SentryInit />
+        </Suspense>
         <main id="main-content" tabIndex={-1}>
           <ErrorBoundary>
             <ToastProvider>

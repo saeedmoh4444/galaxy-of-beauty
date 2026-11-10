@@ -45,7 +45,8 @@
       "expo-notifications",
       "@config-plugins/react-native-webrtc",
       "expo-status-bar",
-      "expo-video"
+      "expo-video",
+      "@sentry/react-native"
     ],
     "extra": {
       "eas": {
