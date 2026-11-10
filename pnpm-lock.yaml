@@ -202,6 +202,9 @@ importers:
       '@galaxy/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@playwright/test':
+        specifier: ^1.65.0
+        version: 1.65.0
       '@types/react':
         specifier: ~19.3.0
         version: 19.3.0

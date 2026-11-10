@@ -290,6 +290,105 @@ jobs:
         with:
           name: playwright-report
           path: apps/web/playwright-report/
+
+  # ── Mobile Parity Smoke (E3) ─────────────────────────────
+  # Runs the Expo web export of the MOBILE app at a phone viewport against
+  # the API — the parity smoke for the critical mobile flows (the Detox
+  # iOS-simulator suite stays macOS-local; ubuntu runners get web-parity).
+  mobile-smoke:
+    name: Mobile Smoke (E3)
+    runs-on: ubuntu-latest
+    needs: [build]
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: gob_admin
+          POSTGRES_PASSWORD: gob_test_pass
+          POSTGRES_DB: Galaxy_of_Beauty_db
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '${{ env.NODE_VERSION }}'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Start Turbo remote cache
+        uses: rharkor/caching-for-turbo@v2.5.2
+
+      - name: Generate Prisma Client
+        run: pnpm --filter @galaxy/db exec prisma generate
+      - name: Migrate Schema (CI)
+        run: pnpm --filter @galaxy/db exec prisma migrate deploy
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+      - name: Seed Test Data
+        run: pnpm --filter @galaxy/db db:seed
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+
+      - name: Build Web App (API host)
+        run: pnpm turbo run build --filter=@galaxy/web
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
+
+      - name: Start API (Next)
+        run: |
+          pnpm --filter @galaxy/web exec next start --port 3000 &
+          SERVER_PID=$!
+          for i in $(seq 1 120); do
+            if curl -sf http://localhost:3000/api/trpc/health >/dev/null 2>&1; then break; fi
+            if ! kill -0 $SERVER_PID 2>/dev/null; then echo "Server exited early"; exit 1; fi
+            sleep 1
+          done
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+          JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
+          JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
+          BCRYPT_COST: '4'
+
+      - name: Export Mobile Web Build
+        run: pnpm --filter @galaxy/mobile exec expo export --platform web
+      - name: Serve Mobile Export
+        run: |
+          npx serve -s apps/mobile/dist -l 8081 &
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8081 >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+      - name: Install Playwright Browser
+        run: pnpm --filter @galaxy/mobile exec playwright install --with-deps chromium
+
+      - name: Run Mobile Parity Specs
+        run: pnpm --filter @galaxy/mobile exec playwright test --config playwright.config.ts
+        env:
+          PLAYWRIGHT_BASE_URL: 'http://localhost:8081'
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: mobile-smoke-report
+          path: apps/mobile/test-results/
           retention-days: 7
 
   # ── k6 Load Gate (B3) ─────────────────────────────────────
