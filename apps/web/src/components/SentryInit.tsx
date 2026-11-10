@@ -11,7 +11,12 @@ import dynamic from 'next/dynamic';
  * config's ready-marker.
  */
 const SentryBootstrap = dynamic(
-  () => import('../../sentry.client.config').then(() => ({ default: () => null })),
+  () =>
+    import('../../sentry.client.config')
+      .then(() => ({ default: () => null }))
+      // A failed chunk fetch must never take down the page — Sentry is
+      // best-effort telemetry, not application functionality.
+      .catch(() => ({ default: () => null })),
   { ssr: false },
 );
 

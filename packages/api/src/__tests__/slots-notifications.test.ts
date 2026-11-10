@@ -120,8 +120,13 @@ describe('slots — technician availability', () => {
 
   it('createBulkSlots builds date+time strings into real slots', async () => {
     const c = await caller(technician);
+    // +22 keeps this test clear of every other fixture in the file (the
+    // largest elsewhere is safeSlot(20), whose Friday-skip can reach +21).
+    // +11 collided with the createSlots fixture safeSlot(10): on Tuesdays
+    // both Friday-skips land on the same calendar day and the bulk slots
+    // fall inside its 07:00–10:30 range → CONFLICT (once-a-week flake).
     const day = new Date();
-    day.setDate(day.getDate() + 11);
+    day.setDate(day.getDate() + 22);
     while (day.getDay() === 5) day.setDate(day.getDate() + 1);
     // The router parses `${date}T${time}` in server-local time — build the
     // date string from LOCAL parts and bound the assertion the same way.
