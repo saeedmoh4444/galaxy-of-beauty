@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, adminProcedure, router } from '../trpc';
@@ -60,7 +61,7 @@ export const groupBookingRouter = router({
         where: { id: input.id },
         include: { members: true },
       });
-      if (!group) throw new Error('Group booking not found');
+      if (!group) throw new TRPCError({ code: 'NOT_FOUND', message: 'Group booking not found' });
       return { ...group, totalAmount: Number(group.totalAmount) };
     }),
 

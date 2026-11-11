@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
@@ -44,7 +45,8 @@ export const bridalConciergeRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const c = await db.bridalConcierge.findUnique({ where: { userId: ctx.user.id } });
-      if (!c) throw new Error('Create a bridal concierge first');
+      if (!c)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Create a bridal concierge first' });
       return db.bridalService.create({ data: { conciergeId: c.id, ...input } });
     }),
   markTrialDone: customerProcedure

@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
@@ -40,7 +41,8 @@ export const savingsGoalRouter = router({
     .input(z.object({ goalId: z.number(), amount: z.number().positive() }))
     .mutation(async ({ ctx, input }) => {
       const goal = await db.savingsGoal.findUnique({ where: { id: input.goalId } });
-      if (!goal || goal.userId !== ctx.user.id) throw new Error('الهدف غير موجود');
+      if (!goal || goal.userId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'الهدف غير موجود' });
       const newAmount = Number(goal.savedAmount) + input.amount;
       const completed = newAmount >= Number(goal.targetAmount);
       return db.savingsGoal.update({
@@ -61,8 +63,10 @@ export const savingsGoalRouter = router({
         db.savingsGoal.findUnique({ where: { id: input.goalId } }),
         db.bnplPlan.findUnique({ where: { id: input.bnplPlanId } }),
       ]);
-      if (!goal || goal.userId !== ctx.user.id) throw new Error('الهدف غير موجود');
-      if (!plan || plan.userId !== ctx.user.id) throw new Error('خطة التقسيط غير موجودة');
+      if (!goal || goal.userId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'الهدف غير موجود' });
+      if (!plan || plan.userId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'خطة التقسيط غير موجودة' });
       return db.savingsGoal.update({
         where: { id: input.goalId },
         data: { bnplPlanId: input.bnplPlanId },

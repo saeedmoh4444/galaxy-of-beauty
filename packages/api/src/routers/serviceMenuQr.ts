@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { DEFAULT_APP_URL } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
@@ -25,7 +26,7 @@ export const serviceMenuQrRouter = router({
     .input(z.object({ technicianId: z.number() }))
     .mutation(async ({ input }) => {
       const tech = TECHNICIANS_WITH_MENUS.find((t) => t.id === input.technicianId);
-      if (!tech) throw new Error('الفنية غير موجودة');
+      if (!tech) throw new TRPCError({ code: 'NOT_FOUND', message: 'الفنية غير موجودة' });
       const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
       const menuUrl = `${appUrl}/technicians/${tech.slug}/menu`;
       return {
