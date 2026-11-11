@@ -109,6 +109,7 @@ enum TransactionSource {
   STORE_PURCHASE
   GIFT_CARD_PURCHASE
   SUBSCRIPTION_PURCHASE
+  TOP_UP
 }
 
 enum StoreCheckoutStatus {

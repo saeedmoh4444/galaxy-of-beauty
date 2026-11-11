@@ -300,26 +300,43 @@ export const paymentRouter = router({
         });
 
         if (!wallet) {
-          wallet = await prisma.wallet.create({
-            data: { userId: booking.customerId },
-          });
+          try {
+            wallet = await prisma.wallet.create({
+              data: { userId: booking.customerId },
+            });
+          } catch (err) {
+            if ((err as { code?: string }).code !== 'P2002') throw err;
+            wallet = await prisma.wallet.findUniqueOrThrow({
+              where: { userId: booking.customerId },
+            });
+          }
         }
 
-        await prisma.walletTransaction.create({
-          data: {
-            walletId: wallet.id,
-            type: 'CREDIT',
-            source: 'CASHBACK',
-            amount: cashbackAmount,
-            description: `Cashback on booking #${booking.id}`,
-            referenceId: cashbackRefId,
-          },
-        });
-
-        await prisma.wallet.update({
-          where: { id: wallet.id },
-          data: { bonusBalance: { increment: cashbackAmount } },
-        });
+        // W1 (audit 2026-11-11): credit + row in ONE transaction keyed by a
+        // unique idempotencyKey. A concurrent capture loses the unique race
+        // and rolls its increment back — cashback lands exactly once.
+        try {
+          await prisma.$transaction([
+            prisma.wallet.update({
+              where: { id: wallet.id },
+              data: { bonusBalance: { increment: cashbackAmount } },
+            }),
+            prisma.walletTransaction.create({
+              data: {
+                walletId: wallet.id,
+                type: 'CREDIT',
+                source: 'CASHBACK',
+                amount: cashbackAmount,
+                description: `Cashback on booking #${booking.id}`,
+                referenceId: cashbackRefId,
+                idempotencyKey: `capture_cashback_${booking.id}`,
+              },
+            }),
+          ]);
+        } catch (err) {
+          // A concurrent capture already credited this cashback.
+          if ((err as { code?: string }).code !== 'P2002') throw err;
+        }
       }
 
       // Emit real-time events
