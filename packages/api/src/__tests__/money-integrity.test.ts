@@ -288,13 +288,21 @@ describe('payments.refund — cashback reversal', () => {
     try {
       await adminCaller.payments.refund({ bookingId: booking.id });
 
+      // W1 (audit 2026-11-11): refund now returns the customer's money.
+      // The cashback credit (+5) is reversed and the payment amount (100)
+      // is credited back: net = baseline + 100.
       const walletAfter = await prisma.wallet.findUnique({ where: { id: wallet.id } });
-      expect(Number(walletAfter!.bonusBalance)).toBe(Number(baseline));
+      expect(Number(walletAfter!.bonusBalance)).toBe(Number(baseline) + 100);
 
       const reversal = await prisma.walletTransaction.findFirst({
-        where: { referenceId: String(booking.id), type: 'DEBIT', source: 'REFUND' },
+        where: { referenceId: `refund_cashback_${booking.id}`, type: 'DEBIT', source: 'REFUND' },
       });
       expect(reversal).not.toBeNull();
+
+      const credit = await prisma.walletTransaction.findFirst({
+        where: { referenceId: String(booking.id), type: 'CREDIT', source: 'REFUND' },
+      });
+      expect(credit).not.toBeNull();
     } finally {
       await prisma.walletTransaction.deleteMany({ where: { walletId: wallet.id } });
       await prisma.payment.deleteMany({ where: { bookingId: booking.id } });
