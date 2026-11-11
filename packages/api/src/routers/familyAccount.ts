@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
@@ -86,7 +87,7 @@ export const familyAccountRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { id, ...data } = input;
       const member = await prisma.familyMember.findFirst({ where: { id, userId: ctx.user.id } });
-      if (!member) throw new Error('فرد العائلة غير موجود');
+      if (!member) throw new TRPCError({ code: 'NOT_FOUND', message: 'فرد العائلة غير موجود' });
       return prisma.familyMember.update({ where: { id }, data });
     }),
 

@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
@@ -55,14 +56,14 @@ export const certificationQuizRouter = router({
   ),
   get: publicProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
     const quiz = QUIZZES.find((q) => q.id === input.id);
-    if (!quiz) throw new Error('غير موجود');
+    if (!quiz) throw new TRPCError({ code: 'NOT_FOUND', message: 'غير موجود' });
     return quiz;
   }),
   submit: customerProcedure
     .input(z.object({ quizId: z.string(), answers: z.array(z.number()) }))
     .mutation(async ({ ctx, input }) => {
       const quiz = QUIZZES.find((q) => q.id === input.quizId);
-      if (!quiz) throw new Error('غير موجود');
+      if (!quiz) throw new TRPCError({ code: 'NOT_FOUND', message: 'غير موجود' });
       let correct = 0;
       input.answers.forEach((ans, i) => {
         if (quiz.questions[i]?.correct === ans) correct++;

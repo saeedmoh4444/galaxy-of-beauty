@@ -198,7 +198,7 @@ export const kidsServicesRouter = router({
 
   byCategory: publicProcedure.input(z.object({ category: z.string() })).query(async ({ input }) => {
     const cat = KIDS_CATEGORIES[input.category as keyof typeof KIDS_CATEGORIES];
-    if (!cat) throw new Error('غير موجود');
+    if (!cat) throw new TRPCError({ code: 'NOT_FOUND', message: 'غير موجود' });
     return cat;
   }),
 

@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
@@ -11,7 +12,7 @@ export const groupBuyRouter = router({
 
   join: customerProcedure.input(z.object({ dealId: z.number() })).mutation(async ({ input }) => {
     const deal = await db.groupBuyDeal.findUnique({ where: { id: input.dealId } });
-    if (!deal) throw new Error('الصفقة غير موجودة');
+    if (!deal) throw new TRPCError({ code: 'NOT_FOUND', message: 'الصفقة غير موجودة' });
     const updated = await db.groupBuyDeal.update({
       where: { id: input.dealId },
       data: { currentBuyers: { increment: 1 } },
