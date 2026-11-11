@@ -63,9 +63,12 @@ describe('Wallet', () => {
     const key = `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
     const result = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
     expect(result).toHaveProperty('balance');
-    // Money-integrity: top-ups are PENDING intents until a verified gateway
-    // callback credits the wallet — no free balance from a client call.
-    expect(result.status).toBe('PENDING');
+    // W1 (audit 2026-11-11): simulate mode (the test/CI default) mirrors the
+    // store-checkout discipline and completes the credit; production fails
+    // closed with PENDING until a live gateway callback exists.
+    const simulate =
+      process.env['FATOORAH_SIMULATE'] === 'true' && process.env['NODE_ENV'] !== 'production';
+    expect(result.status).toBe(simulate ? 'COMPLETED' : 'PENDING');
   });
 
   it('should accept a UUID idempotency key (web client)', async () => {
@@ -74,7 +77,9 @@ describe('Wallet', () => {
       idempotencyKey: crypto.randomUUID(),
     });
     expect(result).toHaveProperty('balance');
-    expect(result.status).toBe('PENDING');
+    const simulate =
+      process.env['FATOORAH_SIMULATE'] === 'true' && process.env['NODE_ENV'] !== 'production';
+    expect(result.status).toBe(simulate ? 'COMPLETED' : 'PENDING');
   });
 
   it('should replay the same idempotency key without double-charging', async () => {
