@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import type * as React from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, Button, Modal, Input, formatCurrency, useAuth, useToast } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
@@ -471,6 +471,21 @@ export function StoreDashboard({
     onSuccess: () => {
       void utils.vendorPortal.earnings.invalidate();
     },
+  });
+  // D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — seller-initiated payout requests.
+  const { addToast } = useToast();
+  const [payoutAmount, setPayoutAmount] = useState('');
+  const payoutRequestsQ = api.payouts.listMyRequests.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const requestPayoutMut = api.payouts.requestPayout.useMutation({
+    onSuccess: () => {
+      setPayoutAmount('');
+      void utils.payouts.listMyRequests.invalidate();
+      void utils.vendorPortal.earnings.invalidate();
+      addToast('success', t('vendorPortal.earnings.requestSent'));
+    },
+    onError: (err) => addToast('error', err.message),
   });
   const setSlaMut = api.vendorPortal.setFulfillmentSla.useMutation({
     onSuccess: () => {
@@ -1463,6 +1478,65 @@ export function StoreDashboard({
                 </select>
               </div>
             </Card>
+            {/* D2 — payout requests: available balance + request + history. */}
+            <div data-testid="payout-request-card">
+              <Card padding="md">
+                <p className="text-sm font-medium">{t('vendorPortal.earnings.requestTitle')}</p>
+                <p className="mt-0.5 text-xs text-text-secondary">
+                  {t('vendorPortal.earnings.available', {
+                    amount: formatCurrency(earnings?.summary.pendingNet ?? 0),
+                  })}
+                </p>
+                <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end">
+                  <Input
+                    label={t('vendorPortal.earnings.requestAmount')}
+                    type="number"
+                    min={100}
+                    value={payoutAmount}
+                    onChange={(e) => setPayoutAmount(e.target.value)}
+                    className="sm:w-44"
+                  />
+                  <Button
+                    onClick={() =>
+                      requestPayoutMut.mutate({
+                        amount: Number(payoutAmount),
+                        idempotencyKey: `req-${Date.now()}`,
+                      })
+                    }
+                    loading={requestPayoutMut.isPending}
+                    disabled={
+                      !payoutAmount ||
+                      Number(payoutAmount) < 100 ||
+                      Number(payoutAmount) > (earnings?.summary.pendingNet ?? 0)
+                    }
+                  >
+                    {t('vendorPortal.earnings.requestButton')}
+                  </Button>
+                </div>
+                {(payoutRequestsQ.data?.items?.length ?? 0) > 0 ? (
+                  <div className="mt-4 space-y-2">
+                    <p className="text-xs font-semibold text-text-secondary">
+                      {t('vendorPortal.earnings.requestHistory')}
+                    </p>
+                    {payoutRequestsQ.data?.items.map((r) => (
+                      <div
+                        key={r.id}
+                        className="flex items-center justify-between rounded-lg bg-surface-muted px-3 py-2 text-sm"
+                      >
+                        <span className="font-medium">{formatCurrency(r.amount)}</span>
+                        <span className="text-xs text-text-secondary">
+                          {r.status === 'PENDING'
+                            ? t('vendorPortal.earnings.requestPending')
+                            : r.status === 'APPROVED'
+                              ? t('vendorPortal.earnings.requestApproved')
+                              : t('vendorPortal.earnings.requestRejected')}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </Card>
+            </div>
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">

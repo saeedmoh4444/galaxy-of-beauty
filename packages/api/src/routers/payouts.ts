@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { MIN_PAYOUT_REQUEST_SAR } from '@galaxy/shared';
 import { router, adminProcedure, technicianProcedure, customerProcedure } from '../trpc';
 import { createPayoutSchema, processPayoutSchema } from '../validators/payment';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
@@ -421,4 +422,205 @@ export const payoutRouter = router({
         });
       }
     }),
+
+  // -----------------------------------------------------------------------
+  // D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — seller-initiated payout requests.
+  // The request lifecycle lives in payout_requests; on admin approval the
+  // covered accrued payout rows flip to COMPLETED with a MANUAL-<id>
+  // reference (the admin performs the real bank transfer off-platform —
+  // simulate-safe by construction until a live provider exists).
+  // -----------------------------------------------------------------------
+
+  /**
+   * requestPayout — seller requests an amount from the accrued PENDING
+   * payouts. Idempotency key dedupes retries (same key → same request).
+   */
+  requestPayout: customerProcedure
+    .input(
+      z.object({
+        amount: z.number().positive(),
+        idempotencyKey: z.string().min(8).max(64),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      const existing = await prisma.payoutRequest.findUnique({
+        where: { idempotencyKey: input.idempotencyKey },
+      });
+      if (existing) {
+        if (existing.vendorId !== vendor.id) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Idempotency key belongs to another store',
+          });
+        }
+        return {
+          id: existing.id,
+          status: existing.status,
+          amount: Number(existing.amount),
+          available: await pendingBalance(vendor.id),
+        };
+      }
+
+      const available = await pendingBalance(vendor.id);
+      if (input.amount > available) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Amount exceeds the accrued balance (${available} SAR available)`,
+        });
+      }
+      if (input.amount < MIN_PAYOUT_REQUEST_SAR) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Minimum payout request is ${MIN_PAYOUT_REQUEST_SAR} SAR`,
+        });
+      }
+
+      const created = await prisma.payoutRequest.create({
+        data: {
+          vendorId: vendor.id,
+          amount: input.amount,
+          idempotencyKey: input.idempotencyKey,
+          status: 'PENDING',
+        },
+      });
+      return {
+        id: created.id,
+        status: created.status,
+        amount: Number(created.amount),
+        available: available - input.amount,
+      };
+    }),
+
+  /** listMyRequests — the seller's own payout requests, newest first. */
+  listMyRequests: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor) return { items: [] };
+    const items = await prisma.payoutRequest.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    return {
+      items: items.map((r) => ({
+        id: r.id,
+        amount: Number(r.amount),
+        status: r.status,
+        adminNote: r.adminNote,
+        createdAt: r.createdAt.toISOString(),
+        processedAt: r.processedAt?.toISOString() ?? null,
+      })),
+    };
+  }),
+
+  /** listRequestsForAdmin — the approval queue across all stores. */
+  listRequestsForAdmin: adminProcedure
+    .input(z.object({ status: z.enum(['PENDING', 'APPROVED', 'REJECTED']).optional() }))
+    .query(async ({ input }) => {
+      const items = await prisma.payoutRequest.findMany({
+        where: input.status ? { status: input.status } : undefined,
+        orderBy: { createdAt: 'asc' },
+        include: { vendor: { select: { id: true, storeName: true, userId: true } } },
+      });
+      return {
+        items: items.map((r) => ({
+          id: r.id,
+          vendorId: r.vendorId,
+          storeName: r.vendor.storeName,
+          amount: Number(r.amount),
+          status: r.status,
+          adminNote: r.adminNote,
+          createdAt: r.createdAt.toISOString(),
+        })),
+      };
+    }),
+
+  /**
+   * approveRequest — admin approves: the covered PENDING payout rows flip
+   * to COMPLETED with a MANUAL-<requestId> reference, atomically.
+   */
+  approveRequest: adminProcedure
+    .input(z.object({ requestId: z.number().int().positive() }))
+    .mutation(async ({ input }) => {
+      const request = await prisma.payoutRequest.findUnique({
+        where: { id: input.requestId },
+      });
+      if (!request) throw new TRPCError({ code: 'NOT_FOUND', message: 'Request not found' });
+      if (request.status !== 'PENDING') {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: `Request must be PENDING, current status: ${request.status}`,
+        });
+      }
+
+      const available = await pendingBalance(request.vendorId);
+      if (Number(request.amount) > available) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: `Accrued balance no longer covers the request (${available} SAR available)`,
+        });
+      }
+
+      await prisma.$transaction(async (tx) => {
+        // Cover the request oldest-first from PENDING rows.
+        let remaining = Number(request.amount);
+        const rows = await tx.payout.findMany({
+          where: { vendorId: request.vendorId, status: 'PENDING' },
+          orderBy: { createdAt: 'asc' },
+        });
+        for (const row of rows) {
+          if (remaining <= 0) break;
+          await tx.payout.update({
+            where: { id: row.id },
+            data: {
+              status: 'COMPLETED',
+              reference: `MANUAL-${request.id}`,
+              processedAt: new Date(),
+            },
+          });
+          remaining -= Number(row.amount);
+        }
+        await tx.payoutRequest.update({
+          where: { id: request.id },
+          data: { status: 'APPROVED', processedAt: new Date() },
+        });
+      });
+
+      return { id: request.id, status: 'APPROVED' };
+    }),
+
+  /** rejectRequest — admin rejects with a note (no payout rows touched). */
+  rejectRequest: adminProcedure
+    .input(
+      z.object({ requestId: z.number().int().positive(), adminNote: z.string().min(1).max(500) }),
+    )
+    .mutation(async ({ input }) => {
+      const request = await prisma.payoutRequest.findUnique({
+        where: { id: input.requestId },
+      });
+      if (!request) throw new TRPCError({ code: 'NOT_FOUND', message: 'Request not found' });
+      if (request.status !== 'PENDING') {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: `Request must be PENDING, current status: ${request.status}`,
+        });
+      }
+      await prisma.payoutRequest.update({
+        where: { id: request.id },
+        data: { status: 'REJECTED', adminNote: input.adminNote, processedAt: new Date() },
+      });
+      return { id: request.id, status: 'REJECTED' };
+    }),
 });
+
+/** Sum of the store's accrued PENDING payout rows. */
+async function pendingBalance(vendorId: number): Promise<number> {
+  const agg = await prisma.payout.aggregate({
+    where: { vendorId, status: 'PENDING' },
+    _sum: { amount: true },
+  });
+  return agg._sum.amount ? Number(agg._sum.amount) : 0;
+}

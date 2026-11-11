@@ -853,6 +853,18 @@ export const adminMessages = {
   'admin.payouts.date-header': { ar: 'التاريخ', en: 'Date' },
   'admin.payouts.action-header': { ar: 'إجراء', en: 'Action' },
   'admin.payouts.process': { ar: 'معالجة', en: 'Process' },
+  // D2 (SELLER_FIRST_CLASS_ROLE_PLAN) — payout request queue.
+  'admin.payouts.requests-title': { ar: 'طلبات سحب البائعين', en: 'Seller payout requests' },
+  'admin.payouts.requests-store': { ar: 'المتجر', en: 'Store' },
+  'admin.payouts.requests-approve': { ar: 'قبول', en: 'Approve' },
+  'admin.payouts.requests-reject': { ar: 'رفض', en: 'Reject' },
+  'admin.payouts.requests-note': { ar: 'سبب الرفض (اختياري)', en: 'Rejection note (optional)' },
+  'admin.payouts.requests-approved': {
+    ar: 'تم قبول الطلب وسُجّلت الحوالة اليدوية',
+    en: 'Request approved — manual transfer recorded',
+  },
+  'admin.payouts.requests-rejected': { ar: 'تم رفض الطلب', en: 'Request rejected' },
+  'admin.payouts.requests-none': { ar: 'لا توجد طلبات سحب', en: 'No payout requests' },
 
   'admin.predictive-demand.title': { ar: 'توقعات الطلب', en: 'Demand Forecast' },
   'admin.predictive-demand.next-week': { ar: 'الأسبوع القادم', en: 'Next Week' },
