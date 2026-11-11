@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { WARRANTY_CREDIT_RATE } from '@galaxy/shared';
@@ -41,7 +42,8 @@ export const serviceWarrantyRouter = router({
     .input(z.object({ bookingId: z.number() }))
     .query(async ({ ctx, input }) => {
       const booking = await db.booking.findUnique({ where: { id: input.bookingId } });
-      if (!booking || booking.customerId !== ctx.user.id) throw new Error('الحجز غير موجود');
+      if (!booking || booking.customerId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'الحجز غير موجود' });
       if (booking.status !== 'COMPLETED') return { eligible: false, reason: 'الخدمة لم تكتمل بعد' };
       // Booking has no completedAt column; completion time = last update.
       const completedAt = new Date(booking.updatedAt);
@@ -65,7 +67,8 @@ export const serviceWarrantyRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const booking = await db.booking.findUnique({ where: { id: input.bookingId } });
-      if (!booking || booking.customerId !== ctx.user.id) throw new Error('الحجز غير موجود');
+      if (!booking || booking.customerId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'الحجز غير موجود' });
       const compensationMap: Record<string, number> = {
         redo: 0,
         refund: Number(booking.totalAmount || 0),

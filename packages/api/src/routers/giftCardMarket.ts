@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
@@ -24,7 +25,7 @@ export const giftCardMarketRouter = router({
     ),
   buy: customerProcedure.input(z.object({ listingId: z.number() })).mutation(async ({ input }) => {
     const listing = await prisma.giftCardListing.findUnique({ where: { id: input.listingId } });
-    if (!listing) throw new Error('غير متوفر');
+    if (!listing) throw new TRPCError({ code: 'NOT_FOUND', message: 'غير متوفر' });
     await prisma.giftCardListing.delete({ where: { id: input.listingId } });
     return { bought: true, ...listing };
   }),
