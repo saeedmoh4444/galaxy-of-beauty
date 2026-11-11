@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
@@ -27,13 +28,14 @@ export const eventTicketsRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const event = await db.beautyEvent.findUnique({ where: { id: input.eventId } });
-      if (!event) throw new Error('الفعالية غير موجودة');
+      if (!event) throw new TRPCError({ code: 'NOT_FOUND', message: 'الفعالية غير موجودة' });
 
       if (event.maxAttendees) {
         const booked = await db.eventTicket.count({
           where: { eventId: event.id, status: { not: 'CANCELLED' } },
         });
-        if (booked >= event.maxAttendees) throw new Error('التذاكر نفدت');
+        if (booked >= event.maxAttendees)
+          throw new TRPCError({ code: 'CONFLICT', message: 'التذاكر نفدت' });
       }
 
       const ticket = await db.eventTicket.create({

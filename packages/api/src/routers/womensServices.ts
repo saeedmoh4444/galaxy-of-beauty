@@ -21,7 +21,7 @@ export const womensServicesRouter = router({
 
   byCategory: publicProcedure.input(z.object({ category: z.string() })).query(async ({ input }) => {
     const cat = WOMENS_SERVICES[input.category as keyof typeof WOMENS_SERVICES];
-    if (!cat) throw new Error('القسم غير موجود');
+    if (!cat) throw new TRPCError({ code: 'NOT_FOUND', message: 'القسم غير موجود' });
     return cat;
   }),
 

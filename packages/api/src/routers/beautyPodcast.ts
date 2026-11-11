@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 
@@ -58,7 +59,7 @@ export const beautyPodcastRouter = router({
   episodes: publicProcedure.query(() => EPISODES),
   get: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
     const ep = EPISODES.find((e) => e.id === input.id);
-    if (!ep) throw new Error('الحلقة غير موجودة');
+    if (!ep) throw new TRPCError({ code: 'NOT_FOUND', message: 'الحلقة غير موجودة' });
     return ep;
   }),
 });

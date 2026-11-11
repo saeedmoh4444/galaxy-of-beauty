@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
@@ -59,7 +60,7 @@ export const beautyCoursesRouter = router({
       where: { id: input.id },
       include: { _count: { select: { enrollments: true } } },
     });
-    if (!course) throw new Error('الدورة غير موجودة');
+    if (!course) throw new TRPCError({ code: 'NOT_FOUND', message: 'الدورة غير موجودة' });
     return formatCourse(course);
   }),
 
