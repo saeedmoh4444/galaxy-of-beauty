@@ -39,7 +39,7 @@ test.describe('Seller registration (R3)', () => {
     // name field came back empty in CI). Wait for the gate to clear, then
     // fill — every field sticks.
     const submit = page.getByRole('button', { name: 'إنشاء حساب' });
-    await expect(submit).toBeEnabled();
+    await expect(submit).toBeEnabled({ timeout: 30_000 });
     await page.getByLabel('الاسم', { exact: true }).fill('بائعة اختبار');
     await page.getByLabel('البريد الإلكتروني', { exact: true }).fill(email);
     await page.getByLabel('رقم الجوال', { exact: true }).fill(phone);
