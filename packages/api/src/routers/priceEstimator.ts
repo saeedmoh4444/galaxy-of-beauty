@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, router } from '../trpc';
@@ -14,7 +15,7 @@ export const priceEstimatorRouter = router({
     )
     .query(async ({ input }) => {
       const service = await prisma.service.findUnique({ where: { id: input.serviceId } });
-      if (!service) throw new Error('الخدمة غير موجودة');
+      if (!service) throw new TRPCError({ code: 'NOT_FOUND', message: 'الخدمة غير موجودة' });
 
       const basePrice = Number(service.basePrice);
       let variantDelta = 0;

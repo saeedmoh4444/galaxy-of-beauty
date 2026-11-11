@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, customerMutation, router } from '../trpc';
@@ -36,7 +37,7 @@ export const moodBoardRouter = router({
       const board = await prisma.moodBoard.findFirst({
         where: { id: input.boardId, userId: ctx.user.id },
       });
-      if (!board) throw new Error('اللوحة غير موجودة');
+      if (!board) throw new TRPCError({ code: 'NOT_FOUND', message: 'اللوحة غير موجودة' });
       // New pins go to the end of the board
       const last = await prisma.moodBoardPin.findFirst({
         where: { boardId: input.boardId },
@@ -72,7 +73,7 @@ export const moodBoardRouter = router({
       const board = await prisma.moodBoard.findFirst({
         where: { id: input.boardId, userId: ctx.user.id },
       });
-      if (!board) throw new Error('اللوحة غير موجودة');
+      if (!board) throw new TRPCError({ code: 'NOT_FOUND', message: 'اللوحة غير موجودة' });
       await prisma.$transaction(
         input.pinIds.map((pinId, index) =>
           prisma.moodBoardPin.updateMany({
@@ -90,7 +91,7 @@ export const moodBoardRouter = router({
       const board = await prisma.moodBoard.findFirst({
         where: { id: input.boardId, userId: ctx.user.id },
       });
-      if (!board) throw new Error('اللوحة غير موجودة');
+      if (!board) throw new TRPCError({ code: 'NOT_FOUND', message: 'اللوحة غير موجودة' });
       await prisma.moodBoardPin.deleteMany({ where: { id: input.pinId, boardId: input.boardId } });
       return { success: true };
     }),

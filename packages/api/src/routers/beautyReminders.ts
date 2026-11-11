@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
@@ -37,7 +38,8 @@ export const beautyRemindersRouter = router({
     .input(z.object({ id: z.number() }))
     .mutation(async ({ ctx, input }) => {
       const reminder = await db.beautyReminder.findUnique({ where: { id: input.id } });
-      if (!reminder || reminder.userId !== ctx.user.id) throw new Error('غير موجود');
+      if (!reminder || reminder.userId !== ctx.user.id)
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'غير موجود' });
       const nextDate = new Date(Date.now() + reminder.intervalDays * 86400000);
       return db.beautyReminder.update({
         where: { id: input.id },
