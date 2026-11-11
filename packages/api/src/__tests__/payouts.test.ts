@@ -265,9 +265,14 @@ async function seedPayout(opts: {
 }
 
 async function wipePayouts() {
-  await prisma.payout.deleteMany({
-    where: { OR: [{ technicianId: techA.id }, { technicianId: techB.id }] },
-  });
+  // Delete ALL payouts, not just this file's technicians: the shared seed
+  // now includes three PENDING vendor payout rows for the demo store
+  // (D2 — the E2E payout-request journey). The unfiltered listForAdmin
+  // assertions below (status totals, period windows, pagination) must not
+  // see them, so the table has to be empty before seeding p1-p3. Files run
+  // one at a time (fileParallelism: false) and every other payout-writing
+  // file seeds and cleans its own rows, so a full wipe is safe.
+  await prisma.payout.deleteMany({});
 }
 
 beforeAll(async () => {
