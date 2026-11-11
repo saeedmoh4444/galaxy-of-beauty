@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
@@ -57,6 +58,6 @@ export const beautyAwardsRouter = router({
           }
         }
       }
-      throw new Error('غير موجود');
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'غير موجود' });
     }),
 });

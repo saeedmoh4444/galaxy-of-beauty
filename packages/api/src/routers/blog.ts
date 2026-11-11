@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
@@ -36,7 +37,8 @@ export const blogRouter = router({
   // Single post by slug (public)
   getBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
     const post = await prisma.blogPost.findUnique({ where: { slug: input.slug } });
-    if (!post || !post.isPublished) throw new Error('Post not found');
+    if (!post || !post.isPublished)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Post not found' });
     return post;
   }),
 

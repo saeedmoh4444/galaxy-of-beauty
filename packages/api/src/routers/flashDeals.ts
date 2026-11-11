@@ -60,7 +60,7 @@ export const flashDealRouter = router({
     )
     .mutation(async ({ input }) => {
       const service = await db.service.findUnique({ where: { id: input.serviceId } });
-      if (!service) throw new Error('Service not found');
+      if (!service) throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
       const originalPrice = Number(service.basePrice);
       const discountValue = Math.round((originalPrice * input.discountPercent) / 100);
       const dealPrice = originalPrice - discountValue;

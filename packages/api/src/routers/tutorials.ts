@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
@@ -216,7 +217,7 @@ export const tutorialsRouter = router({
   // Get single tutorial by ID
   getById: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
     const tutorial = TUTORIALS.find((t) => t.id === input.id && t.isPublished);
-    if (!tutorial) throw new Error('الدرس غير موجود');
+    if (!tutorial) throw new TRPCError({ code: 'NOT_FOUND', message: 'الدرس غير موجود' });
     return tutorial;
   }),
 

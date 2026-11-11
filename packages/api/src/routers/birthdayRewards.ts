@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
@@ -16,8 +17,10 @@ export const birthdayRewardRouter = router({
     const existing = await db.birthdayReward.findUnique({
       where: { userId_year: { userId: ctx.user.id, year } },
     });
-    if (existing?.claimed) throw new Error('تم استلام المكافأة مسبقاً');
-    if (!existing) throw new Error('لا توجد مكافأة عيد ميلاد متاحة');
+    if (existing?.claimed)
+      throw new TRPCError({ code: 'CONFLICT', message: 'تم استلام المكافأة مسبقاً' });
+    if (!existing)
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'لا توجد مكافأة عيد ميلاد متاحة' });
 
     const code = `BDAY${ctx.user.id}${year}`;
     await db.birthdayReward.update({
