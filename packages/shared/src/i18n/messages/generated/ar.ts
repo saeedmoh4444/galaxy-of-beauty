@@ -889,6 +889,7 @@ export const arWebMessages: Record<string, string> = {
   'auth.reset-success': 'تم إعادة تعيين كلمة المرور بنجاح',
   'auth.reset-title': 'إعادة تعيين كلمة المرور',
   'auth.role-customer': 'عميلة',
+  'auth.role-seller': 'صاحبة متجر',
   'auth.role-technician': 'مقدمة خدمة',
   'auth.showPassword': 'إظهار كلمة المرور',
   'auth.terms': 'الشروط والأحكام',

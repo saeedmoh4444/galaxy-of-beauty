@@ -893,6 +893,7 @@ export const enWebMessages: Record<string, string> = {
   'auth.reset-success': 'Password reset successfully',
   'auth.reset-title': 'Reset Password',
   'auth.role-customer': 'Customer',
+  'auth.role-seller': 'Seller (store owner)',
   'auth.role-technician': 'Service Provider',
   'auth.showPassword': 'Show password',
   'auth.terms': 'Terms & Conditions',

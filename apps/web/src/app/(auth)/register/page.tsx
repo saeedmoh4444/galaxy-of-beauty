@@ -5,7 +5,7 @@ import type { JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
+import { Button, Input, Card, ErrorAlert, useHydrated } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -55,6 +55,11 @@ export default function RegisterPage(): JSX.Element {
   });
   const [error, setError] = useState('');
   const [accepted, setAccepted] = useState(false);
+  // Hydration gate (the #620 flake-war lesson): the submit stays disabled in
+  // the SSR HTML until React attaches the handler — the seller-registration
+  // E2E lost pre-hydration clicks under late-suite CI load and stayed on
+  // /register for 60s.
+  const hydrated = useHydrated();
   const mutation = api.auth.register.useMutation({
     onSuccess: async (data) => {
       // Tokens are now set as HttpOnly cookies by the server — no localStorage needed.
@@ -71,11 +76,14 @@ export default function RegisterPage(): JSX.Element {
           id: u.id as number,
           email: u.email as string,
           name: u.name as string,
-          role: u.role as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN',
+          role: u.role as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN' | 'SELLER',
           preferredLanguage: 'ar',
         },
       );
-      router.push('/dashboard');
+      // R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — sellers land in the store
+      // shell; a vendor-less seller is bounced into the portal wizard.
+      if (u.role === 'SELLER') router.push('/store');
+      else router.push('/dashboard');
     },
     onError: (err) => setError(err.message),
   });
@@ -162,6 +170,9 @@ export default function RegisterPage(): JSX.Element {
             >
               <option value="CUSTOMER">{t('auth.role-customer')}</option>
               <option value="TECHNICIAN">{t('auth.role-technician')}</option>
+              {/* R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store
+                  owners; store identity + KYC follow in the portal wizard. */}
+              <option value="SELLER">{t('auth.role-seller')}</option>
             </select>
           </div>
           {form.role === 'TECHNICIAN' && (
@@ -186,7 +197,12 @@ export default function RegisterPage(): JSX.Element {
               {t('marketing.privacy.title')}
             </Link>
           </label>
-          <Button type="submit" className="w-full" loading={mutation.isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            loading={mutation.isPending}
+            disabled={!hydrated}
+          >
             {t('auth.register')}
           </Button>
         </form>
