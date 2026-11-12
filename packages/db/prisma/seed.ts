@@ -100,6 +100,12 @@ async function main() {
     // reference users, so they must be wiped before db.user.deleteMany().
     db.cartItem.deleteMany(),
     db.productReview.deleteMany(),
+    // Store orders + items reference products — wipe them BEFORE the
+    // product delete below, or a re-seed trips
+    // store_order_items_productId_fkey (W1, audit 2026-11-11: the seed
+    // must be idempotent; the vendor cascade alone runs too late).
+    db.storeOrderItem.deleteMany(),
+    db.storeOrder.deleteMany(),
     db.product.deleteMany(),
     db.beautyPackage.deleteMany(),
     // E2 — clinic tables reference vendors (and users), wipe before both.
@@ -111,6 +117,10 @@ async function main() {
     // E5 — nail bar tables reference vendors, wipe before both.
     db.nailBarBooking.deleteMany(),
     db.nailBarSlot.deleteMany(),
+    // Store checkouts reference USERS (customerId ON DELETE RESTRICT) —
+    // wipe before db.user.deleteMany() below, or a re-seed aborts on the FK
+    // (W1, audit 2026-11-11: the seed must be idempotent).
+    db.storeCheckout.deleteMany(),
     db.vendor.deleteMany(),
     db.productCategory.deleteMany(),
     db.providerSubmission.deleteMany(),

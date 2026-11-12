@@ -242,6 +242,7 @@ export async function shutdownWorkers(): Promise<void> {
     opsWorker,
     webhooksWorker,
     mediaWorker,
+    reconciliationWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -268,6 +269,7 @@ export function startWorkers(): void {
     opsWorker ? 'gob-ops' : null,
     webhooksWorker ? 'gob-webhooks' : null,
     mediaWorker ? 'gob-media' : null,
+    reconciliationWorker ? 'gob-reconciliation' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();
