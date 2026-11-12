@@ -9,7 +9,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { prisma } from '@galaxy/db';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser, buildBooking, safeFutureDate } from './factories';
+import { buildUser, buildBooking, safeFutureDate, ensureTechnicianService } from './factories';
 import { sendSms } from '../lib/sms';
 
 const CSRF = 'a'.repeat(64);
@@ -161,6 +161,8 @@ describe('bookings.create — idempotency ownership', () => {
     const service = await prisma.service.findFirst();
     const tech = await prisma.technician.findFirst();
     const techUserId = tech!.userId;
+    // W2-5 guard: bookings.create validates the technician↔service mapping.
+    await ensureTechnicianService(tech!.id, service!.id);
     const address = await prisma.address.findFirst({ where: { userId: customerId } });
     const key = `sb_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
@@ -198,6 +200,8 @@ describe('bookings.create — idempotency ownership', () => {
     const service = await prisma.service.findFirst();
     const tech = await prisma.technician.findFirst();
     const techUserId = tech!.userId;
+    // W2-5 guard: bookings.create validates the technician↔service mapping.
+    await ensureTechnicianService(tech!.id, service!.id);
     const address = await prisma.address.findFirst({ where: { userId: customerId } });
     const created = await customerCaller.bookings.create({
       serviceId: service!.id,
