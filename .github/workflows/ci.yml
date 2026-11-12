@@ -147,6 +147,21 @@ jobs:
       - run: pnpm --filter @galaxy/api test -- --coverage
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+      # W2-1 catalog contract runs on an ISOLATED freshly seeded DB: the
+      # shared test DB is polluted by parallel-worker fixtures, which makes
+      # "every seeded service has a technician" flaky there.
+      - name: Seed catalog-contract DB (isolated)
+        run: |
+          PGPASSWORD=gob_test_pass psql -h localhost -U gob_admin -d Galaxy_of_Beauty_db -c 'CREATE DATABASE gob_seed_contract;'
+          pnpm --filter @galaxy/db exec prisma migrate deploy
+          pnpm --filter @galaxy/db db:seed
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/gob_seed_contract?schema=public'
+      - name: Seed catalog contract (isolated DB)
+        run: pnpm --filter @galaxy/api exec vitest run src/__tests__/seed-catalog-contract.test.ts
+        env:
+          DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/gob_seed_contract?schema=public'
+          SEED_CONTRACT_DB: '1'
       # Mobile pure-logic unit tests (node env — no react-native imports)
       - run: pnpm --filter @galaxy/mobile test:unit
       # Shared/config/ui/db unit tests (audit stage 10 — previously zero)
