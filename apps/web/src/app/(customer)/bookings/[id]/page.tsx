@@ -41,6 +41,44 @@ export default function BookingDetailPage(): JSX.Element {
   const query = api.bookings.getById.useQuery({ id: bookingId }, { enabled: !isNaN(bookingId) });
   const booking = query.data;
 
+  // W2-3 (audit 2026-11-11): the booking→payment path was missing —
+  // bookings stalled at REQUESTED/ACCEPTED with no pay CTA and an inert
+  // cancel button.
+  const utils = api.useUtils();
+  const paymentQ = api.payments.getByBooking.useQuery(
+    { bookingId },
+    { enabled: !isNaN(bookingId) },
+  );
+  const payment = paymentQ.data;
+
+  const invalidateBooking = () => {
+    void utils.bookings.getById.invalidate({ id: bookingId });
+    void utils.bookings.list.invalidate();
+    void utils.payments.getByBooking.invalidate({ bookingId });
+  };
+
+  const cancelMut = api.bookings.transition.useMutation({
+    onSuccess: invalidateBooking,
+  });
+
+  const payMut = api.payments.authorize.useMutation({
+    onSuccess: (result) => {
+      invalidateBooking();
+      // Online payments hand the customer the gateway invoice URL.
+      const url = (result as { invoiceURL?: string } | null)?.invoiceURL;
+      if (url) window.open(url, '_blank', 'noopener');
+    },
+  });
+
+  const handleCancel = () => {
+    if (!window.confirm(t('booking.cancel-confirm') ?? 'Cancel this booking?')) return;
+    cancelMut.mutate({ id: bookingId, action: 'cancel' });
+  };
+
+  const handlePay = (method: 'online' | 'cash') => {
+    payMut.mutate({ bookingId, idempotencyKey: crypto.randomUUID(), method });
+  };
+
   if (query.isLoading)
     return (
       <DashboardLayout userRole="CUSTOMER">
@@ -126,10 +164,68 @@ export default function BookingDetailPage(): JSX.Element {
         </Card>
 
         {booking.status === 'REQUESTED' && (
-          <div className="flex gap-3">
-            <Button variant="danger" onClick={() => {}} className="flex-1">
-              {t('booking.cancel-booking')}
-            </Button>
+          <div className="space-y-3">
+            <p className="text-sm text-text-secondary">{t('booking.payment.waiting-technician')}</p>
+            <div className="flex gap-3">
+              <Button
+                variant="danger"
+                onClick={handleCancel}
+                disabled={cancelMut.isPending}
+                className="flex-1"
+              >
+                {t('booking.cancel-booking')}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {booking.status === 'ACCEPTED' && (
+          <div className="space-y-3">
+            {payment?.status === 'AUTHORIZED' && (
+              <p className="rounded-lg bg-blue-50 p-3 text-sm text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                {t('booking.payment.authorized-waiting-capture')}
+              </p>
+            )}
+            {payment?.status === 'CAPTURED' && (
+              <p className="rounded-lg bg-green-50 p-3 text-sm text-green-700 dark:bg-green-950 dark:text-green-300">
+                {t('booking.status.PAID')}
+              </p>
+            )}
+            {payMut.error && (
+              <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+                {t('booking.payment.error')}
+              </p>
+            )}
+            {(!payment || payment.status !== 'CAPTURED') && (
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  variant="primary"
+                  onClick={() => handlePay('online')}
+                  disabled={payMut.isPending}
+                  className="flex-1"
+                >
+                  {t('booking.payment.online-label')}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => handlePay('cash')}
+                  disabled={payMut.isPending}
+                  className="flex-1"
+                >
+                  {t('booking.payment.venue-label')}
+                </Button>
+              </div>
+            )}
+            <div className="flex gap-3">
+              <Button
+                variant="danger"
+                onClick={handleCancel}
+                disabled={cancelMut.isPending}
+                className="flex-1"
+              >
+                {t('booking.cancel-booking')}
+              </Button>
+            </div>
           </div>
         )}
 
