@@ -62,12 +62,19 @@ export default function CreateBookingPage(): JSX.Element {
     new Date(Date.now() + 86400000).toISOString().slice(0, 10),
   );
   const [bookingTime, setBookingTime] = useState<string>('10:00');
+  // W2-2: searchable service list (the window used to hide the core catalog).
+  const [serviceSearch, setServiceSearch] = useState('');
 
   const {
     data: servicesData,
     isError,
     refetch,
-  } = api.services.list.useQuery({ page: 1, limit: 100 });
+  } = api.services.list.useQuery({
+    page: 1,
+    limit: 100,
+    search: serviceSearch || undefined,
+    excludeWomensFacade: true,
+  });
   const { data: serviceDetail } = api.services.getById.useQuery(
     { id: serviceId ?? 0 },
     { enabled: !!serviceId },
@@ -346,6 +353,18 @@ export default function CreateBookingPage(): JSX.Element {
               <h3 className="mb-4 font-semibold text-text-primary">
                 {t('booking.choose-service')}
               </h3>
+              {/* W2-2 (audit 2026-11-11): the list window used to fill with
+                  the 289 D2 facade rows, hiding the core catalog — search
+                  by name and exclude the facade. */}
+              <input
+                id="bc-service-search"
+                type="search"
+                value={serviceSearch}
+                onChange={(e) => setServiceSearch(e.target.value)}
+                placeholder={t('booking.search-service')}
+                className="mb-3 w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
+                aria-label={t('booking.search-service')}
+              />
               <div className="max-h-80 space-y-2 overflow-y-auto">
                 {services.map((s) => (
                   <button
