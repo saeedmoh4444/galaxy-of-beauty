@@ -44,6 +44,7 @@ export const bookingMessages = {
   'familyAccount.allergies': { ar: 'الحساسية', en: 'Allergies' },
   'booking.bundle-selected': { ar: 'باقة ماما وأنا: {name}', en: 'Mommy & Me bundle: {name}' },
   'booking.confirm-cancel': { ar: 'تأكيد الإلغاء', en: 'Confirm Cancellation' },
+  'booking.cancel-confirm': { ar: 'هل تريدين إلغاء هذا الحجز؟', en: 'Cancel this booking?' },
   'booking.cancel-booking': { ar: 'إلغاء الحجز', en: 'Cancel Booking' },
   'booking.confirm-cancel-question': {
     ar: 'هل أنت متأكد من إلغاء هذا الحجز؟',
@@ -86,6 +87,18 @@ export const bookingMessages = {
     en: 'From your wallet once the provider accepts the booking',
   },
   'booking.payment.venue-label': { ar: 'ادفعي عند الوصول', en: 'Pay at venue' },
+  'booking.payment.waiting-technician': {
+    ar: 'بانتظار قبول مقدمة الخدمة — يتاح الدفع بعد القبول',
+    en: 'Waiting for the technician to accept — payment unlocks after acceptance',
+  },
+  'booking.payment.authorized-waiting-capture': {
+    ar: 'تم تفويض الدفع — بانتظار تأكيد استلام المبلغ من مقدمة الخدمة',
+    en: "Payment authorized — awaiting the technician's receipt confirmation",
+  },
+  'booking.payment.error': {
+    ar: 'تعذر إتمام الدفع، حاولي مجدداً',
+    en: 'Payment failed, please retry',
+  },
   'booking.payment.venue-desc': {
     ar: 'نقداً أو بالبطاقة في الموقع',
     en: 'Cash or card at the venue',
