@@ -1471,6 +1471,7 @@ export const enWebMessages: Record<string, string> = {
   'booking.price.surge': 'High demand',
   'booking.price.tier': 'Provider tier',
   'booking.price.total': 'Total',
+  'booking.search-service': 'Search services by name',
   'booking.select-service-address': 'Please select a service and an address',
   'booking.service': 'Service',
   'booking.share-title': 'My Galaxy of Beauty booking is confirmed! Code: {code}',

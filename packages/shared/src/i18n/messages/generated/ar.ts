@@ -1463,6 +1463,7 @@ export const arWebMessages: Record<string, string> = {
   'booking.price.surge': 'ارتفاع الطلب',
   'booking.price.tier': 'مستوى الخبيرة',
   'booking.price.total': 'الإجمالي',
+  'booking.search-service': 'ابحثي عن خدمة بالاسم',
   'booking.select-service-address': 'الرجاء اختيار الخدمة والعنوان',
   'booking.service': 'الخدمة',
   'booking.share-title': 'تم تأكيد حجزي في جالكسي بيوتي! رقم الحجز: {code}',
