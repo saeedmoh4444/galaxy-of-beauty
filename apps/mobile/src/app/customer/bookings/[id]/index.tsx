@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import * as Linking from 'expo-linking';
 import { ScreenState } from '@/components/ScreenState';
 import { NpsCard } from '@/components/NpsCard';
 import { trpc } from '@/lib/trpc-react';
@@ -49,6 +50,32 @@ export default function BookingDetailScreen(): JSX.Element {
     onSuccess: () => {
       void utils.bookings.getById.invalidate({ id: Number(id) });
       void utils.bookings.list.invalidate();
+    },
+  });
+
+  // W2-3 (audit 2026-11-11): the booking→payment path was missing on
+  // mobile too — pay on ACCEPTED (online invoice or cash-on-arrival).
+  const paymentQ = trpc.payments.getByBooking.useQuery({ bookingId: Number(id) });
+  const payment = paymentQ.data as { status?: string } | undefined;
+
+  // v4 uuid (no crypto module on RN — Math.random entropy is fine for
+  // client idempotency keys).
+  const randomUuid = () =>
+    'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+
+  const payMut = trpc.payments.authorize.useMutation({
+    onSuccess: (result) => {
+      void utils.bookings.getById.invalidate({ id: Number(id) });
+      void utils.bookings.list.invalidate();
+      void utils.payments.getByBooking.invalidate({ bookingId: Number(id) });
+      const url = (result as { invoiceURL?: string } | null)?.invoiceURL;
+      if (url) {
+        void Linking.openURL(url).catch(() => {});
+      }
     },
   });
 
@@ -122,6 +149,43 @@ export default function BookingDetailScreen(): JSX.Element {
           >
             <Text style={styles.rescheduleText}>{t('mobile.reschedule.title')}</Text>
           </TouchableOpacity>
+        )}
+        {/* W2-3 — payment actions on ACCEPTED. */}
+        {data?.status === 'ACCEPTED' && (!payment || payment.status !== 'CAPTURED') && (
+          <View style={styles.payBox}>
+            {payment?.status === 'AUTHORIZED' && (
+              <Text style={styles.payHint}>{t('booking.payment.authorized-waiting-capture')}</Text>
+            )}
+            {payMut.isError && <Text style={styles.payError}>{t('booking.payment.error')}</Text>}
+            <TouchableOpacity
+              style={styles.payBtn}
+              onPress={() =>
+                payMut.mutate({
+                  bookingId: Number(id),
+                  idempotencyKey: randomUuid(),
+                  method: 'online',
+                })
+              }
+              disabled={payMut.isPending}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.payBtnText}>{t('booking.payment.online-label')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.payCashBtn}
+              onPress={() =>
+                payMut.mutate({
+                  bookingId: Number(id),
+                  idempotencyKey: randomUuid(),
+                  method: 'cash',
+                })
+              }
+              disabled={payMut.isPending}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.payCashText}>{t('booking.payment.venue-label')}</Text>
+            </TouchableOpacity>
+          </View>
         )}
         {/* D2 — cancel was missing entirely from the app despite API support.
             Cancelable states only (REQUESTED/ACCEPTED/PAID/CONFIRMED_OFFLINE). */}
@@ -216,6 +280,24 @@ export default function BookingDetailScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  payBox: { marginTop: 12, gap: 8 },
+  payHint: { fontSize: 13, color: '#1d4ed8', textAlign: 'right' },
+  payError: { fontSize: 13, color: '#b91c1c', textAlign: 'right' },
+  payBtn: {
+    backgroundColor: '#7c3aed',
+    borderRadius: 12,
+    paddingVertical: 13,
+    alignItems: 'center',
+  },
+  payBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  payCashBtn: {
+    borderWidth: 1,
+    borderColor: '#7c3aed',
+    borderRadius: 12,
+    paddingVertical: 13,
+    alignItems: 'center',
+  },
+  payCashText: { color: '#7c3aed', fontWeight: '600', fontSize: 15 },
   c: { flex: 1 },
   i: { padding: 16 },
   title: {
