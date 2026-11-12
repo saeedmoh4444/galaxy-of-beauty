@@ -1,21 +1,66 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { useToast } from '@/components/Toast';
 
 interface KidsServiceItem {
+  id: string;
   nameAr?: string;
-  ageGroup?: string;
+  nameEn?: string;
   price?: number;
+  durationMin?: number;
+  ageMin?: number;
+  emoji?: string;
+}
+
+// v4 uuid (no crypto module on RN — Math.random entropy is fine for
+// client idempotency keys; same helper as the W2-3 booking detail screen).
+function randomUuid(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
 export default function KidsServicesScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
+  const isAuthed = useAuthState();
+  const { showToast } = useToast();
   const catsQ = trpc.kidsServices.categories.useQuery();
-  const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
+  const [selectedCatKey, setSelectedCatKey] = useState<string | null>(null);
+  const catQ = trpc.kidsServices.byCategory.useQuery(
+    { category: selectedCatKey ?? '' },
+    { enabled: !!selectedCatKey },
+  );
+  const [selectedService, setSelectedService] = useState<KidsServiceItem | null>(null);
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
+  const [addressId, setAddressId] = useState<number | null>(null);
+  const [childName, setChildName] = useState('');
+  const [childAge, setChildAge] = useState('');
+  const [result, setResult] = useState<Record<string, unknown> | null>(null);
+  const bookMut = trpc.kidsServices.book.useMutation({
+    onSuccess: (r) => {
+      setResult(r as Record<string, unknown>);
+      showToast('success', t('booking.created-success'));
+    },
+    onError: () => showToast('error', t('booking.create-failed')),
+  });
 
   if (catsQ.isLoading) return <SkeletonList count={5} />;
   if (catsQ.isError)
@@ -27,6 +72,34 @@ export default function KidsServicesScreen(): JSX.Element {
     );
 
   const categories = (catsQ.data ?? []) as Record<string, unknown>[];
+  const cat = catQ.data as unknown as
+    { nameAr?: string; emoji?: string; subServices?: KidsServiceItem[] } | undefined;
+  const addresses = (addressesQ.data as unknown as Array<{ id: number; label?: string }>) ?? [];
+
+  const handleBook = () => {
+    if (!isAuthed) {
+      router.push('/login' as never);
+      return;
+    }
+    if (!selectedService || !selectedCatKey || !addressId || !childName.trim()) {
+      showToast('error', t('booking.select-service-address'));
+      return;
+    }
+    const age = Number(childAge);
+    // W2-9 — tomorrow 10:00 defaults (same convention as the web wizard).
+    const start = new Date(Date.now() + 86_400_000);
+    start.setHours(10, 0, 0, 0);
+    bookMut.mutate({
+      serviceId: selectedService.id,
+      category: selectedCatKey,
+      childName: childName.trim(),
+      childAge: Number.isFinite(age) ? age : 0,
+      addressId,
+      startAt: start.toISOString(),
+      endAt: new Date(start.getTime() + (selectedService.durationMin ?? 60) * 60_000).toISOString(),
+      idempotencyKey: randomUuid(),
+    });
+  };
 
   return (
     <ScrollView
@@ -48,30 +121,103 @@ export default function KidsServicesScreen(): JSX.Element {
         {categories.map((cat: Record<string, unknown>) => (
           <TouchableOpacity
             key={cat.key as string}
-            onPress={() => setSelectedCat(cat)}
-            style={[styles.catCard, selectedCat?.key === cat.key && styles.catActive]}
+            onPress={() => {
+              setSelectedCatKey(cat.key as string);
+              setSelectedService(null);
+              setResult(null);
+            }}
+            style={[styles.catCard, selectedCatKey === cat.key && styles.catActive]}
           >
-            <Text style={styles.catEmoji}>{cat.emoji as string}</Text>
+            <Text style={styles.catEmoji}>{(cat.emoji as string) ?? ''}</Text>
             <Text style={styles.catLabel}>{cat.nameAr as string}</Text>
           </TouchableOpacity>
         ))}
       </View>
-      {selectedCat && (
+      {cat && selectedCatKey && (
         <View style={styles.servicesSection}>
           <Text style={styles.sectionTitle}>
-            {selectedCat.emoji as string} {selectedCat.nameAr as string}
+            {cat.emoji ?? ''} {cat.nameAr ?? ''}
           </Text>
-          {((selectedCat.services as KidsServiceItem[]) ?? []).map((s, i) => (
-            <View key={i} style={styles.svcCard}>
+          {(cat.subServices ?? []).map((s) => (
+            <TouchableOpacity
+              key={s.id}
+              style={[styles.svcCard, selectedService?.id === s.id && styles.svcActive]}
+              onPress={() => {
+                setSelectedService(s);
+                setResult(null);
+              }}
+            >
               <View style={{ flex: 1 }}>
-                <Text style={styles.svcName}>{s.nameAr as string}</Text>
-                <Text style={styles.svcAge}>{s.ageGroup as string}</Text>
+                <Text style={styles.svcName}>{s.nameAr}</Text>
+                <Text style={styles.svcAge}>
+                  {s.ageMin !== undefined && s.ageMin > 0 ? `${s.ageMin}+` : ''}
+                </Text>
               </View>
               <Text style={styles.svcPrice}>
-                {(s.price as number)?.toLocaleString()} {t('misc.sar')}
+                {(s.price ?? 0).toLocaleString()} {t('misc.sar')}
               </Text>
-            </View>
+            </TouchableOpacity>
           ))}
+
+          {selectedService && (
+            <View style={styles.bookBox}>
+              <Text style={styles.bookTitle}>{selectedService.nameAr}</Text>
+              {isAuthed ? (
+                <>
+                  <TextInput
+                    style={styles.input}
+                    placeholder={t('marketing.kids-services.child-name')}
+                    placeholderTextColor="#9ca3af"
+                    value={childName}
+                    onChangeText={setChildName}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholder={t('marketing.kids-services.age')}
+                    placeholderTextColor="#9ca3af"
+                    value={childAge}
+                    onChangeText={setChildAge}
+                    keyboardType="number-pad"
+                  />
+                  <Text style={styles.bookLabel}>{t('booking.choose-address')}</Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <View style={{ flexDirection: 'row', gap: 8 }}>
+                      {addresses.map((a) => (
+                        <TouchableOpacity
+                          key={a.id}
+                          onPress={() => setAddressId(a.id)}
+                          style={[styles.addrChip, addressId === a.id && styles.addrActive]}
+                        >
+                          <Text style={styles.addrText}>{a.label}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </ScrollView>
+                  <TouchableOpacity
+                    style={styles.bookBtn}
+                    onPress={handleBook}
+                    disabled={bookMut.isPending}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={styles.bookBtnText}>{t('booking.confirm')}</Text>
+                  </TouchableOpacity>
+                  {result?.booked ? (
+                    <Text style={styles.bookResult}>
+                      {t('booking.code')}: {result.bookingCode as string}
+                    </Text>
+                  ) : null}
+                </>
+              ) : (
+                <TouchableOpacity
+                  style={styles.bookBtn}
+                  onPress={() => router.push('/login' as never)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.bookBtnText}>{t('mobile.auth.loginTitle')}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
         </View>
       )}
     </ScrollView>
@@ -112,7 +258,45 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f3f4f6',
   },
+  svcActive: { backgroundColor: '#fffbeb' },
   svcName: { fontSize: 13, color: '#374151' },
   svcAge: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
   svcPrice: { fontSize: 13, fontWeight: '600', color: '#d97706' },
+  bookBox: {
+    marginTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#f3f4f6',
+    paddingTop: 12,
+    gap: 8,
+  },
+  bookTitle: { fontSize: 14, fontWeight: '700', color: '#111827' },
+  input: {
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    fontSize: 13,
+    color: '#111827',
+  },
+  bookLabel: { fontSize: 12, color: '#6b7280', marginTop: 4 },
+  addrChip: {
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: '#fff',
+  },
+  addrActive: { borderColor: '#f59e0b', backgroundColor: '#fffbeb' },
+  addrText: { fontSize: 12, color: '#374151' },
+  bookBtn: {
+    backgroundColor: '#d97706',
+    borderRadius: 12,
+    paddingVertical: 13,
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  bookBtnText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  bookResult: { fontSize: 13, color: '#047857', textAlign: 'center', marginTop: 4 },
 });

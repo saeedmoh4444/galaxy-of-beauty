@@ -475,11 +475,13 @@ export const serviceRouter = router({
     const service = await prisma.service.create({
       data: data as Parameters<typeof prisma.service.create>[0]['data'],
     });
-    return service;
     // D3 — catalog writes invalidate the cached listings (services AND
-    // bundles, whose payloads embed service rows).
-    invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
-    invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
+    // bundles, whose payloads embed service rows). W2-10: these calls sat
+    // AFTER the return (dead code) and were fire-and-forget — the mutation
+    // could resolve before the delete landed. Await them before returning.
+    await invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
+    await invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
+    return service;
   }),
 
   /**
@@ -521,11 +523,10 @@ export const serviceRouter = router({
       }
 
       const service = await prisma.service.update({ where: { id }, data });
+      // D3/W2-10 — awaited invalidation BEFORE the return.
+      await invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
+      await invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
       return service;
-      // D3 — catalog writes invalidate the cached listings (services AND
-      // bundles, whose payloads embed service rows).
-      invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
-      invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
     }),
 
   /**
@@ -550,11 +551,11 @@ export const serviceRouter = router({
         data: { isActive: false },
       });
 
+      // D3/W2-10 — awaited invalidation BEFORE the return.
+      await invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
+      await invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
+
       return { success: true };
-      // D3 — catalog writes invalidate the cached listings (services AND
-      // bundles, whose payloads embed service rows).
-      invalidateCachePrefix(catalogCache.services.prefix).catch(() => undefined);
-      invalidateCachePrefix(catalogCache.bundles.prefix).catch(() => undefined);
     }),
 
   // ---------------------------------------------------------------------------

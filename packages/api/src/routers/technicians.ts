@@ -256,8 +256,9 @@ export const technicianRouter = router({
         },
       });
 
-      // D3 — the browse listing derives from these writes.
-      invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
+      // D3 — the browse listing derives from these writes. (W2-10: awaited —
+      // fire-and-forget could resolve the mutation before the delete landed.)
+      await invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
       return mapping;
     }),
 
@@ -412,8 +413,9 @@ export const technicianRouter = router({
         data.yearsOfExperience = input.yearsOfExperience;
       }
 
-      // D3 — the browse listing derives from these writes.
-      invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
+      // D3 — the browse listing derives from these writes. (W2-10: awaited —
+      // fire-and-forget could resolve the mutation before the delete landed.)
+      await invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
       return prisma.technician.update({
         where: { userId: ctx.user.id },
         data,
@@ -520,8 +522,9 @@ export const technicianRouter = router({
         },
       });
 
-      // D3 — the browse listing derives from these writes.
-      invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
+      // D3 — the browse listing derives from these writes. (W2-10: awaited —
+      // fire-and-forget could resolve the mutation before the delete landed.)
+      await invalidateCachePrefix(catalogCache.technicians.prefix).catch(() => undefined);
       return updated;
     }),
 
