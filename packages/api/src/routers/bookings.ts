@@ -310,7 +310,64 @@ export const bookingRouter = router({
         totalAmount = Number(service.basePrice) * hours;
       }
 
-      if (!bundle && !beautyBundle && input.variantId) {
+      // 4a-bis. Flash deal (W2-6) — a claimed, active deal prices the
+      // anchor service at dealPrice: a fixed promotional price, so variant
+      // deltas, dynamic pricing and subscription discounts do not stack on
+      // top. Add-ons (4d) remain additive.
+      let pricingBreakdown:
+        ReturnType<typeof computeDynamicPrice> | Record<string, unknown> | null = null;
+      let dealApplied = false;
+      if (input.dealId) {
+        if (bundle || beautyBundle) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Flash deals cannot be combined with bundles',
+          });
+        }
+        const deal = await tx.flashDeal.findUnique({ where: { id: input.dealId } });
+        const now = new Date();
+        if (!deal || !deal.isActive) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'العرض غير متاح' });
+        }
+        if (deal.startsAt > now || deal.endsAt < now) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'العرض غير متاح حالياً',
+          });
+        }
+        if (deal.serviceId !== input.serviceId) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'العرض لا ينطبق على هذه الخدمة',
+          });
+        }
+        const claim = await tx.flashDealClaim.findUnique({
+          where: { dealId_userId: { dealId: deal.id, userId: customerId } },
+        });
+        if (!claim) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'يجب المطالبة بالعرض أولاً',
+          });
+        }
+        dealApplied = true;
+        if (service.isHourly) {
+          const bookedMs = new Date(input.endAt).getTime() - new Date(input.startAt).getTime();
+          const hours = Math.max(1, Math.ceil(bookedMs / 3_600_000));
+          totalAmount = Number(deal.dealPrice) * hours;
+        } else {
+          totalAmount = Number(deal.dealPrice);
+        }
+        pricingBreakdown = {
+          type: 'flash_deal',
+          dealId: deal.id,
+          dealPrice: Number(deal.dealPrice),
+          originalPrice: Number(deal.originalPrice),
+          discountValue: Number(deal.discountValue),
+        };
+      }
+
+      if (!bundle && !beautyBundle && !dealApplied && input.variantId) {
         const variant = await tx.serviceVariant.findUnique({
           where: { id: input.variantId },
         });
@@ -326,8 +383,7 @@ export const bookingRouter = router({
       // 4b. Dynamic pricing (1.1) — only for opt-in services. The static
       // base/variant/hourly/bundle price above is the input to the engine;
       // bundles keep their fixed promotional price (skip).
-      let pricingBreakdown: ReturnType<typeof computeDynamicPrice> | null = null;
-      if (!bundle && !beautyBundle && service.dynamicPricingEnabled) {
+      if (!bundle && !beautyBundle && !dealApplied && service.dynamicPricingEnabled) {
         const rules = await tx.servicePricing.findMany({ where: { isActive: true } });
         // Surge: the technician's slot fill within ±2h of the booking.
         const windowStart = new Date(input.startAt).getTime() - 2 * 3_600_000;
@@ -361,7 +417,7 @@ export const bookingRouter = router({
           date: new Date(input.startAt),
           surgeRatio,
         });
-        totalAmount = pricingBreakdown.total;
+        totalAmount = (pricingBreakdown as { total: number }).total;
       }
 
       // 4c. Beauty subscription (2.2 SUB-2) — usage tracking, allowance
@@ -384,7 +440,8 @@ export const bookingRouter = router({
           });
         }
         // Basic/Premium: services beyond the allowance get the plan discount.
-        if (used >= allowance && activeSub.plan.discountPercent > 0) {
+        // Flash deals keep their fixed price (no stacking).
+        if (!dealApplied && used >= allowance && activeSub.plan.discountPercent > 0) {
           totalAmount =
             Math.round(totalAmount * (1 - activeSub.plan.discountPercent / 100) * 100) / 100;
         }
