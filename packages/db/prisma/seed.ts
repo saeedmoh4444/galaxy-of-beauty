@@ -1303,6 +1303,10 @@ async function main() {
         ['Meditation Session', 'جلسة تأمل', 100, 45, 'meditation-session', 11],
         ['Breathwork Session', 'جلسة تنفس', 120, 45, 'breathwork-session', 11],
         ['Nutrition Consultation', 'استشارة تغذية', 200, 60, 'nutrition-consultation', 11],
+        // W2-11 — the womensServicesMap fallback row (documented as
+        // "seeded E1 row" but was never created; only a kids-catalog row
+        // existed, so fallback resolutions landed on kids services).
+        ['Beauty Consultation', 'استشارة عناية', 100, 30, 'beauty-consultation', 11],
       ] as const
     ).map(([en, ar, price, mins, slug, catIdx]) =>
       prisma.service.create({
