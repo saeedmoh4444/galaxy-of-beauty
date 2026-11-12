@@ -241,10 +241,13 @@ export const kidsServicesRouter = router({
 
       // C1a — the facade resolves to the REAL seeded service by exact
       // titleJson.en match (seed guarantees one row per facade entry).
+      // W2-11 — scope to the kids catalog: 'Beauty Consultation' and
+      // 'Manicure' also exist in the main catalog now.
       const service = await prisma.service.findFirst({
         where: {
           titleJson: { path: ['en'], equals: svc.nameEn },
           isActive: true,
+          category: { slug: 'kids-care' },
         },
       });
       if (!service) {
