@@ -10,7 +10,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser } from './factories';
+import { buildUser, ensureTechnicianService } from './factories';
 import { computeDynamicPrice, ruleMatches } from '../lib/pricing';
 import type { JwtPayload } from '../lib/jwt';
 
@@ -46,12 +46,24 @@ function nextSundayMorning(): Date {
 }
 
 beforeAll(async () => {
+  const user = await prisma.user.create({ data: buildUser() });
+  createdUserIds.push(user.id);
+  customer = { id: user.id, role: 'CUSTOMER', email: user.email };
+
   const [cat, address] = await Promise.all([
     prisma.category.findFirst({ select: { id: true } }),
-    prisma.address.findFirst({ select: { id: true } }),
+    prisma.address.create({
+      data: {
+        userId: user.id,
+        label: 'w25-test',
+        city: 'الرياض',
+        area: 'تجريبي',
+        street: 'شارع الاختبار',
+      },
+    }),
   ]);
   catId = cat?.id ?? 1;
-  addressId = address?.id ?? 1;
+  addressId = address.id;
 
   const techUser = await prisma.user.create({ data: buildUser({ role: 'TECHNICIAN' }) });
   createdUserIds.push(techUser.id);
@@ -95,9 +107,10 @@ beforeAll(async () => {
   disabledServiceId = disabled.id;
   createdServiceIds.push(enabled.id, disabled.id);
 
-  const user = await prisma.user.create({ data: buildUser() });
-  createdUserIds.push(user.id);
-  customer = { id: user.id, role: 'CUSTOMER', email: user.email };
+  // W2-5: bookings.create validates the technician↔service mapping.
+  for (const sid of createdServiceIds) {
+    await ensureTechnicianService(techProfileId, sid);
+  }
 }, 30000);
 
 afterAll(async () => {
@@ -303,6 +316,8 @@ describe('dynamic pricing — bookings.create integration', () => {
     const tech = await prisma.technician.create({
       data: { userId: techUser.id, city: 'الرياض', kycStatus: 'VERIFIED', tier: 'NEW' },
     });
+    // W2-5: bookings.create validates the technician↔service mapping.
+    await ensureTechnicianService(tech.id, enabledServiceId);
 
     const booking = await c.bookings.create({
       technicianId: techUser.id,

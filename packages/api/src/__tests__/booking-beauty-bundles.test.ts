@@ -13,7 +13,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser, safeFutureDate } from './factories';
+import { buildUser, safeFutureDate, ensureTechnicianService } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -41,11 +41,20 @@ beforeAll(async () => {
   customer = { id: user.id, role: 'CUSTOMER', email: user.email };
 
   const [tech, address] = await Promise.all([
-    prisma.technician.findFirst({ select: { userId: true } }),
-    prisma.address.findFirst({ select: { id: true } }),
+    prisma.technician.findFirst({ select: { userId: true, id: true } }),
+    prisma.address.create({
+      data: {
+        userId: user.id,
+        label: 'bb-test',
+        city: 'الرياض',
+        area: 'تجريبي',
+        street: 'شارع الاختبار',
+      },
+    }),
   ]);
   techUserId = tech?.userId ?? 1;
-  addressId = address?.id ?? 1;
+  const techRecordId = tech?.id ?? 1;
+  addressId = address.id;
 
   const cat = await prisma.category.create({
     data: {
@@ -72,6 +81,8 @@ beforeAll(async () => {
       },
     });
     createdServiceIds.push(svc.id);
+    // W2-5: bookings.create validates the technician↔service mapping.
+    await ensureTechnicianService(techRecordId, svc.id);
   }
 
   // original 300 → 10% off → total 270. serviceIds now live in the

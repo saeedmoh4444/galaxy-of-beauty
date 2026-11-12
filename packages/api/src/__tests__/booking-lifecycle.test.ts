@@ -9,7 +9,7 @@ import crypto from 'crypto';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate } from './factories';
+import { safeFutureDate, ensureTechnicianService } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -49,6 +49,8 @@ async function seedSlot(): Promise<number> {
 
 async function createBooking(opts?: { idempotencyKey?: string; slotId?: number }) {
   const caller = await authCaller(customer);
+  // W2-5: bookings.create validates the technician↔service mapping.
+  await ensureTechnicianService(technicianRecordId, serviceId);
   const start = safeFutureDate(1);
   return caller.bookings.create({
     serviceId,

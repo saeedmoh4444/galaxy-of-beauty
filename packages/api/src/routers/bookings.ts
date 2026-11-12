@@ -136,6 +136,21 @@ export const bookingRouter = router({
       });
     }
 
+    // 2a2. W2-5 (audit 2026-11-11): the technician must actually offer this
+    // service — a crafted request could otherwise book any technician for
+    // any service.
+    const serviceMapping = await prisma.technicianService.findUnique({
+      where: {
+        technicianId_serviceId: { technicianId: technician.id, serviceId: input.serviceId },
+      },
+    });
+    if (!serviceMapping || !serviceMapping.isActive) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Technician does not offer this service',
+      });
+    }
+
     // 2b. Look up slot — only when the client books against one. The date/
     // time picker flows compose startAt/endAt directly and pass no slotId,
     // so an unguarded lookup here used to 500 on every such booking.
@@ -181,6 +196,20 @@ export const bookingRouter = router({
           message: 'Family member belongs to another customer',
         });
       }
+    }
+
+    // 2c2. W2-5: the address must exist and belong to the booking customer —
+    // the technician sees this address, so attaching another user's address
+    // to a crafted request is a privacy leak. Placed after the family check
+    // so that error keeps its precedence.
+    const bookingAddress = await prisma.address.findUnique({
+      where: { id: input.addressId },
+    });
+    if (!bookingAddress || bookingAddress.userId !== customerId) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Address not found',
+      });
     }
 
     // 2d. Bundle (K3): optional Mommy & Me bundle — must exist and be active.
