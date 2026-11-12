@@ -139,6 +139,8 @@ export default function CreateBookingScreen() {
   // in handleSubmit (local time, not UTC) so the user controls the slot.
   const [bookingDate, setBookingDate] = useState<string>(buildNextDays(locale)[0]?.iso ?? '');
   const [bookingTime, setBookingTime] = useState<string>('10:00');
+  // W2-2: searchable service list.
+  const [serviceSearch, setServiceSearch] = useState('');
   // B.2 — promo chain: validate at confirm, redeem after booking creation.
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null);
@@ -148,7 +150,12 @@ export default function CreateBookingScreen() {
 
   const isAuthed = useAuthState();
   const utils = trpc.useUtils();
-  const servicesQ = trpc.services.list.useQuery({ page: 1, limit: MAX_LIST_SIZE });
+  const servicesQ = trpc.services.list.useQuery({
+    page: 1,
+    limit: MAX_LIST_SIZE,
+    search: serviceSearch || undefined,
+    excludeWomensFacade: true,
+  });
   // Guests have no address book — gate to avoid a 401 on mount.
   const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const membersQ = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
@@ -420,6 +427,14 @@ export default function CreateBookingScreen() {
         {step === 1 && (
           <View>
             <Text style={styles.sectionTitle}>{t('booking.choose-service')}</Text>
+            {/* W2-2 (audit 2026-11-11): search the core catalog. */}
+            <TextInput
+              style={styles.searchInput}
+              value={serviceSearch}
+              onChangeText={setServiceSearch}
+              placeholder={t('booking.search-service')}
+              placeholderTextColor={'#9ca3af'}
+            />
             {services.map((s, i) => (
               <TouchableOpacity
                 key={s.id ?? i}
@@ -879,6 +894,16 @@ const styles = StyleSheet.create({
     color: '#111827',
     textAlign: 'right',
     marginBottom: 12,
+  },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    fontSize: 14,
+    color: '#111827',
+    textAlign: 'right',
   },
   serviceCard: {
     padding: 14,

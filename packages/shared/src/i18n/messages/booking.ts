@@ -93,6 +93,7 @@ export const bookingMessages = {
   'booking.step-details': { ar: 'التفاصيل', en: 'Details' },
   'booking.step-confirm': { ar: 'التأكيد', en: 'Confirmation' },
   'booking.choose-service': { ar: 'اختر الخدمة', en: 'Choose Service' },
+  'booking.search-service': { ar: 'ابحثي عن خدمة بالاسم', en: 'Search services by name' },
   'booking.choose-variant': { ar: 'اختر المتغير', en: 'Choose Variant' },
   'booking.base-service': { ar: 'الخدمة الأساسية', en: 'Base Service' },
   'booking.choose-address': { ar: 'اختر العنوان', en: 'Choose Address' },
