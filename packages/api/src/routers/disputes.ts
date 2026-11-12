@@ -66,16 +66,27 @@ export const disputeRouter = router({
         }
       }
 
-      const dispute = await prisma.dispute.create({
-        data: {
-          bookingId: bookingId ?? null,
-          storeOrderId: storeOrderId ?? null,
-          raisedBy: ctx.user.id,
-          reason,
-          description,
-          status: 'OPEN',
-        },
-      });
+      // W1 (audit 2026-11-11): the bookingId/storeOrderId uniques make a
+      // second dispute a P2002 — translate to CONFLICT instead of a raw 500.
+      let dispute;
+      try {
+        dispute = await prisma.dispute.create({
+          data: {
+            bookingId: bookingId ?? null,
+            storeOrderId: storeOrderId ?? null,
+            raisedBy: ctx.user.id,
+            reason,
+            description,
+            status: 'OPEN',
+          },
+        });
+      } catch (err) {
+        if ((err as { code?: string }).code !== 'P2002') throw err;
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'A dispute already exists for this booking or order',
+        });
+      }
 
       return dispute;
     }),

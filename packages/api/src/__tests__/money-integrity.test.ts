@@ -71,7 +71,7 @@ afterAll(async () => {
 });
 
 describe('wallet.topUp — no free money', () => {
-  it('creates a PENDING transaction and does NOT change the spendable balance', async () => {
+  it('completes in simulate mode (the sanctioned dev path) and never mints balance in production', async () => {
     const before = await customerCaller.wallet.getBalance();
     const key = `mob_${Date.now()}_pending_${Math.random().toString(36).slice(2, 6)}`;
     cleanupKeys.push(key);
@@ -79,13 +79,24 @@ describe('wallet.topUp — no free money', () => {
     const result = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
     const after = await customerCaller.wallet.getBalance();
 
-    // No balance movement — the credit must come from a verified gateway callback.
-    expect(Number(after.balance)).toBe(Number(before.balance));
-    expect(result.status).toBe('PENDING');
+    // W1 (audit 2026-11-11): simulate mode (FATOORAH_SIMULATE=true, the
+    // test/CI default) mirrors the store-checkout discipline — the credit
+    // completes. Production (no simulate) still fails closed with PENDING,
+    // so a direct client call can never mint spendable balance there.
+    const simulate =
+      process.env['FATOORAH_SIMULATE'] === 'true' && process.env['NODE_ENV'] !== 'production';
+    if (simulate) {
+      expect(Number(after.balance)).toBe(Number(before.balance) + 100);
+      expect(result.status).toBe('COMPLETED');
+    } else {
+      expect(Number(after.balance)).toBe(Number(before.balance));
+      expect(result.status).toBe('PENDING');
+    }
 
     const txn = await prisma.walletTransaction.findUnique({ where: { idempotencyKey: key } });
     expect(txn).not.toBeNull();
-    expect(txn!.status).toBe('PENDING');
+    expect(txn!.source).toBe('TOP_UP');
+    expect(txn!.status).toBe(simulate ? 'COMPLETED' : 'PENDING');
   });
 
   it('replays the same idempotency key with the stored status', async () => {
@@ -95,8 +106,7 @@ describe('wallet.topUp — no free money', () => {
     const first = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
     const second = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
 
-    expect(first.status).toBe('PENDING');
-    expect(second.status).toBe('PENDING');
+    expect(second.status).toBe(first.status);
 
     const count = await prisma.walletTransaction.count({ where: { idempotencyKey: key } });
     expect(count).toBe(1);
@@ -288,13 +298,21 @@ describe('payments.refund — cashback reversal', () => {
     try {
       await adminCaller.payments.refund({ bookingId: booking.id });
 
+      // W1 (audit 2026-11-11): refund now returns the customer's money.
+      // The cashback credit (+5) is reversed and the payment amount (100)
+      // is credited back: net = baseline + 100.
       const walletAfter = await prisma.wallet.findUnique({ where: { id: wallet.id } });
-      expect(Number(walletAfter!.bonusBalance)).toBe(Number(baseline));
+      expect(Number(walletAfter!.bonusBalance)).toBe(Number(baseline) + 100);
 
       const reversal = await prisma.walletTransaction.findFirst({
-        where: { referenceId: String(booking.id), type: 'DEBIT', source: 'REFUND' },
+        where: { referenceId: `refund_cashback_${booking.id}`, type: 'DEBIT', source: 'REFUND' },
       });
       expect(reversal).not.toBeNull();
+
+      const credit = await prisma.walletTransaction.findFirst({
+        where: { referenceId: String(booking.id), type: 'CREDIT', source: 'REFUND' },
+      });
+      expect(credit).not.toBeNull();
     } finally {
       await prisma.walletTransaction.deleteMany({ where: { walletId: wallet.id } });
       await prisma.payment.deleteMany({ where: { bookingId: booking.id } });

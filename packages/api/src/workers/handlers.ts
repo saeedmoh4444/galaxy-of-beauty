@@ -81,6 +81,16 @@ export interface BookingReminderJob {
 
 export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
   const { userId, bookingId, amount } = job.data;
+  const idempotencyKey = job.data.idempotencyKey ?? `cashback_${bookingId}`;
+
+  // Idempotent replay (W1, audit 2026-11-11): a retry after a lost
+  // response must be a no-op — the previous attempt already credited the
+  // wallet. Without the lookup the retry's unique-key violation would fail
+  // the whole transaction (spurious permanent job failure).
+  const existing = await prisma.walletTransaction.findUnique({
+    where: { idempotencyKey },
+  });
+  if (existing) return;
 
   const wallet = await prisma.wallet.findUnique({ where: { userId } });
   if (!wallet) throw new Error(`Wallet not found for user ${userId}`);
@@ -98,7 +108,7 @@ export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
         amount,
         description: `كاش باك من الحجز #${bookingId}`,
         referenceId: `booking_${bookingId}`,
-        idempotencyKey: job.data.idempotencyKey ?? `cashback_${bookingId}`,
+        idempotencyKey,
       },
     }),
   ]);
