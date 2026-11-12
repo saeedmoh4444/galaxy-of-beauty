@@ -300,26 +300,43 @@ export const paymentRouter = router({
         });
 
         if (!wallet) {
-          wallet = await prisma.wallet.create({
-            data: { userId: booking.customerId },
-          });
+          try {
+            wallet = await prisma.wallet.create({
+              data: { userId: booking.customerId },
+            });
+          } catch (err) {
+            if ((err as { code?: string }).code !== 'P2002') throw err;
+            wallet = await prisma.wallet.findUniqueOrThrow({
+              where: { userId: booking.customerId },
+            });
+          }
         }
 
-        await prisma.walletTransaction.create({
-          data: {
-            walletId: wallet.id,
-            type: 'CREDIT',
-            source: 'CASHBACK',
-            amount: cashbackAmount,
-            description: `Cashback on booking #${booking.id}`,
-            referenceId: cashbackRefId,
-          },
-        });
-
-        await prisma.wallet.update({
-          where: { id: wallet.id },
-          data: { bonusBalance: { increment: cashbackAmount } },
-        });
+        // W1 (audit 2026-11-11): credit + row in ONE transaction keyed by a
+        // unique idempotencyKey. A concurrent capture loses the unique race
+        // and rolls its increment back — cashback lands exactly once.
+        try {
+          await prisma.$transaction([
+            prisma.wallet.update({
+              where: { id: wallet.id },
+              data: { bonusBalance: { increment: cashbackAmount } },
+            }),
+            prisma.walletTransaction.create({
+              data: {
+                walletId: wallet.id,
+                type: 'CREDIT',
+                source: 'CASHBACK',
+                amount: cashbackAmount,
+                description: `Cashback on booking #${booking.id}`,
+                referenceId: cashbackRefId,
+                idempotencyKey: `capture_cashback_${booking.id}`,
+              },
+            }),
+          ]);
+        } catch (err) {
+          // A concurrent capture already credited this cashback.
+          if ((err as { code?: string }).code !== 'P2002') throw err;
+        }
       }
 
       // Emit real-time events
@@ -380,41 +397,80 @@ export const paymentRouter = router({
         });
       }
 
-      // 2. Update payment to REFUNDED
-      const updated = await prisma.payment.update({
-        where: { id: payment.id },
-        data: { status: 'REFUNDED' },
-      });
-
-      // 3. Reverse wallet transactions associated with this booking.
-      // The cashback writer stores `capture_<booking.id>` as its referenceId —
-      // look it up the same way or the reversal never matches any row.
-      const walletTransactions = await prisma.walletTransaction.findMany({
-        where: { referenceId: `capture_${input.bookingId}` },
-      });
-
-      for (const txn of walletTransactions) {
-        if (txn.source === 'CASHBACK') {
-          // Reverse cashback credit by debiting the wallet
-          await prisma.wallet.update({
-            where: { id: txn.walletId },
-            data: { bonusBalance: { decrement: txn.amount } },
+      // 2. Refund inside one transaction with a status guard (W1, audit
+      // 2026-11-11): the conditional flip makes double refunds impossible
+      // (the loser's updateMany matches 0 rows → CONFLICT → full rollback),
+      // and the cashback reversal + the wallet credit land exactly once.
+      const refunded = await prisma.$transaction(async (tx) => {
+        const guard = await tx.payment.updateMany({
+          where: { id: payment.id, status: 'CAPTURED' },
+          data: { status: 'REFUNDED' },
+        });
+        if (guard.count === 0) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Payment already refunded',
           });
+        }
 
-          await prisma.walletTransaction.create({
+        // 3. Reverse wallet transactions associated with this booking.
+        // The cashback writer stores `capture_<booking.id>` as its referenceId —
+        // look it up the same way or the reversal never matches any row.
+        const walletTransactions = await tx.walletTransaction.findMany({
+          where: { referenceId: `capture_${input.bookingId}` },
+        });
+
+        for (const txn of walletTransactions) {
+          if (txn.source === 'CASHBACK') {
+            // Reverse cashback credit by debiting the wallet
+            await tx.wallet.update({
+              where: { id: txn.walletId },
+              data: { bonusBalance: { decrement: txn.amount } },
+            });
+
+            await tx.walletTransaction.create({
+              data: {
+                walletId: txn.walletId,
+                type: 'DEBIT',
+                source: 'REFUND',
+                amount: txn.amount,
+                description: `Reversal of cashback for booking #${input.bookingId}`,
+                referenceId: `refund_cashback_${input.bookingId}`,
+                idempotencyKey: `refund_cashback_${input.bookingId}_${txn.walletId}`,
+              },
+            });
+          }
+        }
+
+        // 4. Return the customer's money. No live gateway yet, so the
+        // simulate-safe path credits the wallet (the money that was
+        // captured in simulate mode comes back the same way). Guarded by
+        // the status flip above: this runs at most once per payment.
+        const customerWallet = await tx.wallet.findUnique({
+          where: { userId: payment.booking.customerId },
+        });
+        if (customerWallet) {
+          await tx.wallet.update({
+            where: { id: customerWallet.id },
+            data: { bonusBalance: { increment: payment.amount } },
+          });
+          await tx.walletTransaction.create({
             data: {
-              walletId: txn.walletId,
-              type: 'DEBIT',
+              walletId: customerWallet.id,
+              type: 'CREDIT',
               source: 'REFUND',
-              amount: txn.amount,
-              description: `Reversal of cashback for booking #${input.bookingId}`,
+              amount: payment.amount,
+              description: `استرداد حجز #${input.bookingId}`,
               referenceId: String(input.bookingId),
+              idempotencyKey: `refund_${input.bookingId}`,
             },
           });
         }
-      }
 
-      return updated;
+        return { id: payment.id, status: 'REFUNDED' as const };
+      });
+
+      return refunded;
     } catch (err) {
       if (err instanceof TRPCError) throw err;
       throw new TRPCError({

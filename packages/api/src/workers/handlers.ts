@@ -81,6 +81,16 @@ export interface BookingReminderJob {
 
 export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
   const { userId, bookingId, amount } = job.data;
+  const idempotencyKey = job.data.idempotencyKey ?? `cashback_${bookingId}`;
+
+  // Idempotent replay (W1, audit 2026-11-11): a retry after a lost
+  // response must be a no-op — the previous attempt already credited the
+  // wallet. Without the lookup the retry's unique-key violation would fail
+  // the whole transaction (spurious permanent job failure).
+  const existing = await prisma.walletTransaction.findUnique({
+    where: { idempotencyKey },
+  });
+  if (existing) return;
 
   const wallet = await prisma.wallet.findUnique({ where: { userId } });
   if (!wallet) throw new Error(`Wallet not found for user ${userId}`);
@@ -98,7 +108,7 @@ export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
         amount,
         description: `كاش باك من الحجز #${bookingId}`,
         referenceId: `booking_${bookingId}`,
-        idempotencyKey: job.data.idempotencyKey ?? `cashback_${bookingId}`,
+        idempotencyKey,
       },
     }),
   ]);
@@ -1292,6 +1302,23 @@ export async function handleReconciliationJob(_job: Job<Record<string, never>>):
     console.error(
       `[Reconciliation] ${cid ? `[${cid}] ` : ''}${result.mismatches.length} mismatch(es) of ${result.checked} checked`,
       JSON.stringify(result.mismatches.slice(0, 20)),
+    );
+    // W1 (audit 2026-11-11): a mismatch is money that may be missing —
+    // nobody reads worker logs, so page + Sentry like the queue-health
+    // monitor does. (The old "alerting can pick them up" comment was false:
+    // nothing consumes console output.)
+    const { sendAlert } = await import('../lib/alerting');
+    const { captureMessage } = await import('../lib/sentry');
+    const summary = JSON.stringify(result.mismatches.slice(0, 5));
+    await sendAlert(
+      'reconciliation-mismatch',
+      `Reconciliation: ${result.mismatches.length} mismatch(es)`,
+      `${result.mismatches.length} of ${result.checked} checked — ${summary}`,
+      'warning',
+    );
+    await captureMessage(
+      `Reconciliation found ${result.mismatches.length} mismatch(es) of ${result.checked}`,
+      'warning',
     );
   } else {
     console.log(`[Reconciliation] ${cid ? `[${cid}] ` : ''}clean — ${result.checked} checked`);

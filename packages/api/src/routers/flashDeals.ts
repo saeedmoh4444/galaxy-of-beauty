@@ -60,7 +60,7 @@ export const flashDealRouter = router({
     )
     .mutation(async ({ input }) => {
       const service = await db.service.findUnique({ where: { id: input.serviceId } });
-      if (!service) throw new Error('Service not found');
+      if (!service) throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
       const originalPrice = Number(service.basePrice);
       const discountValue = Math.round((originalPrice * input.discountPercent) / 100);
       const dealPrice = originalPrice - discountValue;
@@ -103,9 +103,13 @@ export const flashDealRouter = router({
       }
 
       // One claim per user per deal — a second claim rolls back the increment.
+      // (W1, audit 2026-11-11) Only the duplicate-claim violation rolls the
+      // counter back: a transient DB error must NOT decrement, otherwise a
+      // claim that actually landed corrupts the redemption counter.
       try {
         await db.flashDealClaim.create({ data: { dealId: input.dealId, userId: ctx.user.id } });
-      } catch {
+      } catch (err) {
+        if ((err as { code?: string }).code !== 'P2002') throw err;
         await db.flashDeal.update({
           where: { id: input.dealId },
           data: { currentRedemptions: { decrement: 1 } },

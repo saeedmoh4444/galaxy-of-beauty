@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
@@ -152,7 +153,7 @@ export const styleMatchRouter = router({
 
   byId: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
     const look = LOOKS.find((l) => l.id === input.id);
-    if (!look) throw new Error('الإطلالة غير موجودة');
+    if (!look) throw new TRPCError({ code: 'NOT_FOUND', message: 'الإطلالة غير موجودة' });
     return look;
   }),
 });
