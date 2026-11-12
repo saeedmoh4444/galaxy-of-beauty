@@ -242,5 +242,7 @@ export function getAllQueues(): Record<string, Queue | null> {
     reviews: getReviewsQueue(),
     media: getMediaQueue(),
     reconciliation: getReconciliationQueue(),
+    ops: getOpsQueue(),
+    webhooks: getWebhooksQueue(),
   };
 }
