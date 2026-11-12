@@ -19,9 +19,16 @@ async function ensureWallet(userId: number) {
     where: { userId },
   });
   if (!wallet) {
-    wallet = await prisma.wallet.create({
-      data: { userId },
-    });
+    try {
+      wallet = await prisma.wallet.create({
+        data: { userId },
+      });
+    } catch (err) {
+      // W1 (audit 2026-11-11): a concurrent first-ever call created the
+      // wallet between the find and the create — refetch instead of 500.
+      if ((err as { code?: string }).code !== 'P2002') throw err;
+      wallet = await prisma.wallet.findUniqueOrThrow({ where: { userId } });
+    }
   }
   return wallet;
 }
@@ -104,11 +111,22 @@ export const walletRouter = router({
   withdraw: technicianMutation.input(walletWithdrawSchema).mutation(async ({ ctx, input }) => {
     try {
       // 0. Idempotency replay (audit M7): a repeat call with the same key
-      // must return the stored transaction — never debit twice.
+      // must return the stored transaction — never debit twice. The key is
+      // global, so a guessed key must NOT leak another user's transaction:
+      // verify ownership before returning anything (W1, audit 2026-11-11).
       const existingTxn = await prisma.walletTransaction.findUnique({
         where: { idempotencyKey: input.idempotencyKey },
       });
       if (existingTxn) {
+        const ownerWallet = await prisma.wallet.findUnique({
+          where: { id: existingTxn.walletId },
+        });
+        if (ownerWallet?.userId !== ctx.user.id) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Idempotency key already used',
+          });
+        }
         return existingTxn;
       }
 
@@ -207,11 +225,19 @@ export const walletRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // Check idempotency
+      // Check idempotency — scoped to the caller's own wallet (W1, audit
+      // 2026-11-11): a guessed key must not confirm/leak another user's
+      // top-up.
       const existing = await prisma.walletTransaction.findFirst({
         where: { idempotencyKey: input.idempotencyKey },
       });
       if (existing) {
+        const ownerWallet = await prisma.wallet.findUnique({
+          where: { id: existing.walletId },
+        });
+        if (ownerWallet?.userId !== ctx.user.id) {
+          throw new TRPCError({ code: 'CONFLICT', message: 'Idempotency key already used' });
+        }
         const wallet = await prisma.wallet.findUnique({ where: { userId: ctx.user.id } });
         return {
           balance: Number(wallet?.balance ?? 0),
@@ -222,30 +248,42 @@ export const walletRouter = router({
       }
 
       // Money-integrity: a direct client mutation must NOT mint spendable
-      // balance. Record a PENDING intent; the credit lands only through a
-      // verified gateway callback (payments webhook / wallet top-up callback).
-      const wallet = await prisma.wallet.upsert({
-        where: { userId: ctx.user.id },
-        create: { userId: ctx.user.id, balance: 0 },
-        update: {},
+      // balance in production. Record a PENDING intent; the credit lands
+      // only through a verified gateway callback. In simulate mode (dev/CI,
+      // mirroring the store-checkout discipline) the callback is simulated
+      // and the credit completes in the same transaction — the mobile UI's
+      // success path is real and testable, production fails closed until a
+      // live gateway callback exists.
+      const simulate =
+        process.env['FATOORAH_SIMULATE'] === 'true' && process.env['NODE_ENV'] !== 'production';
+      const wallet = await ensureWallet(ctx.user.id);
+
+      await prisma.$transaction(async (tx) => {
+        await tx.walletTransaction.create({
+          data: {
+            walletId: wallet.id,
+            type: 'CREDIT',
+            source: 'TOP_UP',
+            amount: input.amount,
+            description: 'شحن رصيد',
+            idempotencyKey: input.idempotencyKey,
+            status: simulate ? 'COMPLETED' : 'PENDING',
+            referenceId: simulate ? `SIM-TOPUP-${Date.now()}-${wallet.id}` : null,
+          },
+        });
+        if (simulate) {
+          await tx.wallet.update({
+            where: { id: wallet.id },
+            data: { balance: { increment: input.amount } },
+          });
+        }
       });
 
-      await prisma.walletTransaction.create({
-        data: {
-          walletId: wallet.id,
-          type: 'CREDIT',
-          source: 'PLATFORM_FEE_SHARE',
-          amount: input.amount,
-          description: 'شحن رصيد',
-          idempotencyKey: input.idempotencyKey,
-          status: 'PENDING',
-        },
-      });
-
+      const refreshed = await prisma.wallet.findUniqueOrThrow({ where: { id: wallet.id } });
       return {
-        balance: Number(wallet.balance),
-        status: 'PENDING' as const,
-        message: 'طلب الشحن قيد المراجعة',
+        balance: Number(refreshed.balance),
+        status: simulate ? ('COMPLETED' as const) : ('PENDING' as const),
+        message: simulate ? 'تم شحن الرصيد بنجاح' : 'طلب الشحن قيد المراجعة',
       };
     }),
 });

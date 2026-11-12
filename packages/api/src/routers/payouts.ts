@@ -565,7 +565,21 @@ export const payoutRouter = router({
       }
 
       await prisma.$transaction(async (tx) => {
-        // Cover the request oldest-first from PENDING rows.
+        // Claim the request itself first (W1, audit 2026-11-11): the
+        // conditional update serializes concurrent approvals of the SAME
+        // request, and the throw rolls the whole transaction back.
+        const claim = await tx.payoutRequest.updateMany({
+          where: { id: request.id, status: 'PENDING' },
+          data: { status: 'APPROVED', processedAt: new Date() },
+        });
+        if (claim.count === 0) {
+          throw new TRPCError({ code: 'CONFLICT', message: 'Request already processed' });
+        }
+
+        // Cover the request oldest-first from PENDING rows. Each row claim
+        // is conditional too: a row a concurrent approval took first matches
+        // 0 rows and is skipped, so two approvals can never cover the same
+        // money.
         let remaining = Number(request.amount);
         const rows = await tx.payout.findMany({
           where: { vendorId: request.vendorId, status: 'PENDING' },
@@ -573,20 +587,28 @@ export const payoutRouter = router({
         });
         for (const row of rows) {
           if (remaining <= 0) break;
-          await tx.payout.update({
-            where: { id: row.id },
+          const claimed = await tx.payout.updateMany({
+            where: { id: row.id, status: 'PENDING' },
             data: {
               status: 'COMPLETED',
               reference: `MANUAL-${request.id}`,
               processedAt: new Date(),
             },
           });
-          remaining -= Number(row.amount);
+          if (claimed.count === 1) {
+            remaining -= Number(row.amount);
+          }
         }
-        await tx.payoutRequest.update({
-          where: { id: request.id },
-          data: { status: 'APPROVED', processedAt: new Date() },
-        });
+
+        // Never APPROVE a request the balance no longer covers: under
+        // concurrency the pre-check above can go stale between the read and
+        // this transaction.
+        if (remaining > 0) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'Accrued balance no longer covers the request',
+          });
+        }
       });
 
       return { id: request.id, status: 'APPROVED' };
