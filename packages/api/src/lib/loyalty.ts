@@ -24,9 +24,17 @@ export async function creditLoyaltyPoints(
 ): Promise<{ points: number; tier: string }> {
   let account = await client.loyaltyAccount.findUnique({ where: { userId } });
   if (!account) {
-    account = await client.loyaltyAccount.create({
-      data: { userId, points: 0, lifetimePoints: 0, tier: 'SILVER' },
-    });
+    try {
+      account = await client.loyaltyAccount.create({
+        data: { userId, points: 0, lifetimePoints: 0, tier: 'SILVER' },
+      });
+    } catch (err) {
+      // W1 (audit 2026-11-11): a concurrent earner created the account
+      // between the find and the create. The unique violation only fires
+      // after the winner committed, so the refetch sees their row.
+      if ((err as { code?: string }).code !== 'P2002') throw err;
+      account = await client.loyaltyAccount.findUniqueOrThrow({ where: { userId } });
+    }
   }
 
   // 8.2: positive earns carry a 12-month expiry and ride any active boost
@@ -53,21 +61,25 @@ export async function creditLoyaltyPoints(
   if (lifetimePoints >= 2000) tier = 'PLATINUM';
   else if (lifetimePoints >= 500) tier = 'GOLD';
 
-  await client.$transaction([
-    client.loyaltyAccount.update({
-      where: { userId },
-      data: { points: newPoints, lifetimePoints, tier },
-    }),
-    client.loyaltyTransaction.create({
-      data: {
-        accountId: account.id,
-        points: finalPoints,
-        reason,
-        referenceId,
-        expiresAt,
-      },
-    }),
-  ]);
+  // W1 (audit 2026-11-11): sequential writes, NOT an inner array
+  // $transaction — under the Prisma 7 driver adapter an inner batch on a
+  // transaction client runs without seeing the outer tx's uncommitted
+  // creates, so a first-ever account insert followed by this update died
+  // with "record not found". When called inside an outer tx (booking
+  // completion) both statements join it atomically.
+  await client.loyaltyAccount.update({
+    where: { userId },
+    data: { points: newPoints, lifetimePoints, tier },
+  });
+  await client.loyaltyTransaction.create({
+    data: {
+      accountId: account.id,
+      points: finalPoints,
+      reason,
+      referenceId,
+      expiresAt,
+    },
+  });
   return { points: newPoints, tier };
 }
 

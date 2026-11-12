@@ -971,9 +971,24 @@ export const bookingRouter = router({
           updateData.cancelReason = input.reason ?? null;
         }
 
-        return tx.booking.update({
-          where: { id: input.id },
+        // Concurrency guard (W1, audit 2026-11-11): the status update is
+        // conditional on the status we validated up front. A concurrent
+        // transition that lands first makes this update match 0 rows, the
+        // throw rolls back every side effect above (technician stats,
+        // referral + influencer credits), so nothing double-pays.
+        const guard = await tx.booking.updateMany({
+          where: { id: input.id, status: booking.status },
           data: updateData,
+        });
+        if (guard.count === 0) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Booking status changed concurrently — refresh and retry',
+          });
+        }
+
+        return tx.booking.findUniqueOrThrow({
+          where: { id: input.id },
           include: bookingDetailInclude,
         });
       });
