@@ -13,7 +13,7 @@ import { trpc } from '@/lib/trpc-react';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useEffect, useRef, useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
-import { localize } from '@galaxy/shared';
+import { localize, buildBookingConfirmHref } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
 import { ScreenState } from '@/components/ScreenState';
@@ -255,7 +255,16 @@ export default function CreateBookingScreen() {
       }
       trigger('success');
       showToast('success', t('booking.created-success'));
-      router.replace('/customer/bookings/confirm');
+      // W2-4: pass the real booking code + start date — the confirm screen
+      // reads them from the route params (was the '———' placeholder).
+      const created = result as unknown as { bookingCode?: string; startAt?: string | Date };
+      router.replace(
+        buildBookingConfirmHref(
+          '/customer/bookings/confirm',
+          created?.bookingCode,
+          created?.startAt,
+        ),
+      );
     },
     onError: (error, variables) => {
       // Offline-first (5.5): a network failure means the request never

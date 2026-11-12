@@ -8,7 +8,7 @@ import { Card, Button, Input, StepTransition, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
-import { localize } from '@galaxy/shared';
+import { localize, buildBookingConfirmHref } from '@galaxy/shared';
 
 interface AppliedPromo {
   code: string;
@@ -196,7 +196,12 @@ export default function CreateBookingPage(): JSX.Element {
       }
       addToast('success', t('booking.created-success'));
       // Audit gap: the confetti success page existed but nothing reached it.
-      router.push('/bookings/confirm');
+      // W2-4: pass the real booking code + start date so the confirm page
+      // renders them instead of the '———' placeholder.
+      const created = result as unknown as { bookingCode?: string; startAt?: string | Date };
+      router.push(
+        buildBookingConfirmHref('/bookings/confirm', created?.bookingCode, created?.startAt),
+      );
     },
     onError: () => {
       addToast('error', t('booking.create-failed'));
