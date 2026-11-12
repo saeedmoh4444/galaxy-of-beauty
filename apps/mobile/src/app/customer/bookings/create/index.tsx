@@ -28,7 +28,7 @@ interface ServiceListItem {
 }
 
 interface TechnicianService {
-  technician?: { userId?: number };
+  technician?: { user?: { id?: number } };
 }
 
 interface ServiceVariant {
@@ -205,7 +205,7 @@ export default function CreateBookingScreen() {
 
   // 1.1 Dynamic pricing — live preview for the confirm step. Mirrors the
   // auto-assign logic in handleSubmit (first technician for the service).
-  const previewTechnicianId = svc?.technicianServices?.[0]?.technician?.userId ?? 0;
+  const previewTechnicianId = svc?.technicianServices?.[0]?.technician?.user?.id ?? 0;
   const previewStartAt = (() => {
     const [ph = 0, pm = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
@@ -327,7 +327,7 @@ export default function CreateBookingScreen() {
     }
     // Auto-assign first available technician for this service
     const techs = svc?.technicianServices ?? [];
-    const technicianId = techs[0]?.technician?.userId ?? 0;
+    const technicianId = techs[0]?.technician?.user?.id ?? 0;
     if (!technicianId) {
       showToast('warning', t('booking.no-technicians'));
       return;

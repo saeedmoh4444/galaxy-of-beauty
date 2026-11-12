@@ -113,9 +113,9 @@ export default function CreateBookingPage(): JSX.Element {
   const previewTechnicianId =
     (
       svc as unknown as {
-        technicianServices?: Array<{ technician?: { userId?: number } }>;
+        technicianServices?: Array<{ technician?: { user?: { id?: number } } }>;
       }
-    )?.technicianServices?.[0]?.technician?.userId ?? 0;
+    )?.technicianServices?.[0]?.technician?.user?.id ?? 0;
   const previewStartAt = (() => {
     const [ph = 0, pm = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
@@ -259,10 +259,13 @@ export default function CreateBookingPage(): JSX.Element {
     // Auto-assign first available technician for this service
     let technicianId = 0;
     const techs =
-      (svc as unknown as { technicianServices?: Array<{ technician?: { userId?: number } }> })
-        ?.technicianServices ?? [];
+      (
+        svc as unknown as {
+          technicianServices?: Array<{ technician?: { user?: { id?: number } } }>;
+        }
+      )?.technicianServices ?? [];
     if (techs.length > 0) {
-      technicianId = techs[0]?.technician?.userId ?? 0;
+      technicianId = techs[0]?.technician?.user?.id ?? 0;
     }
     if (!technicianId) {
       addToast('error', t('booking.no-technicians'));
