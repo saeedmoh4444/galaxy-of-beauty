@@ -4769,29 +4769,69 @@ async function main() {
     console.log(` D2 women's catalog: ${created} services created, ${mapped} already mapped`);
   } catch (err: any) {
     console.log(`    D2 women's catalog skipped: ${err.message?.slice(0, 80)}`);
-    // ---- A2 moderation fixture (E2E: admin queue → hide) ----
-    try {
-      const flaggedPost = await prisma.communityPost.create({
+  }
+
+  // ---- A2 moderation fixture (E2E: admin queue → hide) ----
+  // (W1, audit 2026-11-11: this used to live INSIDE the D2 catch block — a
+  // merge-conflict artifact — so it only ran when the D2 catalog threw.)
+  try {
+    const flaggedPost = await prisma.communityPost.create({
+      data: {
+        userId: customer.id,
+        content: 'منشور تجريبي للبلاغ — moderation E2E fixture',
+      },
+    });
+    await prisma.contentReport.create({
+      data: {
+        targetType: 'community_post',
+        targetId: flaggedPost.id,
+        reporterId: customer.id,
+        reason: 'inappropriate',
+        note: 'Seeded fixture for the moderation E2E spec',
+        status: 'open',
+      },
+    });
+    console.log(' Moderation fixture seeded (1 open report)');
+  } catch (err: any) {
+    console.log(`    Moderation fixture skipped: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- W2 catalog bookability (audit 2026-11-11) ----
+  // The old assignment gave each technician ONE random service from the
+  // 75-element core array — the E1 sweep, kids, babysitting and the D2
+  // 289 womens rows had no technician at all, so ~90% of the catalog
+  // dead-ended with "no technicians". Post-pass: round-robin every
+  // uncovered service across the seeded technicians so the whole catalog
+  // is bookable. (Contract: seed-catalog-contract.test.ts.)
+  if (technicians.length > 0) {
+    const allServices = await prisma.service.findMany({
+      select: { id: true },
+      orderBy: { id: 'asc' },
+    });
+    let covered = 0;
+    let assigned = 0;
+    for (const svc of allServices) {
+      const existing = await prisma.technicianService.findFirst({
+        where: { serviceId: svc.id },
+      });
+      if (existing) {
+        covered += 1;
+        continue;
+      }
+      const tech = technicians[assigned % technicians.length]!;
+      await prisma.technicianService.create({
         data: {
-          userId: customer.id,
-          content: 'منشور تجريبي للبلاغ — moderation E2E fixture',
+          technicianId: tech.id,
+          serviceId: svc.id,
+          customPrice: 0,
+          isActive: true,
         },
       });
-      await prisma.contentReport.create({
-        data: {
-          targetType: 'community_post',
-          targetId: flaggedPost.id,
-          reporterId: customer.id,
-          reason: 'inappropriate',
-          note: 'Seeded fixture for the moderation E2E spec',
-          status: 'open',
-        },
-      });
-      console.log(' Moderation fixture seeded (1 open report)');
-    } catch (err: any) {
-      console.log(`    Moderation fixture skipped: ${err.message?.slice(0, 60)}`);
+      assigned += 1;
     }
-    // close the D2 block's catch (the merge conflict shared its closing brace)
+    console.log(
+      ` W2 catalog coverage: ${covered} services already covered, ${assigned} newly assigned`,
+    );
   }
 
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');
