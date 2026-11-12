@@ -1293,6 +1293,23 @@ export async function handleReconciliationJob(_job: Job<Record<string, never>>):
       `[Reconciliation] ${cid ? `[${cid}] ` : ''}${result.mismatches.length} mismatch(es) of ${result.checked} checked`,
       JSON.stringify(result.mismatches.slice(0, 20)),
     );
+    // W1 (audit 2026-11-11): a mismatch is money that may be missing —
+    // nobody reads worker logs, so page + Sentry like the queue-health
+    // monitor does. (The old "alerting can pick them up" comment was false:
+    // nothing consumes console output.)
+    const { sendAlert } = await import('../lib/alerting');
+    const { captureMessage } = await import('../lib/sentry');
+    const summary = JSON.stringify(result.mismatches.slice(0, 5));
+    await sendAlert(
+      'reconciliation-mismatch',
+      `Reconciliation: ${result.mismatches.length} mismatch(es)`,
+      `${result.mismatches.length} of ${result.checked} checked — ${summary}`,
+      'warning',
+    );
+    await captureMessage(
+      `Reconciliation found ${result.mismatches.length} mismatch(es) of ${result.checked}`,
+      'warning',
+    );
   } else {
     console.log(`[Reconciliation] ${cid ? `[${cid}] ` : ''}clean — ${result.checked} checked`);
   }

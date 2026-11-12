@@ -18,6 +18,10 @@ import {
   getSlaQueue,
   getDisputesQueue,
   getReviewsQueue,
+  getMediaQueue,
+  getReconciliationQueue,
+  getOpsQueue,
+  getWebhooksQueue,
 } from '../queues';
 
 export const QUEUE_REGISTRY: Array<{ name: string; get: () => Queue | null }> = [
@@ -33,6 +37,10 @@ export const QUEUE_REGISTRY: Array<{ name: string; get: () => Queue | null }> = 
   { name: 'gob-sla', get: getSlaQueue },
   { name: 'gob-disputes', get: getDisputesQueue },
   { name: 'gob-reviews', get: getReviewsQueue },
+  { name: 'gob-media', get: getMediaQueue },
+  { name: 'gob-reconciliation', get: getReconciliationQueue },
+  { name: 'gob-ops', get: getOpsQueue },
+  { name: 'gob-webhooks', get: getWebhooksQueue },
 ];
 
 export interface QueueCounts {
