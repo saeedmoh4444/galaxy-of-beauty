@@ -39,6 +39,9 @@ export const createBookingSchema = z.object({
   addonIds: z.array(z.number().int().positive()).max(10).optional(),
   // 8.1c — optional influencer code (validated against active influencers).
   influencerCode: z.string().min(4).max(32).optional(),
+  // W2-6 — optional flash deal: must be claimed by this customer, active,
+  // and for the booked service; prices the anchor service at dealPrice.
+  dealId: z.number().int().positive().optional(),
 });
 
 export const bookingStatusSchema = z.object({
