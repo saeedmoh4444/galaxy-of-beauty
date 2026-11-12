@@ -14,6 +14,7 @@ export const womensServicesRouter = router({
       key,
       nameAr: cat.nameAr,
       nameEn: cat.nameEn,
+      emoji: cat.emoji,
       description: cat.description,
       serviceCount: cat.subServices.length,
     })),

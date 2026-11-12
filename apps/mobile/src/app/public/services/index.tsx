@@ -1,22 +1,24 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface ServiceItem {
   id?: number;
-  emoji?: string;
-  nameAr?: string;
-  descAr?: string;
-  price?: number;
-  duration?: string;
+  titleJson?: { ar?: string; en?: string };
+  descriptionJson?: { ar?: string; en?: string };
+  basePrice?: number;
+  durationMin?: number;
 }
 
 export default function ServicesScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const router = useRouter();
   const categoriesQ = trpc.categories.tree.useQuery();
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const catItems = (
@@ -91,19 +93,29 @@ export default function ServicesScreen(): JSX.Element {
             <Text style={styles.e}>{t('mobile.public.services.empty')}</Text>
           ) : (
             svcItems.map((s) => (
-              <View key={s.id} style={styles.card}>
-                <Text style={styles.svcEmoji}>{s.emoji ?? ''}</Text>
+              <TouchableOpacity
+                key={s.id}
+                style={styles.card}
+                activeOpacity={0.7}
+                onPress={() => router.push(`/services/${s.id}` as never)}
+              >
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.svcName}>{s.nameAr}</Text>
-                  <Text style={styles.svcDesc}>{s.descAr?.substring(0, 80)}</Text>
+                  <Text style={styles.svcName}>{localize(s.titleJson, locale) ?? ''}</Text>
+                  <Text style={styles.svcDesc}>
+                    {(localize(s.descriptionJson, locale) ?? '').substring(0, 80)}
+                  </Text>
                   <View style={styles.svcMeta}>
                     <Text style={styles.svcPrice}>
-                      {t('mobile.public.currency', { price: s.price?.toLocaleString() ?? '' })}
+                      {t('mobile.public.currency', {
+                        price: (s.basePrice ?? 0).toLocaleString(),
+                      })}
                     </Text>
-                    <Text style={styles.svcDuration}> {s.duration}</Text>
+                    <Text style={styles.svcDuration}>
+                      {t('mobile.public.service-detail.duration', { minutes: s.durationMin ?? 0 })}
+                    </Text>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))
           )}
         </>
