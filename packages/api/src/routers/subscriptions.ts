@@ -62,10 +62,16 @@ export const subscriptionRouter = router({
       expiresAt.setMonth(expiresAt.getMonth() + 1);
 
       return prisma.$transaction(async (tx) => {
-        await tx.wallet.update({
-          where: { id: wallet.id },
+        // Conditional debit (W1, audit 2026-11-11): the balance check above
+        // can go stale under concurrency — only the transaction that still
+        // sees a sufficient balance debits; the loser rolls back.
+        const debited = await tx.wallet.updateMany({
+          where: { id: wallet.id, balance: { gte: price } },
           data: { balance: { decrement: price } },
         });
+        if (debited.count === 0) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient wallet balance' });
+        }
         await tx.walletTransaction.create({
           data: {
             walletId: wallet.id,
