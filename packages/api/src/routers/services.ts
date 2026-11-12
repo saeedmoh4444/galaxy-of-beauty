@@ -42,7 +42,12 @@ export const serviceRouter = router({
 
       // E1 — the catalog is women-only; the legacy mens-grooming rows stay
       // in the DB (admin/data safety) but are excluded from public browse.
-      where.category = { slug: { not: 'mens-grooming' } };
+      // W2-2 (audit 2026-11-11): the booking picker also excludes the D2
+      // womens facade (289 rows) — otherwise the newest-first window fills
+      // with facade rows and hides the technician-bearing core catalog.
+      where.category = input.excludeWomensFacade
+        ? { slug: { notIn: ['mens-grooming', 'womens-services'] } }
+        : { slug: { not: 'mens-grooming' } };
 
       // E6d — trust badge filters.
       if (input.womenOnly) where.isWomenOnlyStaff = true;

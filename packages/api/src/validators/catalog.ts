@@ -64,6 +64,9 @@ export const serviceQuerySchema = z.object({
   pregnancySafe: queryBool,
   // K2 (kids plan) — mommy/kid-friendly services filter.
   mommyFriendly: queryBool,
+  // W2-2 (audit 2026-11-11): the booking picker excludes the D2 womens
+  // facade rows so the core catalog fits the list window.
+  excludeWomensFacade: queryBool,
 });
 
 export const addTechnicianServiceSchema = z.object({
