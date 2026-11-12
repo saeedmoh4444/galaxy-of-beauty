@@ -74,6 +74,7 @@ describe('womensServices.categories', () => {
       key: 'pregnancy_safe',
       nameAr: expect.any(String),
       nameEn: expect.any(String),
+      emoji: expect.any(String), // W2-9 — mobile category cards need it
       description: expect.any(String),
       serviceCount: expect.any(Number),
     });
