@@ -215,6 +215,8 @@ export const kidsServicesRouter = router({
         startAt: z.string().datetime(),
         endAt: z.string().datetime(),
         idempotencyKey: z.string().uuid(),
+        // W2-7 — book-on-behalf parity with bookings.create (K1).
+        familyMemberId: z.number().int().positive().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -263,17 +265,48 @@ export const kidsServicesRouter = router({
         throw new TRPCError({ code: 'BAD_REQUEST', message: JUMMAH_BLOCK_REASON });
       }
 
-      // Technician auto-assign: the platform assigns the first available
-      // technician until the B.4 selection flow lands (same convention as
-      // the mobile booking create). Inactive = suspended.
-      const technician = await prisma.technician.findFirst({
-        where: { suspendedAt: null },
-        orderBy: { id: 'asc' },
-        select: { userId: true },
-      });
-      if (!technician) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'No technician available' });
+      // W2-7 — parity with bookings.create: family member must exist and
+      // belong to the booking customer; the address must be the caller's.
+      if (input.familyMemberId) {
+        const member = await prisma.familyMember.findUnique({
+          where: { id: input.familyMemberId },
+        });
+        if (!member) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Family member not found' });
+        }
+        if (member.userId !== ctx.user.id) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Family member belongs to another customer',
+          });
+        }
       }
+      const address = await prisma.address.findUnique({ where: { id: input.addressId } });
+      if (!address) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Address not found' });
+      }
+      if (address.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Address belongs to another customer',
+        });
+      }
+
+      // Technician auto-assign: W2-7 — pick a technician MAPPED to the
+      // resolved service (technician↔service), never an arbitrary
+      // first-by-id technician. Inactive = suspended.
+      const mapping = await prisma.technicianService.findFirst({
+        where: { serviceId: service.id, isActive: true, technician: { suspendedAt: null } },
+        orderBy: { technicianId: 'asc' },
+        include: { technician: { select: { id: true, userId: true } } },
+      });
+      if (!mapping) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No technician available for this service',
+        });
+      }
+      const technician = mapping.technician;
 
       const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
       const booking = await prisma.booking.create({
@@ -290,6 +323,7 @@ export const kidsServicesRouter = router({
           platformFee: Number(process.env['PLATFORM_FEE_SAR']) || DEFAULT_PLATFORM_FEE_SAR,
           paymentFee: 0,
           idempotencyKey: input.idempotencyKey,
+          familyMemberId: input.familyMemberId ?? null,
           notes: [`Kids booking: ${input.childName} (age ${input.childAge})`, input.parentNotes]
             .filter(Boolean)
             .join(' — '),
