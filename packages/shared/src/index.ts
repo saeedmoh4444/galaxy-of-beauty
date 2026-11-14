@@ -125,6 +125,7 @@ export type {
   Undertone,
 } from './utils/beautyDna';
 export { formatHijriDate } from './utils/hijri';
+export { buildBookingConfirmHref } from './utils/bookingConfirm';
 
 // Try-On (3.2)
 export * from './tryOn';

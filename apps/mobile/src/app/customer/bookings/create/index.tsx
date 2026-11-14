@@ -13,7 +13,7 @@ import { trpc } from '@/lib/trpc-react';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useEffect, useRef, useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
-import { localize } from '@galaxy/shared';
+import { localize, buildBookingConfirmHref } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
 import { ScreenState } from '@/components/ScreenState';
@@ -28,7 +28,7 @@ interface ServiceListItem {
 }
 
 interface TechnicianService {
-  technician?: { userId?: number };
+  technician?: { user?: { id?: number } };
 }
 
 interface ServiceVariant {
@@ -205,7 +205,7 @@ export default function CreateBookingScreen() {
 
   // 1.1 Dynamic pricing — live preview for the confirm step. Mirrors the
   // auto-assign logic in handleSubmit (first technician for the service).
-  const previewTechnicianId = svc?.technicianServices?.[0]?.technician?.userId ?? 0;
+  const previewTechnicianId = svc?.technicianServices?.[0]?.technician?.user?.id ?? 0;
   const previewStartAt = (() => {
     const [ph = 0, pm = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
@@ -262,7 +262,16 @@ export default function CreateBookingScreen() {
       }
       trigger('success');
       showToast('success', t('booking.created-success'));
-      router.replace('/customer/bookings/confirm');
+      // W2-4: pass the real booking code + start date — the confirm screen
+      // reads them from the route params (was the '———' placeholder).
+      const created = result as unknown as { bookingCode?: string; startAt?: string | Date };
+      router.replace(
+        buildBookingConfirmHref(
+          '/customer/bookings/confirm',
+          created?.bookingCode,
+          created?.startAt,
+        ),
+      );
     },
     onError: (error, variables) => {
       // Offline-first (5.5): a network failure means the request never
@@ -318,7 +327,7 @@ export default function CreateBookingScreen() {
     }
     // Auto-assign first available technician for this service
     const techs = svc?.technicianServices ?? [];
-    const technicianId = techs[0]?.technician?.userId ?? 0;
+    const technicianId = techs[0]?.technician?.user?.id ?? 0;
     if (!technicianId) {
       showToast('warning', t('booking.no-technicians'));
       return;
