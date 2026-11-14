@@ -16,6 +16,9 @@ test.setTimeout(240_000);
 
 async function login(page: import('@playwright/test').Page, email: string, expectUrl: RegExp) {
   await page.goto('/login');
+  // Hydration gate: fill only after the submit enables (pre-hydration
+  // fills get wiped and the login silently no-ops under CI load).
+  await expect(page.getByRole('button', { name: 'دخول' })).toBeEnabled({ timeout: 30_000 });
   await page.getByPlaceholder('example@email.com').fill(email);
   await page.getByPlaceholder('••••••••').fill(PASSWORD);
   await page.getByRole('button', { name: 'دخول' }).click();
