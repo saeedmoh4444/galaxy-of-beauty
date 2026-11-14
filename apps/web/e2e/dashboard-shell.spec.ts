@@ -20,8 +20,12 @@ async function loginAsCustomer(page: import('@playwright/test').Page) {
   await page.goto('/login');
   await page.getByPlaceholder('example@email.com').fill(TEST_EMAIL);
   await page.getByPlaceholder('••••••••').fill(TEST_PASSWORD);
-  await page.getByRole('button', { name: 'دخول' }).click();
-  await page.waitForTimeout(3000);
+  const submitBtn = page.getByRole('button', { name: 'دخول' });
+  await expect(submitBtn).toBeEnabled({ timeout: 30_000 });
+  await page.getByPlaceholder('example@email.com').fill(TEST_EMAIL);
+  await page.getByPlaceholder('••••••••').fill(TEST_PASSWORD);
+  await submitBtn.click();
+  await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 45_000 });
 }
 
 // The sidebar is desktop-only (md+); the second test covers the mobile nav.
