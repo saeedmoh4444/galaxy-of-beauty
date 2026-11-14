@@ -1303,6 +1303,10 @@ async function main() {
         ['Meditation Session', 'جلسة تأمل', 100, 45, 'meditation-session', 11],
         ['Breathwork Session', 'جلسة تنفس', 120, 45, 'breathwork-session', 11],
         ['Nutrition Consultation', 'استشارة تغذية', 200, 60, 'nutrition-consultation', 11],
+        // W2-11 — the womensServicesMap fallback row (documented as
+        // "seeded E1 row" but was never created; only a kids-catalog row
+        // existed, so fallback resolutions landed on kids services).
+        ['Beauty Consultation', 'استشارة عناية', 100, 30, 'beauty-consultation', 11],
       ] as const
     ).map(([en, ar, price, mins, slug, catIdx]) =>
       prisma.service.create({
@@ -2622,7 +2626,9 @@ async function main() {
 
   // 1.1 Dynamic pricing — default peak rules: Thu/Fri/Sat evenings
   // (16:00-22:00) +30%. Rules only affect services with
-  // dynamicPricingEnabled — no seeded service is enabled (admin opt-in).
+  // dynamicPricingEnabled — W2-8: the engine was dormant because no
+  // seeded service was opted in. Opt in a curated flagship set (admin
+  // can toggle per-service afterwards).
   await prisma.servicePricing.createMany({
     data: [4, 5, 6].map((dayOfWeek) => ({
       serviceId: null,
@@ -2636,6 +2642,26 @@ async function main() {
     })),
   });
   console.log(' 3 dynamic-pricing peak rules (Thu/Fri/Sat 16:00-22:00 +30%)');
+
+  // W2-8 — opt in the flagship set (engine was dormant: nothing enabled).
+  const dynamicPricingFlagship = [
+    'Evening Makeup',
+    'Airbrush Makeup',
+    'Bridal Trial Package',
+    'Full Spa Day',
+    'Relaxation Massage',
+    'Postpartum Recovery Massage',
+  ];
+  await prisma.service.updateMany({
+    where: {
+      isActive: true,
+      OR: dynamicPricingFlagship.map((name) => ({
+        titleJson: { path: ['en'], equals: name },
+      })),
+    },
+    data: { dynamicPricingEnabled: true },
+  });
+  console.log(` ${dynamicPricingFlagship.length} flagship services opted into dynamic pricing`);
 
   // 2.2 Beauty Subscription — Basic/Premium/VIP catalog, monthly + yearly
   // (annual = 10 monthly payments, "2 months free").

@@ -96,6 +96,11 @@ const KEYWORD_RULES: ReadonlyArray<{ re: RegExp; target: string; inCategory?: Re
 
 export const WOMENS_FALLBACK_SERVICE = 'Beauty Consultation';
 
+// W2-11 — the kids facade seeds rows titled 'Manicure' and 'Beauty
+// Consultation' too; women's bookings must never resolve onto a
+// kids-catalog service.
+const NOT_KIDS_CATALOG = { category: { slug: { not: 'kids-care' } } };
+
 /**
  * Pure rule resolution (no DB) — the legacy sweep pins that all 289
  * items resolve to a target NAME. Booking uses the async id variant.
@@ -133,12 +138,30 @@ export async function resolveWomensServiceId(
   });
   if (mapped) return mapped.serviceId;
 
-  // 2. Legacy rules, resolved by titleJson.en.
+  // 2. Legacy rules, resolved by titleJson.en — never a kids-catalog row.
   const target = resolveWomensService(itemNameEn, categoryKey);
 
-  const service = await prisma.service.findFirst({
-    where: { titleJson: { path: ['en'], equals: target }, isActive: true },
+  let service = await prisma.service.findFirst({
+    where: {
+      titleJson: { path: ['en'], equals: target },
+      isActive: true,
+      ...NOT_KIDS_CATALOG,
+    },
     select: { id: true },
   });
+
+  // 3. W2-11 — the documented fallback step was missing: when the rule
+  //    target has no seeded row (keyword mismatch), resolve to the
+  //    consultation service instead of failing the booking.
+  if (!service && target !== WOMENS_FALLBACK_SERVICE) {
+    service = await prisma.service.findFirst({
+      where: {
+        titleJson: { path: ['en'], equals: WOMENS_FALLBACK_SERVICE },
+        isActive: true,
+        ...NOT_KIDS_CATALOG,
+      },
+      select: { id: true },
+    });
+  }
   return service?.id ?? 0;
 }
