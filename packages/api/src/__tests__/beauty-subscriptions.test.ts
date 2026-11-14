@@ -12,7 +12,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser, safeFutureDate } from './factories';
+import { buildUser, safeFutureDate, ensureTechnicianService } from './factories';
 import { renewDueSubscriptions, sendRenewalReminders } from '../workers/subscriptionRenewal';
 import type { JwtPayload } from '../lib/jwt';
 
@@ -40,10 +40,19 @@ beforeAll(async () => {
 
   // Booking fixtures for the enforcement tests.
   const cat = await prisma.category.findFirst({ select: { id: true } });
-  const address = await prisma.address.findFirst({ select: { id: true } });
-  const tech = await prisma.technician.findFirst({ select: { userId: true } });
+  const address = await prisma.address.create({
+    data: {
+      userId: u.id,
+      label: 'w25-test',
+      city: 'الرياض',
+      area: 'تجريبي',
+      street: 'شارع الاختبار',
+    },
+  });
+  const tech = await prisma.technician.findFirst({ select: { userId: true, id: true } });
   techUserId = tech?.userId ?? 1;
-  addressId = address?.id ?? 1;
+  const techRecordId = tech?.id ?? 1;
+  addressId = address.id;
   const svc = await prisma.service.create({
     data: {
       categoryId: cat?.id ?? 1,
@@ -57,6 +66,10 @@ beforeAll(async () => {
   });
   plainServiceId = svc.id;
   createdServiceIds.push(svc.id);
+  // W2-5: bookings.create validates the technician↔service mapping.
+  for (const sid of createdServiceIds) {
+    await ensureTechnicianService(techRecordId, sid);
+  }
 }, 30000);
 
 afterAll(async () => {

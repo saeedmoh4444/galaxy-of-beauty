@@ -12,6 +12,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
 import { buildUser, safeFutureDate } from './factories';
+import { ensureTechnicianService } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -26,6 +27,7 @@ let customerB: JwtPayload;
 let techUserId: number;
 let serviceId: number;
 let addressId: number;
+let addressBId: number;
 let memberId: number;
 const createdUserIds: number[] = [];
 const bookingIds: number[] = [];
@@ -40,13 +42,34 @@ beforeAll(async () => {
   customerB = { id: b.id, role: 'CUSTOMER', email: b.email };
 
   const [tech, service, address] = await Promise.all([
-    prisma.technician.findFirst({ select: { userId: true } }),
+    prisma.technician.findFirst({ select: { userId: true, id: true } }),
     prisma.service.findFirst({ select: { id: true } }),
-    prisma.address.findFirst({ select: { id: true } }),
+    prisma.address.create({
+      data: {
+        userId: a.id,
+        label: 'k1-test',
+        city: 'الرياض',
+        area: 'تجريبي',
+        street: 'شارع الاختبار',
+      },
+    }),
   ]);
   techUserId = tech?.userId ?? 1;
+  const techRecordId = tech?.id ?? 1;
   serviceId = service?.id ?? 1;
-  addressId = address?.id ?? 1;
+  addressId = address.id;
+  const addressB = await prisma.address.create({
+    data: {
+      userId: b.id,
+      label: 'k1-test-b',
+      city: 'الرياض',
+      area: 'تجريبي',
+      street: 'شارع الاختبار',
+    },
+  });
+  addressBId = addressB.id;
+  // W2-5: bookings.create validates the technician↔service mapping.
+  await ensureTechnicianService(techRecordId, serviceId);
 
   // Customer A owns one child member.
   const member = await prisma.familyMember.create({
@@ -122,7 +145,7 @@ describe('family member booking (K1)', () => {
   it('still books without a family member', async () => {
     const caller = await authCaller(customerB);
     const booking = await caller.bookings.create(
-      bookingInput({ idempotencyKey: `k1-d-${Date.now()}` }),
+      bookingInput({ idempotencyKey: `k1-d-${Date.now()}`, addressId: addressBId }),
     );
     bookingIds.push(booking.id);
     expect(booking.familyMemberId).toBeNull();

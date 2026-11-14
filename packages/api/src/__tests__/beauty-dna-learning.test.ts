@@ -8,7 +8,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate, markBookingPaid } from './factories';
+import { safeFutureDate, markBookingPaid, ensureTechnicianService } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -27,6 +27,8 @@ let uid = 0;
 const newIdemKey = () => `bdna_${Date.now()}_${uid++}`;
 
 async function completeBooking(serviceId: number): Promise<number> {
+  // W2-5: bookings.create validates the technician↔service mapping.
+  await ensureTechnicianService(technicianRecordId, serviceId);
   // Seed a fresh slot so completion does not collide with capacity limits.
   const slot = await prisma.availabilitySlot.create({
     data: {

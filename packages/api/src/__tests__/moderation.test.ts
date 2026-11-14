@@ -17,6 +17,7 @@ import {
   buildVendor,
   buildBeautyPost,
   markBookingPaid,
+  ensureTechnicianService,
 } from './factories';
 
 const createdUserIds: number[] = [];
@@ -365,6 +366,8 @@ describe('A2c — booking review blocking', () => {
       where: { user: { role: 'TECHNICIAN' } },
     });
     const service = await prisma.service.findFirst();
+    // W2-5 guard: bookings.create validates the technician↔service mapping.
+    await ensureTechnicianService(tech!.id, service!.id);
     const slot = await prisma.availabilitySlot.create({
       data: {
         technicianId: tech!.id,
