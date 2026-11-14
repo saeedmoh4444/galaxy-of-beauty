@@ -389,3 +389,21 @@ export async function markBookingPaid(bookingId: number): Promise<void> {
   });
   await prisma.booking.update({ where: { id: bookingId }, data: { status: 'PAID' } });
 }
+
+/**
+ * W2-5 (audit 2026-11-11): bookings.create validates the
+ * technician↔service mapping. Ensure the pair exists (create if missing)
+ * so test fixtures stay valid.
+ */
+export async function ensureTechnicianService(
+  technicianRecordId: number,
+  serviceId: number,
+): Promise<void> {
+  const existing = await prisma.technicianService.findUnique({
+    where: { technicianId_serviceId: { technicianId: technicianRecordId, serviceId } },
+  });
+  if (existing) return;
+  await prisma.technicianService.create({
+    data: { technicianId: technicianRecordId, serviceId, customPrice: 0, isActive: true },
+  });
+}

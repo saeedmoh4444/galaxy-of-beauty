@@ -11,7 +11,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser, safeFutureDate } from './factories';
+import { buildUser, safeFutureDate, ensureTechnicianService } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -31,13 +31,12 @@ const bookingIds: number[] = [];
 const createdUserIds: number[] = [];
 
 beforeAll(async () => {
-  const [cat, tech, address] = await Promise.all([
+  const [cat, tech] = await Promise.all([
     prisma.category.findFirst({ select: { id: true } }),
-    prisma.technician.findFirst({ select: { userId: true } }),
-    prisma.address.findFirst({ select: { id: true } }),
+    prisma.technician.findFirst({ select: { userId: true, id: true } }),
   ]);
   techUserId = tech?.userId ?? 1;
-  addressId = address?.id ?? 1;
+  const techRecordId = tech?.id ?? 1;
 
   const svc = await prisma.service.create({
     data: {
@@ -56,6 +55,18 @@ beforeAll(async () => {
   const user = await prisma.user.create({ data: buildUser() });
   createdUserIds.push(user.id);
   customer = { id: user.id, role: 'CUSTOMER', email: user.email };
+  const address = await prisma.address.create({
+    data: {
+      userId: user.id,
+      label: 'w25-test',
+      city: 'الرياض',
+      area: 'تجريبي',
+      street: 'شارع الاختبار',
+    },
+  });
+  addressId = address.id;
+  // W2-5: bookings.create validates the technician↔service mapping.
+  await ensureTechnicianService(techRecordId, hourlyServiceId);
 }, 30000);
 
 afterAll(async () => {
