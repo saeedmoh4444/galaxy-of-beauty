@@ -2626,7 +2626,9 @@ async function main() {
 
   // 1.1 Dynamic pricing — default peak rules: Thu/Fri/Sat evenings
   // (16:00-22:00) +30%. Rules only affect services with
-  // dynamicPricingEnabled — no seeded service is enabled (admin opt-in).
+  // dynamicPricingEnabled — W2-8: the engine was dormant because no
+  // seeded service was opted in. Opt in a curated flagship set (admin
+  // can toggle per-service afterwards).
   await prisma.servicePricing.createMany({
     data: [4, 5, 6].map((dayOfWeek) => ({
       serviceId: null,
@@ -2640,6 +2642,26 @@ async function main() {
     })),
   });
   console.log(' 3 dynamic-pricing peak rules (Thu/Fri/Sat 16:00-22:00 +30%)');
+
+  // W2-8 — opt in the flagship set (engine was dormant: nothing enabled).
+  const dynamicPricingFlagship = [
+    'Evening Makeup',
+    'Airbrush Makeup',
+    'Bridal Trial Package',
+    'Full Spa Day',
+    'Relaxation Massage',
+    'Postpartum Recovery Massage',
+  ];
+  await prisma.service.updateMany({
+    where: {
+      isActive: true,
+      OR: dynamicPricingFlagship.map((name) => ({
+        titleJson: { path: ['en'], equals: name },
+      })),
+    },
+    data: { dynamicPricingEnabled: true },
+  });
+  console.log(` ${dynamicPricingFlagship.length} flagship services opted into dynamic pricing`);
 
   // 2.2 Beauty Subscription — Basic/Premium/VIP catalog, monthly + yearly
   // (annual = 10 monthly payments, "2 months free").
