@@ -31,11 +31,13 @@ export const marketplaceRouter = router({
     .query(async ({ input }) => {
       // B3 — sold-out products stay hidden from shoppers; C1 — drafts too;
       // C2 — strict-mode products only surface once approved (LIVE).
+      // W3-2 — products of INACTIVE vendors (pending approval) are hidden.
       const where: Record<string, unknown> = {
         isActive: true,
         isDraft: false,
         approvalStatus: 'LIVE',
         stock: { gt: 0 },
+        vendor: { isActive: true },
       };
       if (input.categoryId) where['categoryId'] = input.categoryId;
       if (input.vendorId) where['vendorId'] = input.vendorId;
@@ -80,7 +82,9 @@ export const marketplaceRouter = router({
     .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ input }) => {
       const product = await prisma.product.findUnique({
-        where: { id: input.id },
+        // W3-2: the detail page respects the same vendor gate as the list —
+        // products of pending (inactive) stores are not reachable publicly.
+        where: { id: input.id, vendor: { isActive: true } },
         include: {
           vendor: true,
           category: true,

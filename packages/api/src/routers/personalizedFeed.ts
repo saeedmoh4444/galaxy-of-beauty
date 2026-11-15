@@ -18,7 +18,8 @@ export const personalizedFeedRouter = router({
         select: { id: true, titleJson: true, basePrice: true },
       }),
       prisma.product.findMany({
-        where: { isActive: true },
+        // W3-2: pending (inactive) vendors' products stay out of feeds too.
+        where: { isActive: true, vendor: { isActive: true } },
         take: 3,
         select: { id: true, nameJson: true, price: true },
       }),
