@@ -440,3 +440,97 @@ describe('store registration + approval (Store Phase 1)', () => {
     expect(otherEarnings.rows).toHaveLength(0);
   });
 });
+
+/**
+ * W3-2 (audit 2026-11-11) — ensureVendor auto-created stores with NO
+ * approval gate: any authenticated customer who added a product or store
+ * service got a live storefront, bypassing the sanctioned
+ * becomeVendor → PENDING_REVIEW flow entirely.
+ *
+ * Contract: the auto-created store starts INACTIVE with a PENDING_REVIEW
+ * submission; its products are hidden from public listings until an admin
+ * approves (which activates + verifies the store).
+ */
+describe('W3-2 — ensureVendor auto-creation is gated by approval', () => {
+  let walkin: JwtPayload; // CUSTOMER-role user with NO vendor row
+  let walkinProductId: number;
+
+  beforeAll(async () => {
+    const u = await prisma.user.create({ data: buildUser() });
+    walkin = { id: u.id, role: 'CUSTOMER', email: u.email };
+    createdUserIds.push(u.id);
+  }, 15000);
+
+  it('auto-created stores start INACTIVE with a PENDING_REVIEW submission', async () => {
+    const c = await caller(walkin);
+    const p = await c.vendorPortal.addProduct({
+      nameAr: 'منتج غير معتمد',
+      nameEn: 'Unapproved product',
+      price: 10,
+      stock: 5,
+      categoryId,
+    });
+    walkinProductId = p.id;
+    createdProductIds.push(p.id);
+
+    const vendor = await prisma.vendor.findFirstOrThrow({ where: { userId: walkin.id } });
+    expect(vendor.isActive).toBe(false);
+    expect(vendor.isVerified).toBe(false);
+
+    const sub = await prisma.providerSubmission.findFirst({
+      where: { providerId: walkin.id, kind: 'store', status: 'PENDING_REVIEW' },
+    });
+    expect(sub).not.toBeNull();
+    createdSubmissionIds.push(sub!.id);
+  });
+
+  it('products of an inactive store are hidden from the public marketplace', async () => {
+    const anon = await caller(null);
+    const list = await anon.marketplace.products({ page: 1, limit: 50 });
+    expect(list.items.find((x: { id: number }) => x.id === walkinProductId)).toBeUndefined();
+  });
+
+  it('admin approval activates the store and surfaces its products', async () => {
+    const sub = await prisma.providerSubmission.findFirstOrThrow({
+      where: { providerId: walkin.id, kind: 'store', status: 'PENDING_REVIEW' },
+    });
+
+    const a = await caller(admin);
+    await a.providerReview.decide({ id: sub.id, approve: true });
+
+    const vendor = await prisma.vendor.findFirstOrThrow({ where: { userId: walkin.id } });
+    expect(vendor.isActive).toBe(true);
+    expect(vendor.isVerified).toBe(true);
+
+    const anon = await caller(null);
+    const list = await anon.marketplace.products({ page: 1, limit: 50 });
+    expect(list.items.find((x: { id: number }) => x.id === walkinProductId)).toBeDefined();
+  });
+
+  it('rejection keeps the store inactive', async () => {
+    // Second auto-created store scenario: another walk-in user, rejected.
+    const u = await prisma.user.create({ data: buildUser() });
+    createdUserIds.push(u.id);
+    const c = await caller({ id: u.id, role: 'CUSTOMER', email: u.email });
+    await c.vendorPortal.addProduct({
+      nameAr: 'منتج مرفوض',
+      nameEn: 'Rejected product',
+      price: 10,
+      stock: 5,
+      categoryId,
+    });
+
+    const vendor = await prisma.vendor.findFirstOrThrow({ where: { userId: u.id } });
+    const sub = await prisma.providerSubmission.findFirstOrThrow({
+      where: { providerId: u.id, kind: 'store', status: 'PENDING_REVIEW' },
+    });
+    createdSubmissionIds.push(sub.id);
+
+    const a = await caller(admin);
+    await a.providerReview.decide({ id: sub.id, approve: false });
+
+    const after = await prisma.vendor.findFirstOrThrow({ where: { userId: u.id } });
+    expect(after.isActive).toBe(false);
+    expect(after.isVerified).toBe(false);
+  });
+});
