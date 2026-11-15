@@ -28,18 +28,43 @@ import { getCorrelationId } from '../lib/requestContext';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
-/** Resolve the caller's Vendor row, auto-creating a minimal one on first use. */
+/**
+ * Resolve the caller's Vendor row, auto-creating a minimal one on first use.
+ *
+ * W3-2: auto-created stores are GATED — they start INACTIVE and file a
+ * PENDING_REVIEW ProviderSubmission (kind 'store'), so nothing of theirs is
+ * publicly visible until an admin approves via providerReview.decide. The
+ * sanctioned becomeVendor registration remains the full-KYC path; this
+ * fallback exists for legacy call sites that predate it.
+ */
 async function ensureVendor(userId: number, userName: string) {
   const existing = await prisma.vendor.findUnique({ where: { userId } });
   if (existing) return existing;
 
-  return prisma.vendor.create({
+  const vendor = await prisma.vendor.create({
     data: {
       userId,
       storeName: userName || 'متجري',
       storeSlug: `store-${userId}-${Math.random().toString(36).slice(2, 8)}`,
+      isActive: false, // W3-2 — pending approval until an admin decides
     },
   });
+
+  await prisma.providerSubmission.create({
+    data: {
+      providerId: userId,
+      kind: 'store',
+      status: 'PENDING_REVIEW',
+      payload: {
+        vendorId: vendor.id,
+        storeName: vendor.storeName,
+        storeSlug: vendor.storeSlug,
+        source: 'ensureVendor-auto',
+      },
+    },
+  });
+
+  return vendor;
 }
 
 /** Fallback category for products added without a category. */
