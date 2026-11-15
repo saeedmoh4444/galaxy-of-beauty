@@ -7,7 +7,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
 import { creditLoyaltyPoints, LOYALTY_REFERRAL_POINTS } from '../lib/loyalty';
-import { safeFutureDate, markBookingPaid } from './factories';
+import { safeFutureDate, markBookingPaid, createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -26,14 +26,7 @@ let uid = 0;
 const newIdemKey = () => `loyalty_${Date.now()}_${uid++}`;
 
 async function completedBooking(customerUser: JwtPayload): Promise<number> {
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
-      endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
   const customerCaller = await callerFor(customerUser);
   const booking = await customerCaller.bookings.create({
     serviceId,

@@ -395,6 +395,31 @@ export async function markBookingPaid(bookingId: number): Promise<void> {
  * technician↔service mapping. Ensure the pair exists (create if missing)
  * so test fixtures stay valid.
  */
+// W5-3 — the availability_slots exclusion constraint forbids overlapping
+// slots per technician. Tests must never reuse the same time window for the
+// same technician — this helper hands out globally-unique windows.
+let slotSeq = 0;
+// Per-process offset so re-runs against a long-lived DB never collide with
+// leftovers from previous runs (the exclusion spans the whole table).
+const PROCESS_SLOT_OFFSET_HOURS = Math.floor(Math.random() * 5000);
+export async function createUniqueSlot(
+  technicianRecordId: number,
+  opts?: { daysAhead?: number; durationMs?: number },
+): Promise<{ id: number; startAt: Date; endAt: Date }> {
+  slotSeq += 1;
+  // Day 30: the seed occupies days 0-6 per technician (9:00-19:30, 90-min
+  // grid) — test windows must live far outside that range or the overlap
+  // exclusion rejects them. The requested daysAhead only needs to be
+  // "in the future"; 30 satisfies every caller.
+  const base = safeFutureDate(30);
+  const start = new Date(base.getTime() + (PROCESS_SLOT_OFFSET_HOURS + slotSeq * 4) * 3_600_000);
+  const end = new Date(start.getTime() + (opts?.durationMs ?? 3_600_000));
+  const slot = await prisma.availabilitySlot.create({
+    data: { technicianId: technicianRecordId, startAt: start, endAt: end },
+  });
+  return { id: slot.id, startAt: start, endAt: end };
+}
+
 export async function ensureTechnicianService(
   technicianRecordId: number,
   serviceId: number,
