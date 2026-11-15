@@ -2,7 +2,14 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { MIN_PAYOUT_REQUEST_SAR } from '@galaxy/shared';
-import { router, adminProcedure, technicianProcedure, customerProcedure } from '../trpc';
+import {
+  router,
+  adminProcedure,
+  technicianProcedure,
+  customerProcedure,
+  sellerProcedure,
+  sellerMutation,
+} from '../trpc';
 import { createPayoutSchema, processPayoutSchema } from '../validators/payment';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 import { calculateVendorSettlements } from '../lib/storePayouts';
@@ -435,7 +442,7 @@ export const payoutRouter = router({
    * requestPayout — seller requests an amount from the accrued PENDING
    * payouts. Idempotency key dedupes retries (same key → same request).
    */
-  requestPayout: customerProcedure
+  requestPayout: sellerMutation
     .input(
       z.object({
         amount: z.number().positive(),
@@ -497,7 +504,7 @@ export const payoutRouter = router({
     }),
 
   /** listMyRequests — the seller's own payout requests, newest first. */
-  listMyRequests: customerProcedure.query(async ({ ctx }) => {
+  listMyRequests: sellerProcedure.query(async ({ ctx }) => {
     const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
     if (!vendor) return { items: [] };
     const items = await prisma.payoutRequest.findMany({
