@@ -4,6 +4,7 @@ import { prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
 import { router, publicProcedure, customerProcedure, technicianProcedure } from '../trpc';
 import { sendPushToUser } from '../lib/push';
+import { emitToWaitlist, emitToUser } from '../socket/index';
 
 export const waitlistRouter = router({
   // ── Join waitlist ─────────────────────────────────────────────────────────
@@ -66,6 +67,17 @@ export const waitlistRouter = router({
         },
       });
 
+      // W3-6: realtime producer — clients in the technician's waitlist
+      // room (or invalidating via the waitlist_update cache tag) see the
+      // new position immediately.
+      emitToWaitlist(input.technicianId, 'waitlist_update', {
+        technicianId: input.technicianId,
+        customerId: ctx.user.id,
+        position: waitingCount + 1,
+        waitlistCount: waitingCount + 1,
+        status: 'WAITING',
+      });
+
       return {
         ...entry,
         technicianId, // public contract: the user id the caller passed in
@@ -123,6 +135,13 @@ export const waitlistRouter = router({
           });
         }
       }
+
+      // W3-6: realtime producer — everyone else in the room sees the
+      // recalculated count.
+      emitToWaitlist(input.technicianId, 'waitlist_update', {
+        technicianId: input.technicianId,
+        waitlistCount: remaining.length,
+      });
 
       return { success: true };
     }),
@@ -280,6 +299,14 @@ export const waitlistRouter = router({
           sentVia: ['push', 'in_app'],
           isRead: false,
         },
+      });
+
+      // W3-6: realtime producer — the notified customer's personal room
+      // (every socket joins it) refreshes their waitlist UI instantly.
+      emitToUser(entry.customerId, 'waitlist_update', {
+        technicianId: entry.technician.userId,
+        entryId: input.entryId,
+        status: 'NOTIFIED',
       });
 
       return updated;
