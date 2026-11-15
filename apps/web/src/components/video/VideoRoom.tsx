@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Card, Button } from '@galaxy/ui';
 import { io, type Socket } from 'socket.io-client';
-import { SOCKET_DEFAULT_PORT } from '@galaxy/shared';
+import { resolveSocketUrl } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 // A4 — real WebRTC call between the booking's customer and technician.
@@ -14,10 +14,18 @@ import { useLocale } from '@/components/LocaleProvider';
 // servers (STUN/TURN) are provided by the server in the video:join ack —
 // the constant below is only a fallback.
 
+// W3-7: same resolution rule as the useSocket hook — same-origin behind
+// the nginx proxy, direct :4001 on dev servers.
 const SOCKET_URL =
   typeof window !== 'undefined'
-    ? process.env['NEXT_PUBLIC_SOCKET_URL'] ||
-      `${window.location.protocol}//${window.location.hostname}:${SOCKET_DEFAULT_PORT}`
+    ? resolveSocketUrl(
+        {
+          protocol: window.location.protocol,
+          hostname: window.location.hostname,
+          port: window.location.port,
+        },
+        process.env['NEXT_PUBLIC_SOCKET_URL'],
+      )
     : '';
 
 const DEFAULT_ICE_SERVERS: RTCIceServer[] = [

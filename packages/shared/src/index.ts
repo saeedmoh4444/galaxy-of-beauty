@@ -131,3 +131,5 @@ export { buildBookingConfirmHref } from './utils/bookingConfirm';
 export * from './tryOn';
 export { resolveEntityImage, IMAGE_FALLBACKS } from './utils/entityImage';
 export type { ImageEntityKind, EntityImageInput, ImageManifest } from './utils/entityImage';
+export { resolveSocketUrl } from './utils/socketUrl';
+export type { SocketUrlParts } from './utils/socketUrl';

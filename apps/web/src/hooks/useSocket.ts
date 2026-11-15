@@ -5,18 +5,27 @@ import type { Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@galaxy/ui';
 import {
-  SOCKET_DEFAULT_PORT,
   SOCKET_RECONNECT_ATTEMPTS,
   SOCKET_RECONNECT_DELAY_MS,
   SOCKET_RECONNECT_MAX_DELAY_MS,
+  resolveSocketUrl,
 } from '@galaxy/shared';
 
 // ── Configuration ──────────────────────────────────────────
 
+// W3-7: the old fallback always appended :4001, which prod compose never
+// publishes — behind the nginx proxy (standard port) the socket rides the
+// app origin; dev servers keep the direct :4001 connection.
 const SOCKET_URL =
   typeof window !== 'undefined'
-    ? process.env['NEXT_PUBLIC_SOCKET_URL'] ||
-      `${window.location.protocol}//${window.location.hostname}:${SOCKET_DEFAULT_PORT}`
+    ? resolveSocketUrl(
+        {
+          protocol: window.location.protocol,
+          hostname: window.location.hostname,
+          port: window.location.port,
+        },
+        process.env['NEXT_PUBLIC_SOCKET_URL'],
+      )
     : '';
 
 // ── Cache tags invalidated on real-time events ─────────────
@@ -34,6 +43,9 @@ const EVENT_CACHE_MAP: Record<string, string[]> = {
   waitlist_update: ['waitlist'],
   new_notification: ['notifications'],
   admin_update: ['admin-stats', 'admin-dashboard'],
+  // W3-6: producers exist (chat.ts / video.ts) but nothing consumed them.
+  new_message: ['chat'],
+  video_call_started: ['bookings'],
 };
 
 // ── Hook ───────────────────────────────────────────────────
