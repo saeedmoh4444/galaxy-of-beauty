@@ -364,32 +364,87 @@ export function getIO(): Server {
   return io;
 }
 
-// ── Emit helpers (safe — no-op if server not initialized) ──
+// ── Cross-process emit bridge (W3-1) ─────────────────────────
+
+/**
+ * Broadcast-only Server sharing the Redis adapter, for processes that can
+ * never host client connections (the Next.js/API process where the routers
+ * run). `new Server()` + the redis adapter makes `io.to(room).emit()` publish
+ * to the adapter channel, and every real socket-server instance delivers to
+ * its connected clients — exactly once per client.
+ *
+ * Only used when the local `io` is null; when a server IS in-process, the
+ * local emit already routes cross-instance through the adapter.
+ */
+let broadcastIo: Server | null = null;
+
+export function getBroadcastIO(): Server | null {
+  if (broadcastIo) return broadcastIo;
+
+  const redis = getRedis();
+  if (!redis) return null;
+
+  const pub = redis.duplicate({ enableOfflineQueue: true });
+  const sub = redis.duplicate({ enableOfflineQueue: true });
+  pub.on('error', (err) => {
+    console.error('[Socket] Bridge adapter error:', err.message);
+  });
+  sub.on('error', (err) => {
+    console.error('[Socket] Bridge adapter error:', err.message);
+  });
+
+  broadcastIo = new Server();
+  broadcastIo.adapter(createAdapter(pub, sub));
+  return broadcastIo;
+}
+
+/** Close the broadcast-only bridge (tests / process shutdown). */
+export function closeBroadcastIO(): void {
+  const adapter = broadcastIo?.of('/').adapter as unknown as {
+    close?: () => Promise<void> | void;
+  };
+  void adapter?.close?.();
+  broadcastIo = null;
+}
+
+// ── Emit helpers (local server first, Redis bridge fallback) ─
 
 /** Emit an event to a specific user's personal room. */
 export function emitToUser(userId: number, event: string, data: unknown): void {
-  if (io) {
-    io.to(`user:${userId}`).emit(event, data);
+  const target = io ?? getBroadcastIO();
+  if (target) {
+    target.to(`user:${userId}`).emit(event, data);
+  } else {
+    logger.warn({ userId, event }, '[Socket] Emit dropped — no local server and Redis unavailable');
   }
 }
 
 /** Emit an event to a technician's booking-request room. */
 export function emitToTechnician(techId: number, event: string, data: unknown): void {
-  if (io) {
-    io.to(`technician:${techId}`).emit(event, data);
+  const target = io ?? getBroadcastIO();
+  if (target) {
+    target.to(`technician:${techId}`).emit(event, data);
+  } else {
+    logger.warn({ techId, event }, '[Socket] Emit dropped — no local server and Redis unavailable');
   }
 }
 
 /** Emit an event to a technician's waitlist room. */
 export function emitToWaitlist(techId: number, event: string, data: unknown): void {
-  if (io) {
-    io.to(`waitlist:${techId}`).emit(event, data);
+  const target = io ?? getBroadcastIO();
+  if (target) {
+    target.to(`waitlist:${techId}`).emit(event, data);
+  } else {
+    logger.warn({ techId, event }, '[Socket] Emit dropped — no local server and Redis unavailable');
   }
 }
 
 /** Emit an event to the admin dashboard room. */
 export function emitToAdmin(event: string, data: unknown): void {
-  if (io) {
-    io.to('admin').emit(event, data);
+  const target = io ?? getBroadcastIO();
+  if (target) {
+    target.to('admin').emit(event, data);
+  } else {
+    logger.warn({ event }, '[Socket] Emit dropped — no local server and Redis unavailable');
   }
 }
