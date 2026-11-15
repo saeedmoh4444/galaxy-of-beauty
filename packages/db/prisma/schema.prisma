@@ -2012,14 +2012,23 @@ model TrainerSession {
 }
 
 // Store plan Phase 1 — per-store order records (store-managed fulfillment).
+enum StoreOrderStatus {
+  PENDING_FULFILLMENT
+  FULFILLED
+  CANCELLED
+  REFUNDED
+}
+
 model StoreOrder {
   id          Int      @id @default(autoincrement())
+  // W5-7 — customer-facing order code (receipts, notifications, support).
+  orderCode   String?  @unique
   vendorId    Int
   customerId  Int
   checkoutId  Int?
   totalAmount Decimal  @db.Decimal(10, 2)
   itemCount   Int      @default(1)
-  status      String   @default("PENDING_FULFILLMENT") // PENDING_FULFILLMENT | FULFILLED
+  status      StoreOrderStatus @default(PENDING_FULFILLMENT) // enum — no more String drift
   // A3 — fulfillment SLA: stamped by fulfillOrder; the sweep flags breaches.
   fulfilledAt   DateTime?
   slaBreachedAt DateTime?

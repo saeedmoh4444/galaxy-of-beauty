@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import { TRPCError } from '@trpc/server';
@@ -227,6 +228,11 @@ export async function placeStoreOrders(
   for (const [vendorId, agg] of vendorLines) {
     const order = await tx.storeOrder.create({
       data: {
+        // W5-7 — customer-facing order code, collision-averse by design.
+        orderCode: `SO-${Date.now().toString(36).toUpperCase()}-${crypto
+          .randomBytes(3)
+          .toString('hex')
+          .toUpperCase()}`,
         vendorId,
         customerId: userId,
         checkoutId,
