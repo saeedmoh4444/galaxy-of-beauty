@@ -5,11 +5,19 @@
  * (Coverage ratchet target: src/routers/waitlist.ts — was 13.2%)
  */
 import crypto from 'crypto';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi, beforeEach } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { buildUser } from './factories';
 import type { JwtPayload } from '../lib/jwt';
+
+// W3-6: assert the realtime producer wiring without booting a socket
+// server — the router only imports the two emit helpers.
+vi.mock('../socket/index', () => ({
+  emitToWaitlist: vi.fn(),
+  emitToUser: vi.fn(),
+}));
+import { emitToWaitlist, emitToUser } from '../socket/index';
 
 let serviceId: number;
 
@@ -371,6 +379,71 @@ describe('waitlist router', () => {
       const again = await cE.waitlist.join({ technicianId: t4.userId });
       expect(again.position).toBe(1);
       expect(again.status).toBe('WAITING');
+    });
+  });
+
+  describe('realtime producer wiring (W3-6)', () => {
+    let t6: Tech; // dedicated technician so position math stays deterministic
+
+    beforeAll(async () => {
+      t6 = await createTech('W3-6');
+    });
+
+    beforeEach(() => {
+      vi.mocked(emitToWaitlist).mockClear();
+      vi.mocked(emitToUser).mockClear();
+    });
+
+    it('join emits waitlist_update to the technician waitlist room', async () => {
+      const c = await caller(customerA);
+      await c.waitlist.join({ technicianId: t6.userId });
+
+      expect(emitToWaitlist).toHaveBeenCalledTimes(1);
+      expect(emitToWaitlist).toHaveBeenCalledWith(
+        t6.userId,
+        'waitlist_update',
+        expect.objectContaining({
+          technicianId: t6.userId,
+          customerId: customerA.id,
+          position: 1,
+          waitlistCount: 1,
+          status: 'WAITING',
+        }),
+      );
+    });
+
+    it('leave emits waitlist_update with the recalculated count', async () => {
+      const c = await caller(customerA);
+      await c.waitlist.leave({ technicianId: t6.userId });
+
+      expect(emitToWaitlist).toHaveBeenCalledTimes(1);
+      expect(emitToWaitlist).toHaveBeenCalledWith(
+        t6.userId,
+        'waitlist_update',
+        expect.objectContaining({
+          technicianId: t6.userId,
+          waitlistCount: 0,
+        }),
+      );
+    });
+
+    it('notifyNext emits waitlist_update to the notified customer', async () => {
+      const c = await caller(customerA);
+      const joined = await c.waitlist.join({ technicianId: t6.userId });
+
+      const tech = { id: t6.userId, role: 'TECHNICIAN', email: 'w36@test.example' } as JwtPayload;
+      await (await caller(tech)).waitlist.notifyNext({ entryId: joined.id });
+
+      expect(emitToUser).toHaveBeenCalledTimes(1);
+      expect(emitToUser).toHaveBeenCalledWith(
+        customerA.id,
+        'waitlist_update',
+        expect.objectContaining({
+          technicianId: t6.userId,
+          entryId: joined.id,
+          status: 'NOTIFIED',
+        }),
+      );
     });
   });
 });
