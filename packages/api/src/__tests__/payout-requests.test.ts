@@ -33,7 +33,7 @@ let payoutIds: number[] = [];
 beforeAll(async () => {
   const su = await prisma.user.create({ data: buildUser() });
   createdUserIds.push(su.id);
-  seller = { id: su.id, role: 'CUSTOMER', email: su.email };
+  seller = { id: su.id, role: 'SELLER', email: su.email };
   const sv = await prisma.vendor.create({ data: buildVendor({ userId: su.id }) });
   vendorId = sv.id;
   createdVendorIds.push(sv.id);
@@ -116,13 +116,18 @@ describe('D2 — seller payout requests', () => {
     ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
   });
 
-  it('non-vendor customer cannot request a payout', async () => {
+  it('non-SELLER cannot request a payout (W3-2 — seller lane role-gated)', async () => {
     const cu = await prisma.user.create({ data: buildUser() });
     createdUserIds.push(cu.id);
     const c = await caller({ id: cu.id, role: 'CUSTOMER', email: cu.email });
     await expect(
       c.payouts.requestPayout({ amount: 100, idempotencyKey: 'req-test-5' }),
-    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+
+  it('non-SELLER cannot list payout requests (W3-2)', async () => {
+    const c = await caller({ id: seller.id, role: 'CUSTOMER', email: seller.email });
+    await expect(c.payouts.listMyRequests()).rejects.toMatchObject({ code: 'FORBIDDEN' });
   });
 
   it('seller lists their own requests', async () => {
