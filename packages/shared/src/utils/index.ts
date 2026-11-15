@@ -3,3 +3,5 @@ export { formatCurrency } from './formatCurrency';
 export { buildWhatsAppShareUrl } from './whatsapp';
 export { buildBeautyProfileInput, BEAUTY_PROFILE_OPTIONS } from './beautyProfile';
 export { formatHijriDate } from './hijri';
+export { resolveSocketUrl } from './socketUrl';
+export type { SocketUrlParts } from './socketUrl';

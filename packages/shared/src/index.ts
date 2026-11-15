@@ -129,3 +129,5 @@ export { buildBookingConfirmHref } from './utils/bookingConfirm';
 
 // Try-On (3.2)
 export * from './tryOn';
+export { resolveSocketUrl } from './utils/socketUrl';
+export type { SocketUrlParts } from './utils/socketUrl';
