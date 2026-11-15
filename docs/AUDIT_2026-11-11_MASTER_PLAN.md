@@ -80,7 +80,7 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 | W3-2 | sellerProcedure/sellerMutation/staffProcedure defined but 0/269 routers use them; `ensureVendor` auto-creates vendors with no approval gate | API        | M      |
 | W3-3 | Mobile vendor-portal has NO role guard (deep-linkable by anyone)                                                                            | Mobile     | S      |
 | W3-4 | Biometric login is cosmetic (authenticate → toast, never signs in)                                                                          | Mobile     | M      |
-| W3-5 | Women-only = marketing posture: no gender gate, no verified-female step, mobile browse leaks mens-grooming chip                             | API+Mobile | M      |
+| W3-5 | Women-only = marketing posture: no gender gate, no verified-female step, mobile browse leaks mens-grooming chip                             | API+Mobile | M      | ~~built~~: tree leak (#663) + self-declared gender gate (#664, option 1). **Upgrade pass (option 2): verified-female KYC step** — ID upload → admin review (vendor-license pattern), tracked for a later wave |
 | W3-6 | Orphan socket events (waitlist_update listener has no producer; new_message/video_call_started have no listener)                            | Socket     | S-M    |
 | W3-7 | Socket URL fallback trap (hostname:4001 unpublished in prod compose)                                                                        | Infra      | S      |
 
