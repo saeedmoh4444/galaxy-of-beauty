@@ -10,7 +10,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate } from './factories';
+import { ensureTechnicianService, safeFutureDate } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -99,6 +99,13 @@ beforeAll(async () => {
   const service = await prisma.service.findFirst();
   if (!service) throw new Error('No service in seed data');
   serviceId = service.id;
+
+  // W2-5 compliance: bookings.create now validates the technician↔service
+  // mapping. The fixture picks ARBITRARY rows (findFirst), which only
+  // paired up by coincidence of the round-robin seed order — under the
+  // full parallel suite other fixtures shift the picks and the guard
+  // rejected the booking ("Technician does not offer this service").
+  await ensureTechnicianService(technicianRecordId, serviceId);
 
   const address = await prisma.address.findFirst({ where: { userId: customer.id } });
   addressId =
