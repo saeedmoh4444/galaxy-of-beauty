@@ -157,8 +157,11 @@ jobs:
           pnpm --filter @galaxy/db db:seed
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/gob_seed_contract?schema=public'
-      - name: Seed catalog contract (isolated DB)
-        run: pnpm --filter @galaxy/api exec vitest run src/__tests__/seed-catalog-contract.test.ts
+      # W2-8 dynamic-pricing contract runs here too (SEED_CONTRACT_DB gate):
+      # it asserts the seed opts the flagship services in, which only holds
+      # on a freshly seeded isolated DB.
+      - name: Seed contracts (isolated DB)
+        run: pnpm --filter @galaxy/api exec vitest run src/__tests__/seed-catalog-contract.test.ts src/__tests__/dynamic-pricing-seed.test.ts
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/gob_seed_contract?schema=public'
           SEED_CONTRACT_DB: '1'
