@@ -1293,6 +1293,9 @@ model Referral {
   @@index([referrerId])
   @@index([referredId])
   @@index([referralCode])
+  // W5-2 — one referral relationship per (referrer, referred) pair:
+  // repeated applyCode calls must never create duplicate PENDING rows.
+  @@unique([referrerId, referredId])
   @@map("referrals")
 }
 

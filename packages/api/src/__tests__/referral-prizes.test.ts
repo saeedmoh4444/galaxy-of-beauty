@@ -41,16 +41,19 @@ async function makeUser(overrides?: { name?: string; role?: string }): Promise<J
 
 async function seedCompleted(
   referrerId: number,
-  referredId: number,
   count: number,
   completedAt: Date,
   codePrefix: string,
 ) {
+  // W5-2 — (referrerId, referredId) is now unique: each completion needs
+  // its own referred user (the old fixture reused one referred user and
+  // relied on the double-claim hole).
   for (let i = 0; i < count; i++) {
+    const referred = await makeUser({ name: `${codePrefix}-referred-${i}` });
     await prisma.referral.create({
       data: {
         referrerId,
-        referredId,
+        referredId: referred.id,
         referralCode: `${codePrefix}-${i}`,
         status: 'COMPLETED',
         rewardCredited: true,
@@ -66,7 +69,6 @@ let topB: JwtPayload; // 2 completions in TARGET -> rank 2
 let topC: JwtPayload; // 1 completion  in TARGET -> rank 3 (tie-break by id asc)
 let topD: JwtPayload; // 1 completion  in TARGET -> tied with C, loses on id
 let outside: JwtPayload; // 5 completions in OUTSIDE -> must not rank in TARGET
-let filler: JwtPayload; // referredId target for all rows
 
 beforeAll(async () => {
   admin = await makeUser({ role: 'ADMIN' });
@@ -75,15 +77,14 @@ beforeAll(async () => {
   topC = await makeUser({ name: 'TopC' });
   topD = await makeUser({ name: 'TopD' });
   outside = await makeUser({ name: 'Outside' });
-  filler = await makeUser();
 
   const inTarget = new Date(Date.UTC(2020, 0, 15));
   const outTarget = new Date(Date.UTC(2019, 11, 15));
-  await seedCompleted(topA.id, filler.id, 3, inTarget, 'PZ-A');
-  await seedCompleted(topB.id, filler.id, 2, inTarget, 'PZ-B');
-  await seedCompleted(topC.id, filler.id, 1, inTarget, 'PZ-C');
-  await seedCompleted(topD.id, filler.id, 1, inTarget, 'PZ-D');
-  await seedCompleted(outside.id, filler.id, 5, outTarget, 'PZ-O');
+  await seedCompleted(topA.id, 3, inTarget, 'PZ-A');
+  await seedCompleted(topB.id, 2, inTarget, 'PZ-B');
+  await seedCompleted(topC.id, 1, inTarget, 'PZ-C');
+  await seedCompleted(topD.id, 1, inTarget, 'PZ-D');
+  await seedCompleted(outside.id, 5, outTarget, 'PZ-O');
 
   for (const [userId, amount] of [
     [topA.id, 0],
