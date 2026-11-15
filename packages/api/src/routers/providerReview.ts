@@ -140,6 +140,8 @@ export const providerReviewRouter = router({
       } else if (submission.kind === 'store') {
         // Store plan Phase 1 — merchant registration. Approve flips the
         // vendor to verified (public listings + product visibility).
+        // W3-2: approval also ACTIVATES the store — ensureVendor-created
+        // stores start isActive=false and only go live on this decision.
         const payload = submission.payload as { vendorId: number; storeName?: string };
         const vendor = await prisma.vendor.findUnique({ where: { id: payload.vendorId } });
         if (!vendor) {
@@ -149,7 +151,7 @@ export const providerReviewRouter = router({
           where: { id: vendor.id },
           data: {
             isVerified: input.approve,
-            isActive: input.approve ? vendor.isActive : false,
+            isActive: input.approve,
           },
         });
         subjectName = payload.storeName ?? `متجر #${vendor.id}`;
