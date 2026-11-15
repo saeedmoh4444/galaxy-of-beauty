@@ -18,7 +18,6 @@ export { nailBarsRouter } from '../../routers/nailBars';
 export { promotionRouter } from '../../routers/promotions';
 export { beautyBingoRouter } from '../../routers/beautyBingo';
 export { eventTicketsRouter } from '../../routers/eventTickets';
-export { beautyCouponsRouter } from '../../routers/beautyCoupons';
 export { trainersRouter } from '../../routers/trainers';
 export { beautyBundlesRouter } from '../../routers/beautyBundles';
 export { bundlesRouter } from '../../routers/bundles';
