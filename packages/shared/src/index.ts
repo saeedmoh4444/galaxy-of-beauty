@@ -129,3 +129,5 @@ export { buildBookingConfirmHref } from './utils/bookingConfirm';
 
 // Try-On (3.2)
 export * from './tryOn';
+export { resolveEntityImage, IMAGE_FALLBACKS } from './utils/entityImage';
+export type { ImageEntityKind, EntityImageInput, ImageManifest } from './utils/entityImage';
