@@ -496,3 +496,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: docker compose build
+      # W5-8 — the dev-compose build above only exercises the development
+      # targets; a broken production image slipped through CI before. Build
+      # the prod-compose targets too (build-only: the ${VAR:?required}
+      # interpolations get CI placeholders, nothing is run).
+      - run: docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+        env:
+          POSTGRES_PASSWORD: ci-build-placeholder-not-a-secret
+          JWT_ACCESS_SECRET: ci-build-placeholder-32-chars-minimum!
+          JWT_REFRESH_SECRET: ci-build-placeholder-32-chars-minimum!
+          CORS_ORIGIN: 'https://ci-build.example'
