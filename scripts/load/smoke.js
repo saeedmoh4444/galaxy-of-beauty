@@ -8,16 +8,26 @@
  * (20 req/min per IP+procedure). Rotating a fresh IP per iteration gives
  * each request its own bucket, so this measures handler performance, not
  * the limiter. Do not raise VUs without ops awareness.
+ *
+ * W6-5 — the IP-rotation space was hardcoded to 200 buckets; at VUS>200
+ * VUs share buckets and the limiter 429s the run (a false failure, not a
+ * load result). The bucket space now follows the VUS count so a 1K run
+ * keeps one bucket per VU:
+ *   k6 run scripts/load/load.js -e TARGET_URL=https://galaxyofbeauty.sa \
+ *     -e VUS=1000 -e DURATION=120s -e P95_MS=2500
+ * Run 1K only against a production-scale target with ops awareness — CI
+ * runners measure the gate at 1 VU, the 30-VU dispatch job at 30.
  */
 import http from 'k6/http';
 import { check } from 'k6';
 import exec from 'k6/execution';
 
 const TARGET = __ENV.TARGET_URL || 'https://galaxyofbeauty.sa';
+const VUS = Number(__ENV.VUS || 1);
 
 export const options = {
-  vus: 1,
-  iterations: 1,
+  vus: VUS,
+  iterations: VUS,
   thresholds: {
     http_req_failed: ['rate<0.01'],
     http_req_duration: ['p(95)<750'],
@@ -25,9 +35,11 @@ export const options = {
 };
 
 // k6 2.x removed the __VU/__ITER globals — read ids from k6/execution.
-// Per-iteration headers give each request a fresh rate-limit bucket.
+// Per-iteration headers give each request a fresh rate-limit bucket; the
+// bucket space tracks the VU count (W6-5).
+const BUCKETS = Math.max(200, VUS);
 const rotatedHeaders = () => ({
-  'X-Forwarded-For': `10.${exec.vu.idInInstance % 200}.${exec.scenario.iterationInInstance % 200}.1`,
+  'X-Forwarded-For': `10.${exec.vu.idInInstance % BUCKETS}.${exec.scenario.iterationInInstance % BUCKETS}.1`,
 });
 
 export default function () {
