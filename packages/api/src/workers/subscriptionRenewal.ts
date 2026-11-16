@@ -11,6 +11,7 @@
  * Exported functions are pure and tested directly.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 
 const RENEWAL_INTERVAL_MS = 3_600_000 * 24; // daily
@@ -75,11 +76,11 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startSubscriptionRenewal(): void {
   if (intervalId) return;
-  void renewDueSubscriptions();
-  void sendRenewalReminders();
+  void withHeartbeat('subscription-renewal', () => renewDueSubscriptions());
+  void withHeartbeat('subscription-renewal', () => sendRenewalReminders());
   intervalId = setInterval(() => {
-    void renewDueSubscriptions();
-    void sendRenewalReminders();
+    void withHeartbeat('subscription-renewal', () => renewDueSubscriptions());
+    void withHeartbeat('subscription-renewal', () => sendRenewalReminders());
   }, RENEWAL_INTERVAL_MS);
   console.log(`[SubscriptionRenewal] Scheduled daily (${RENEWAL_INTERVAL_MS / 1000}s)`);
 }
