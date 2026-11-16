@@ -3,6 +3,7 @@
  * Runs every hour via setInterval. Can also be triggered manually.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 
 const CLEANUP_INTERVAL_MS = 3600_000; // 1 hour
 
@@ -55,10 +56,13 @@ export function startTokenCleanup(): void {
   if (intervalId) return;
 
   // Run immediately on start
-  void cleanupTokens();
+  void withHeartbeat('token-cleanup', () => cleanupTokens());
 
   // Then every hour
-  intervalId = setInterval(() => void cleanupTokens(), CLEANUP_INTERVAL_MS);
+  intervalId = setInterval(
+    () => void withHeartbeat('token-cleanup', () => cleanupTokens()),
+    CLEANUP_INTERVAL_MS,
+  );
   console.log(`[TokenCleanup] Scheduled every ${CLEANUP_INTERVAL_MS / 1000}s`);
 }
 
