@@ -3,6 +3,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack, Redirect } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useAuthState } from '@/hooks/useAuthState';
+import { useAuthHydrated } from '@/hooks/useAuthHydrated';
 import { useLocale } from '@/components/LocaleProvider';
 
 /**
@@ -14,8 +15,19 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function TechLayout(): JSX.Element {
   const { t } = useLocale();
   const isAuthed = useAuthState();
-  const me = trpc.users.getMe.useQuery(undefined, { enabled: isAuthed });
+  const authHydrated = useAuthHydrated();
+  const me = trpc.users.getMe.useQuery(undefined, { enabled: isAuthed && authHydrated });
 
+  // Hold while the token restores — a full-page load renders before
+  // loadAuthToken resolves; bouncing straight to login would log out a
+  // session that was about to hydrate.
+  if (!authHydrated) {
+    return (
+      <View style={styles.c}>
+        <ActivityIndicator size="large" color="#7c3aed" />
+      </View>
+    );
+  }
   if (!isAuthed) return <Redirect href="/(auth)/login" />;
   if (me.isLoading) {
     return (
