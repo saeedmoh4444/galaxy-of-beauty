@@ -863,6 +863,12 @@ model Review {
   bookingId Int      @unique
   customerId Int
   rating    Int      // 1-5
+  // W5-6d — the multi-dimension scores migrated from the deprecated
+  // TechnicianRating family (one post-booking rating per booking).
+  skill         Int?
+  punctuality   Int?
+  cleanliness   Int?
+  communication Int?
   comment   String?
   isVisible Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -4643,6 +4649,9 @@ model CustomerPreference {
   @@map("customer_preferences")
 }
 
+// W5-6d DEPRECATED — Review is the canonical post-booking rating (both
+// were bookingId-unique); technician_ratings rows were migrated into
+// reviews and the technicianRatings router now reads/writes Review.
 model TechnicianRating {
   id            Int      @id @default(autoincrement())
   userId        Int
