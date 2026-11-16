@@ -502,6 +502,10 @@ jobs:
       # interpolations get CI placeholders, nothing is run).
       - run: docker compose -f docker-compose.yml -f docker-compose.prod.yml build
         env:
+          # Serialize the three image builds (web/socket/worker): the web
+          # turbopack compile was dying silently under parallel build
+          # memory pressure on shared runners.
+          COMPOSE_PARALLEL_LIMIT: '1'
           POSTGRES_PASSWORD: ci-build-placeholder-not-a-secret
           JWT_ACCESS_SECRET: ci-build-placeholder-32-chars-minimum!
           JWT_REFRESH_SECRET: ci-build-placeholder-32-chars-minimum!
