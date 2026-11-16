@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react-native';
+import { scrubEvent } from './piiScrub';
 
 /**
  * B1 (PLATFORM_IMPROVEMENT_PLAN) — DSN-gated Sentry for the mobile app.
@@ -19,9 +20,10 @@ export function initSentry(): void {
     dsn,
     tracesSampleRate: 0.1,
     enableAutoSessionTracking: true,
-    // PII hygiene: the platform convention is email-is-filtered.
+    // W4-4 — REAL PII hygiene: emails, Saudi phone numbers and JWT-like
+    // tokens are scrubbed recursively before anything leaves the device.
     beforeSend(event) {
-      return event;
+      return scrubEvent(event as never) as never;
     },
   });
 }
