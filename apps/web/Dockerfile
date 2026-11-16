@@ -25,6 +25,11 @@ COPY packages/api/package.json ./packages/api/
 COPY packages/api/tsconfig.json ./packages/api/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/shared/tsconfig.json ./packages/shared/
+# W5-8 fix — @galaxy/ui is a workspace dep of apps/web (and of the api
+# runtime); it was never copied, so `next build` died on "Can't resolve
+# '@galaxy/ui'". ui is source-only (main → src/index.ts).
+COPY packages/ui/package.json ./packages/ui/
+COPY packages/ui/tsconfig.json ./packages/ui/
 COPY apps/web/package.json ./apps/web/
 COPY apps/web/tsconfig.json ./apps/web/
 COPY apps/web/next.config.js ./apps/web/
@@ -57,6 +62,7 @@ ENV NEXT_PUBLIC_SOCKET_URL=$NEXT_PUBLIC_SOCKET_URL
 COPY packages/db/src ./packages/db/src
 COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src
+COPY packages/ui/src ./packages/ui/src
 COPY apps/web/src ./apps/web/src
 COPY apps/web/public ./apps/web/public
 RUN cd /app/packages/db && npx prisma generate
@@ -99,6 +105,7 @@ ENV NODE_ENV=production
 COPY packages/db/src ./packages/db/src
 COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src
+COPY packages/ui/src ./packages/ui/src
 COPY packages/config ./packages/config
 COPY packages/api/package.json ./packages/api/package.json
 COPY packages/db/prisma ./packages/db/prisma
