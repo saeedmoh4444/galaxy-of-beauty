@@ -8,6 +8,12 @@
  * Threshold breach aborts the run with a non-zero exit — by design, the
  * workflow_dispatch/scheduled job goes red on regressions. Rate-limit
  * rationale: see smoke.js.
+ *
+ * W6-5 — 1K-concurrent recipe (production-scale target only, ops-aware):
+ *   k6 run scripts/load/load.js -e TARGET_URL=https://galaxyofbeauty.sa \
+ *     -e VUS=1000 -e DURATION=120s -e P95_MS=2500
+ * The xff bucket space follows VUS, so the run measures handler
+ * performance instead of tripping the anonymous rate limiter.
  */
 import http from 'k6/http';
 import { check } from 'k6';
@@ -31,9 +37,12 @@ export const options = {
 };
 
 // k6 2.x removed the __VU/__ITER globals — read ids from k6/execution.
-// Per-iteration headers give each request a fresh rate-limit bucket.
+// Per-iteration headers give each request a fresh rate-limit bucket; the
+// bucket space tracks the VU count so a 1K-concurrent run keeps one
+// bucket per VU instead of 429ing itself (W6-5).
+const BUCKETS = Math.max(200, VUS);
 const rotatedHeaders = () => ({
-  'X-Forwarded-For': `10.${exec.vu.idInInstance % 200}.${exec.scenario.iterationInInstance % 200}.1`,
+  'X-Forwarded-For': `10.${exec.vu.idInInstance % BUCKETS}.${exec.scenario.iterationInInstance % BUCKETS}.1`,
 });
 const servicesInput = encodeURIComponent(JSON.stringify({ json: { page: 1, limit: 12 } }));
 
