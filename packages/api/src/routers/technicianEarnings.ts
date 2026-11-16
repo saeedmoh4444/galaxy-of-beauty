@@ -6,14 +6,15 @@ export const technicianEarningsRouter = router({
   summary: technicianProcedure.query(async ({ ctx }) => {
     const tech = await prisma.technician.findUnique({ where: { userId: ctx.user.id } });
     if (!tech) return null;
-    const [thisMonth, lastMonth, totalEarned] = await Promise.all([
+    const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    const [thisMonth, lastMonth, totalEarned, feesThisMonth] = await Promise.all([
       prisma.payout.aggregate({
         where: {
           // Payout.technicianId references User.id (FK), not the
           // Technician profile id — filtering by tech.id returned
           // zeros for every real technician.
           technicianId: ctx.user.id,
-          createdAt: { gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) },
+          createdAt: { gte: monthStart },
           status: 'COMPLETED',
         },
         _sum: { amount: true },
@@ -33,11 +34,18 @@ export const technicianEarningsRouter = router({
         where: { technicianId: ctx.user.id, status: 'COMPLETED' },
         _sum: { amount: true },
       }),
+      // W4-1 — the platform fee IS the technician's real expense line;
+      // the pro-tools profit dashboard used a fabricated 3200 before.
+      prisma.payout.aggregate({
+        where: { technicianId: ctx.user.id, status: 'COMPLETED', createdAt: { gte: monthStart } },
+        _sum: { fee: true },
+      }),
     ]);
     return {
       thisMonth: Number(thisMonth._sum.amount ?? 0),
       lastMonth: Number(lastMonth._sum.amount ?? 0),
       totalEarned: Number(totalEarned._sum.amount ?? 0),
+      feesThisMonth: Number(feesThisMonth._sum.fee ?? 0),
     };
   }),
 
