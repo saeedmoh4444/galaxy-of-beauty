@@ -7,6 +7,7 @@
  * invoices stop holding inventory and never become fulfillable.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { cancelCheckoutOrders } from '../lib/storeCheckout';
 
 const SWEEP_INTERVAL_MS = 15 * 60_000; // every 15 minutes
@@ -32,9 +33,9 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startCheckoutExpiry(): void {
   if (intervalId) return;
-  void expireAbandonedCheckouts();
+  void withHeartbeat('checkout-expiry', () => expireAbandonedCheckouts());
   intervalId = setInterval(() => {
-    void expireAbandonedCheckouts();
+    void withHeartbeat('checkout-expiry', () => expireAbandonedCheckouts());
   }, SWEEP_INTERVAL_MS);
 }
 
