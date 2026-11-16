@@ -7,28 +7,28 @@ export const technicianRatingsRouter = router({
     .input(z.object({ technicianId: z.number().int().positive() }))
     .query(async ({ input }) => {
       const [avg, count, byRating] = await Promise.all([
-        prisma.technicianRating.aggregate({
-          where: { technicianId: input.technicianId },
+        prisma.review.aggregate({
+          where: { booking: { technicianId: input.technicianId } },
           _avg: {
-            overall: true,
+            rating: true,
             skill: true,
             punctuality: true,
             cleanliness: true,
             communication: true,
           },
         }),
-        prisma.technicianRating.count({ where: { technicianId: input.technicianId } }),
-        prisma.technicianRating.groupBy({
-          by: ['overall'],
-          where: { technicianId: input.technicianId },
+        prisma.review.count({ where: { booking: { technicianId: input.technicianId } } }),
+        prisma.review.groupBy({
+          by: ['rating'],
+          where: { booking: { technicianId: input.technicianId } },
           _count: true,
-          orderBy: { overall: 'desc' },
+          orderBy: { rating: 'desc' },
         }),
       ]);
       return {
         avg: avg._avg,
         count,
-        distribution: byRating.map((r) => ({ rating: r.overall, count: r._count })),
+        distribution: byRating.map((r) => ({ rating: r.rating, count: r._count })),
       };
     }),
 
@@ -46,16 +46,15 @@ export const technicianRatingsRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const existing = await prisma.technicianRating.findUnique({
+      const existing = await prisma.review.findUnique({
         where: { bookingId: input.bookingId },
       });
       if (existing) return { error: 'Already rated' };
-      return prisma.technicianRating.create({
+      return prisma.review.create({
         data: {
-          userId: ctx.user.id,
-          technicianId: input.technicianId,
+          customerId: ctx.user.id,
           bookingId: input.bookingId,
-          overall: input.overall,
+          rating: input.overall,
           skill: input.skill ?? null,
           punctuality: input.punctuality ?? null,
           cleanliness: input.cleanliness ?? null,
