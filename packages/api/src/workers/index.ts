@@ -12,6 +12,7 @@
 import { Worker, type Job } from 'bullmq';
 import { getRedisForBull } from '../lib/redis';
 import { requestContext } from '../lib/requestContext';
+import { withHeartbeat } from '../lib/sentry';
 import {
   handleWalletJob,
   handleLoyaltyJob,
@@ -55,6 +56,10 @@ function createWorker(
   // CSV import report polled by vendorPortal.importStatus).
   handler: (job: Job) => Promise<unknown>,
   concurrency = 2,
+  // W6-5 — scheduled sweep queues pass a heartbeat slug: every job run
+  // emits a Sentry cron-monitor check-in so a silently dead scheduler
+  // shows up as a missed heartbeat instead of a quiet period.
+  heartbeatSlug?: string,
 ): Worker | null {
   const redis = getRedisForBull();
   if (!redis) {
@@ -65,13 +70,14 @@ function createWorker(
     queueName,
     // B2 — re-establish the ambient request context from the job's own
     // correlationId so jobs that enqueue further jobs keep the chain's id.
+    // W6-5 — the sweep queues additionally run under a Sentry heartbeat.
     (job) =>
       requestContext.run(
         {
           correlationId:
             (job.data as { correlationId?: string } | undefined)?.correlationId ?? null,
         },
-        () => handler(job),
+        () => (heartbeatSlug ? withHeartbeat(heartbeatSlug, () => handler(job)) : handler(job)),
       ),
     {
       connection: redis,
@@ -108,17 +114,52 @@ export const loyaltyWorker = createWorker('gob-loyalty', handleLoyaltyJob);
 export const notificationWorker = createWorker('gob-notifications', dispatchNotificationJob);
 export const integrationWorker = createWorker('gob-integrations', handleIntegrationJob);
 export const csvImportWorker = createWorker('gob-csv-import', handleCsvImportJob, 1);
-export const analyticsWorker = createWorker('gob-analytics', handleDailyStatsJob, 1);
-export const advisorWorker = createWorker('gob-advisor', handleAdvisorDigestJob, 1);
-export const remindersWorker = createWorker('gob-reminders', handleLicenseExpiryReminders, 1);
-export const payoutsWorker = createWorker('gob-payouts', handlePayoutScheduleJob, 1);
-export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1);
-export const disputesWorker = createWorker('gob-disputes', handleDisputeEscalationSweep, 1);
-export const reviewsWorker = createWorker('gob-reviews', handleReviewReplyReminderSweep, 1);
-export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1);
+export const analyticsWorker = createWorker(
+  'gob-analytics',
+  handleDailyStatsJob,
+  1,
+  'analytics-daily-stats',
+);
+export const advisorWorker = createWorker(
+  'gob-advisor',
+  handleAdvisorDigestJob,
+  1,
+  'advisor-digest',
+);
+export const remindersWorker = createWorker(
+  'gob-reminders',
+  handleLicenseExpiryReminders,
+  1,
+  'license-expiry',
+);
+export const payoutsWorker = createWorker(
+  'gob-payouts',
+  handlePayoutScheduleJob,
+  1,
+  'payout-sweep',
+);
+export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1, 'sla-sweep');
+export const disputesWorker = createWorker(
+  'gob-disputes',
+  handleDisputeEscalationSweep,
+  1,
+  'dispute-escalation',
+);
+export const reviewsWorker = createWorker(
+  'gob-reviews',
+  handleReviewReplyReminderSweep,
+  1,
+  'review-reminders',
+);
+export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1, 'queue-health-check');
 export const webhooksWorker = createWorker('gob-webhooks', handleWebhookDelivery, 2);
 export const mediaWorker = createWorker('gob-media', handleShortMediaJob, 1);
-export const reconciliationWorker = createWorker('gob-reconciliation', handleReconciliationJob, 1);
+export const reconciliationWorker = createWorker(
+  'gob-reconciliation',
+  handleReconciliationJob,
+  1,
+  'reconciliation',
+);
 
 /**
  * D2 — register the queue-health monitor: fires every 10 minutes and

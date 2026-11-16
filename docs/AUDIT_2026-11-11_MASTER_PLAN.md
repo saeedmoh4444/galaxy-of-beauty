@@ -129,6 +129,16 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 | W6-4 | content/social/realtime routers thin coverage (4/28, 10/42, 3/7)                                                        | API    | M      |
 | W6-5 | k6 load at 1K concurrent unchecked; no Sentry heartbeats for schedulers; no restore script                              | Infra  | M      |
 
+W6 build state (2026-11-16): **all five slices PR'd** —
+W6-3 (feat/w6-safety-tests, 9 tests), W6-2 (feat/w6-ui-i18n-gate, gate +
+530-file allowlist ratchet), W6-4 (feat/w6-domain-coverage, 3 suites 20
+tests + createTip id-contract fix), W6-1 (feat/w6-seo, gate + allowlist +
+76-URL sitemap + 14 flagship wrappers), W6-5 (feat/w6-infra-heartbeats,
+heartbeats + 1K k6 buckets + restore-db.sh). Follow-up queues (tracked,
+not lost): the 41-page W6-1 metadata queue (scripts/static-page-metadata-
+allowlist.txt) and the 530-file ui i18n migration (scripts/static-arabic-
+ui-allowlist.txt) — both ratcheted so they can only shrink.
+
 ### User-gated (unchanged — needs the boss)
 
 Fatoorah live token · Sentry DSNs · AWS console (CDN, S3 lifecycle) · Apple account · prod server · Postman key · pentest execution. Also gateway-gated: wallet top-up completion (W1-10), autoRenew capture (W1-7), payout provider integration.

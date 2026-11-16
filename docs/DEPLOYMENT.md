@@ -213,6 +213,30 @@ pg_dump $DATABASE_URL | gzip > /backups/gob-$(date +%Y%m%d).sql.gz
 gunzip -c backup.sql.gz | psql $DATABASE_URL
 ```
 
+### Prod restore runbook (W6-5 — the automated path)
+
+The prod compose runs a backup sidecar (docker-compose.prod.yml, 14-day
+rotation into the `backups_data` volume). Restore with the scripted path:
+
+```bash
+# 1. List the available backups (host volume dir mounted at ./backups by
+#    default — BACKUP_DIR overrides)
+ls -1 ./backups | grep '\.sql\.gz$'
+
+# 2. Restore a specific backup through the sidecar (it carries PG* env
+#    and sits on gob-network). Requires RESTORE_CONFIRM=yes and, for the
+#    production DB name, RESTORE_ALLOW_PROD=1. A pre-restore safety dump
+#    is taken automatically, and the script verifies schema queryability.
+RESTORE_CONFIRM=yes RESTORE_ALLOW_PROD=1 \
+  ./scripts/restore-db.sh Galaxy_of_Beauty_db_20261116T030000Z.sql.gz
+
+#    (or "latest" to pick the newest file — the script prints which one)
+```
+
+The dumps are `--no-owner --clean` — a restore REPLACES the database with
+the backup's contents (not additive). Never restore without the safety
+dump in hand; verify the row counts per the drill below before deleting it.
+
 ### Backup/Restore Drill — verified 2026-08-17 ✅
 
 Procedure (run against dev/staging; identical on production):
