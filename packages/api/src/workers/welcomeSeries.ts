@@ -7,6 +7,7 @@
  * matches exactly one day, on exactly one sweep.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 
 const WELCOME_INTERVAL_MS = 3_600_000 * 24; // daily
@@ -60,9 +61,9 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startWelcomeSeries(): void {
   if (intervalId) return;
-  void sendWelcomeSeriesEmails();
+  void withHeartbeat('welcome-series', () => sendWelcomeSeriesEmails());
   intervalId = setInterval(() => {
-    void sendWelcomeSeriesEmails();
+    void withHeartbeat('welcome-series', () => sendWelcomeSeriesEmails());
   }, WELCOME_INTERVAL_MS);
 }
 

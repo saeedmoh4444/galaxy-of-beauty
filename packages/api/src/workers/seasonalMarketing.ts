@@ -7,6 +7,7 @@
  * tests.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 import { getActiveSeasons } from '../lib/season';
 
@@ -71,9 +72,9 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startSeasonalMarketing(): void {
   if (intervalId) return;
-  void sendSeasonalEmails();
+  void withHeartbeat('seasonal-marketing', () => sendSeasonalEmails());
   intervalId = setInterval(() => {
-    void sendSeasonalEmails();
+    void withHeartbeat('seasonal-marketing', () => sendSeasonalEmails());
   }, SWEEP_INTERVAL_MS);
 }
 
