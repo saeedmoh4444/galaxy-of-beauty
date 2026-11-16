@@ -90,7 +90,7 @@ export default function ProToolsScreen(): JSX.Element {
           />
           <ToolCard
             title={t('mobile.tech.pro-tools.expenses')}
-            value={formatCurrency(Number(earnings?.data?.expensesThisMonth ?? 0))}
+            value={formatCurrency(Number(earnings?.data?.feesThisMonth ?? 0))}
             subtitle={t('mobile.tech.pro-tools.this-month')}
           />
           <ToolCard
