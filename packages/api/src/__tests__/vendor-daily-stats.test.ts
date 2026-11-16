@@ -20,9 +20,12 @@ let productId: number;
 let firstTimerId: number;
 let returningId: number;
 
-// A fixed KSA business date: 2026-10-15 (bucket 2026-10-15T00:00:00Z).
-const DAY = noonUtcDay('2026-10-15');
-const DAY_END = new Date(DAY.getTime() + 24 * 3600_000);
+// A KSA business day 5 days back (bucket DAY@00:00:00Z) — recent enough to
+// always sit inside analyticsSeries' rolling window (a fixed date rotted:
+// 2026-10-15 fell out of the 30-day window on 2026-11-15 and the suite went
+// red everywhere).
+const DAY = noonUtcDay(new Date(Date.now() - 5 * 86_400_000));
+const DAY_STR = DAY.toISOString().slice(0, 10); // noonUtcDay(string) re-derives the same bucket
 const IN_BUCKET = new Date(DAY.getTime() + 14 * 3600_000); // 14:00Z — inside the noon→noon bucket
 
 function callerFor(user: JwtPayload | null) {
@@ -108,7 +111,7 @@ describe('D1 — noon-UTC bucket discipline', () => {
 
 describe('D1 — materialization job', () => {
   it('builds the vendor daily row from FULFILLED orders', async () => {
-    const res = await handleDailyStatsJob({ data: { date: '2026-10-15' } } as Job<DailyStatsJob>);
+    const res = await handleDailyStatsJob({ data: { date: DAY_STR } } as Job<DailyStatsJob>);
     expect(res.vendors).toBeGreaterThanOrEqual(1);
 
     const row = await prisma.vendorDailyStat.findUnique({
@@ -128,8 +131,8 @@ describe('D1 — materialization job', () => {
   });
 
   it('is idempotent — a re-run upserts, never duplicates', async () => {
-    await handleDailyStatsJob({ data: { date: '2026-10-15' } } as Job<DailyStatsJob>);
-    await handleDailyStatsJob({ data: { date: '2026-10-15' } } as Job<DailyStatsJob>);
+    await handleDailyStatsJob({ data: { date: DAY_STR } } as Job<DailyStatsJob>);
+    await handleDailyStatsJob({ data: { date: DAY_STR } } as Job<DailyStatsJob>);
 
     const rows = await prisma.vendorDailyStat.findMany({ where: { vendorId } });
     expect(rows).toHaveLength(1);
