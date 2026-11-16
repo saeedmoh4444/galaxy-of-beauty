@@ -34,12 +34,34 @@ function notifyTokenChange(): void {
   listeners.forEach((fn) => fn());
 }
 
+// ── Hydration flag (role guards must not bounce pre-restore) ──────────
+
+let hydrated = false;
+const hydrationListeners = new Set<Listener>();
+
+/** True once loadAuthToken() has completed its first restore. */
+export function isAuthHydrated(): boolean {
+  return hydrated;
+}
+
+/** Subscribe to the hydration completion (useAuthHydrated hook). */
+export function subscribeAuthHydrated(fn: Listener): () => void {
+  hydrationListeners.add(fn);
+  return () => {
+    hydrationListeners.delete(fn);
+  };
+}
+
 /**
  * Restore a persisted token (call once at app start, before first request).
+ * Marks the store hydrated so guards can hold instead of bouncing a
+ * session that is still restoring (full-page loads race this on web).
  */
 export async function loadAuthToken(): Promise<void> {
   token = await AsyncStorage.getItem(TOKEN_KEY);
+  hydrated = true;
   notifyTokenChange();
+  hydrationListeners.forEach((fn) => fn());
 }
 
 /**
