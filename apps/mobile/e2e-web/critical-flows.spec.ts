@@ -15,23 +15,35 @@ test.setTimeout(120_000);
 
 const DEMO_EMAIL = 'customer@test.com';
 const DEMO_PASSWORD = 'Admin@123456';
+// Seeded SELLER with an active store (seed.ts 3.1 demo store) — the only
+// account that passes the W3-3 vendor-portal ownership gate.
+const STORE_EMAIL = 'demo-store@galaxyofbeauty.sa';
 
-async function login(page: import('@playwright/test').Page): Promise<void> {
+async function login(
+  page: import('@playwright/test').Page,
+  email = DEMO_EMAIL,
+  opts: { landing: RegExp; expectHome?: boolean } = { landing: /\/(home)?$/ },
+): Promise<void> {
   await page.goto('/login');
-  await page.getByTestId('login-email').fill(DEMO_EMAIL);
+  await page.getByTestId('login-email').fill(email);
   await page.getByTestId('login-password').fill(DEMO_PASSWORD);
   await page.getByTestId('login-submit').click();
-  // Post-login the app lands on the home tab.
-  await expect(page).toHaveURL(/\/(home)?$/, { timeout: 60_000 });
-  await expect(page.getByText('الرئيسية').first()).toBeVisible({ timeout: 30_000 });
+  // Post-login the app routes by role: customers land on the home tab,
+  // SELLERs straight onto the vendor portal (R2 seller lane).
+  await expect(page).toHaveURL(opts.landing, { timeout: 60_000 });
+  if (opts.expectHome !== false) {
+    await expect(page.getByText('الرئيسية').first()).toBeVisible({ timeout: 30_000 });
+  }
 }
 
 test('customer logs in and reaches the booking flow', async ({ page }) => {
   await login(page);
   await page.goto('/bookings');
   await expect(page).toHaveURL(/\/bookings/);
-  // The bookings screen renders (mobile.core.bookingsTitle).
-  await expect(page.getByText('حجوزاتي')).toBeVisible({ timeout: 30_000 });
+  // The bookings screen renders (mobile.core.bookingsTitle). The bottom tab
+  // bar carries the same label — take the first match, which is the screen
+  // header once the bookings query resolves.
+  await expect(page.getByText('حجوزاتي').first()).toBeVisible({ timeout: 30_000 });
 });
 
 test('services browse reaches a service detail screen', async ({ page }) => {
@@ -52,10 +64,21 @@ test('wallet requires auth and redirects to login', async ({ page }) => {
   await expect(page.getByText('المحفظة').first()).toBeVisible({ timeout: 30_000 });
 });
 
-test('vendor portal entry renders the portal shell', async ({ page }) => {
+test('vendor portal bounces a customer back home (W3-3 guard)', async ({ page }) => {
   await login(page);
   await page.goto('/vendor-portal');
-  await expect(page).toHaveURL(/\/vendor-portal/);
+  // The ownership gate holds a spinner then redirects non-vendors to home —
+  // the portal shell must never mount for a customer.
+  await expect(page).toHaveURL(/\/(home)?$/, { timeout: 60_000 });
+  await expect(page.getByText('بوابة البائعين')).toHaveCount(0);
+  await expect(page.getByText('الرئيسية').first()).toBeVisible({ timeout: 30_000 });
+});
+
+test('vendor portal renders the shell for the store owner', async ({ page }) => {
+  await login(page, STORE_EMAIL, {
+    landing: /\/vendor-portal/,
+    expectHome: false,
+  });
   // The portal shell renders (mobile.vendorPortal.title).
   await expect(page.getByText('بوابة البائعين')).toBeVisible({ timeout: 30_000 });
 });
