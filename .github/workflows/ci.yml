@@ -502,13 +502,12 @@ jobs:
       # interpolations get CI placeholders, nothing is run).
       - run: docker compose -f docker-compose.yml -f docker-compose.prod.yml build
         env:
-          # Serialize the three image builds (web/socket/worker): the web
-          # turbopack compile was dying silently under parallel build
-          # memory pressure on shared runners.
-          COMPOSE_PARALLEL_LIMIT: '1'
           POSTGRES_PASSWORD: ci-build-placeholder-not-a-secret
-          JWT_ACCESS_SECRET: ci-build-placeholder-32-chars-minimum!
-          JWT_REFRESH_SECRET: ci-build-placeholder-32-chars-minimum!
+          # Build-time placeholders only; getEnv rejects identical
+          # access/refresh secrets (PRODUCTION SAFETY), so they must
+          # differ even as placeholders.
+          JWT_ACCESS_SECRET: ci-build-access-key-0123456789abcdef-not-for-prod
+          JWT_REFRESH_SECRET: ci-build-refresh-key-fedcba9876543210-not-for-prod
           CORS_ORIGIN: 'https://ci-build.example'
           # W5-8 follow-up — the monitoring profile (Grafana) also carries
           # a required interpolation; the gate must satisfy it too.
