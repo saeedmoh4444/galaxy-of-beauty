@@ -6,6 +6,7 @@
  * suggestion — once, unless they already reviewed or were asked before.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 
 const SWEEP_INTERVAL_MS = 3_600_000 * 24; // daily
@@ -64,9 +65,9 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startPostBooking(): void {
   if (intervalId) return;
-  void sendPostBookingEmails();
+  void withHeartbeat('post-booking', () => sendPostBookingEmails());
   intervalId = setInterval(() => {
-    void sendPostBookingEmails();
+    void withHeartbeat('post-booking', () => sendPostBookingEmails());
   }, SWEEP_INTERVAL_MS);
 }
 
