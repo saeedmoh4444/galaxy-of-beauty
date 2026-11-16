@@ -506,3 +506,6 @@ jobs:
           JWT_ACCESS_SECRET: ci-build-placeholder-32-chars-minimum!
           JWT_REFRESH_SECRET: ci-build-placeholder-32-chars-minimum!
           CORS_ORIGIN: 'https://ci-build.example'
+          # W5-8 follow-up — the monitoring profile (Grafana) also carries
+          # a required interpolation; the gate must satisfy it too.
+          GRAFANA_ADMIN_PASSWORD: ci-build-placeholder-not-a-secret
