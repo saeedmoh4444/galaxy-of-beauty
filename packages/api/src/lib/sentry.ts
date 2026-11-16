@@ -26,6 +26,7 @@ interface SentryScope {
 interface SentryClient {
   captureException(error: Error, scope?: (scope: SentryScope) => void): string;
   captureMessage(message: string, level?: 'info' | 'warning' | 'error'): string;
+  captureCheckIn?(checkIn: { monitorSlug: string; status: 'in_progress' | 'ok' | 'error' }): string;
 }
 
 let _sentry: SentryClient | null = null;
@@ -79,4 +80,37 @@ export async function captureMessage(
     sentry.captureMessage(message, level);
   }
   console.log(`[Sentry:${level}]`, message);
+}
+
+export type CheckInStatus = 'in_progress' | 'ok' | 'error';
+
+/**
+ * W6-5 — cron-monitor heartbeat. Sentry cron monitors track scheduled
+ * work through check-ins; without them a silent scheduler death looks
+ * like a healthy quiet period. DSN-gated like the rest of the facade:
+ * without a DSN this is a console heartbeat only.
+ */
+export async function captureCheckIn(monitorSlug: string, status: CheckInStatus): Promise<void> {
+  const sentry = await getSentry();
+  if (sentry?.captureCheckIn) {
+    sentry.captureCheckIn({ monitorSlug, status });
+  }
+  console.log(`[Sentry:checkin:${status}]`, monitorSlug);
+}
+
+/**
+ * W6-5 — run a scheduled handler under a heartbeat: in_progress → ok, or
+ * in_progress → error (and rethrow) so a failed sweep marks its monitor
+ * red instead of disappearing into the console.
+ */
+export async function withHeartbeat<T>(monitorSlug: string, fn: () => Promise<T>): Promise<T> {
+  await captureCheckIn(monitorSlug, 'in_progress');
+  try {
+    const result = await fn();
+    await captureCheckIn(monitorSlug, 'ok');
+    return result;
+  } catch (err) {
+    await captureCheckIn(monitorSlug, 'error');
+    throw err;
+  }
 }
