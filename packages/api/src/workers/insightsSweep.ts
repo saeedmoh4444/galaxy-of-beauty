@@ -11,6 +11,7 @@
  * Exported functions are pure and tested directly.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 import { buildAdvisorInsights } from '../lib/advisor';
 
@@ -68,11 +69,11 @@ let intervalId: NodeJS.Timeout | null = null;
 
 export function startInsightsSweep(): void {
   if (intervalId) return; // already running
-  void generateInsightsSweep().then((sent) =>
+  void withHeartbeat('insights-sweep', () => generateInsightsSweep()).then((sent) =>
     console.log(`[3.3 advisor] initial sweep sent ${sent} insights`),
   );
   intervalId = setInterval(() => {
-    void generateInsightsSweep()
+    void withHeartbeat('insights-sweep', () => generateInsightsSweep())
       .then((sent) => console.log(`[3.3 advisor] daily sweep sent ${sent} insights`))
       .catch((err) => console.error(`[3.3 advisor] sweep failed: ${(err as Error).message}`));
   }, SWEEP_INTERVAL_MS);

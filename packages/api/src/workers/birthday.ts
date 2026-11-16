@@ -6,6 +6,7 @@
  * flow issues the code) + a birthday notification, once per year.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 
 const SWEEP_INTERVAL_MS = 3_600_000 * 24; // daily
@@ -67,9 +68,9 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startBirthday(): void {
   if (intervalId) return;
-  void sendBirthdayEmails();
+  void withHeartbeat('birthday', () => sendBirthdayEmails());
   intervalId = setInterval(() => {
-    void sendBirthdayEmails();
+    void withHeartbeat('birthday', () => sendBirthdayEmails());
   }, SWEEP_INTERVAL_MS);
 }
 
