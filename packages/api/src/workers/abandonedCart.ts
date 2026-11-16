@@ -7,6 +7,7 @@
  * one message per user per 24h, no schema changes needed.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 
 const SWEEP_INTERVAL_MS = 3_600_000 * 24; // daily
@@ -77,9 +78,9 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startAbandonedCart(): void {
   if (intervalId) return;
-  void sendAbandonedCartEmails();
+  void withHeartbeat('abandoned-cart', () => sendAbandonedCartEmails());
   intervalId = setInterval(() => {
-    void sendAbandonedCartEmails();
+    void withHeartbeat('abandoned-cart', () => sendAbandonedCartEmails());
   }, SWEEP_INTERVAL_MS);
 }
 
