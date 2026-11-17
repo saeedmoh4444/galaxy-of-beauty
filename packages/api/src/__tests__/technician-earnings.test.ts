@@ -92,7 +92,7 @@ describe('technicianEarnings router', () => {
     const c = await caller(authOf(user, 'TECHNICIAN'));
 
     const summary = await c.technicianEarnings.summary();
-    expect(summary).toEqual({ thisMonth: 0, lastMonth: 0, totalEarned: 0 });
+    expect(summary).toEqual({ thisMonth: 0, lastMonth: 0, totalEarned: 0, feesThisMonth: 0 });
 
     const trend = await c.technicianEarnings.monthly({});
     expect(trend).toHaveLength(6);
@@ -149,6 +149,7 @@ describe('technicianEarnings router', () => {
       thisMonth: 777,
       lastMonth: 0,
       totalEarned: 777,
+      feesThisMonth: 0,
     });
     const trend = await c.technicianEarnings.monthly({ months: 2 });
     expect(trend.some((m: { amount: number }) => m.amount === 777)).toBe(true);

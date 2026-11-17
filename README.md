@@ -4,7 +4,7 @@
 
 **The women-first beauty & wellness marketplace for Saudi Arabia.**
 
-Galaxy of Beauty connects customers with vetted, KYC-verified female technicians across **18 beauty categories** — from hair, nails, and makeup to spa, bridal, postpartum care, kids services, and a women's lifestyle hub with **94 curated life-stage and occupation categories (289 services)**. Arabic-first and RTL-native, Saudi-compliant (ZATCA e-invoicing, PDPL consent), with a full store & provider marketplace (stores, clinics, gyms, nail bars, at-home salons), a wallet-based commerce loop, shoppable reels, and web + mobile parity — all on a modern TypeScript monorepo.
+Galaxy of Beauty connects customers with vetted, KYC-verified female technicians across **18 beauty categories** — from hair, nails, and makeup to spa, bridal, postpartum care, kids services, and a women's lifestyle hub with **94 curated life-stage and occupation categories (289 services)**. Arabic-first and RTL-native, Saudi-compliant (ZATCA e-invoicing, PDPL consent), with a full store & provider marketplace (stores, clinics, gyms, nail bars, at-home salons), a **first-class SELLER role** with payout requests and portal dashboards, **live realtime events** (booking/chat/wallet/notifications over Socket.IO with a Redis emit bridge), a **women-only gate** (self-declared gender enforced at booking), **admin approval pipelines** for stores/products/packages, a wallet-based commerce loop, shoppable reels, and web + mobile parity — all on a modern TypeScript monorepo.
 
 ---
 
@@ -65,9 +65,9 @@ galaxy-of-beauty/
 │   ├── web/          Next.js 16 App Router — 319 routes, RTL-first
 │   └── mobile/       Expo SDK 58 + Expo Router — 314 screens (EAS dev-build aligned)
 ├── packages/
-│   ├── api/          tRPC v11 — 266 top-level routers / 1,204 procedures, Zod validation
+│   ├── api/          tRPC v11 — 1,221 procedures (528 mutations / 693 queries), tier-gated, Zod validation
 │   ├── db/           Prisma 7 — 251 models, hand-reviewed squashed migrations
-│   ├── shared/       Constants, types, i18n (5,687 keys), theme (no JSX)
+│   ├── shared/       Constants, types, i18n (5,739 web + ~8,800 mobile keys, per-platform/per-locale split), pure engines (pricing, loyalty, imagery fallback chain)
 │   ├── ui/           Components, hooks, Storybook (web + mobile)
 │   └── config/       TSConfig, ESLint, Prettier, Tailwind preset
 ├── docs/             ADRs, architecture, testing, operations, audits
@@ -113,6 +113,18 @@ Four age tiers (baby 0-2, toddler 3-6, girls 7-12, teens 13-17) with real bookin
 
 A unified provider model — stores, clinics, gyms, nail bars, and at-home salons behind one KSA registration wizard with admin approval. Dedicated `/store` dashboards, product variants, staff roles with ownership scoping, commission settlements with an admin rate editor, and product reviews.
 
+### Seller program (first-class role)
+
+SELLER is a first-class account role (registration picker + login routing to the vendor portal): seller-initiated **payout requests** on a dedicated seller lane, mobile vendor-portal analytics/earnings mirrors, and an **approval gate on every auto-created store** — inactive until an admin approves the PENDING_REVIEW submission (public listings filter by `vendor.isActive`).
+
+### Realtime (actually real)
+
+Booking lifecycle, chat, wallet, notifications, waitlist, and admin events flow over Socket.IO (:4001 standalone process, Redis adapter) — API-side emits route through a **cross-process Redis bridge** (W3-1), so realtime works in the split Next.js + socket deployment, exactly-once per client.
+
+### Women-only enforcement
+
+The platform claim is enforced, not decorative: self-declared gender at registration (default female), and **womens/kids booking rejects non-female accounts**. A verified-female KYC upgrade pass is tracked for later.
+
 ### Money & loyalty (integrity-first)
 
 Wallets with **atomic, idempotent debits and withdrawals** (no lost funds on retry, no overdraw races), wallet-based store checkout, fulfill/refund gates that only move money for **paid** orders, dispute resolution with wallet refunds, cashback, gift cards, promo codes, loyalty points with expiry sweeps, and a tiered referral program. Every money path is covered by tests, including a **full wallet-purchase E2E** that asserts the exact balance delta.
@@ -157,23 +169,23 @@ Beauty events (capacity, auto-promoting waitlists, FREE/PAID/VIP tiers, gated me
 
 ## ✅ Current Status
 
-| Check             | Status                                                                                                                                                  |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TypeScript        | 6/6 workspaces passing                                                                                                                                  |
-| ESLint            | 0 errors repo-wide (27 mobile / 3 web pre-existing warnings ride under per-package budgets; documented disables are gate-guarded)                       |
-| Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                                    |
-| Build             | 6/6 workspaces passing (Next.js 16: 319 routes; Turbo strict env mode with `globalPassThroughEnv`)                                                      |
-| Web bundle size   | 221/213/298/226 KB gz per route class (FE-007 size gate against `size-baseline.json`; targets 100–150 KB remain the open debt)                          |
-| API tests         | **~1,905 test cases** across api/web/shared/ui/db suites, green on CI's isolated DB                                                                     |
-| Coverage          | **Ratchet enforced in CI** — floors 63/55/53/65 (measured 64.35/56.45/54.25/66.01 on 2026-10-31)                                                        |
-| E2E (Playwright)  | **356 tests × 3 browser projects** (chromium + firefox + mobile Chrome) incl. the axe a11y gate and a real money-movement E2E                           |
-| Contract gates    | Router inventory (266 routers / 1,204 procedures, counts + detail + sha256), money-integrity, i18n leak, cycles, static-Arabic (web + mobile)           |
-| Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                                     |
-| Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                                    |
-| CI                | Frozen install, format, lint, type-check, coverage-ratcheted tests, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker |
-| Prod audit        | 0 critical / 3 accepted high / 2 moderate (documented in SECURITY.md)                                                                                   |
+| Check             | Status                                                                                                                                                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| TypeScript        | 6/6 workspaces passing                                                                                                                                                   |
+| ESLint            | 0 errors repo-wide (27 mobile / 3 web pre-existing warnings ride under per-package budgets; documented disables are gate-guarded)                                        |
+| Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                                                     |
+| Build             | 6/6 workspaces passing (Next.js 16: 319 routes; Turbo strict env mode with `globalPassThroughEnv`)                                                                       |
+| Web bundle size   | 221/213/298/226 KB gz per route class (FE-007 size gate against `size-baseline.json`; targets 100–150 KB remain the open debt)                                           |
+| API tests         | **~1,905 test cases** across api/web/shared/ui/db suites, green on CI's isolated DB                                                                                      |
+| Coverage          | **Ratchet enforced in CI** — floors 63/55/53/65 (measured 64.35/56.45/54.25/66.01 on 2026-10-31)                                                                         |
+| E2E (Playwright)  | **356 tests × 3 browser projects** (chromium + firefox + mobile Chrome) incl. the axe a11y gate and a real money-movement E2E                                            |
+| Contract gates    | Router inventory (1,221 procedures, counts + detail + sha256), money-integrity, i18n leak, cycles, static-Arabic, locale-catalog drift, seed contracts on an isolated DB |
+| Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                                                      |
+| Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                                                     |
+| CI                | Frozen install, format, lint, type-check, coverage-ratcheted tests, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker                  |
+| Prod audit        | 0 critical / 3 accepted high / 2 moderate (documented in SECURITY.md)                                                                                                    |
 
-**Readiness**: verifiably correct baseline with an enforced coverage ratchet. Ops hardening is shipped (staging, backups, alerting, breakers, metrics); launch is gated on user credentials — the MyFatoorah live token, production server/domains, Sentry DSN, S3 keys, and the Apple Developer account. See [AUDIT_2026-10-30.md](docs/AUDIT_2026-10-30.md) for the full gap analysis and [LAUNCH_READINESS.md](docs/LAUNCH_READINESS.md) for the live checklist.
+**Readiness**: verifiably correct baseline with an enforced coverage ratchet. The November build-out is in motion — **W1 (money integrity), W2 (catalog bookability) and W3 (realtime + seller tier + women-only) are merged; W4–W6 remain** (tracked in [AUDIT_2026-11-11_MASTER_PLAN.md](docs/AUDIT_2026-11-11_MASTER_PLAN.md)). Ops hardening is shipped (staging, backups, alerting, breakers, metrics); launch is gated on user credentials — the MyFatoorah live token, production server/domains, Sentry DSN, AWS S3/CDN, an AI-image generator account, and the Apple Developer account. See [LAUNCH_READINESS.md](docs/LAUNCH_READINESS.md) for the live checklist.
 
 ---
 
@@ -204,31 +216,34 @@ Beauty events (capacity, auto-promoting waitlists, FREE/PAID/VIP tiers, gated me
 
 ## 📚 Documentation
 
-| Document                                                              | Description                                                   |
-| --------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [Launch Readiness](docs/LAUNCH_READINESS.md)                          | Current health, feature inventory, and the honest launch gate |
-| [Known Issues](docs/KNOWN_ISSUES.md)                                  | Live issue register (refreshed 2026-10-31)                    |
-| [Delivery Report](DELIVERY_REPORT.md)                                 | Historical — the original 2026-08 remediation (PR #44)        |
-| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                    | Test everything yourself — full checklist                     |
-| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)       | Auth architecture decision                                    |
-| [Model Ownership Map](docs/architecture/model-ownership.md)           | 251 models → 12 bounded contexts                              |
-| [Architecture Context Map](docs/architecture/context-map.md)          | Domain classification + debt audit                            |
-| [Migration Standards](docs/architecture/migration-standards.md)       | Conventions, redundant index audit                            |
-| [API Risk Matrix](docs/testing/risk-matrix.md)                        | Tiered test coverage strategy                                 |
-| [Deep Audit (2026-10-30)](docs/AUDIT_2026-10-30.md)                   | Full-platform audit: features, gaps, build plan               |
-| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                   | 20-item platform audit + resolution log                       |
-| [Audit Report](docs/AUDIT_REPORT.md)                                  | Findings, fixes, and recommendations                          |
-| [Reels Shoppable Plan](docs/REELS_SHOPPABLE_PLAN.md)                  | Phases 1–3 DELIVERED — delivery records                       |
-| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                | Accessibility/delight backlog                                 |
-| [Performance Budgets](docs/frontend/performance-budgets.md)           | Web vitals targets                                            |
-| [Incident Runbooks](docs/operations/runbooks.md)                      | Emergency scenarios                                           |
-| [SECURITY.md](SECURITY.md)                                            | Vulnerability disclosure + audit                              |
-| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)      | Golden rules, commands, gates, gotchas                        |
-| [Project Brain](brain_code.md)                                        | Living architecture knowledge base                            |
-| [Technical Debt](docs/TECHNICAL_DEBT.md)                              | Debt register with priorities                                 |
-| [Store & Provider System](docs/architecture/store-provider-system.md) | Unified provider model reference                              |
-| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)    | Phased roadmap A–D with effort estimates                      |
-| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)           | Fixes → store systems → launch → quality                      |
+| Document                                                                   | Description                                                       |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Launch Readiness](docs/LAUNCH_READINESS.md)                               | Current health, feature inventory, and the honest launch gate     |
+| [Known Issues](docs/KNOWN_ISSUES.md)                                       | Live issue register (refreshed 2026-10-31)                        |
+| [Delivery Report](DELIVERY_REPORT.md)                                      | Historical — the original 2026-08 remediation (PR #44)            |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                         | Test everything yourself — full checklist                         |
+| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)            | Auth architecture decision                                        |
+| [Model Ownership Map](docs/architecture/model-ownership.md)                | 251 models → 12 bounded contexts                                  |
+| [Architecture Context Map](docs/architecture/context-map.md)               | Domain classification + debt audit                                |
+| [Migration Standards](docs/architecture/migration-standards.md)            | Conventions, redundant index audit                                |
+| [API Risk Matrix](docs/testing/risk-matrix.md)                             | Tiered test coverage strategy                                     |
+| [Deep Audit (2026-10-30)](docs/AUDIT_2026-10-30.md)                        | Full-platform audit: features, gaps, build plan                   |
+| [Master Build Plan (2026-11-11)](docs/AUDIT_2026-11-11_MASTER_PLAN.md)     | Ranked gap list P0–P4 + W1–W6 wave tracker                        |
+| [Architecture Decisions (2026-11)](docs/ARCHITECTURE_DECISIONS_2026-11.md) | ADR-style log of the November build-out decisions                 |
+| [Imagery Plan (2026-11-15)](docs/IMAGERY_PLAN_2026-11-15.md)               | Real-imagery program: fallback chain, upload pipeline, AI library |
+| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                        | 20-item platform audit + resolution log                           |
+| [Audit Report](docs/AUDIT_REPORT.md)                                       | Findings, fixes, and recommendations                              |
+| [Reels Shoppable Plan](docs/REELS_SHOPPABLE_PLAN.md)                       | Phases 1–3 DELIVERED — delivery records                           |
+| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                     | Accessibility/delight backlog                                     |
+| [Performance Budgets](docs/frontend/performance-budgets.md)                | Web vitals targets                                                |
+| [Incident Runbooks](docs/operations/runbooks.md)                           | Emergency scenarios                                               |
+| [SECURITY.md](SECURITY.md)                                                 | Vulnerability disclosure + audit                                  |
+| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)           | Golden rules, commands, gates, gotchas                            |
+| [Project Brain](brain_code.md)                                             | Living architecture knowledge base                                |
+| [Technical Debt](docs/TECHNICAL_DEBT.md)                                   | Debt register with priorities                                     |
+| [Store & Provider System](docs/architecture/store-provider-system.md)      | Unified provider model reference                                  |
+| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)         | Phased roadmap A–D with effort estimates                          |
+| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)                | Fixes → store systems → launch → quality                          |
 
 ---
 
@@ -244,6 +259,10 @@ Beauty events (capacity, auto-promoting waitlists, FREE/PAID/VIP tiers, gated me
 - **Secrets**: Production startup validates against known weak/default secrets.
 - **Money integrity**: amount-checked gateway callbacks, typed authorize races, atomic + idempotent wallet debits/withdrawals, paid-only fulfill/refund gates, and post-commit notifications that can never read as payment failures.
 - **Audit**: Structured security events for login, password change, token reuse.
+- **Ownership checks**: every write that reads another user's resource (address, technician, vendor, booking) verifies the caller owns it (W2-5/W2-7).
+- **Approval pipelines**: stores, products (strict mode), packages and promotions only go live through the admin review queue (`providerReview.decide`); auto-created stores start INACTIVE.
+- **Fail-closed analytics**: no fabricated stat, price, rating or persona may reach a user — enforced by contract tests.
+- **Women-only gate**: womens/kids booking rejects non-female accounts (self-declared gender, option 1; KYC option 2 tracked).
 - **Dependencies**: 3 accepted high / 2 moderate findings, 0 critical — documented in [SECURITY.md](SECURITY.md) with compensating controls and re-check cadences.
 
 ### Reporting Vulnerabilities

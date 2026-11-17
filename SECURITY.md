@@ -81,3 +81,17 @@ Merging is blocked while unaccepted critical/high findings remain.
 - **Audit**: Structured security events for login, password change, token reuse.
 - **SQL Injection**: Prevented by Prisma ORM with parameterized queries.
 - **XSS**: React JSX auto-escaping + CSP headers.
+
+## Security Posture — November 2026 Build-Out
+
+Shipped this month (W1–W4 waves, see `docs/ARCHITECTURE_DECISIONS_2026-11.md`):
+
+- **Money integrity (W1)**: booking-transition races closed in-transaction (complete/refund/approve/cashback), idempotency keys on every money path, all client errors are 4xx TRPCErrors (no raw `throw new Error`), reconciliation pages + queue registry + graceful shutdown.
+- **Ownership checks (W2-5/W2-7)**: bookings.create and the womens/kids book paths verify the technician↔service mapping AND address ownership — a crafted request can no longer attach another user's address.
+- **Approval gates (W3-2)**: every auto-created store starts INACTIVE + files a PENDING_REVIEW submission; public listings filter `vendor.isActive`; only `providerReview.decide` activates stores/products/packages/promotions.
+- **Women-only gate (W3-5)**: self-declared `User.gender` (default female); womens/kids booking rejects non-female accounts with FORBIDDEN. Option 2 (verified-female KYC: ID upload → admin review) is the tracked upgrade pass.
+- **Vendor-portal guard (W3-3)**: the mobile vendor-portal redirects guests to login and non-vendors to home (web stays open to authenticated users BY DESIGN — it hosts the registration wizard).
+- **Biometric login (W3-4)**: real session establishment via device auth + stored refresh token. Hardening note: the refresh token lives in AsyncStorage today — moving it to expo-secure-store is a tracked follow-up.
+- **Fail-closed analytics (W4-1)**: no fabricated financials, personas or program stats anywhere (contract-tested).
+
+**Pending user-gated security items**: pentest execution, MyFatoorah live token, Sentry DSNs, AWS S3/CDN credentials, verified-female KYC depth decision.

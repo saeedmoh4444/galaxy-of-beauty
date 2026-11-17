@@ -7,7 +7,12 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate, markBookingPaid, ensureTechnicianService } from './factories';
+import {
+  safeFutureDate,
+  markBookingPaid,
+  ensureTechnicianService,
+  createUniqueSlot,
+} from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -28,14 +33,7 @@ const newIdemKey = () => `nps_${Date.now()}_${uid++}`;
 
 /** Create + drive a booking to COMPLETED; returns the booking id. */
 async function completedBooking(customerUser: JwtPayload): Promise<number> {
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
-      endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
   const customerCaller = await callerFor(customerUser);
   const booking = await customerCaller.bookings.create({
     serviceId,
@@ -123,14 +121,7 @@ describe('NPS survey', () => {
 
   it('rejects ratings for bookings that are not completed', async () => {
     // A REQUESTED booking (never transitioned).
-    const slot = await prisma.availabilitySlot.create({
-      data: {
-        technicianId: technicianRecordId,
-        startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
-        endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
-        isBooked: false,
-      },
-    });
+    const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
     const customerCaller = await callerFor(customer);
     const booking = await customerCaller.bookings.create({
       serviceId,

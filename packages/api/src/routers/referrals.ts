@@ -207,7 +207,9 @@ export const referralRouter = router({
         });
       }
 
-      // Create the referral
+      // W5-2 — the alreadyReferred guard above rejects repeat applies in
+      // normal flow; the compound unique (referrerId, referredId) closes
+      // the concurrent-apply race at the DB level.
       const referral = await prisma.referral.create({
         data: {
           referrerId,

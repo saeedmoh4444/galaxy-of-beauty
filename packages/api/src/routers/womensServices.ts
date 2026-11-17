@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { DEFAULT_PLATFORM_FEE_SAR } from '@galaxy/shared';
-import { customerProcedure, publicProcedure, router } from '../trpc';
+import { publicProcedure, router, womenOnlyMutation } from '../trpc';
 import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 import { WOMENS_SERVICES } from '@galaxy/shared/catalog/womens';
 import { resolveWomensServiceId } from './womensServicesMap';
@@ -30,7 +30,7 @@ export const womensServicesRouter = router({
   // to a real seeded Service row (see womensServicesMap.ts); the booking
   // is created against it and the requested facade item travels in the
   // notes. Never returns a confirmed booking that was not created.
-  book: customerProcedure
+  book: womenOnlyMutation // W3-5p2 — women-only facilities
     .input(
       z.object({
         serviceId: z.string(),
