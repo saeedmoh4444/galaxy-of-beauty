@@ -51,6 +51,8 @@ export default function RegisterPage(): JSX.Element {
     password: '',
     confirmPassword: '',
     role: 'CUSTOMER' as 'CUSTOMER' | 'TECHNICIAN',
+    // W3-5p2 — self-declared gender (women-only platform; defaults female).
+    gender: 'female' as 'female' | 'male',
     city: '',
   });
   const [error, setError] = useState('');
@@ -107,6 +109,7 @@ export default function RegisterPage(): JSX.Element {
       password: form.password,
       name: form.name,
       role: form.role,
+      gender: form.gender,
       acceptedTerms: accepted,
       city: form.role === 'TECHNICIAN' ? form.city : undefined,
     });
@@ -173,6 +176,23 @@ export default function RegisterPage(): JSX.Element {
               {/* R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store
                   owners; store identity + KYC follow in the portal wizard. */}
               <option value="SELLER">{t('auth.role-seller')}</option>
+            </select>
+          </div>
+          <div>
+            <label
+              htmlFor="rg-gender"
+              className="mb-1.5 block text-sm font-medium text-text-primary"
+            >
+              {t('auth.gender')}
+            </label>
+            <select
+              id="rg-gender"
+              value={form.gender}
+              onChange={(e) => set('gender', e.target.value)}
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm bg-surface-elevated"
+            >
+              <option value="female">{t('auth.gender-female')}</option>
+              <option value="male">{t('auth.gender-male')}</option>
             </select>
           </div>
           {form.role === 'TECHNICIAN' && (
