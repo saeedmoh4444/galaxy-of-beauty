@@ -49,7 +49,9 @@ export const categoryRouter = router({
    */
   tree: publicProcedure.query(async () => {
     const allCategories = await prisma.category.findMany({
-      where: { isActive: true },
+      // W3-5 — same women-only exclusion as list: the mobile browse renders
+      // this tree, and the mens-grooming chip leaked there before.
+      where: { isActive: true, slug: { not: 'mens-grooming' } },
       orderBy: { sortOrder: 'asc' },
     });
 
