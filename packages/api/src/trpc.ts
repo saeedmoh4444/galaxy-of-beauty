@@ -229,6 +229,33 @@ export const staffProcedure = protectedProcedure
  */
 export const customerMutation = customerProcedure.use(csrfGuard).meta({ tier: 'customer' });
 export const sellerMutation = sellerProcedure.use(csrfGuard).meta({ tier: 'seller' });
+
+// ---- Women-only gate (W3-5p2, option 1) ----
+
+/**
+ * Women-only facilities (womensServices / kidsServices) require a female
+ * account. Self-declared at registration (default 'female'); a verified
+ * KYC step (option 2) is the planned upgrade — tracked in the audit plan.
+ * Reads the live User row (gender is not in the JWT) so role/token
+ * changes take effect without re-login.
+ */
+const womenOnlyGuard = middleware(async ({ ctx, next }) => {
+  if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
+  const user = await prisma.user.findUnique({
+    where: { id: ctx.user.id },
+    select: { gender: true },
+  });
+  if (user?.gender !== 'female') {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Women-only service — female accounts only',
+    });
+  }
+  return next();
+});
+
+export const womenOnlyProcedure = customerProcedure.use(womenOnlyGuard).meta({ tier: 'customer' });
+export const womenOnlyMutation = womenOnlyProcedure.use(csrfGuard).meta({ tier: 'customer' });
 export const technicianMutation = technicianProcedure.use(csrfGuard).meta({ tier: 'technician' });
 export const adminMutation = adminProcedure.use(csrfGuard).meta({ tier: 'admin' });
 
