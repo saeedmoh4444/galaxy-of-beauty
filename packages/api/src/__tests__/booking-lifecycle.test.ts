@@ -9,7 +9,7 @@ import crypto from 'crypto';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate, ensureTechnicianService } from './factories';
+import { safeFutureDate, ensureTechnicianService, createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -35,15 +35,7 @@ let uid = 0;
 const newIdemKey = () => `mob_lifecycle_${Date.now()}_${uid++}`;
 
 async function seedSlot(): Promise<number> {
-  const start = safeFutureDate(1);
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: start,
-      endAt: new Date(start.getTime() + 3600000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId);
   return slot.id;
 }
 
