@@ -201,6 +201,10 @@ pm2 restart all
 
 ## Backup
 
+**Automated**: the prod compose ships a daily backup sidecar (`backup` service,
+`BACKUP_CRON`, pg_dump over the compose network — verify via `/backups/backup.log`).
+**Manual fallback**:
+
 ```bash
 # Database backup (daily cron)
 pg_dump $DATABASE_URL | gzip > /backups/gob-$(date +%Y%m%d).sql.gz
@@ -301,4 +305,6 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml \
 
 - `deploy/prometheus.yml` scrapes the API `/metrics` endpoint with `deploy/alerts.yml` rules → Alertmanager.
 - Grafana admin password comes from `GRAFANA_ADMIN_PASSWORD`; `deploy/grafana-dashboard.json` is the starter dashboard.
-- The API must expose `/metrics` (prom-client) for the scrape to have data — in-memory counters (`lib/requestCounters.ts`) are the interim dashboard source until that lands.
+- The API exposes `GET /api/metrics` (prom-client, collect-on-scrape queue depths via `renderMetrics` in `@galaxy/api` — W5-9: this landed after the in-memory interim; the counters note is historical).
+- **Staging TLS/nginx is NOT provisioned** (the staging compose deliberately redefines neither) — a launch-gap: TLS certs + nginx for staging are user-gated (tracked in the master plan W5-9 row).
+- **Alertmanager paging is theoretical** until `ALERT_WEBHOOK_URL` lands: `deploy/alertmanager.yml` carries a deploy-time placeholder (W5-10, user-gated).
