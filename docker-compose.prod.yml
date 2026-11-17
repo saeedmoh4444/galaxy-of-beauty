@@ -49,6 +49,11 @@ services:
       args:
         NEXT_PUBLIC_SENTRY_DSN: ${SENTRY_DSN:-}
         NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL:-}
+        # W5-8 — static generation validates the API env at build time;
+        # build-only placeholders (runtime env comes from `environment`).
+        DATABASE_URL: ${DATABASE_URL:-postgresql://gob_admin:build-placeholder@postgres:5432/Galaxy_of_Beauty_db}
+        JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-build-only-access-secret-0123456789-abcdef}
+        JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-build-only-refresh-secret-0123456789-fedcba}
     # !override drops the base dev environment (dev JWT defaults would
     # trip the weak-secret startup guard in production).
     environment: !override
