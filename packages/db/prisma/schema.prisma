@@ -1633,6 +1633,8 @@ model Product {
   shortTagClicks ShortTagClick[] // Q1 — taps that snapshot this product
 
   @@index([vendorId, isActive])
+  // W5-5 — the vendor-portal top-products sort (vendorId + sales DESC).
+  @@index([vendorId, sales])
   @@index([categoryId, isActive])
   @@index([price])
   @@map("products")
@@ -2113,6 +2115,8 @@ model StoreCheckout {
   orders   StoreOrder[]
 
   @@index([customerId, createdAt])
+  // W5-5 — webhook/pending sweeps poll by status.
+  @@index([status])
   @@map("store_checkouts")
 }
 
