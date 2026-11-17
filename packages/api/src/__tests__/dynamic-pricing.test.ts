@@ -248,12 +248,15 @@ describe('dynamic pricing — bookings.create integration', () => {
     ruleIds.push(rule.id);
 
     // 5 slots around the booking; 4 already booked → 80% → surge.
+    // W5-3: 40-min spacing × 20-min slots keeps all five inside the ±2h
+    // surge window without any overlap (the exclusion constraint forbids
+    // the old 15-minute-offset layout).
     for (let i = 0; i < 5; i++) {
       const slot = await prisma.availabilitySlot.create({
         data: {
           technicianId: techProfileId,
-          startAt: new Date(start.getTime() + (i - 2) * 900_000),
-          endAt: new Date(start.getTime() + (i - 2) * 900_000 + 1_800_000),
+          startAt: new Date(start.getTime() + (i - 2) * 40 * 60_000),
+          endAt: new Date(start.getTime() + (i - 2) * 40 * 60_000 + 20 * 60_000),
           isBooked: i < 4,
         },
       });
