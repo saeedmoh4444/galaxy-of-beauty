@@ -157,6 +157,9 @@ model User {
   suspendReason     String?
   avatarUrl         String?
   preferredLanguage String    @default("ar")
+  // W3-5p2 — self-declared gender (option 1 of the women-only gate: no KYC,
+  // enforced at booking; option 2 = verified-female KYC upgrade later).
+  gender            String    @default("female") // 'female' | 'male'
   lastLoginAt       DateTime?
   // 8.3b — monthly re-engagement throttle marker.
   lastReengagementAt DateTime?
@@ -166,6 +169,8 @@ model User {
   updatedAt         DateTime  @updatedAt
 
   // Relations
+  giftCards         GiftCard[]
+  flashDealClaims   FlashDealClaim[]
   technician        Technician?
   wallet            Wallet?
   addresses         Address[]
@@ -890,6 +895,7 @@ model Dispute {
   id           Int           @id @default(autoincrement())
   bookingId    Int?          @unique // null = store-order dispute (stage 12)
   storeOrderId Int?          @unique
+  // W5-4 — exactly-one-target CHECK enforced in the hand-written migration.
   raisedBy    Int           // User who raised the dispute
   reason      String
   description String?
@@ -1193,6 +1199,8 @@ model WishlistItem {
   service    Service?    @relation(fields: [serviceId], references: [id], onDelete: SetNull)
   technician Technician? @relation(fields: [technicianId], references: [id], onDelete: SetNull)
 
+  // W5-4 — deployed as NULLS NOT DISTINCT (PG15) in the hand-written
+  // migration; Prisma's @@unique is the closest schema representation.
   @@unique([userId, serviceId])
   @@unique([userId, technicianId])
   @@index([userId])
@@ -1441,6 +1449,9 @@ model PromoUsage {
   promoCode PromoCode @relation(fields: [promoCodeId], references: [id])
   user      User      @relation(fields: [userId], references: [id])
 
+  // W5-4 — the deployed unique index uses NULLS NOT DISTINCT (PG15) so a
+  // NULL bookingId cannot be reused infinitely; Prisma can't express that,
+  // the hand-written migration creates it (see 2026… w5 db constraints).
   @@unique([promoCodeId, userId, bookingId])
   @@map("promo_usages")
 }
@@ -1619,6 +1630,8 @@ model Product {
   shortTagClicks ShortTagClick[] // Q1 — taps that snapshot this product
 
   @@index([vendorId, isActive])
+  // W5-5 — the vendor-portal top-products sort (vendorId + sales DESC).
+  @@index([vendorId, sales])
   @@index([categoryId, isActive])
   @@index([price])
   @@map("products")
@@ -2099,6 +2112,8 @@ model StoreCheckout {
   orders   StoreOrder[]
 
   @@index([customerId, createdAt])
+  // W5-5 — webhook/pending sweeps poll by status.
+  @@index([status])
   @@map("store_checkouts")
 }
 
@@ -2201,6 +2216,9 @@ model GiftCard {
   expiresAt   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  // W5-1 — money-adjacent owner column, now constrained.
+  purchaser User @relation(fields: [purchaserId], references: [id], onDelete: Restrict)
 
   @@index([code])
   @@index([purchaserId])
@@ -3254,6 +3272,8 @@ model FlashDealClaim {
   createdAt DateTime  @default(now())
 
   flashDeal FlashDeal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  // W5-1 — money-adjacent claimer, now constrained.
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([dealId, userId])
   @@index([userId])
