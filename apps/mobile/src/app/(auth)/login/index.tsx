@@ -12,8 +12,8 @@ import {
   Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/trpc-react';
-import { setAuthToken, setAuthRefreshToken } from '@/lib/authToken';
+import { trpc, trpcClient } from '@/lib/trpc-react';
+import { getAuthRefreshToken, setAuthToken, setAuthRefreshToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useBiometric } from '@/hooks/useBiometric';
 import { useToast } from '@/components/Toast';
@@ -21,6 +21,7 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
 import { Icon } from '@/components/Icon';
 import { BRAND_LOGO } from '@/utils/branding';
+import { biometricLoginOutcome } from '@/utils/biometricLogin';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -36,11 +37,54 @@ export default function LoginScreen() {
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
   const { isAvailable, authenticate } = useBiometric();
 
+  // W3-4 — biometric login actually signs in: device auth → stored
+  // refresh token → auth.refresh → session + role routing. The refresh
+  // token is persisted on every password login (setAuthRefreshToken in
+  // onSuccess), so quick login works on the next app open.
+  const bioLoginMut = trpc.auth.refresh.useMutation({
+    onSuccess: async (res) => {
+      await setAuthToken(res.accessToken);
+      await setAuthRefreshToken(res.refreshToken);
+      setSocketToken(res.accessToken);
+      const me = await trpcClient.users.getMe.query();
+      const role = (me as { role?: string })?.role;
+      if (role === 'ADMIN') router.replace('/admin/dashboard');
+      else if (role === 'TECHNICIAN') router.replace('/tech/dashboard');
+      else if (role === 'SELLER') router.replace('/vendor-portal');
+      else router.replace('/(tabs)/home');
+    },
+    onError: (err) => {
+      const outcome = biometricLoginOutcome(
+        true,
+        true,
+        err.data?.code === 'UNAUTHORIZED' ? 'unauthorized' : 'error',
+      );
+      if (outcome === 'session-expired') {
+        // Clear the stale saved session so a password login starts clean.
+        void setAuthRefreshToken(null);
+        showToast('error', t('mobile.auth.biometricExpired'));
+      } else {
+        // refresh-error — transient, token kept, retry allowed.
+        showToast('error', t('mobile.auth.biometricFailed'));
+      }
+    },
+  });
+
   const handleBiometricLogin = async () => {
     const result = await authenticate();
-    if (result.success) {
-      showToast('success', t('mobile.auth.biometricSuccess'));
+    const stored = getAuthRefreshToken();
+    const outcome = biometricLoginOutcome(result.success, !!stored, 'ok');
+    if (outcome === 'device-unavailable') {
+      showToast('error', t('mobile.auth.biometricFailed'));
+      return;
     }
+    if (outcome === 'no-stored-session') {
+      // Log in with password once first — nothing saved to refresh with.
+      showToast('info', t('mobile.auth.biometricLoginFirst'));
+      return;
+    }
+    await bioLoginMut.mutateAsync({ refreshToken: stored! }).catch(() => null);
+    // Success → onSuccess routed. Failure → onError toasts.
   };
 
   const loginMut = trpc.auth.login.useMutation({
