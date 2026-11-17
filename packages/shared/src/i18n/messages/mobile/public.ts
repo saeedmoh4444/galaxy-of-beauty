@@ -57,6 +57,10 @@ export const mobilePublicMessages = {
   'mobile.public.audio-rooms.live': { ar: 'مباشر الآن', en: 'Live now' },
   'mobile.public.audio-rooms.listeners': { ar: '{count} مستمعين', en: '{count} listeners' },
   'mobile.public.audio-rooms.join': { ar: 'انضمام', en: 'Join' },
+  'mobile.public.audio-rooms.joined': {
+    ar: 'انضممتِ إلى الغرفة ({count} مستمعين)',
+    en: 'Joined the room ({count} listeners)',
+  },
   'mobile.public.audio-rooms.upcoming': { ar: 'قادم', en: 'Upcoming' },
   'mobile.public.audio-rooms.remind': { ar: 'تذكير', en: 'Remind' },
   'mobile.public.audio-rooms.empty': { ar: 'لا توجد غرف', en: 'No rooms' },
@@ -418,6 +422,14 @@ export const mobilePublicMessages = {
     en: 'Browse services and prices',
   },
   'mobile.public.whatsapp-bot.connect': { ar: 'اربطي الواتساب الآن', en: 'Connect WhatsApp Now' },
+  'mobile.public.whatsapp-bot.try-here': {
+    ar: 'جرّبي الرد الآلي هنا',
+    en: 'Try the auto-reply here',
+  },
+  'mobile.public.whatsapp-bot.connect-pending': {
+    ar: 'الربط عبر واتساب يتفعّل مع رقم البوت الرسمي',
+    en: 'WhatsApp linking activates with the official bot number',
+  },
   'mobile.public.salon-finder.title': { ar: 'صالونات قريبة', en: 'Nearby Salons' },
   'mobile.public.salon-finder.technicians': {
     ar: '{count} فنيات',
