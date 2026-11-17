@@ -25,11 +25,23 @@ COPY packages/api/package.json ./packages/api/
 COPY packages/api/tsconfig.json ./packages/api/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/shared/tsconfig.json ./packages/shared/
+# W5-8 fix — @galaxy/ui is a workspace dep of apps/web (and of the api
+# runtime); it was never copied, so `next build` died on "Can't resolve
+# '@galaxy/ui'". ui is source-only (main → src/index.ts).
+COPY packages/ui/package.json ./packages/ui/
+COPY packages/ui/tsconfig.json ./packages/ui/
 COPY apps/web/package.json ./apps/web/
 COPY apps/web/tsconfig.json ./apps/web/
 COPY apps/web/next.config.js ./apps/web/
 COPY apps/web/postcss.config.cjs ./apps/web/
 COPY apps/web/tailwind.config.ts ./apps/web/
+# The web build reads these at the app root (Sentry SDK registration +
+# instrumentation hook) — without them `next build` fails on
+# "Can't resolve '../../sentry.client.config'".
+COPY apps/web/sentry.client.config.ts ./apps/web/
+COPY apps/web/sentry.server.config.ts ./apps/web/
+COPY apps/web/sentry.edge.config.ts ./apps/web/
+COPY apps/web/instrumentation.ts ./apps/web/
 
 # ---- Dependencies ----
 FROM base AS deps
@@ -54,9 +66,25 @@ ARG NEXT_PUBLIC_SENTRY_DSN
 ARG NEXT_PUBLIC_SOCKET_URL
 ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 ENV NEXT_PUBLIC_SOCKET_URL=$NEXT_PUBLIC_SOCKET_URL
+# W5-8 — static generation imports the API env module (getEnv), which
+# requires DATABASE_URL + 32-char JWT secrets. Build-only placeholders:
+# the production stage's runtime env is injected by compose, not baked.
+# Pages degrade gracefully when the placeholder DB is unreachable, so
+# the build completes without a live database.
+ARG DATABASE_URL
+ARG JWT_ACCESS_SECRET
+ARG JWT_REFRESH_SECRET
+ENV DATABASE_URL=$DATABASE_URL
+ENV JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET
+ENV JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET
 COPY packages/db/src ./packages/db/src
 COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src
+COPY packages/ui/src ./packages/ui/src
+# @galaxy/config/src holds the shared tailwind preset referenced from
+# apps/web/tailwind.config.ts — the CSS build cannot resolve it without
+# the source present.
+COPY packages/config/src ./packages/config/src
 COPY apps/web/src ./apps/web/src
 COPY apps/web/public ./apps/web/public
 RUN cd /app/packages/db && npx prisma generate
@@ -79,9 +107,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/package.json /app/
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/next.config.js /app/
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules /app/node_modules
 
-# Copy only generated Prisma client (not full packages)
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.pnpm/@prisma+client* /app/node_modules/.pnpm/
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma /app/node_modules/@prisma
+# W5-8 — the extra @prisma COPYs below were redundant with the full
+# node_modules copy above AND broken: pnpm keeps @prisma only inside
+# .pnpm, so "/app/node_modules/@prisma" never existed (failed checksum).
+# Dropped entirely.
 
 # Switch to non-root user
 USER nextjs
@@ -99,6 +128,7 @@ ENV NODE_ENV=production
 COPY packages/db/src ./packages/db/src
 COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src
+COPY packages/ui/src ./packages/ui/src
 COPY packages/config ./packages/config
 COPY packages/api/package.json ./packages/api/package.json
 COPY packages/db/prisma ./packages/db/prisma
