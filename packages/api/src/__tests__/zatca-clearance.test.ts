@@ -10,7 +10,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { ensureTechnicianService, safeFutureDate } from './factories';
+import { ensureTechnicianService, safeFutureDate, createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -37,14 +37,7 @@ const newIdemKey = () => `zatca_clear_${Date.now()}_${uid++}`;
 const fixtureBookingIds: number[] = [];
 
 async function seedSlot(): Promise<number> {
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: safeFutureDate(5),
-      endAt: new Date(safeFutureDate(5).getTime() + 3600000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 5 });
   return slot.id;
 }
 

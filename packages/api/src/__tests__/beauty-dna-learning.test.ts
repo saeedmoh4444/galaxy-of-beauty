@@ -8,7 +8,12 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate, markBookingPaid, ensureTechnicianService } from './factories';
+import {
+  safeFutureDate,
+  markBookingPaid,
+  ensureTechnicianService,
+  createUniqueSlot,
+} from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -30,14 +35,7 @@ async function completeBooking(serviceId: number): Promise<number> {
   // W2-5: bookings.create validates the technician↔service mapping.
   await ensureTechnicianService(technicianRecordId, serviceId);
   // Seed a fresh slot so completion does not collide with capacity limits.
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
-      endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
 
   const customerCaller = await authCaller(customer);
   const booking = await customerCaller.bookings.create({
@@ -142,14 +140,7 @@ describe('Beauty DNA ongoing learning', () => {
     });
 
     // Cancel a booking — must NOT add the category.
-    const slot = await prisma.availabilitySlot.create({
-      data: {
-        technicianId: technicianRecordId,
-        startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
-        endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
-        isBooked: false,
-      },
-    });
+    const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
     const customerCaller = await authCaller(customer);
     const booking = await customerCaller.bookings.create({
       serviceId: service!.id,

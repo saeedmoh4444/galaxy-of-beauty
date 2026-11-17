@@ -67,10 +67,14 @@ afterAll(async () => {
 });
 
 /** Weekday 07:00 UTC (10:00 Riyadh) — never inside the Friday window. */
-function safeSlot(daysAhead: number, minutes = 30): { startAt: Date; endAt: Date } {
+function safeSlot(
+  daysAhead: number,
+  minutes = 30,
+  startHourUtc = 7,
+): { startAt: Date; endAt: Date } {
   const d = new Date(Date.now() + daysAhead * 86_400_000);
   while (d.getUTCDay() === 5) d.setUTCDate(d.getUTCDate() + 1);
-  d.setUTCHours(7, 0, 0, 0);
+  d.setUTCHours(startHourUtc, 0, 0, 0);
   return { startAt: d, endAt: new Date(d.getTime() + minutes * 60_000) };
 }
 
@@ -86,7 +90,7 @@ describe('slots — technician availability', () => {
   it('createSlots creates the batch and rejects bad ranges, Jummah and overlaps', async () => {
     const c = await caller(technician);
     const s1 = safeSlot(10);
-    const s2 = safeSlot(10, 60 * 3 + 30); // later the same day, no overlap with s1
+    const s2 = safeSlot(10, 30, 12); // later the same day, no overlap with s1
     const res = await c.slots.createSlots({
       slots: [
         { startAt: s1.startAt.toISOString(), endAt: s1.endAt.toISOString() },
@@ -157,7 +161,7 @@ describe('slots — technician availability', () => {
     await c.slots.createSlots({
       slots: [{ startAt: s.startAt.toISOString(), endAt: s.endAt.toISOString() }],
     });
-    const booked = safeSlot(12, 60 + 30); // later, no overlap
+    const booked = safeSlot(12, 30, 12); // later, no overlap
     const created = await prisma.availabilitySlot.create({
       data: {
         technicianId: techProfileId,
@@ -214,8 +218,8 @@ describe('slots — technician availability', () => {
     const booked = await prisma.availabilitySlot.create({
       data: {
         technicianId: techProfileId,
-        startAt: safeSlot(16, 60 + 30).startAt,
-        endAt: safeSlot(16, 60 + 30).endAt,
+        startAt: safeSlot(16, 30, 12).startAt,
+        endAt: safeSlot(16, 30, 12).endAt,
         isBooked: true,
       },
     });
@@ -233,7 +237,7 @@ describe('slots — technician availability', () => {
     await c.slots.createSlots({
       slots: [{ startAt: day.startAt.toISOString(), endAt: day.endAt.toISOString() }],
     });
-    const booked = safeSlot(18, 60 + 30);
+    const booked = safeSlot(18, 30, 12);
     await prisma.availabilitySlot.create({
       data: {
         technicianId: techProfileId,
