@@ -157,6 +157,9 @@ model User {
   suspendReason     String?
   avatarUrl         String?
   preferredLanguage String    @default("ar")
+  // W3-5p2 — self-declared gender (option 1 of the women-only gate: no KYC,
+  // enforced at booking; option 2 = verified-female KYC upgrade later).
+  gender            String    @default("female") // 'female' | 'male'
   lastLoginAt       DateTime?
   // 8.3b — monthly re-engagement throttle marker.
   lastReengagementAt DateTime?

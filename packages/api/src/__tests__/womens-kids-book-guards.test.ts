@@ -33,6 +33,8 @@ const createdMemberIds: number[] = [];
 let categoryId: number;
 let addressA: number;
 let addressB: number;
+let maleUserId: number;
+let maleAddressId: number;
 
 const WOMENS_CATEGORY = Object.keys(WOMENS_SERVICES)[0]!;
 const WOMENS_FACADE =
@@ -84,6 +86,21 @@ describe('womensServices.book / kidsServices.book parity (W2-7)', () => {
     customerA = { id: a.id, role: 'CUSTOMER', email: a.email };
     customerB = { id: b.id, role: 'CUSTOMER', email: b.email };
     techUserId = techUser.id;
+
+    // W3-5p2 — a male customer for the women-only gate assertions.
+    const maleUser = await prisma.user.create({ data: buildUser({ gender: 'male' }) });
+    createdUserIds.push(maleUser.id);
+    maleUserId = maleUser.id;
+    const maleAddress = await prisma.address.create({
+      data: {
+        userId: maleUser.id,
+        label: 'منزل الزوج',
+        city: 'الرياض',
+        area: 'النخيل',
+        street: 'شارع التجربة',
+      },
+    });
+    maleAddressId = maleAddress.id;
 
     const tech = await prisma.technician.create({
       data: { userId: techUser.id, city: 'الرياض' },
@@ -183,6 +200,22 @@ describe('womensServices.book / kidsServices.book parity (W2-7)', () => {
     createdMemberIds.push(memberA.id, memberB.id);
   }, 40_000);
 
+  describe('women-only gate (W3-5p2)', () => {
+    it('rejects a male customer on womensServices.book', async () => {
+      const c = await caller({ id: maleUserId, role: 'CUSTOMER', email: 'm@t.local' });
+      await expect(c.womensServices.book(womensInput({}))).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    });
+
+    it('rejects a male customer on kidsServices.book', async () => {
+      const c = await caller({ id: maleUserId, role: 'CUSTOMER', email: 'm@t.local' });
+      await expect(c.kidsServices.book(kidsInput({}))).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    });
+  });
+
   afterAll(async () => {
     try {
       await prisma.booking.deleteMany({ where: { id: { in: createdBookingIds } } });
@@ -191,7 +224,9 @@ describe('womensServices.book / kidsServices.book parity (W2-7)', () => {
       await prisma.familyMember.deleteMany({ where: { id: { in: createdMemberIds } } });
     } catch {}
     try {
-      await prisma.address.deleteMany({ where: { id: { in: [addressA, addressB] } } });
+      await prisma.address.deleteMany({
+        where: { id: { in: [addressA, addressB, maleAddressId] } },
+      });
     } catch {}
     try {
       await prisma.womensServiceMapping.deleteMany({ where: { id: { in: createdMappingIds } } });
