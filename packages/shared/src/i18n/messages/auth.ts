@@ -34,6 +34,10 @@ export const authMessages = {
   'auth.phone': { ar: 'رقم الجوال', en: 'Mobile Number' },
   'auth.confirm-password': { ar: 'تأكيد كلمة المرور', en: 'Confirm Password' },
   'auth.account-type': { ar: 'نوع الحساب', en: 'Account Type' },
+  // W3-5p2 — self-declared gender (women-only gate option 1).
+  'auth.gender': { ar: 'الجنس', en: 'Gender' },
+  'auth.gender-female': { ar: 'أنثى', en: 'Female' },
+  'auth.gender-male': { ar: 'ذكر', en: 'Male' },
   'auth.role-customer': { ar: 'عميلة', en: 'Customer' },
   'auth.role-technician': { ar: 'مقدمة خدمة', en: 'Service Provider' },
   // R3 (SELLER_FIRST_CLASS_ROLE_PLAN) — first-class store owners.

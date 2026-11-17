@@ -50,6 +50,8 @@ export const registerSchema = z.object({
   // store identity + KYC still go through the vendor-portal wizard.
   role: z.enum(['CUSTOMER', 'TECHNICIAN', 'SELLER']).default('CUSTOMER'),
   city: z.string().optional(),
+  // W3-5p2 — self-declared gender; defaults female on the women-only platform.
+  gender: z.enum(['female', 'male']).default('female'),
   acceptedTerms: z.boolean().refine((v) => v === true, 'You must accept the terms'),
   termsVersion: z.string().default('1.0'),
 });
