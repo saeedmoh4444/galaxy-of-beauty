@@ -1,20 +1,28 @@
 -- DropIndex
-DROP INDEX "disputes_status_escalatedAt_idx";
+-- add_user_gender (merged via master) already dropped this index on
+-- fresh DBs; IF EXISTS keeps the sequence idempotent on both paths.
+DROP INDEX IF EXISTS "disputes_status_escalatedAt_idx";
 
 -- DropIndex
-DROP INDEX "product_reviews_repliedAt_reminderSentAt_idx";
+-- add_user_gender (merged via master) already dropped this index on
+-- fresh DBs; IF EXISTS keeps the sequence idempotent on both paths.
+DROP INDEX IF EXISTS "product_reviews_repliedAt_reminderSentAt_idx";
 
 -- DropIndex
-DROP INDEX "store_checkouts_customerId_idx";
+-- add_user_gender (merged via master) already dropped this index on
+-- fresh DBs; IF EXISTS keeps the sequence idempotent on both paths.
+DROP INDEX IF EXISTS "store_checkouts_customerId_idx";
 
 -- DropIndex
-DROP INDEX "store_orders_vendorId_status_slaBreachedAt_idx";
+-- add_user_gender (merged via master) already dropped this index on
+-- fresh DBs; IF EXISTS keeps the sequence idempotent on both paths.
+DROP INDEX IF EXISTS "store_orders_vendorId_status_slaBreachedAt_idx";
 
 -- CreateIndex
-CREATE INDEX "store_checkouts_customerId_createdAt_idx" ON "store_checkouts"("customerId", "createdAt");
+CREATE INDEX IF NOT EXISTS "store_checkouts_customerId_createdAt_idx" ON "store_checkouts"("customerId", "createdAt");
 
 -- CreateIndex
-CREATE INDEX "vendor_staff_userId_idx" ON "vendor_staff"("userId");
+CREATE INDEX IF NOT EXISTS "vendor_staff_userId_idx" ON "vendor_staff"("userId");
 
 -- W5-1 — defensive orphan cleanup (long-lived dev DBs may hold rows whose
 -- owner was deleted while the column was unconstrained).
