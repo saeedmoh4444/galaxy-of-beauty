@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { DEFAULT_PLATFORM_FEE_SAR } from '@galaxy/shared';
-import { customerProcedure, publicProcedure, router } from '../trpc';
+import { publicProcedure, router, womenOnlyMutation } from '../trpc';
 import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 
 const KIDS_CATEGORIES = {
@@ -202,7 +202,7 @@ export const kidsServicesRouter = router({
     return cat;
   }),
 
-  book: customerProcedure
+  book: womenOnlyMutation // W3-5p2 — women-only facilities
     .input(
       z.object({
         serviceId: z.string(),
