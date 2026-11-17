@@ -1,17 +1,11 @@
 import type { JSX } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  RefreshControl,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useToast } from '@/components/Toast';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface AudioRoom {
   id?: number;
@@ -29,6 +23,16 @@ interface AudioRoomsData {
 export default function AudioRoomsScreen(): JSX.Element {
   const { locale, t } = useLocale();
   const roomsQ = trpc.audioRooms.rooms.useQuery();
+  const isAuthed = useAuthState();
+  const { showToast } = useToast();
+  // W4-2 — join calls the REAL mutation (was a "coming soon" Alert). Guests
+  // are bounced to login by the global UNAUTHORIZED handler.
+  const joinMut = trpc.audioRooms.join.useMutation({
+    onSuccess: (res) => {
+      showToast('success', t('mobile.public.audio-rooms.joined', { count: res.listenerCount }));
+      void roomsQ.refetch();
+    },
+  });
 
   if (roomsQ.isLoading) return <SkeletonList count={4} />;
   if (roomsQ.isError)
@@ -73,12 +77,13 @@ export default function AudioRoomsScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity
-            style={styles.joinBtn}
-            onPress={() =>
-              Alert.alert(t('mobile.public.audio-rooms.join'), t('marketing.campaigns.coming-soon'))
-            }
+            style={[styles.joinBtn, !isAuthed && styles.joinBtnDisabled]}
+            disabled={joinMut.isPending}
+            onPress={() => joinMut.mutate({ roomId: r.id ?? 0 })}
           >
-            <Text style={styles.joinBtnText}>{t('mobile.public.audio-rooms.join')}</Text>
+            <Text style={styles.joinBtnText}>
+              {joinMut.isPending ? '…' : t('mobile.public.audio-rooms.join')}
+            </Text>
           </TouchableOpacity>
         </View>
       ))}
@@ -145,6 +150,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   joinBtnText: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  joinBtnDisabled: { opacity: 0.6 },
   remindBadge: {
     backgroundColor: '#f3f4f6',
     borderRadius: 8,

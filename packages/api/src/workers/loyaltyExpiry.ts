@@ -11,6 +11,7 @@
  * Exported functions are pure and tested directly.
  */
 import { prisma } from '@galaxy/db';
+import { withHeartbeat } from '../lib/sentry';
 import { notifyUser } from '../lib/notify';
 
 const SWEEP_INTERVAL_MS = 3_600_000 * 24; // daily
@@ -102,11 +103,11 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 
 export function startLoyaltyExpirySweep(): void {
   if (intervalId) return;
-  void sweepExpiredLoyaltyPoints();
-  void sendLoyaltyExpiryReminders();
+  void withHeartbeat('loyalty-expiry', () => sweepExpiredLoyaltyPoints());
+  void withHeartbeat('loyalty-expiry', () => sendLoyaltyExpiryReminders());
   intervalId = setInterval(() => {
-    void sweepExpiredLoyaltyPoints();
-    void sendLoyaltyExpiryReminders();
+    void withHeartbeat('loyalty-expiry', () => sweepExpiredLoyaltyPoints());
+    void withHeartbeat('loyalty-expiry', () => sendLoyaltyExpiryReminders());
   }, SWEEP_INTERVAL_MS);
 }
 

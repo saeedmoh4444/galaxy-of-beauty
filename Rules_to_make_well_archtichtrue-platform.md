@@ -1,194 +1,185 @@
 # Rules to Make a Well-Architected Platform — Galaxy of Beauty
 
-> The working rulebook for developing, improving, and enhancing this codebase.
-> Every rule below is load-bearing: it exists because something broke when it was ignored.
-> Updated: 2026-10-30 (reels program Phases 1–3 COMPLETE #541–#558; counts: 267 routers / 1,211 procedures / 251 models; Phase 2–3 gotchas added: merge-tree exit codes, tRPC auto-redirect gating, tie-shuffle E2E, CI trigger-gap recovery).
+> The operating manual for improving and enhancing this codebase without breaking it.
+> Rebuilt: 2026-11-15 — reflects W1–W4, the seller program, and the imagery program.
+> Companion: `brain_code.md` (the architecture itself) + `docs/AUDIT_2026-11-11_MASTER_PLAN.md` (the gap tracker).
 
 ---
 
 ## 0. Golden Rules (never break these)
 
-1. **RTK first**: prefix terminal commands with `rtk` (token-optimized proxy); plain commands where `rtk` passthrough breaks a specific command.
-2. **TDD**: the test file is written (and failing where meaningful) _before_ the implementation. No exceptions.
-3. **All gates before push**: the five package type-checks + per-app lint + affected unit tests + affected script tests. CI enforces the rest, but never push red.
-4. **Money integrity is sacred**: fail-closed gateways, verified callbacks only, idempotency keys, `$transaction` for any multi-write involving money. Never fake `success: true`.
-5. **One agent in the shared worktree at a time**: parallel agents run `git checkout` in the same directory and clobber each other (this has happened). Sequential dispatch only; the next agent starts only after the previous PR merges.
-6. **Never merge red / never bypass protection**: merges happen only on full CI green; use `--auto` when the head needs fresh checks after a branch update.
+1. **Never fabricate.** No invented stat, price, rating, count, or persona may reach a user.
+   Unwired verticals fail closed with an explicit reason. (`fabricated-analytics.test.ts` pins this.)
+2. **Test-first.** Every slice ships with its tests written BEFORE the implementation.
+   Red → green is the evidence trail in every PR.
+3. **Never edit contract gates casually.** `router-inventory` counts, locale catalogs,
+   bundle budgets, and seed contracts are CI-enforced snapshots. Regenerate them ON the
+   feature branch (`vitest -u`), never by hand-editing the snapshot.
+4. **One PR per 3–5 slices.** Squash-merged; auto-merge armed on CI-green (audit build-out policy).
+   Strict cascade: after every merge, poke the BEHIND PRs (`gh pr update-branch <n>`, merge mode).
+5. **Money-integrity beats convenience.** If a change touches wallets/payouts/refunds/commissions,
+   the test must prove the race is closed, not just the happy path.
+6. **Arabic-first, bilingual always.** New user-facing strings get `{ar, en}` keys. Web keys go
+   in `messages/*.ts` (catalog sources — regenerate); mobile keys go in `messages/mobile/*.ts`
+   (loaded directly, NOT catalog sources — do not regenerate for mobile-only keys).
+7. **Ownership checked at every write.** Any write that reads another user's resource
+   (address, technician, vendor, booking) verifies the caller owns it.
+
+---
 
 ## 1. Commands (verified working forms)
 
+### Type-checks (all packages)
+
 ```bash
-# Type-checks (all five packages)
-pnpm --filter @galaxy/shared type-check && pnpm --filter @galaxy/api type-check
-pnpm --filter @galaxy/web type-check && pnpm --filter @galaxy/mobile type-check && pnpm --filter @galaxy/ui type-check
-
-# Tests (rtk vitest passthrough is broken at the root — use pnpm exec forms)
-pnpm --dir packages/api exec vitest run <files>
-pnpm --filter @galaxy/shared exec vitest run src/catalog.test.ts
-pnpm --filter @galaxy/ui test:unit
-
-# Script gates
-node scripts/find-static-arabic.mjs          # must print "0 across 0 files"
-node scripts/check-size-budgets.mjs          # needs a fresh web build
-node --test scripts/*.test.mjs
-node scripts/check-cycles.mjs
-node scripts/gen-dependency-graph.mjs --check
-
-# Database (migrate dev is BROKEN — hand-write migrations)
-pnpm db:generate                              # after ANY schema.prisma change
-pnpm db:migrate:status                        # exits 1 when migrations are pending (expected)
-pnpm db:migrate:deploy                        # apply pending migrations
-pnpm --filter @galaxy/db db:seed              # full reseed (wipes dev DB — verify it stays idempotent)
-
-# Git / PRs
-gh pr update-branch <n>                       # MERGE mode only — --rebase fails on merge commits/catalog appends
-gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (exit 0 lies)
+pnpm --filter @galaxy/api type-check
+pnpm --filter @galaxy/web type-check
+pnpm --filter @galaxy/mobile type-check
+pnpm --filter @galaxy/shared type-check
+pnpm --filter @galaxy/db type-check
 ```
+
+### Tests
+
+```bash
+# API suites (throwaway-DB recipe for CI parity):
+#   createdb gob_repro → prisma migrate deploy → db:seed → run with DATABASE_URL override
+cd packages/api && DATABASE_URL="…gob_repro" pnpm exec vitest run src/__tests__/<file>.test.ts
+pnpm --filter @galaxy/shared test:unit
+pnpm --filter @galaxy/mobile test:unit
+# Full api suite locally = 37 min on Windows (280 isolated workers) — background it.
+```
+
+### Script gates
+
+```bash
+pnpm i18n:generate                # then: npx prettier --write packages/shared/src/i18n/messages/generated/*.ts
+node scripts/check-locale-catalogs.test.mjs
+pnpm --filter @galaxy/api exec vitest run src/__tests__/router-inventory.test.ts -u   # after adding procedures
+```
+
+### Database
+
+```bash
+# Create migrations on a THROWAWAY DB (never migrate dev against the shared dev DB blindly):
+DATABASE_URL="…gob_new" pnpm --filter @galaxy/db exec prisma migrate dev --name <name>
+pnpm db:generate                   # after every schema change
+# Repair a half-applied migration on dev: check column/index state manually,
+# apply the missing DDL, then: prisma migrate resolve --applied <name>
+```
+
+### Git / PRs
+
+```bash
+git branch -f master origin/master      # local master goes STALE after remote auto-merges
+gh pr update-branch <n>                 # poke BEHIND (merge mode; --rebase fails)
+gh pr merge <n> --auto --squash         # arm (create has NO --auto flag)
+gh run view --job <id> --log-failed     # strip ANSI: sed 's/\x1b\[[0-9;]*m//g'
+```
+
+---
 
 ## 2. Architecture Rules
 
-1. **New tRPC router** → new file in `routers/`, re-export in its `domains/<name>/index.ts`, and **bump the 267-router gate** in `trpc-procedures.test.ts`. Prefer adding procedures to an existing router over a new one.
-2. **Every new procedure** comes from a tiered factory (`publicProcedure`/`protectedProcedure`/`customerProcedure`/`technicianProcedure`/`adminProcedure`) — never a bare `procedure` (tier meta is stamped by the factory).
-3. **Router inventory ritual**: after adding/removing procedures, run `pnpm --dir packages/api exec vitest run src/__tests__/router-inventory.test.ts -u` **on a clean tree**, review the `.snap` diff (counts + hash), and never contaminate it with unrelated edits. **Regenerate BEFORE `git add`**: lint-staged prettier commits the STAGED content, so a file staged before `-u` commits the stale values (this shipped broken on #416 once). After staging, verify direction with `git diff --cached | grep '^[+-]'` — the diff must remove OLD counts/hash and add NEW. After a merge-conflict resolution, re-run `-u` on the resolved tree and stage only then.
-4. **Prisma 7 relations**: writes use `connect` (or `connectOrCreate`) — relation connects and FK scalars are mutually exclusive. Required relations on BOTH sides must be satisfied.
-5. **New gateway/external client** → a facade in `lib/` that is **fail-closed**: no config → throw or dev-stub (only when `*_SIMULATE=true` AND not production), never fake success. Test the failure paths.
-6. **i18n catalog split is an invariant** (see `docs/architecture/i18n-catalog-split.md`):
-   - Web runtime graph: root barrel → `i18n/web` → 11 domain files + runtime. **Never** re-export `sharedMessages`/`mobileMessages` runtime values from the root barrel (the CI leak guard fails the build).
-   - New web strings → domain catalogs (`messages/*.ts`). New mobile strings → `messages/mobile/customerB.ts` appended at the end.
-   - `t()` keys are **literals only** (TranslationKey union enforces it). Values must have **no leading/trailing spaces** (catalog.test.ts trim gate) — separators are stored trimmed and spaced at the join site.
-   - Web legacy `t()` accepts **web keys only** (`WebTranslationKey`); `useLocale().t` keeps the global union for dynamic keys.
-   - **Locale split (post-#403)**: runtime web code loads catalogs ONLY via `getWebCatalog(locale)` (dynamic import + promise cache — React `use()`-safe); server components take the sync `t()` from `@galaxy/shared/i18n/web-server` — importing that subpath from a client component re-bundles both locales and **fails the build** (`checkLocaleSplit`). The root barrel exports NO catalog values. After adding/changing any web key: run `pnpm i18n:generate` and commit the regenerated `messages/generated/{en,ar}.ts` (CI's drift check compares them semantically — prettier reformats them on commit, so never byte-compare).
-7. **Zero static Arabic** outside `t()` in mobile (gate + now-empty allowlist). If a legitimate exception ever appears, it goes through an explicit allowlist entry — and that is a red flag requiring review.
-8. **The web tRPC client auto-redirects on UNAUTHORIZED** — any UI that must show an inline login affordance checks `isAuthenticated` BEFORE calling a customer-gated mutation (reels Q2 shipped the bug: the redirect won the race and the affordance never rendered). Mutations that must fire for anonymous users (ledgers like `tagClicked`) stay public procedures.
-9. **Client-side data-tap E2E assertions must be order-independent**: `createMany` writes equal timestamps, so seeded lists (feeds, tie-shuffled shorts) reorder per database. Specs scroll-find the target (bounded loop + wheel), and seed anchors use `titleJson: { path: ['ar'], equals: … }` — never row ids (reels P1/Q2).
-10. **Attribution/funnel fixtures get one customer per scenario** — a click-join rule ("any prior tap within the window") bleeds expectations across tests that share a user. Fresh `buildUser()` per case, cleanup in `afterAll` (reels Q3).
+1. **New domain → new router file** + tests + export in the domain barrel + the appRouter.
+   Then run the inventory `-u` (procedure counts changed).
+2. **New procedure → explicit tier** (public / protected / customer / seller / technician /
+   admin) + csrf for mutations. No tier = the inventory gate fails.
+3. **Middleware order matters**: auth → role tier → csrf → domain guard (womenOnly, ownership).
+4. **Pure logic lives in `lib/` or `@galaxy/shared`** — node-testable, no React/RN imports.
+   Screens call pure decision functions (`vendorPortalGate`, `biometricLoginOutcome`,
+   `resolveEntityImage`, `resolveSocketUrl`) instead of inlining branching.
+5. **Real-time emits go through the helpers** (`emitToUser` etc.). Never call socket APIs
+   directly from routers; the W3-1 bridge is the only path and it must stay exactly-once.
+6. **Approval pipeline for trust events**: stores, products (strict mode), packages, promotions
+   flow through ProviderSubmission → `providerReview.decide`. `ensureVendor` auto-creates are
+   INACTIVE + filed for review (W3-2) — never bypass with a direct active create.
+7. **Fail closed, then build real**: if a feature needs data that doesn't exist, remove or
+   hide the surface (SheLeadsProgramCard precedent) — never ship fallback fiction.
 
 ## 3. Database Rules
 
-1. Schema change → `pnpm db:generate` + a **hand-written migration** (`packages/db/prisma/migrations/<timestamp>_<name>/migration.sql`) — never `prisma migrate dev` (broken in this repo: the baseline squash + a bookings-index drift make it demand a destructive reset).
-   **Dev-DB application recipe (verified 2026-10-08):**
-   ```bash
-   cd packages/db
-   docker exec -i -e PGPASSWORD=gob_secure_pass_2024 gob-postgres \
-     psql -U gob_admin -d Galaxy_of_Beauty_db < prisma/migrations/<ts>_<name>/migration.sql
-   #   ^^ the -i flag is REQUIRED — without it stdin drops and the SQL silently never runs
-   npx prisma migrate resolve --applied <ts>_<name>   # mark it in the history
-   pnpm db:generate
-   ```
-   Verify the columns/indexes actually changed with an information_schema/pg_indexes query before resolving.
-2. Stale failed migration blocking deploys (P3009): **verify its SQL actually applied** against the DB first, then `prisma migrate resolve --applied <name>`.
-3. Seed must stay **idempotent**: cleanup ordering matters (children before parents — e.g. `seasonalService` before `category`); run the seed twice back-to-back when touching it.
-4. Seed writes follow the same Prisma 7 relation rules as app code — **and stay fully typed** (all `(prisma as any)` casts were removed in #394; do not reintroduce them — a cast hid the reviews drift class once already).
-5. `Vendor.userId` is `@unique` — one provider (store/clinic/gym/…) per owner; tests that need a second rate/vendor must UPDATE the existing row, not create a second one.
+1. **Migrations are reviewed artifacts** — create on a throwaway DB, read the SQL before pushing.
+   Drift diffs may carry unrelated index churn; harmless but don't hand-delete it blindly.
+2. **Seed must be idempotent** and must keep the catalog bookable: every service maps to a
+   technician (round-robin post-pass). The isolated-DB contract tests enforce this.
+3. **NOON-UTC buckets** for daily stats. No local-time date math in aggregates.
+4. **Prisma 7 gotchas**: inner `array $transaction` can't see outer-tx uncommitted writes;
+   Json writes need `as unknown as Prisma.InputJsonValue`; `maxRetriesPerRequest: null` ONLY
+   for the BullMQ connection.
+5. **Decimal fields** come back as Prisma.Decimal — `Number()` them at the API boundary
+   (the pro-tools `4.7 ≠ 4.7m` bug).
 
 ## 4. Testing Rules
 
-1. Every new feature/module gets a test file **before** implementation, following the house patterns:
-   - Pure logic → unit tests with injected seams (`vi.mock`, loader-setter seams like `_setSentryLoaderForTests`).
-   - Router flows → `appRouter.createCaller(ctx)` + seeded Prisma fixtures (factories from `packages/api/src/__tests__/factories.ts`), cleanup in `afterAll`.
-2. **Parallel-DB awareness**: the suite runs ~173 files against ONE shared DB. Never assert on seeded-row counts that sibling files can disturb — backfill your own fixtures in `beforeAll` (see `postpartum.test.ts`). For tests that mutate shared rows (e.g. vendor commission rates) use `describe(name, { sequential: true }, …)` — vitest 5 has no `describe.sequential`.
-3. `vi.spyOn` on module-namespace exports does **not** intercept internal calls in vitest ESM — use explicit seams.
-4. Contract tests (router counts, inventory hash, money-integrity, catalog invariants) are architecture guards — update them deliberately, never delete them to make a change pass. **The router-inventory contract is THREE gates**: the inline counts snapshot, the detail `.snap` list, AND the sha256 hash inline snapshot — a procedure change must update all three.
-5. Keep the size gate's leak sentinels meaningful: any new sentinel must be grep-verified absent from domain catalogs AND web source before committing it.
-6. **New E2E specs run on all three projects** (chromium, firefox, mobile-chrome). Sidebars are `hidden md:block` — assertions on them must be viewport-aware (skip/assert-hidden on mobile) or the mobile project fails.
-7. **Client-side route guards must wait for auth hydration** — a query `enabled: isAuthenticated` returns `undefined` while the auth context hydrates; a guard that redirects on `!data` will bounce legitimate users (this shipped broken once on `/store`). Gate on `isAuthenticated && !isLoading && !data`.
+1. **Fixtures via `factories.ts`** (`buildUser`, `ensureTechnicianService`, `safeFutureDate`).
+   Arbitrary `findFirst` picks pair up only by seed-order coincidence — the zatca breakage was
+   exactly this. Always `ensureTechnicianService` + owned addresses.
+2. **Parallel-worker safety**: scope every cleanup (`where: { id: { in: created… } }`).
+   The shared CI DB is polluted by design; contracts that need pristine data run on the
+   isolated `gob_seed_contract` DB with `SEED_CONTRACT_DB=1`.
+3. **Snapshots**: stage them AFTER `vitest -u`, on the feature branch, no uncommitted edits.
+4. **Exact-shape assertions** pin API responses — when you add a field, update the exact-shape
+   tests in the SAME PR (technician-earnings precedent).
+5. **E2E flake rules**: hydration-gated submits (wait for enabled), no 3s sleeps, capture ALL
+   console types when debugging, CI is the authority for flake verdicts.
 
 ## 5. Performance Rules
 
-1. The FE-007 budget gate enforces per-class regression limits (`scripts/size-baseline.json` × 1.05). A deliberate, justified growth (e.g. catalog expansion) may re-baseline — **after** the gate passes against the OLD baseline, and rounded UP to the next KB. Never grow a route silently.
-2. Web bundle hygiene: no runtime import edge from web-reachable modules into `messages/mobile/**` or the merged i18n module (the leak guard enforces it — keep it that way).
-3. **`@galaxy/shared` and `@galaxy/ui` now declare `sideEffects: false`** (#395) — tree-shaking IS enabled for them. Never add side-effectful code (css imports, top-level registrations, global mutation) to those packages; verify purity before extending them.
-4. Lazy-load heavy features; the catalog platform-split (~91 KB) and locale split (~118 KB) are shipped and ratcheted (221/213/298/226). The remaining bulk is the Next.js framework chunks + app code — measure with a fresh `next build` + the size gate after every slimming step, and keep the two catalog guards (leak + locale-split sentinels) meaningful.
+1. **Bundle budgets are ratcheted** (FE-007) — web class baselines 221/213/298/226 KB gz.
+   New heavy deps need a budget bump with justification.
+2. **Lazy-load socket.io-client** on web (bundle slimming) — keep it dynamic-imported.
+3. **Cache invalidation must be awaited** (W2-10): mutations that change catalog state
+   `await invalidateCachePrefix(...)` before returning.
+4. **Aggregates are materialized**, not computed per request (daily stats pattern).
 
 ## 6. Git / PR / Merge Rules
 
-1. Branch off latest master (`git pull --ff-only` first), push with `git push origin HEAD:<branch>`.
-2. Commit messages: conventional prefix (`feat(...)`, `fix(...)`, `perf(...)`, `test(...)`, `chore(...)`) + `Co-Authored-By: Claude Code <noreply@anthropic.com>`; PR body ends with the 🤖 footer.
-3. Merge policy: **merge only on full CI green**. If the branch is BEHIND master: `gh pr update-branch <n>` (merge mode), then `gh pr merge <n> --squash --delete-branch --auto` (policy requires fresh checks on the updated head — `--auto` queues it).
-4. Sweep-style multi-PR work: sequential slices, each merged before the next starts (prevents catalog/append conflicts).
-5. `gh pr merge` can exit 0 without merging — always verify `state == MERGED`.
-6. **Queue-drain operations (strict branch protection makes merges serial)**: each squash-merge advances master and re-BEHINDs every queued branch, so auto-merge re-runs full CI per PR — a 6-PR queue takes hours. To run it safely:
-   - Pre-check every pending merge with `git merge-tree --write-tree origin/master origin/<branch>` (exit 0 = clean; CWD-independent, no worktree churn). A CONFLICTING PR blocks the queue until resolved.
-   - Stalled OPEN+BEHIND with all-green checks → `gh pr update-branch <n>` (merge mode) nudges the engine.
-   - The auto-merge engine does NOT process strictly by enabledAt — a later CLEAN PR can merge first; expect the cascade, don't fight it.
-   - Watch with a **background Bash watcher** (exit 0 on all-MERGED, exit 1 on DIRTY/CLOSED/check-failure, auto-nudge BEHIND-with-no-running-checks stalls). The Monitor tool's shell cannot auth `gh` — don't use it for this.
+1. **Branch from a FRESH master** — `git branch -f master origin/master` first; verify the
+   base (`git log --oneline -1`). Never trust the local master ref.
+2. **Don't commit on the wrong branch** — the uncommitted work carries across `git switch -c`;
+   check `git branch --show-current` before `git add`.
+3. **A commit pushed after a PR's auto-merge lands is orphaned** — cherry-pick onto a new
+   branch off the new master (#659 pattern).
+4. **update-branch can CONFLICT on shared barrels** (both PRs export from the same index):
+   merge master locally, keep BOTH export sets, then `git pull` (the remote may have its own
+   poke-merge) before pushing.
+5. **Auto-merge authorization** covers audit build-out PRs (`fix(w1/w2/w3…)`, W1–W6 waves) on
+   CI-green — arm with `gh pr merge <n> --auto --squash`, no per-PR asks.
+6. **Stale `.git/index.lock`** after a lint-staged crash: verify no git.exe (tasklist), then
+   remove the lock.
 
-## 7. Improvement & Enhancement Protocol (how to propose and land new work)
+## 7. Improvement & Enhancement Protocol
 
-1. **Scoping**: for anything touching money flow, schema, cross-app contracts, or the architecture invariants above → plan first (explore → plan agent → written plan → approval). Small, well-specified fixes (typo, seed fixture, single-file bug) may proceed directly.
-2. **Execution order**: tests → code → gates → measure → commit → PR → green CI → merge.
-3. **After landing**: update this rulebook/memory with any new gotcha the work surfaced; stale docs get corrected in the same PR when touched.
-4. **User-gated actions** (ask first, every time): destructive ops (`prune --write`, db-cleanup `--write`), production credentials/keys, merges that bypass protection, anything outward-facing (deploys, store submissions).
+1. **Read the tracker first**: `docs/AUDIT_2026-11-11_MASTER_PLAN.md` Part B — everything is
+   ranked P0→P4 with wave assignments. Pick the next slice from the current wave.
+2. **Test-first, slice-small**: write the failing tests, implement the minimum, run the
+   adjacent suites (the wave ripple: a guard change breaks every fixture that bypassed it).
+3. **Tier/inventory discipline**: if the slice changes procedures, regenerate the inventory
+   on the branch. If it adds user strings, add i18n keys (web → catalogs; mobile → direct).
+4. **PR body must carry**: the audit-row reference, root cause, the TDD evidence (test names
+   - counts), and any user-gated dependencies.
+5. **Arm and move on**: auto-merge on green; the strict cascade (poke BEHIND after each merge)
+   is the normal operating rhythm — expect it, don't fight it.
+6. **User-gated items** are recorded, never blocked on: Fatoorah token, Sentry DSNs, AWS
+   console (S3/CDN), Apple account, AI generator account, photography, pentest.
 
 ## 8. Known Gotchas (the distilled list)
 
-- `$?` after a pipe = the LAST command's exit (`head` masks `grep`'s) — judge grep by its output.
-- **Route groups**: a `page.tsx` at a route-group root (`(store)/page.tsx`) resolves to `/` and collides with `(public)` — Turbopack build fails with "two parallel pages that resolve to the same path". New top-level paths get a **literal segment** (`store/page.tsx` → `/store`).
-- i18n duplicate keys can survive a git merge silently — diff the catalog after merge conflicts.
-- `gh run list` first row may be EAS, not CI.
-- `gh pr checks` returns **EMPTY output** right after `update-branch` (no checks reported) — CI pollers must treat empty as pending, not done.
-- React 19: `JSX.Element` excludes `null` — return `<></>`, not `null`; import `type { JSX }` explicitly.
-- `View → TouchableOpacity` migrations leave unused imports → lint errors.
-- `update-branch --rebase` rebases REMOTELY (and fails on merge commits) — prefer merge mode.
-- Squash-merged PRs are not ancestors — rebase local branches after merges; `gh pr update-branch` then pull before pushing more commits.
-- Turbo cache can hide lockfile breakage — `pnpm install` before blaming code.
-- Dotenv URL pathnames mangle Windows paths — pass env inline instead.
-- `noUncheckedIndexedAccess` — array/record access needs guards (`??`/`!` only where proven).
-- NOON-UTC date convention for date-only fixtures.
-- `docker exec` WITHOUT `-i` silently drops stdin — SQL fed via `< file` never runs; always `docker exec -i`.
-- **Parallel wave branches** (Wave E): N feature branches cut from one master, each editing the same region of a shared file (a screen's import block, one i18n key block), make EVERY subsequent merge conflict — `gh pr update-branch` fails remotely; resolve locally per branch (keep BOTH sides; watch for the closing `},` landing OUTSIDE the conflict region, as in the G3/E4a merges).
-- **Branch hygiene with dirty trees**: `git stash push` does NOT carry untracked files — they ride along the checkout; ALWAYS `git branch --show-current` + `git status --short` after every move. `git checkout <branch> | tail` masks a failed checkout ("Aborting") and the `&&` chain then runs on the WRONG branch (repeat offender — Wave E hit it twice).
-- **Mobile tRPC rows are typed**: `inferRouterOutputs` gives real client types (superjson `Date`, not `string`). Hand-written row interfaces with string dates fail tsc — drop the cast and use the inferred shape.
-- **`notifications.list` returns a PAGE object** `{items,total,...}`, not an array — the legacy customer notifications screen casts it as an array (pre-existing bug, untouched); new screens read `.items`.
-- **expo-notifications listeners must mount at the root** — a tap listener registered inside a screen dies on unmount and cold-start taps are lost; the Wave-E root mount also enables the startup permission prompt (deliberate).
-- `%TEMP%` does not expand in Git Bash — use the absolute path (`C:\Users\<user>\AppData\Local\Temp\...`).
-- `git add` paths are cwd-relative, and the session cwd drifts between repo root / apps / packages — use absolute paths or verify with `pwd` when a pathspec "does not exist".
-- The local API suite runs `env=test` against the **dev DB** — running it while someone uses the dev servers causes contention and can pollute seed data (Playwright login failures locally, advisor weekly-category flake). CI's isolated DB is the authority.
-- Windows CRLF noise shows as phantom `M` files with empty diffs — `git checkout -- <file>` discards it safely; it also blocks branch switches.
-- Background tasks get reaped when the system is critically low on memory — do NOT restart them on your own; restart only when the user asks.
-- **NEVER bare `git stash pop`** — the stash list holds old-session entries (e.g. the pre-completion Arabic-sweep backup). A bare pop digs them up and conflicts the tree. `git stash list` first; pop by explicit ref; recovery from a conflicted pop: `git reset --hard HEAD` (the stash entry survives).
-- **NEVER `git checkout -- .` as a blanket cleanup** — it discards REAL uncommitted work too. Only after verifying the tree holds nothing but EOL phantoms: `git diff --stat` empty AND every listed file shows only the CRLF warning.
-- `generateMetadata` is **server-only** — exporting it from a `'use client'` page fails the build ("generateMetadata from a component marked with use client" + a misleading "next/headers in Pages Router" second error). Client pages get a thin server wrapper (`page.tsx` → `XClient.tsx`).
-- `catch (err)` infers `unknown` (useUnknownInCatchVariables) — `err instanceof Error ? err.message : String(err)` before touching `.message`.
-- Perl multiline regexes fail on CRLF files (`\n` won't cross `\r\n`) — use line-anchored `-pi -e 'if (/…$/)'` patterns or the Edit tool.
-- After fixing an `any` under a `// eslint-disable-next-line @typescript-eslint/no-explicit-any -- reason`, REMOVE the directive too — it becomes an unused-directive warning (same for stale `no-console` disables in the api package, where the rule is OFF).
-- The lint-staged prettier hook reformats generated i18n catalogs on commit — drift checks must compare semantically (import + deep-equal), never byte-equality.
-- Background `tsc` runs race your edits and report stale errors — re-run after any follow-up edit before trusting the result.
-- Creating a branch while another feature branch is checked out layers the commits — `gh pr create` then refuses ("must first push the current branch"): push with `HEAD:<right-name>` and create with `--head <right-name>`, or rebase with `git rebase --onto master <old-base> <branch>` (discard CRLF phantoms first — they block the rebase).
-- **`git merge --abort` (after a dry-run `merge --no-commit`) can leave stale working-tree content** (a post-abort file held pre-regeneration snapshot values) — always `git status --porcelain` after an abort and `git checkout -- <file>` if anything lingers.
-- **E2E logins failing mid-run is usually the bcrypt-under-load flake**, not your diff: parallel chromium + mobile-chrome workers hammer logins; early tests pass, later ones land on `/login`. Before blaming the diff, download the artifact (`gh run download <id> -n playwright-report`) and read the failing test's error-context `.md` — if the page snapshot shows the login page, it's the flake; a clean re-run (nudge first if BEHIND) is the fix.
-- `git worktree remove` on a worktree with node_modules → "Filename too long". `git config core.longpaths true` then retry; for a git-orphaned leftover dir, PowerShell `Remove-Item -Recurse -Force` (requires explicit user approval).
-- `rtk git log -1` can print a stale pre-merge head right after an ff-merge — verify with `git rev-parse HEAD` before trusting it.
-- `du -sh` over a node_modules tree can exceed a 2-minute tool timeout — background it.
-- **Prisma 7 back-relations**: a new model with @unique on two FKs (e.g. `ReviewRequest` @@unique([customerId, productId])) needs BOTH parent models to gain the back-relation field in the same schema change — tsc fails without them.
-- Generated i18n catalogs are **alphabetically sorted** — hand-inserting new keys mid-block risks duplicate keys (a duplicate `register-store` shipped once); add keys via the source domain file + regenerate, then verify with the drift guard + grep the block.
-- `next/no-html-link-for-pages` — breadcrumbs must use `next/link`, never a bare `<a href>` (F4).
-- **Stacked-branch seed anchors**: a seed-template anchor from a queued feature only exists on that feature's branch — anchor later branches' templates on a predecessor that is already merged (e.g. `store_low_stock`, not a Wave-6 template).
-- BullMQ v6 repeatable jobs: `queue.upsertJobScheduler(id, { pattern }, { name, data })` — the v3/v4 `repeat` opts are removed (G3 Sunday-09:00 reminder).
-- **`git merge-tree --write-tree A B` ALWAYS prints a tree OID — only the EXIT CODE signals conflicts (exit 1 = conflicts).** Reading a SHA as "clean" mis-flights the whole unwind (reels Phase 2: the P2 dance then conflicted on page.tsx). Judge by `echo $?`, never by the printed tree.
-- **This repo's Playwright has NO `toBeDetached` Locator matcher (TS2551)** — unmount assertions use `expect.poll(() => locator.count(), { timeout }).toBe(0)`; verify with `pnpm --filter @galaxy/web exec tsc --noEmit` BEFORE pushing (a matcher that type-checks locally ships; one that doesn't red-TCs all four stacked branches at once).
-- **CI trigger gaps are real**: a push can land with NO workflow run created (verified via `gh run list --branch <b>` showing the old head). Recovery doubles as the unwind step: merge master into the branch (resolving feature-wins) and push — a real merge commit always triggers. Empty-commit nudges are the fallback.
-- **Service model has `basePrice`, NOT `price`** — select/where on `price` is a runtime PrismaClientValidationError that unit tests catch only if they hit the include path (reels Q1: 6/8 passed while the `tags` include was broken).
-- **Global sweep handlers need pollution-proof tests**: parallel suites leave stale rows in the shared dev DB, so a sweep's total counts fluctuate run-to-run — assert on YOUR fixture rows (scoped queries) and `>= 1`, never `toBe(n)` on global totals (vendor-sla's first run failed exactly this way).
-- **Check `git branch --show-current` before starting a feature session** — a leftover docs-branch checkout swallowed a whole feature's edits once (they passed tests only because the generated Prisma client and dev DB carried newer schema than the branch). Recovery = stash → fresh branch off origin/master → pop → re-verify ALL keys/gates on the correct tree.
-- After a squash-merge the merged branch's tree equals master's tree — `git checkout -b <next> origin/master` carries dirty work cleanly (verify `git diff --stat HEAD origin/master` is empty first); stash-pop moves dirty work the same way when trees differ.
-- tRPC client: `.fetch()` lives on `api.useUtils().proc`, NOT on the query decorator (TS2339).
-- **Prisma 7 `db execute` takes `--file ./path.sql` WITHOUT `--schema`** — the stray flag prints HELP silently (exit 0!) and the SQL never runs; verify the columns exist in the DB after, and note `migrate resolve --rolled-back` refuses once marked applied (apply the SQL late instead — DB==record then).
-- **NEVER `git stash pop` after a FAILED stash push** — the tree is intact and there is no new entry; a bare pop then digs up `stash@{0}` (often a lint-staged automatic backup) and rewrites tracked files to pre-commit content (EOL churn on i18n files). Diagnose with `git status` + `git stash list` first; leave old entries alone.
-- **`safeFutureDate(N)` and `safeFutureDate(N+1)` can land on the SAME day** — the Jummah skipper (Thu≥21:00 UTC / Friday) shifts both onto Saturday. Slots spaced 1 "day" apart can then overlap under the C5h guard. Space test slots ≥5 days apart.
-- **Booking state-machine reuse**: the vendor flow imports the ENGINE's exported `VALID_TRANSITIONS`/`ACTION_TO_STATUS` instead of copying them — a drift-proof single machine; cast the action through `as BookingStatus` (the map is `Record<string, string>`).
-- **`Booking.technicianId` is a USER id** — stats updates (`technician.update({ where: { userId } })`) therefore land on the pseudo-technician's HIDDEN user automatically; never pass a Technician row id.
-- **A fixed/overlay UI element can break E2E strict-mode clicks** — the D4 tour card covered product-row buttons (120s timeout ×3). Inline banners (in-flow, no overlay) never intercept; Playwright auto-scrolls to in-flow elements.
-- **`t(\`dynamic.${key}\`)`breaks the TranslationKey type** — use a`as const satisfies` record of literal labelKeys and index it.
-- **A 4-col KPI grid cannot take a 5th tile** — fold the new metric into an existing tile as a sub-line (C5g service revenue rides the revenue30d tile).
-- **Branch-stack content leak check**: `gh pr diff <n> --name-only` right after `gh pr create` — a stacked branch must show ONLY its own files; anything else means the predecessor hasn't merged (open the PR only then).
-- **TS7056 serialization limit on merged i18n catalogs**: when the catalog grows, `export const X = { ...a, ...b } as const` over the FULL merged set fails CI Type Check with TS7056 ("inferred type exceeds the maximum length the compiler will serialize"). Fix pattern (shipped in C5f): derive the key union from the SOURCE files (`type K = keyof typeof a | keyof typeof b | ...` — each serializes fine) and annotate the merged value `Record<K, Catalog | string>` — no `as const` on the merged object. Both `packages/shared/src/i18n/index.ts` (sharedMessages) and `mobile.ts` (mobileMessages) carry this guard now; the web platform entry may need it next.
-- **tRPC HTTP layer**: POSTs MUST carry `Content-Type: application/json` and the batch input in the BODY (`{"0":{"json":input}}`) — the handler 415s without the header and IGNORES `?input=` on POST; GET queries take `?batch=1&input=<encoded>` in the URL. Browser POSTs need `x-csrf-token` from the `csrf-token` cookie (curl/no-Origin skips). Raw-fetch specs must replay the app client's headers or the mutation silently returns `{}`.
-- **Login-page redirect trap in E2E**: the login page redirects an authenticated session to its dashboard — re-login specs must call `auth.clearSession` first. `community.create`/`moderation.report` are customerProcedure — admin sessions get FORBIDDEN (create fixtures as the customer).
-- **Lockfile regen must run on the MERGED tree**: regenerating before merging master leaves stale specifiers (vitest ^5.0.5 vs ^5.1.0) and CI's `--frozen-lockfile` dies in seconds. After resolving a manifest conflict, `pnpm install --lockfile-only` on the final tree.
-- **File-level conflict resolution alone still DIRTYs a PR**: replacing both sides' files doesn't satisfy the 3-way merge — create a real `git merge origin/master` commit (`git checkout --ours` on the resolved files) or GitHub keeps reporting CONFLICTING.
-- **Pre-hydration lost clicks** (trace: attempt #0 fires NO auth.login POST): gate controls with `useHydrated`-disabled SSR state; specs that still race (div[role=link] cards) need a click→waitForURL retry loop.
-- **The `serve`/`head` pipe kills the server** — `cmd 2>&1 | head -N` exits after N lines and SIGPIPEs the process; background servers must run unpiped.
-- **Playwright config path resolves from the FILTER's cwd** (pnpm --filter @galaxy/web exec): use `--config ../mobile/playwright.config.ts`; the owning package should carry its own `@playwright/test` devDep instead of borrowing the web package's binary.
-- **`next dev` dies on missing env**: a fresh worktree lacks the local `.env` files — copy apps/web/.env, packages/api/.env, packages/db/.env, and the root .env before booting a dev server.
-- **Ghost next-env.d.ts churn blocks `git checkout -B`** ("Aborting") — discard it (`git checkout -- apps/web/next-env.d.ts`) after verifying the diff is generated noise.
+1. `git ls-files <rev>` treats the rev as a PATHSPEC — use `git ls-tree -r <rev>`.
+2. Local full-suite runs take ~37 min on Windows and contaminate the tree (snapshot regen,
+   CRLF noise) — verify `--ignore-cr-at-eol` before `git checkout --`.
+3. The web lint takes >180 s on Windows — lint only the changed files with the package-scoped
+   config (`cd apps/web && npx eslint <file>`).
+4. i18n generator emits DOUBLE-quoted output; prettier before diffing or the diff looks
+   wholesale (11 k lines for a 3-key change).
+5. `gh pr view` state UNKNOWN = GitHub recomputing after master moved — poll again.
+6. Watchers die to the memory reaper on this machine — one-shot polls are the reliable pattern.
+7. `resolveSocketUrl`: standard ports (''/80/443) = same-origin behind nginx; dev ports = :4001.
+   Prod compose publishes NO host port for the socket — nginx proxies `/socket.io`.
+8. Migrations can half-apply on a live dev DB (drops applied, ALTER missed) — repair manually
+   - `migrate resolve --applied`, exactly as documented in §1.
+9. `womenOnlyMutation` reads the LIVE User row (gender is not in the JWT) — changing gender
+   takes effect immediately, no re-login needed.
+10. The seller tier exists in the inventory meta but `staffProcedure` is defined and unused —
+    staff authorization lives in `resolveVendorActor` + `staffHasCapability` (ownership model).
