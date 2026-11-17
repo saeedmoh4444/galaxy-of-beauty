@@ -11,7 +11,7 @@ export const pricingRulesRouter = router({
       const dayOfWeek = now.getDay();
       const hour = now.getHours();
 
-      const rules = await prisma.pricingRule.findMany({
+      const rules = await prisma.servicePricing.findMany({
         where: {
           isActive: true,
           OR: [
@@ -37,7 +37,7 @@ export const pricingRulesRouter = router({
 
   // Admin: list all rules
   adminList: adminProcedure.query(async () => {
-    return prisma.pricingRule.findMany({ orderBy: { createdAt: 'desc' } });
+    return prisma.servicePricing.findMany({ orderBy: { createdAt: 'desc' } });
   }),
 
   // Admin: create
@@ -55,14 +55,14 @@ export const pricingRulesRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      return prisma.pricingRule.create({ data: input });
+      return prisma.servicePricing.create({ data: input });
     }),
 
   // Admin: toggle
   toggle: adminProcedure
     .input(z.object({ id: z.number(), isActive: z.boolean() }))
     .mutation(async ({ input }) => {
-      return prisma.pricingRule.update({
+      return prisma.servicePricing.update({
         where: { id: input.id },
         data: { isActive: input.isActive },
       });

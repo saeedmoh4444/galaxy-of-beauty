@@ -564,6 +564,8 @@ model ServicePricing {
   hourStart       Int?    // 0-23 inclusive; null = all day
   hourEnd         Int?    // 0-23 exclusive; null = all day
   priceMultiplier Decimal @db.Decimal(4, 2) // e.g. 1.30 = +30%
+  // W5-6a — parity field: the legacy pricing_rules table carried a label.
+  labelJson       Json?
   isActive        Boolean @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -863,6 +865,12 @@ model Review {
   bookingId Int      @unique
   customerId Int
   rating    Int      // 1-5
+  // W5-6d — the multi-dimension scores migrated from the deprecated
+  // TechnicianRating family (one post-booking rating per booking).
+  skill         Int?
+  punctuality   Int?
+  cleanliness   Int?
+  communication Int?
   comment   String?
   isVisible Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -3814,6 +3822,9 @@ model SalonMembership {
   }
 
   // ── Dynamic Pricing ──────────────────────────────────────
+  // W5-6a DEPRECATED — canonical model is ServicePricing
+  // (service_pricing_rules); rows were migrated and the admin router now
+  // reads/writes ServicePricing. This model stays for historical reads.
   model PricingRule {
     id            Int      @id @default(autoincrement())
     serviceId     Int?
@@ -4634,6 +4645,9 @@ model CustomerPreference {
   @@map("customer_preferences")
 }
 
+// W5-6d DEPRECATED — Review is the canonical post-booking rating (both
+// were bookingId-unique); technician_ratings rows were migrated into
+// reviews and the technicianRatings router now reads/writes Review.
 model TechnicianRating {
   id            Int      @id @default(autoincrement())
   userId        Int
