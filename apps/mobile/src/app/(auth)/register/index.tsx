@@ -21,6 +21,8 @@ export default function RegisterScreen() {
     phone: '+9665',
     password: '',
     role: 'CUSTOMER' as 'CUSTOMER' | 'TECHNICIAN' | 'SELLER',
+    // W3-5p2 — self-declared gender (women-only platform; defaults female).
+    gender: 'female' as 'female' | 'male',
     city: '',
   });
 
@@ -43,6 +45,7 @@ export default function RegisterScreen() {
       password: form.password,
       name: form.name,
       role: form.role,
+      gender: form.gender,
       acceptedTerms: true,
       city: form.role === 'TECHNICIAN' ? form.city : undefined,
     });
@@ -114,6 +117,24 @@ export default function RegisterScreen() {
         >
           <Text style={[styles.roleText, form.role === 'SELLER' && styles.roleTextActive]}>
             {t('auth.role-seller')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.roleRow}>
+        <TouchableOpacity
+          style={[styles.roleBtn, form.gender === 'female' && styles.roleActive]}
+          onPress={() => set('gender', 'female')}
+        >
+          <Text style={[styles.roleText, form.gender === 'female' && styles.roleTextActive]}>
+            {t('auth.gender-female')}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.roleBtn, form.gender === 'male' && styles.roleActive]}
+          onPress={() => set('gender', 'male')}
+        >
+          <Text style={[styles.roleText, form.gender === 'male' && styles.roleTextActive]}>
+            {t('auth.gender-male')}
           </Text>
         </TouchableOpacity>
       </View>

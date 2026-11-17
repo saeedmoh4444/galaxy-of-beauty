@@ -61,6 +61,34 @@ describe('Auth — Registration', () => {
     expect(result.refreshToken).toBeDefined();
   });
 
+  // W3-5p2 — self-declared gender (option 1: no KYC, enforced at booking).
+  it('captures a self-declared male gender at registration', async () => {
+    const caller = await anonCaller();
+    const email = `reg-male-${Date.now()}@test.com`;
+    const result = await caller.auth.register({
+      email,
+      password: 'StrongPass123!',
+      name: 'مختبر رجال',
+      phone: `+9665${String(Math.floor(10000000 + Math.random() * 90000000))}`,
+      acceptedTerms: true,
+      gender: 'male',
+    });
+    expect(result.user.gender).toBe('male');
+  });
+
+  it('defaults gender to female when not declared', async () => {
+    const caller = await anonCaller();
+    const email = `reg-female-${Date.now()}@test.com`;
+    const result = await caller.auth.register({
+      email,
+      password: 'StrongPass123!',
+      name: 'مختبرة نساء',
+      phone: `+9665${String(Math.floor(10000000 + Math.random() * 90000000))}`,
+      acceptedTerms: true,
+    });
+    expect(result.user.gender).toBe('female');
+  });
+
   it('should reject duplicate email registration', async () => {
     const caller = await anonCaller();
     await expect(
