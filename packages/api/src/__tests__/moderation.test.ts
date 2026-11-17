@@ -18,6 +18,7 @@ import {
   buildBeautyPost,
   markBookingPaid,
   ensureTechnicianService,
+  createUniqueSlot,
 } from './factories';
 
 const createdUserIds: number[] = [];
@@ -368,14 +369,7 @@ describe('A2c — booking review blocking', () => {
     const service = await prisma.service.findFirst();
     // W2-5 guard: bookings.create validates the technician↔service mapping.
     await ensureTechnicianService(tech!.id, service!.id);
-    const slot = await prisma.availabilitySlot.create({
-      data: {
-        technicianId: tech!.id,
-        startAt: new Date(Date.now() + 86_400_000 * 3),
-        endAt: new Date(Date.now() + 86_400_000 * 3 + 3_600_000),
-        isBooked: false,
-      },
-    });
+    const slot = await createUniqueSlot(tech!.id, { daysAhead: 3 });
     const address =
       (await prisma.address.findFirst({ where: { userId: customer.id } })) ??
       (await prisma.address.create({

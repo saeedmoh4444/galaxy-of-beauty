@@ -8,7 +8,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate, ensureTechnicianService } from './factories';
+import { safeFutureDate, ensureTechnicianService, createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -150,22 +150,14 @@ describe('W1 money flows', () => {
       bookings: { create: (i: unknown) => Promise<{ id: number }> };
       disputes: { create: (i: unknown) => Promise<{ id: number }> };
     };
-    const start = safeFutureDate(1);
-    const slot = await prisma.availabilitySlot.create({
-      data: {
-        technicianId: technicianRecordId,
-        startAt: start,
-        endAt: new Date(start.getTime() + 3600000),
-        isBooked: false,
-      },
-    });
+    const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
     const booking = await caller.bookings.create({
       serviceId,
       technicianId: technicianUserId,
       addressId,
       slotId: slot.id,
-      startAt: start.toISOString(),
-      endAt: new Date(start.getTime() + 3600000).toISOString(),
+      startAt: slot.startAt.toISOString(),
+      endAt: slot.endAt.toISOString(),
       idempotencyKey: newIdemKey(),
     });
     createdBookingIds.push(booking.id);
@@ -216,22 +208,14 @@ describe('W1 money flows', () => {
       bookings: { transition: (i: unknown) => Promise<unknown> };
       payments: { capture: (i: unknown) => Promise<unknown> };
     };
-    const start = safeFutureDate(1);
-    const slot = await prisma.availabilitySlot.create({
-      data: {
-        technicianId: technicianRecordId,
-        startAt: start,
-        endAt: new Date(start.getTime() + 3600000),
-        isBooked: false,
-      },
-    });
+    const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
     const booking = await caller.bookings.create({
       serviceId,
       technicianId: technicianUserId,
       addressId,
       slotId: slot.id,
-      startAt: start.toISOString(),
-      endAt: new Date(start.getTime() + 3600000).toISOString(),
+      startAt: slot.startAt.toISOString(),
+      endAt: slot.endAt.toISOString(),
       idempotencyKey: newIdemKey(),
     });
     createdBookingIds.push(booking.id);

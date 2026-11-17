@@ -17,7 +17,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
 import { handleWalletJob } from '../workers/handlers';
-import { safeFutureDate, ensureTechnicianService } from './factories';
+import { safeFutureDate, ensureTechnicianService, createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -53,19 +53,10 @@ async function createBooking(opts?: { slotId?: number }) {
   const caller = (await authCaller(customer)) as {
     bookings: { create: (i: unknown) => Promise<{ id: number }> };
   };
-  const start = safeFutureDate(1);
-  const slotId =
-    opts?.slotId ??
-    (
-      await prisma.availabilitySlot.create({
-        data: {
-          technicianId: technicianRecordId,
-          startAt: start,
-          endAt: new Date(start.getTime() + 3600000),
-          isBooked: false,
-        },
-      })
-    ).id;
+  // W5-3 — unique window per booking (the exclusion forbids overlaps).
+  const slot = opts?.slotId ? null : await createUniqueSlot(technicianRecordId, { daysAhead: 1 });
+  const start = slot ? slot.startAt : safeFutureDate(1);
+  const slotId = opts?.slotId ?? slot!.id;
   const booking = await caller.bookings.create({
     serviceId,
     technicianId: technicianUserId,
