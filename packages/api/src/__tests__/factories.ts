@@ -37,6 +37,8 @@ function futureDate(daysAhead = 3): Date {
 // ── User ─────────────────────────────────────────────────────
 
 export interface BuildUserOverrides {
+  // W3-5p2 — self-declared gender (default female on the women-only platform).
+  gender?: string;
   email?: string;
   phone?: string;
   name?: string;
@@ -64,6 +66,7 @@ export function buildUser(overrides?: BuildUserOverrides) {
     emailVerified: overrides?.emailVerified ?? true,
     twoFactorEnabled: overrides?.twoFactorEnabled ?? false,
     preferredLanguage: overrides?.preferredLanguage ?? 'ar',
+    gender: overrides?.gender ?? 'female',
   };
 }
 
