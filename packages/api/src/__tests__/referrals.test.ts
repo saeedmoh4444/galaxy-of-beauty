@@ -345,12 +345,16 @@ describe('referrals router', () => {
       expect(s.recentReferrals[1]!.referredId).toBe(referredB.id);
 
       // C: 2 COMPLETED/rewardCredited from the leaderboard test + 3 more
-      // seeded here -> gold tier (>= 5 completed)
+      // seeded here -> gold tier (>= 5 completed). W5-2 added
+      // @@unique([referrerId, referredId]), so each needs its OWN referred
+      // user (reusing one would violate the double-claim invariant this
+      // very PR closes).
       for (let i = 3; i <= 5; i++) {
+        const referred = await makeUser();
         await prisma.referral.create({
           data: {
             referrerId: secondC.id,
-            referredId: leaderE.id, // referredId has no uniqueness constraint
+            referredId: referred.id,
             referralCode: `GOB-LEAD-${secondC.id}-${i}`,
             status: 'COMPLETED',
             rewardCredited: true,
