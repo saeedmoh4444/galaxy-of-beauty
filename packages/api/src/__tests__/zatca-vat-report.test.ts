@@ -12,7 +12,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { ensureTechnicianService, safeFutureDate } from './factories';
+import { safeFutureDate, createUniqueSlot, ensureTechnicianService } from './factories';
 
 const CSRF = 'a'.repeat(64);
 const VAT_RATE = 0.15;
@@ -41,14 +41,7 @@ const fixtureBookingIds: number[] = [];
 const fixtureInvoiceNumbers: string[] = [];
 
 async function seedSlot(): Promise<number> {
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: safeFutureDate(4),
-      endAt: new Date(safeFutureDate(4).getTime() + 3600000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId, { daysAhead: 4 });
   return slot.id;
 }
 

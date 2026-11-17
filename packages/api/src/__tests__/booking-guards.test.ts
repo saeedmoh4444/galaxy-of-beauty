@@ -9,7 +9,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate } from './factories';
+import { safeFutureDate, createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -147,17 +147,12 @@ async function attempt(opts: { technicianId: number; addressId?: number; slotId?
   const start = safeFutureDate(1);
   let slotId = opts.slotId;
   if (!slotId) {
-    const slot = await prisma.availabilitySlot.create({
-      data: {
-        technicianId:
-          opts.technicianId === mappedTechnicianUserId
-            ? mappedTechnicianRecordId
-            : unmappedTechnicianRecordId,
-        startAt: start,
-        endAt: new Date(start.getTime() + 3600000),
-        isBooked: false,
-      },
-    });
+    const slot = await createUniqueSlot(
+      opts.technicianId === mappedTechnicianUserId
+        ? mappedTechnicianRecordId
+        : unmappedTechnicianRecordId,
+      { daysAhead: 1 },
+    );
     slotId = slot.id;
   }
   const booking = await caller.bookings.create({
