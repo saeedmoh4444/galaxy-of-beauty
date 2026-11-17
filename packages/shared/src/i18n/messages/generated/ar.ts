@@ -2312,8 +2312,7 @@ export const arWebMessages: Record<string, string> = {
   'marketing.beauty-packages.browse-services': 'تصفحي جميع الخدمات',
   'marketing.beauty-packages.no-packages': 'لا توجد باقات حالياً. تابعينا قريباً!',
   'marketing.beauty-packages.service-id': 'خدمة #{id}',
-  'marketing.beauty-packages.subtitle':
-    'باقات مجمعة بأسعار مخفضة — وفرّي عند حجز أكثر من خدمة معاً',
+  'marketing.beauty-packages.subtitle': 'باقات مجمعة بأسعار مخفضة — وفرّي عند حجز أكثر من خدمة معاً',
   'marketing.beauty-packages.title': 'باقات التجميل',
   'marketing.beauty-podcast.load-error': 'فشل التحميل',
   'marketing.beauty-podcast.subtitle': 'استمعي لأحدث حلقات خبراء التجميل',
@@ -2452,8 +2451,7 @@ export const arWebMessages: Record<string, string> = {
   'marketing.bridal-concierge.feature-plan-desc':
     'اختاري خدمات المكياج، الشعر، والعناية بالبشرة — وحددي مواعيد التجارب قبل الزفاف',
   'marketing.bridal-concierge.feature-plan-title': 'خططي ليومكِ',
-  'marketing.bridal-concierge.feature-shine-desc':
-    'فريق متكامل من الفنيات المحترفات في يومكِ الخاص',
+  'marketing.bridal-concierge.feature-shine-desc': 'فريق متكامل من الفنيات المحترفات في يومكِ الخاص',
   'marketing.bridal-concierge.feature-shine-title': 'تألقي يوم زفافكِ',
   'marketing.bridal-concierge.feature-tips-desc':
     'احصلي على نصائح مخصصة من خبراء التجميل للعناية قبل الزفاف',
@@ -2928,8 +2926,7 @@ export const arWebMessages: Record<string, string> = {
     'تصفحي مئات الخدمات من فنيات معتمدات — شعر، بشرة، مكياج، مساج والمزيد.',
   'marketing.onboarding.step-2-title': 'اكتشفي الخدمات',
   'marketing.onboarding.step-3-action': 'ابدئي الاختبار',
-  'marketing.onboarding.step-3-desc':
-    'اختبار سريع يساعدكِ في معرفة نوع بشرتكِ والخدمات المناسبة لكِ.',
+  'marketing.onboarding.step-3-desc': 'اختبار سريع يساعدكِ في معرفة نوع بشرتكِ والخدمات المناسبة لكِ.',
   'marketing.onboarding.step-3-title': 'اعرفي نوع بشرتكِ',
   'marketing.onboarding.step-4-action': 'اكتشفي تخطيط الزفاف',
   'marketing.onboarding.step-4-desc':
