@@ -415,7 +415,19 @@ export async function createUniqueSlot(
   // exclusion rejects them. The requested daysAhead only needs to be
   // "in the future"; 30 satisfies every caller.
   const base = safeFutureDate(30);
-  const start = new Date(base.getTime() + (PROCESS_SLOT_OFFSET_HOURS + slotSeq * 4) * 3_600_000);
+  let start = new Date(base.getTime() + (PROCESS_SLOT_OFFSET_HOURS + slotSeq * 4) * 3_600_000);
+  // The random hour-offset can land the window inside the Riyadh Friday
+  // Jummah range (11:30-13:30 Riyadh = 08:30-10:30 UTC), which
+  // bookings.create rejects (lib/jummah). Snap such starts to just after
+  // the window so slot windows are always bookable.
+  if (start.getUTCDay() === 5) {
+    const mins = start.getUTCHours() * 60 + start.getUTCMinutes();
+    if (mins >= 8 * 60 + 30 && mins < 10 * 60 + 30) {
+      start = new Date(
+        Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 10, 45),
+      );
+    }
+  }
   const end = new Date(start.getTime() + (opts?.durationMs ?? 3_600_000));
   const slot = await prisma.availabilitySlot.create({
     data: { technicianId: technicianRecordId, startAt: start, endAt: end },
