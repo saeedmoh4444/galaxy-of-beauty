@@ -423,9 +423,17 @@ export async function createUniqueSlot(
   if (start.getUTCDay() === 5) {
     const mins = start.getUTCHours() * 60 + start.getUTCMinutes();
     if (mins >= 8 * 60 + 30 && mins < 10 * 60 + 30) {
-      start = new Date(
-        Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 10, 45),
+      // Snap past the Jummah window, then keep the per-slot spacing — a
+      // plain snap to the same 10:45 made consecutive slots overlap each
+      // other and trip the exclusion constraint.
+      const anchor = Date.UTC(
+        start.getUTCFullYear(),
+        start.getUTCMonth(),
+        start.getUTCDate(),
+        10,
+        45,
       );
+      start = new Date(anchor + slotSeq * 2 * 3_600_000);
     }
   }
   const end = new Date(start.getTime() + (opts?.durationMs ?? 3_600_000));
