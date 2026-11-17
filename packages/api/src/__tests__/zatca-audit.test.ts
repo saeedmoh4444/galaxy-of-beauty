@@ -15,7 +15,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate } from './factories';
+import { createUniqueSlot } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -40,29 +40,26 @@ let technicianRecordId: number;
 let uid = 0;
 const newIdemKey = () => `zatca_audit_${Date.now()}_${uid++}`;
 
-async function seedSlot(): Promise<number> {
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: safeFutureDate(3),
-      endAt: new Date(safeFutureDate(3).getTime() + 3600000),
-      isBooked: false,
-    },
-  });
-  return slot.id;
+async function seedSlot(): Promise<{ id: number; startAt: Date; endAt: Date }> {
+  // W5-3 — the exclusion constraint forbids overlapping slots per
+  // technician; every call used the same safeFutureDate(3) window.
+  // createUniqueSlot hands out globally-unique windows; the booking
+  // window follows the slot so startAt stays inside it.
+  return createUniqueSlot(technicianRecordId);
 }
 
 const fixtureBookingIds: number[] = [];
 
 async function createBooking(): Promise<number> {
   const cust = await authCaller(customer);
+  const slot = await seedSlot();
   const booking = await cust.bookings.create({
     serviceId,
     technicianId: technicianUserId,
     addressId,
-    slotId: await seedSlot(),
-    startAt: safeFutureDate(3).toISOString(),
-    endAt: new Date(safeFutureDate(3).getTime() + 3600000).toISOString(),
+    slotId: slot.id,
+    startAt: slot.startAt.toISOString(),
+    endAt: slot.endAt.toISOString(),
     idempotencyKey: newIdemKey(),
   });
   fixtureBookingIds.push(booking.id);
