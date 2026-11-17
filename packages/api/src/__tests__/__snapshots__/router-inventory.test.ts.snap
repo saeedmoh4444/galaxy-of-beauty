@@ -972,6 +972,7 @@ technicianFollows.myFollows	query	customer
 technicianFollows.unfollow	mutation	customer
 technicianPerformance.leaderboard	query	admin
 technicianPerformance.myStats	query	technician
+technicianPerformance.pricingSuggestion	query	technician
 technicianQA.ask	mutation	customer
 technicianQA.categories	query	public
 technicianQA.list	query	public
