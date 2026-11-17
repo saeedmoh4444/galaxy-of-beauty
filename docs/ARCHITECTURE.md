@@ -7,8 +7,8 @@
 │                        CLIENTS                               │
 │  ┌──────────────────┐  ┌──────────────────┐                 │
 │  │ apps/web         │  │ apps/mobile      │                 │
-│  │ Next.js 16 (SSR) │  │ Expo SDK 57      │                 │
-│  │ 319 routes       │  │ Expo Router      │                 │
+│  │ Next.js 16 (SSR) │  │ Expo SDK 58      │                 │
+│  │ ~320 routes      │  │ Expo Router      │                 │
 │  │ tRPC Client      │  │ React Query      │                 │
 │  │ React Query      │  │                  │                 │
 │  └────────┬─────────┘  └────────┬─────────┘                │
@@ -17,7 +17,7 @@
 ┌───────────▼─────────────────────▼──────────────────────────┐
 │                     API LAYER                                │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │ packages/api — tRPC v11 (266 routers, 15 domains)    │   │
+│  │ packages/api — tRPC v11 (1,221 procedures, 15 domains) │  │
 │  │ Middleware: rateLimit → CSRF → auth → role → Zod     │   │
 │  └──────────────────────┬───────────────────────────────┘   │
 │  ┌──────────────────────┼───────────────────────────────┐   │
