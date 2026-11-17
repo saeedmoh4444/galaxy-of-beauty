@@ -10,7 +10,12 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
-import { safeFutureDate, markBookingPaid, ensureTechnicianService } from './factories';
+import {
+  safeFutureDate,
+  markBookingPaid,
+  ensureTechnicianService,
+  createUniqueSlot,
+} from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -36,14 +41,7 @@ let uid = 0;
 const newIdemKey = () => `mob_influencer_${Date.now()}_${uid++}`;
 
 async function seedSlot(): Promise<number> {
-  const slot = await prisma.availabilitySlot.create({
-    data: {
-      technicianId: technicianRecordId,
-      startAt: safeFutureDate(2),
-      endAt: new Date(safeFutureDate(2).getTime() + 3600000),
-      isBooked: false,
-    },
-  });
+  const slot = await createUniqueSlot(technicianRecordId);
   return slot.id;
 }
 
