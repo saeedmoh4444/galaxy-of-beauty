@@ -29,6 +29,18 @@ export const mobileAuthMessages = {
     en: 'Biometric verification successful',
   },
   'mobile.auth.loginFailed': { ar: 'فشل تسجيل الدخول', en: 'Login failed' },
+  'mobile.auth.biometricFailed': {
+    ar: 'تعذر تسجيل الدخول البيومتري، حاول مجدداً',
+    en: 'Biometric login failed, please try again',
+  },
+  'mobile.auth.biometricExpired': {
+    ar: 'انتهت الجلسة المحفوظة، سجّل الدخول بكلمة المرور',
+    en: 'Saved session expired, log in with your password',
+  },
+  'mobile.auth.biometricLoginFirst': {
+    ar: 'سجّل الدخول بكلمة المرور أولاً لتفعيل الدخول السريع',
+    en: 'Log in with your password once to enable quick login',
+  },
   'mobile.auth.accountCreated': { ar: 'تم إنشاء الحساب بنجاح', en: 'Account created successfully' },
   'mobile.auth.registerFailed': { ar: 'فشل إنشاء الحساب', en: 'Registration failed' },
   'mobile.auth.phonePlaceholder': {
