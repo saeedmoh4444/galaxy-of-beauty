@@ -4742,6 +4742,9 @@ model BeautyReport {
   @@map("beauty_reports")
 }
 
+// W5-6c DEPRECATED — the promo engine (PromoCode) is the canonical coupon
+// store; beauty_coupons rows were migrated into promo_codes and the
+// beautyCoupons router (zero consumers) was removed.
 model BeautyCoupon {
   id              Int      @id @default(autoincrement())
   code            String   @unique

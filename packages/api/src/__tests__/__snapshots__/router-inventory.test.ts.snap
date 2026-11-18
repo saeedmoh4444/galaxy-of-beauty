@@ -137,9 +137,6 @@ beautyCloset.addProduct	mutation	customer
 beautyCloset.deleteProduct	mutation	customer
 beautyCloset.myProducts	query	customer
 beautyCloset.updateUsage	mutation	customer
-beautyCoupons.create	mutation	admin
-beautyCoupons.listActive	query	public
-beautyCoupons.validate	query	customer
 beautyCourses.enroll	mutation	customer
 beautyCourses.get	query	public
 beautyCourses.list	query	public
