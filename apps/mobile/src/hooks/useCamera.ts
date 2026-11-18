@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { Alert, Platform } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface CameraResult {
   uri: string;
@@ -9,6 +10,8 @@ interface CameraResult {
 }
 
 export function useCamera() {
+  // W4-8 — strings moved to the mobile i18n bundle (was hardcoded Arabic).
+  const { t } = useLocale();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [isReady, setIsReady] = useState(false);
   const cameraRef = useRef<unknown>(null);
@@ -26,10 +29,7 @@ export function useCamera() {
       setIsReady(granted);
 
       if (!granted && Platform.OS !== 'web') {
-        Alert.alert(
-          'صلاحية الكاميرا مطلوبة',
-          'يرجى السماح بالوصول إلى الكاميرا من إعدادات الجهاز لاستخدام هذه الميزة.',
-        );
+        Alert.alert(t('mobile.camera.permissionTitle'), t('mobile.camera.permissionBody'));
       }
 
       return granted;
@@ -39,7 +39,7 @@ export function useCamera() {
       setIsReady(false);
       return false;
     }
-  }, []);
+  }, [t]);
 
   const takePhoto = useCallback(async (): Promise<CameraResult | null> => {
     if (!hasPermission) {

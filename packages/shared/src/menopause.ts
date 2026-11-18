@@ -28,8 +28,7 @@ export const MENOPAUSE_PHASES: MenopausePhase[] = [
     titleAr: 'مرحلة ما قبل التوقف',
     titleEn: 'Perimenopause',
     emoji: '🌗',
-    bodyAr:
-      'الدورة تصبح غير منتظمة مع أعراض متقطعة. تتبع الأعراض يساعدكِ وطبيبتكِ على فهم المرحلة.',
+    bodyAr: 'الدورة تصبح غير منتظمة مع أعراض متقطعة. تتبع الأعراض يساعدكِ وطبيبتكِ على فهم المرحلة.',
     bodyEn:
       'Periods become irregular with on-and-off symptoms. Tracking helps you and your doctor understand the stage.',
   },

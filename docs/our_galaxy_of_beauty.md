@@ -118,7 +118,7 @@
 | --------------------------- | ----------------------- | ----------- | -------------- |
 | شعر طويل (Long Hair)        | Haircut, Color, Styling | +20 SAR     | +15 min        |
 | شعر قصير (Short Hair)       | Haircut, Color          | +0 SAR      | +0 min         |
-| شعر طويل جداً (Extra Long)  | Hair Color, Styling     | +50 SAR     | +30 min        |
+| شعر طويل جداً (Extra Long)   | Hair Color, Styling     | +50 SAR     | +30 min        |
 | مع تجربة (With Trial)       | Bridal Makeup           | +200 SAR    | +60 min        |
 | بشرة حساسة (Sensitive Skin) | All Skincare            | +30 SAR     | +15 min        |
 | أظافر طويلة (Long Nails)    | Manicure                | +20 SAR     | +15 min        |
