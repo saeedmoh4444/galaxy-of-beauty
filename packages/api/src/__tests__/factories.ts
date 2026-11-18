@@ -422,11 +422,18 @@ export async function createUniqueSlot(
   let start = new Date(base.getTime() + (PROCESS_SLOT_OFFSET_HOURS + slotSeq * 4) * 3_600_000);
   // The random hour-offset can land the window inside the Riyadh Friday
   // Jummah range (11:30-13:30 Riyadh = 08:30-10:30 UTC), which
-  // bookings.create rejects (lib/jummah). Snap such starts to just after
-  // the window so slot windows are always bookable.
-  if (start.getUTCDay() === 5) {
-    const mins = start.getUTCHours() * 60 + start.getUTCMinutes();
-    if (mins >= 8 * 60 + 30 && mins < 10 * 60 + 30) {
+  // bookings.create rejects (lib/jummah). The two constraints below
+  // (Jummah-safe AND after the per-tech watermark) can push each other
+  // back and forth, so converge with a bounded loop.
+  const jummahOverlap = (t: Date): boolean => {
+    if (t.getUTCDay() !== 5) return false;
+    const m = t.getUTCHours() * 60 + t.getUTCMinutes();
+    return m >= 8 * 60 + 30 && m < 10 * 60 + 30;
+  };
+  const lastEnd = lastSlotEndByTech.get(technicianRecordId);
+  for (let pass = 0; pass < 3; pass++) {
+    let moved = false;
+    if (jummahOverlap(start)) {
       // Snap past the Jummah window, then keep the per-slot spacing — a
       // plain snap to the same 10:45 made consecutive slots overlap each
       // other and trip the exclusion constraint.
@@ -438,11 +445,13 @@ export async function createUniqueSlot(
         45,
       );
       start = new Date(anchor + slotSeq * 2 * 3_600_000);
+      moved = true;
     }
-  }
-  const lastEnd = lastSlotEndByTech.get(technicianRecordId);
-  if (lastEnd !== undefined && start.getTime() < lastEnd + 3_600_000) {
-    start = new Date(lastEnd + 3_600_000);
+    if (lastEnd !== undefined && start.getTime() < lastEnd + 3_600_000) {
+      start = new Date(lastEnd + 3_600_000);
+      moved = true;
+    }
+    if (!moved) break;
   }
   const end = new Date(start.getTime() + (opts?.durationMs ?? 3_600_000));
   lastSlotEndByTech.set(technicianRecordId, end.getTime());
