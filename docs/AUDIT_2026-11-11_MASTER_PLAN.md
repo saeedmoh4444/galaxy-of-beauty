@@ -43,7 +43,20 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 
 ## Part B — Consolidated gap list (ranked)
 
+> ## ✅ PROGRAM CLOSED — 2026-11-18
+>
+> **All six waves merged; board zero.** 35 PRs landed across the build-out
+> (#634–#639 W1 · #640–#652 W2 · #654–#664 W3 · #665–#671 W4 · #672–#681
+> W5 · #684–#688 W6) plus the repairs and follow-ups that closed the gaps
+> the gates themselves caught: #683 (master-red: D1 fixture date-rot + the
+> two W3-3 guard bugs), #689 + #690 (Jummah-safe unique-slot factory),
+> #691 (the real payments-capture race — atomic AUTHORIZED→CAPTURED claim),
+> #682 (dependabot minor-patch group). Remaining items are the explicit
+> follow-up queues below and the user-gated list — nothing else open.
+
 ### P0 — money integrity & core business (build first)
+
+**Wave status: CLOSED** — W1-1…W1-13 merged (#634–#639 + #656/#659 fixture compliance); W2-1…W2-11 merged (#640–#652). W1-7 autoRenew and W1-10 top-up stay gateway-gated (see user-gated list).
 
 | ID    | Gap                                                                                                                                                         | Layer      | Effort            |
 | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------- |
@@ -74,6 +87,8 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 
 ### P1 — realtime, seller tier, privacy
 
+**Wave status: CLOSED** — W3-1…W3-7 merged (#654, #655, #660–#664). W3-5's verified-female KYC upgrade pass is tracked in the row below as a later-wave option.
+
 | ID   | Gap                                                                                                                                         | Layer      | Effort |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------ |
 | W3-1 | **All realtime socket emits are silent no-ops in production** (web process has no socket connection; only video signaling works)            | Infra/API  | M      |
@@ -86,23 +101,27 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 
 ### P2 — web/mobile correctness & UX
 
-| ID    | Gap                                                                                                                                                                                 | Layer  | Effort                                                                         |
-| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------ |
-| W4-1  | pro-tools page renders **fabricated financials** to real technicians (nonexistent procedures + hardcoded numbers)                                                                   | Web    | M                                                                              |
-| W4-2  | Mobile stub screens ship "coming soon" (audio-rooms join, whatsapp-bot connect)                                                                                                     | Mobile | S-M                                                                            |
-| W4-3  | Detox e2e suites unrunnable (no detox dep/config/script) — migrate to Playwright or wire detox                                                                                      | Mobile | M                                                                              | ~~done~~: unrunnable detox stubs deleted (contracts live in the Playwright specs); native Detox = future option, not a claim |
-| W4-4  | Sentry: mobile release wiring aspirational; beforeSend PII scrub not implemented; DSN not in EAS env                                                                                | Mobile | S                                                                              |
-| W4-5  | OTA `fallbackToCacheTimeout: 0` makes updates build-only                                                                                                                            | Mobile | S                                                                              |
-| W4-6  | Playwright mobile e2e has no webServer/CI wiring                                                                                                                                    | Mobile | S ~~done~~ (superseded): E3 (#624) added the mobile-chrome project + CI wiring |
-| W4-7  | Dead `deepLinks.ts` (wrong scheme, wrong routes, never imported)                                                                                                                    | Mobile | S                                                                              |
-| W4-8  | Hardcoded Arabic in useBiometric/useCamera hooks (i18n gate passes only because it skips hooks)                                                                                     | Mobile | S                                                                              |
-| W4-9  | 3 screens hardcode DEFAULT_SAUDI_CITY with TODO (expo-location installed but unused)                                                                                                | Mobile | S                                                                              |
-| W4-10 | admin/payouts: hardcoded ar-SA date + English `adminNote: 'Rejected'`                                                                                                               | Web    | S                                                                              |
-| W4-11 | Single root error boundary (no group-level boundaries)                                                                                                                              | Web    | S                                                                              |
-| W4-12 | Dark-mode stragglers (tech/gallery, NpsCard)                                                                                                                                        | Web    | S                                                                              |
-| W4-13 | Housekeeping: empty `customer/vendor-portal` dir, duplicate wallet screens, duplicate admin analytics, react 19.3.1 drift, eslint max-warnings 200, ErrorBoundary raw error.message | Mobile | S                                                                              |
+**Wave status: CLOSED** — W4-1…W4-13 merged (#665–#671).
+
+| ID    | Gap                                                                                                                                                                                 | Layer  | Effort                                                                                                                     |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| W4-1  | pro-tools page renders **fabricated financials** to real technicians (nonexistent procedures + hardcoded numbers)                                                                   | Web    | M                                                                                                                          |
+| W4-2  | Mobile stub screens ship "coming soon" (audio-rooms join, whatsapp-bot connect)                                                                                                     | Mobile | S-M ~~done~~: audio-rooms JOIN wired to the real mutation; whatsapp-bot stub demos the command engine (#669)               |
+| W4-3  | Detox e2e suites unrunnable (no detox dep/config/script) — migrate to Playwright or wire detox                                                                                      | Mobile | M                                                                                                                          | ~~done~~: unrunnable detox stubs deleted (contracts live in the Playwright specs); native Detox = future option, not a claim |
+| W4-4  | Sentry: mobile release wiring aspirational; beforeSend PII scrub not implemented; DSN not in EAS env                                                                                | Mobile | S ~~done~~: piiScrub.ts beforeSend (#670); DSN wiring reads EXPO_PUBLIC_SENTRY_DSN — setting the secret remains user-gated |
+| W4-5  | OTA `fallbackToCacheTimeout: 0` makes updates build-only                                                                                                                            | Mobile | S                                                                                                                          |
+| W4-6  | Playwright mobile e2e has no webServer/CI wiring                                                                                                                                    | Mobile | S ~~done~~ (superseded): E3 (#624) added the mobile-chrome project + CI wiring                                             |
+| W4-7  | Dead `deepLinks.ts` (wrong scheme, wrong routes, never imported)                                                                                                                    | Mobile | S                                                                                                                          |
+| W4-8  | Hardcoded Arabic in useBiometric/useCamera hooks (i18n gate passes only because it skips hooks)                                                                                     | Mobile | S                                                                                                                          |
+| W4-9  | 3 screens hardcode DEFAULT_SAUDI_CITY with TODO (expo-location installed but unused)                                                                                                | Mobile | S                                                                                                                          |
+| W4-10 | admin/payouts: hardcoded ar-SA date + English `adminNote: 'Rejected'`                                                                                                               | Web    | S                                                                                                                          |
+| W4-11 | Single root error boundary (no group-level boundaries)                                                                                                                              | Web    | S                                                                                                                          |
+| W4-12 | Dark-mode stragglers (tech/gallery, NpsCard)                                                                                                                                        | Web    | S                                                                                                                          |
+| W4-13 | Housekeeping: empty `customer/vendor-portal` dir, duplicate wallet screens, duplicate admin analytics, react 19.3.1 drift, eslint max-warnings 200, ErrorBoundary raw error.message | Mobile | S                                                                                                                          |
 
 ### P3 — DB & infra hardening
+
+**Wave status: CLOSED** — W5-1…W5-12 merged (#672–#681); the W5-8 prod-image gate caught five latent breaks that were fixed on the same PR (#676: packages/ui + sentry configs + tailwind preset in the image, build-time env args, dead @prisma COPYs, Grafana interpolation).
 
 | ID    | Gap                                                                                                                                                          | Layer  | Effort                                                                                                                                                                                                                   |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -111,7 +130,7 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 | W5-3  | AvailabilitySlot no DB overlap guard (exclusion constraint)                                                                                                  | DB     | M                                                                                                                                                                                                                        |
 | W5-4  | Dispute dual-target CHECK; PromoUsage NULL-unique hole; WishlistItem NULL-unique hole                                                                        | DB     | S                                                                                                                                                                                                                        |
 | W5-5  | StoreCheckout webhook/expiry unindexed; payout settlement partial index; product.sales sort unindexed                                                        | DB     | S                                                                                                                                                                                                                        |
-| W5-6  | Duplicate model families (ServicePricing/PricingRule, ServiceBundle/BeautyBundle, PromoCode/BeautyCoupon, Review/TechnicianRating) — deprecate legacy copies | DB     | L ~~6a done (#678, pricing consolidated)~~ — 6b bundles REVIEWED NOT-duplicates (Mommy&Me pairs vs N-service bundles); 6c coupons + 6d reviews are true duplicates, queued                                               |
+| W5-6  | Duplicate model families (ServicePricing/PricingRule, ServiceBundle/BeautyBundle, PromoCode/BeautyCoupon, Review/TechnicianRating) — deprecate legacy copies | DB     | L ~~CLOSED~~: 6a pricing consolidated (#678); 6b bundles REVIEWED not-duplicates (Mommy&Me pairs vs N-service bundles, #679); 6c coupons consolidated (#680); 6d reviews consolidated (#681)                             |
 | W5-7  | StoreOrder lacks an order code; status String-vs-enum drift                                                                                                  | DB     | S-M                                                                                                                                                                                                                      |
 | W5-8  | CI docker gate builds dev images only; no path filters on ci.yml                                                                                             | CI     | S ~~done (prod build)~~: prod-compose targets now build in CI with placeholders. Path filters DEFERRED: paths-ignore makes required checks never-run → auto-merge blocks (the trap); needs a paired docs-workflow design |
 | W5-9  | Staging has no nginx/TLS despite docs; DEPLOYMENT.md drifts (metrics path, backup sidecar)                                                                   | Infra  | S ~~docs fixed~~: DEPLOYMENT.md now states the truth (sidecar + metrics live; staging TLS/nginx is a USER-GATED launch gap)                                                                                              |
@@ -121,6 +140,8 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 
 ### P4 — SEO, i18n sweep, coverage
 
+**Wave status: CLOSED** — W6-1…W6-5 merged (#684–#688).
+
 | ID   | Gap                                                                                                                     | Layer  | Effort |
 | ---- | ----------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
 | W6-1 | SEO: 33/321 pages emit metadata; sitemap has 32 URLs                                                                    | Web    | M      |
@@ -129,15 +150,16 @@ Six-agent deep audit of the whole monorepo (web Next.js 16 · mobile Expo SDK 58
 | W6-4 | content/social/realtime routers thin coverage (4/28, 10/42, 3/7)                                                        | API    | M      |
 | W6-5 | k6 load at 1K concurrent unchecked; no Sentry heartbeats for schedulers; no restore script                              | Infra  | M      |
 
-W6 build state (2026-11-16): **all five slices PR'd** —
-W6-3 (feat/w6-safety-tests, 9 tests), W6-2 (feat/w6-ui-i18n-gate, gate +
-530-file allowlist ratchet), W6-4 (feat/w6-domain-coverage, 3 suites 20
-tests + createTip id-contract fix), W6-1 (feat/w6-seo, gate + allowlist +
-76-URL sitemap + 14 flagship wrappers), W6-5 (feat/w6-infra-heartbeats,
-heartbeats + 1K k6 buckets + restore-db.sh). Follow-up queues (tracked,
-not lost): the 41-page W6-1 metadata queue (scripts/static-page-metadata-
-allowlist.txt) and the 530-file ui i18n migration (scripts/static-arabic-
-ui-allowlist.txt) — both ratcheted so they can only shrink.
+W6 build state (final): **all five slices merged** —
+W6-3 (#684, safety suite, 9 tests), W6-2 (#685, ui gate +
+530-file allowlist ratchet), W6-4 (#686, content/social/realtime suites
+20 tests + createTip id-contract fix), W6-1 (#687, page-metadata gate +
+76-URL sitemap + 14 flagship wrappers), W6-5 (#688, scheduler heartbeats
+
+- 1K k6 buckets + restore-db.sh). Follow-up queues (tracked, not lost):
+  the 41-page W6-1 metadata queue (scripts/static-page-metadata-
+  allowlist.txt) and the 530-file ui i18n migration (scripts/static-arabic-
+  ui-allowlist.txt) — both ratcheted so they can only shrink.
 
 ### User-gated (unchanged — needs the boss)
 
@@ -145,11 +167,12 @@ Fatoorah live token · Sentry DSNs · AWS console (CDN, S3 lifecycle) · Apple a
 
 ## Part C — Build waves
 
-- **W1 Money integrity** — W1-1…W1-13 (API/worker/seed; TDD per slice, one PR per 3-5 items)
-- **W2 Catalog bookability** — W2-1…W2-11 (the core business: every service bookable, booking→payment→confirm complete, flash-deal pricing live)
-- **W3 Realtime + seller tier + privacy** — W3-1…W3-7
-- **W4 Web/mobile correctness** — W4-1…W4-13
-- **W5 DB & infra hardening** — W5-1…W5-12
-- **W6 SEO + i18n + coverage** — W6-1…W6-5
+- **W1 Money integrity** — W1-1…W1-13 ✅ CLOSED (#634–#639)
+- **W2 Catalog bookability** — W2-1…W2-11 ✅ CLOSED (#640–#652)
+- **W3 Realtime + seller tier + privacy** — W3-1…W3-7 ✅ CLOSED (#654, #655, #660–#664)
+- **W4 Web/mobile correctness** — W4-1…W4-13 ✅ CLOSED (#665–#671)
+- **W5 DB & infra hardening** — W5-1…W5-12 ✅ CLOSED (#672–#681)
+- **W6 SEO + i18n + coverage** — W6-1…W6-5 ✅ CLOSED (#684–#688)
+- **Repairs & follow-ups** — ✅ CLOSED (#683, #689, #690, #691, #682)
 
-Each slice: test-first, PR, full CI (11 gates), merge on green. Tracker: this file's Part B table + `docs/PLATFORM_IMPROVEMENT_PLAN_2026.md` row. Board target: zero open PRs at the end of every wave.
+Each slice: test-first, PR, full CI (11 gates), merge on green. Tracker: this file's Part B table + `docs/PLATFORM_IMPROVEMENT_PLAN_2026.md` row. **Board target: zero open PRs at the end of every wave — achieved: board zero since 2026-11-18.**
