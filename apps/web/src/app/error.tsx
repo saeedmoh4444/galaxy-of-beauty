@@ -48,6 +48,12 @@ function RootErrorInner({
   const locale = usePageLocale();
   const t = useCatalogT(locale);
 
+  // W4-13 — the raw error.message is never rendered to users; it goes to
+  // the console/Sentry only.
+  useEffect(() => {
+    console.error('[RootError]', error.digest ?? error.message);
+  }, [error]);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-surface-elevated px-4">
       <Image
@@ -59,7 +65,7 @@ function RootErrorInner({
       />
       <h1 className="text-2xl font-bold text-text-primary">{t('error.unexpected')}</h1>
       <p className="mt-2 max-w-md text-center text-sm text-text-secondary">
-        {error.message || t('error.try-again-support')}
+        {t('error.try-again-support')}
       </p>
       <div className="mt-6 flex gap-3">
         <button
