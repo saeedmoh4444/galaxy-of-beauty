@@ -489,6 +489,7 @@ export const enWebMessages: Record<string, string> = {
   'admin.payouts.process': 'Process',
   'admin.payouts.process-failed-toast': 'Processing failed',
   'admin.payouts.processed-toast': 'Payment processed',
+  'admin.payouts.reject-note': 'Rejected',
   'admin.payouts.requests-approve': 'Approve',
   'admin.payouts.requests-approved': 'Request approved — manual transfer recorded',
   'admin.payouts.requests-none': 'No payout requests',
