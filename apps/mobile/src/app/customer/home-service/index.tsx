@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
-import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
+import { pickPrimaryCity } from '@/utils/primaryLocation';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface HomeServiceEstimate {
@@ -12,12 +12,13 @@ interface HomeServiceEstimate {
 
 export default function HomeServiceScreen(): JSX.Element {
   const { t } = useLocale();
+  // W4-9 — the estimate uses the customer's real primary-address city
+  // (fallback Riyadh), never a hardcoded constant.
+  const addressesQ = trpc.addresses.list.useQuery();
+  const city = pickPrimaryCity(addressesQ.data as { city?: string | null }[] | undefined);
   // Fetch-on-demand: the user taps to get an estimate, so keep the query disabled
   // until first request instead of firing on mount
-  const estimateQ = trpc.homeService.estimate.useQuery(
-    { city: DEFAULT_SAUDI_CITY /* TODO: use user location */ },
-    { enabled: false },
-  );
+  const estimateQ = trpc.homeService.estimate.useQuery({ city }, { enabled: false });
   const estimate = estimateQ.data as unknown as HomeServiceEstimate | null;
   if (estimateQ.isLoading) return <SkeletonList count={3} />;
   return (

@@ -2,7 +2,6 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
-import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface GeofenceOffer {
@@ -16,9 +15,9 @@ interface GeofenceOffer {
 
 export default function GeofenceOffersScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.geofenceOffers.nearMe.useQuery({
-    city: DEFAULT_SAUDI_CITY /* TODO: from user location */,
-  });
+  // W4-9 — city is optional server-side (returns all active promotions
+  // when omitted); no more hardcoded city.
+  const q = trpc.geofenceOffers.nearMe.useQuery({});
   const offers: GeofenceOffer[] = (q.data as unknown as GeofenceOffer[] | undefined) ?? [];
   const optIn = () => {
     // No opt-in mutation exists on the server; refresh the offers list instead
