@@ -1,0 +1,307 @@
+'use client';
+import { useState } from 'react';
+import type { JSX } from 'react';
+import { api } from '@/lib/trpc';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  Button,
+  formatCurrency,
+  ServiceImage,
+} from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
+import Link from 'next/link';
+
+export function KidsServicesClient(): JSX.Element {
+  const { t } = useLocale();
+  const { user } = useAuth();
+  const { data: cats } = api.kidsServices.categories.useQuery() as {
+    data: Array<Record<string, unknown>> | undefined;
+  };
+  const [selectedCat, setSelectedCat] = useState<string | null>(null);
+  const {
+    data: category,
+    isLoading,
+    isError,
+    refetch,
+  } = api.kidsServices.byCategory.useQuery(
+    { category: selectedCat ?? '' },
+    { enabled: !!selectedCat },
+  ) as {
+    data: Record<string, unknown> | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
+  const { data: tips } = api.kidsServices.safetyTips.useQuery() as { data: string[] | undefined };
+  const bookMut = api.kidsServices.book.useMutation();
+
+  // C1a — real booking: the wizard collects an address + appointment
+  // window before calling the (now real) book procedure.
+  const { data: addresses } = api.addresses.list.useQuery(undefined, {
+    enabled: !!user,
+  }) as { data: Array<Record<string, unknown>> | undefined };
+  const [addressId, setAddressId] = useState<number | null>(null);
+  const [apptDate, setApptDate] = useState('');
+  const [apptTime, setApptTime] = useState('');
+  const [result, setResult] = useState<Record<string, unknown> | null>(null);
+  const [childName, setChildName] = useState('');
+  const [childAge, setChildAge] = useState(5);
+  const bookingReady =
+    !!user &&
+    childName.trim().length > 0 &&
+    !!addressId &&
+    !!apptDate &&
+    !!apptTime &&
+    !bookMut.isPending;
+
+  const categories = (cats ?? []) as Array<Record<string, unknown>>;
+  const subServices = (category?.subServices ?? []) as Array<Record<string, unknown>>;
+
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-12">
+      <div className="mb-10 text-center">
+        <ServiceImage
+          service={pageHeroKey('kids-services')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.kids-services.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.kids-services.subtitle')}</p>
+      </div>
+
+      {result ? (
+        (result.booked as boolean) ? (
+          <Card padding="lg" className="text-center border-2 border-green-300">
+            <span className="text-6xl">🎉</span>
+            <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
+            <p className="text-2xl font-extrabold text-brand-600 mt-2">
+              {t('marketing.kids-services.price-sar', {
+                price: formatCurrency(result.price as number),
+              })}
+            </p>
+            <p className="text-sm text-text-secondary mt-1">
+              {result.childName as string} ·{' '}
+              {t('marketing.kids-services.duration-min', { min: result.durationMin as number })} ·{' '}
+              {result.tip as string}
+            </p>
+            <Button
+              variant="ghost"
+              className="mt-4"
+              onClick={() => {
+                setResult(null);
+                setSelectedCat(null);
+              }}
+            >
+              {t('marketing.kids-services.back')}
+            </Button>
+          </Card>
+        ) : (
+          <Card padding="lg" className="text-center border-2 border-amber-300">
+            <span className="text-5xl">🚧</span>
+            <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+            <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+            <Button
+              variant="ghost"
+              className="mt-4"
+              onClick={() => {
+                setResult(null);
+                setSelectedCat(null);
+              }}
+            >
+              {t('marketing.kids-services.back')}
+            </Button>
+          </Card>
+        )
+      ) : !selectedCat ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {categories.map((c: Record<string, unknown>) => (
+            <button key={c.key as string} onClick={() => setSelectedCat(c.key as string)}>
+              <Card
+                padding="lg"
+                className="text-center h-full hover:shadow-xl hover:-translate-y-1 transition-all"
+              >
+                <span className="text-5xl">{c.emoji as string}</span>
+                <h3 className="mt-3 text-lg font-bold">{c.nameAr as string}</h3>
+                <p className="mt-1 text-xs text-text-secondary">{c.description as string}</p>
+                <span className="mt-3 inline-block rounded-full bg-brand-100 dark:bg-brand-900 px-3 py-1 text-xs font-medium text-brand-700">
+                  {t('marketing.kids-services.services-count', { count: c.serviceCount as number })}
+                </span>
+              </Card>
+            </button>
+          ))}
+        </div>
+      ) : isLoading ? (
+        <CardListSkeleton count={4} />
+      ) : isError ? (
+        <ErrorAlert message={t('marketing.kids-services.load-error')} onRetry={() => refetch()} />
+      ) : (
+        <div className="space-y-6">
+          <button
+            onClick={() => setSelectedCat(null)}
+            className="text-brand-600 text-sm font-medium"
+          >
+            {t('marketing.kids-services.back-arrow')}
+          </button>
+          <Card
+            padding="lg"
+            className="bg-linear-to-r from-blue-50 to-brand-50 dark:from-blue-950 dark:to-brand-950 border-none"
+          >
+            <span className="text-5xl">{category?.emoji as string}</span>
+            <h2 className="text-xl font-bold mt-2">{category?.nameAr as string}</h2>
+            <p className="text-sm text-text-secondary">{category?.description as string}</p>
+          </Card>
+          <div className="flex gap-3 items-end bg-surface-muted rounded-xl p-4">
+            <div>
+              <label htmlFor="ks-child-name" className="text-xs font-semibold">
+                {t('marketing.kids-services.child-name')}
+              </label>
+              <input
+                id="ks-child-name"
+                value={childName}
+                onChange={(e) => setChildName(e.target.value)}
+                placeholder={t('marketing.kids-services.name-placeholder')}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              />
+            </div>
+            <div>
+              <label htmlFor="ks-child-age" className="text-xs font-semibold">
+                {t('marketing.kids-services.age')}
+              </label>
+              <input
+                id="ks-child-age"
+                type="number"
+                value={childAge}
+                onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}
+                min={0}
+                max={17}
+                className="w-20 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              />
+            </div>
+            {/* C1a — real booking fields: address + appointment window */}
+            <div>
+              <label htmlFor="ks-address" className="text-xs font-semibold">
+                {t('marketing.kids-services.address')}
+              </label>
+              <select
+                id="ks-address"
+                value={addressId ?? ''}
+                onChange={(e) => setAddressId(e.target.value ? Number(e.target.value) : null)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              >
+                <option value="">—</option>
+                {(addresses ?? []).map((a: Record<string, unknown>) => (
+                  <option key={a.id as number} value={a.id as number}>
+                    {[a.label as string, a.street as string, a.area as string, a.city as string]
+                      .filter(Boolean)
+                      .join(' — ')}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="ks-date" className="text-xs font-semibold">
+                {t('marketing.kids-services.date')}
+              </label>
+              <input
+                id="ks-date"
+                type="date"
+                value={apptDate}
+                onChange={(e) => setApptDate(e.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              />
+            </div>
+            <div>
+              <label htmlFor="ks-time" className="text-xs font-semibold">
+                {t('marketing.kids-services.time')}
+              </label>
+              <input
+                id="ks-time"
+                type="time"
+                value={apptTime}
+                onChange={(e) => setApptTime(e.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
+              />
+            </div>
+          </div>
+          <div className="space-y-3">
+            {subServices.map((s: Record<string, unknown>) => (
+              <Card key={s.id as string} padding="lg" className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <span className="text-3xl">{s.emoji as string}</span>
+                  <div>
+                    <h3 className="font-bold">{s.nameAr as string}</h3>
+                    <p className="text-xs text-text-secondary">
+                      {t('marketing.kids-services.age-from', { age: (s.ageMin as number) || 0 })}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-end">
+                  <p className="text-xl font-extrabold text-brand-600">
+                    {t('marketing.kids-services.price-sar', {
+                      price: formatCurrency(s.price as number),
+                    })}
+                  </p>
+                  <p className="text-xs text-text-tertiary">
+                    {t('marketing.kids-services.duration-min', { min: s.durationMin as number })}
+                  </p>
+                  {user ? (
+                    <Button
+                      size="sm"
+                      className="mt-2"
+                      disabled={!bookingReady}
+                      onClick={() => {
+                        if (!bookingReady) return;
+                        const startAt = new Date(`${apptDate}T${apptTime}:00`);
+                        const durationMin = Number(s.durationMin) || 30;
+                        const endAt = new Date(startAt.getTime() + durationMin * 60_000);
+                        bookMut.mutate(
+                          {
+                            serviceId: s.id as string,
+                            category: selectedCat,
+                            childName: childName.trim(),
+                            childAge,
+                            addressId: addressId!,
+                            startAt: startAt.toISOString(),
+                            endAt: endAt.toISOString(),
+                            idempotencyKey: crypto.randomUUID(),
+                          },
+                          { onSuccess: (d) => setResult(d as Record<string, unknown>) },
+                        );
+                      }}
+                    >
+                      {t('marketing.kids-services.book')}
+                    </Button>
+                  ) : null}
+                </div>
+              </Card>
+            ))}
+          </div>
+          {tips && tips.length > 0 && (
+            <Card padding="lg" className="bg-green-50 dark:bg-green-950 border-none">
+              <h3 className="font-bold mb-2">{t('marketing.kids-services.tips')}</h3>
+              <div className="space-y-1">
+                {tips.map((t: string, i: number) => (
+                  <p key={i} className="text-sm">
+                    {t}
+                  </p>
+                ))}
+              </div>
+            </Card>
+          )}
+          {!user && (
+            <div className="text-center">
+              <Link href="/login">
+                <Button size="lg">{t('marketing.kids-services.login-to-book')}</Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
