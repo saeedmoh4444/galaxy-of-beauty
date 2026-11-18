@@ -270,10 +270,23 @@ export const paymentRouter = router({
         });
       }
 
-      // 2-3. Update payment to CAPTURED
-      const payment = await prisma.payment.update({
-        where: { id: booking.payment.id },
+      // 2-3. Update payment to CAPTURED — conditional on the current status.
+      // The AUTHORIZED check above is a read: under concurrent captures both
+      // requests can pass it, and a plain update would let BOTH "win" (the
+      // cashback below is idempotent, but the caller saw two successes).
+      // Claiming with a status guard makes exactly one capture win.
+      const claimed = await prisma.payment.updateMany({
+        where: { id: booking.payment.id, status: 'AUTHORIZED' },
         data: { status: 'CAPTURED' },
+      });
+      if (claimed.count === 0) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Payment already captured',
+        });
+      }
+      const payment = await prisma.payment.findUniqueOrThrow({
+        where: { id: booking.payment.id },
       });
 
       // 4. Update booking to PAID
