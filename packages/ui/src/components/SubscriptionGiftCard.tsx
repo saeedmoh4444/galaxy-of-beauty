@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Subscription Gift Card — gift a beauty subscription to a friend.
@@ -48,7 +49,7 @@ export function SubscriptionGiftCard({
   friendName,
   onSend,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'أهدي اشتراك',
   sendToPrefix = 'أرسلي لـ ',
   sendGiftSuffix = 'هدية الجمال',

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Bag Card — essential beauty bag packing tips.
@@ -18,7 +19,7 @@ export function BeautyBagCard({
   className = '',
   title = 'حقيبة الجمال',
   subtitle = 'أساسيات لا تستغني عنها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyBagCardProps): JSX.Element {
   return (
     <div

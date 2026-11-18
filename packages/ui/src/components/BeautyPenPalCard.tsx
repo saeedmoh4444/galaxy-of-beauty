@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Pen Pal Card — connect women across Saudi cities through beauty.
@@ -48,7 +49,7 @@ export function BeautyPenPalCard({
   match,
   onConnect,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'صديقة الجمال',
   subtitle = 'تعرفي على نساء يشاركنكِ شغف الجمال',
   youText = 'أنتِ',

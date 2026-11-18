@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Sisterhood Wall — women leaving anonymous compliments for each other.
@@ -35,7 +36,7 @@ const SEED_COMPLIMENTS = [
 
 export function SisterhoodWall({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'جدار الأختية',
   subtitle = 'اتركي رسالة إيجابية لأخت مجهولة',
   placeholder = 'اكتبي رسالة تشجيع...',

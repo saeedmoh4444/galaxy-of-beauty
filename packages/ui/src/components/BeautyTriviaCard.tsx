@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Trivia Card — fun beauty facts for learning.
@@ -91,7 +92,7 @@ export function BeautyTriviaCard({
   triviaCounterPrefix = 'معلومة جمالية ',
   nextButtonText = 'المعلومة التالية ←',
   footerText = 'المعرفة جمال — تعلمي شيئاً جديداً كل يوم',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyTriviaCardProps): JSX.Element {
   const [index, setIndex] = useState(() => Math.floor(Math.random() * TRIVIA.length));
   const trivia = TRIVIA[index]!;

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Hearing Assistance Badge — signals hearing loop & communication support.
@@ -71,7 +72,7 @@ interface HearingAssistanceBadgeProps {
 export function HearingAssistanceBadge({
   features,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'مساعدة سمعية',
   supportCountText = 'وسائل دعم سمعي',
   footerText = 'نسمعكِ بكل الطرق — الجمال للجميع',

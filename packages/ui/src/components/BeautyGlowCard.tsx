@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyGlowCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyGlowCard({
   className = '',
   title = 'أسرار الإشراقة',
   subtitle = 'بشرة متوهجة من الداخل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyGlowCardProps): JSX.Element {
   return (
     <div

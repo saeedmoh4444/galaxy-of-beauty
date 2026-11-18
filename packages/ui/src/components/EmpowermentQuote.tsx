@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Empowerment Quote — rotating inspirational quotes from Saudi and Arab women.
@@ -53,7 +54,7 @@ const QUOTES = [
 
 export function EmpowermentQuote({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   /** Display language for built-in quotes */

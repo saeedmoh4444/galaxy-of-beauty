@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyStretchCardProps {
   className?: string;
@@ -12,7 +13,7 @@ interface BeautyStretchCardProps {
 
 export function BeautyStretchCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'تمارين الإطالة',
   subtitle = '5 دقائق صباحاً = يوم كامل من النشاط',
 }: BeautyStretchCardProps): JSX.Element {

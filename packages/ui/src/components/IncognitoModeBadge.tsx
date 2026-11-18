@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Incognito Mode Badge — private browsing without saving history.
@@ -28,7 +29,7 @@ interface IncognitoModeBadgeProps {
 export function IncognitoModeBadge({
   onToggle,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   activeTitle = 'وضع التخفي نشط',
   inactiveTitle = 'وضع التخفي',
   activeSubtitle = 'لا يتم حفظ سجل التصفح — أنتِ مخفية تماماً',

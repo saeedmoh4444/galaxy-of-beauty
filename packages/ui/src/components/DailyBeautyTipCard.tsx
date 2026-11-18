@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Daily Beauty Tip Card — rotating beauty tip of the day.
@@ -93,7 +94,7 @@ export function DailyBeautyTipCard({
   className = '',
   title = 'نصيحة اليوم',
   footerText = 'نصيحة جديدة كل يوم — تعلمي وطبقي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: DailyBeautyTipCardProps): JSX.Element {
   const [index] = useState(() => Math.floor(Math.random() * TIPS.length));
   const tip = TIPS[index]!;

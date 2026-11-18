@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyDiamondFacialCard({
   className = '',
   title = 'فيشل الألماس',
   subtitle = 'سنفرة الألماس — بشرة جديدة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * She Leads Program Card — fast-track women technicians to salon management.
@@ -79,7 +80,7 @@ export function SheLeadsProgramCard({
   testimonialAuthor = '— نورة، خريجة البرنامج',
   applyButtonText = 'انضمي للبرنامج',
   footerText = 'لأن القيادة تبدأ بخطوة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SheLeadsProgramCardProps): JSX.Element {
   return (
     <div

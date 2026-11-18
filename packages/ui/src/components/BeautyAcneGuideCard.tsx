@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyAcneGuideCard({
   className = '',
   title = 'دليل الحبوب',
   subtitle = 'افهمي نوع الحبوب لتعالجيها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

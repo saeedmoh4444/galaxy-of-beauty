@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyCrowsFeetCard({
   className = '',
   title = 'خطوط حول العين',
   subtitle = 'أقدام الغراب — وقاية وعلاج',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

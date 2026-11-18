@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Cognitive Accessibility Badge — signals cognitive-friendly salon features.
@@ -77,7 +78,7 @@ export function CognitiveAccessibilityBadge({
   title = 'صديق للإدراك',
   subtitle = 'ميزات تسهل التجربة على الجميع',
   footerText = 'كل عقل جميل بطريقته',
-  locale = 'ar',
+  locale = getUILocale(),
 }: CognitiveAccessibilityBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 

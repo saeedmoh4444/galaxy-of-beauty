@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyDarkCirclesCard({
   className = '',
   title = 'الهالات السوداء',
   subtitle = 'أسبابها وعلاجها من جذورها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

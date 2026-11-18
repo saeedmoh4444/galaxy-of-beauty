@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Gratitude Card — gratitude journaling for beauty & self-care.
@@ -34,7 +35,7 @@ export function BeautyGratitudeCard({
   entries = 0,
   onAddEntry,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'يوميات الامتنان',
   entriesLabel = 'مدخل',
   addEntryText = 'اكتبي اليوم',

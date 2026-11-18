@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Complimentary Amenity Badge — free essentials available in salon changing rooms.
@@ -89,7 +90,7 @@ export function ComplimentaryAmenityBadge({
   title = 'كماليات مجانية',
   subtitle = 'كل ما تحتاجينه في غرفة التغيير — مجاناً',
   footerText = 'لأن التفاصيل الصغيرة تصنع الفرق',
-  locale = 'ar',
+  locale = getUILocale(),
 }: ComplimentaryAmenityBadgeProps): JSX.Element | null {
   if (!amenities.length) return null;
 

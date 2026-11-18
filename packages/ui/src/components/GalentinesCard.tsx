@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Galentine's Card — celebrate female friendship on February 13.
@@ -73,7 +74,7 @@ export function GalentinesCard({
   currencySuffix = 'ر.س',
   bookLabel = 'احجزي يوم الصديقات',
   footerText = 'لأن الصديقات هن العائلة التي نختارها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: GalentinesCardProps): JSX.Element {
   const pricePerPerson = Math.round(totalPrice / (friends.length + 1)); // +1 for the user
 

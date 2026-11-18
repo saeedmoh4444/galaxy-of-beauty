@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Scarf Card — hijab and scarf styling tips.
@@ -18,7 +19,7 @@ export function BeautyScarfCard({
   className = '',
   title = 'أناقة الحجاب',
   subtitle = 'أفكار لتنسيق حجابك',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyScarfCardProps): JSX.Element {
   return (
     <div

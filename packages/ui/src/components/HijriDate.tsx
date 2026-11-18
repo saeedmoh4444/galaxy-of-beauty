@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Hijri calendar date display component.
@@ -51,7 +52,7 @@ export function HijriDate({
   showGregorian = true,
   hijriSuffix = 'هـ',
   gregorianSuffix = 'م',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   date: Date;
   showGregorian?: boolean;

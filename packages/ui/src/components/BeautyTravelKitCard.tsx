@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyTravelKitCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'حقيبة سفر الجمال',
   subtitle = 'أساسيات لا تنسينها',
 }: {

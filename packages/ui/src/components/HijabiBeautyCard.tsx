@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Hijabi Beauty Card — beauty tips and services adapted for hijabi women.
@@ -94,7 +95,7 @@ export function HijabiBeautyCard({
   privateRoomNote = 'جميع خدماتنا في غرف خاصة — لا داعي لخلع الحجاب أمام أحد',
   bookLabel = 'احجزي جلستكِ الخاصة',
   footerText = 'حجابكِ تاجكِ — ونهتم بجمالكِ تحته',
-  locale = 'ar',
+  locale = getUILocale(),
 }: HijabiBeautyCardProps): JSX.Element {
   return (
     <div

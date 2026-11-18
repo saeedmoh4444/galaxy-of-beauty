@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyCallusCareCard({
   className = '',
   title = 'عناية بالكالو',
   subtitle = 'قدمان ناعمتان — بدون جلد خشن',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

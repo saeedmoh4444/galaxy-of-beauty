@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Annual Summit Card — Women in Beauty Leadership Summit announcement.
@@ -81,7 +82,7 @@ export function AnnualSummitCard({
   registerLabel = 'سجّلي الآن ',
   sponsorLabel = 'راعي الملتقى',
   footerText = 'معاً نبني مستقبل المرأة السعودية في قطاع التجميل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: AnnualSummitCardProps): JSX.Element {
   return (
     <div

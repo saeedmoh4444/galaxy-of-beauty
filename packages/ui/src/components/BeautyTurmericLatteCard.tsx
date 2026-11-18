@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyTurmericLatteCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'لاتيه الكركم',
   subtitle = 'الحليب الذهبي للبشرة',
 }: {

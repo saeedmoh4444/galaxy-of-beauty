@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Trust Indicators — shown during booking to reassure women.
@@ -9,7 +10,7 @@ import type { JSX } from 'react';
 
 export function TrustIndicators({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   locale?: 'ar' | 'en';

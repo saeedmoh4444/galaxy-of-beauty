@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Random Act of Beauty — monthly surprise free service for a lucky customer.
@@ -69,7 +70,7 @@ export function RandomActOfBeauty({
   checkEligibilityText = 'تفقدي أهليتكِ',
   bookGiftText = 'احجزي هديتكِ الآن',
   footerText = 'الجمال أحياناً يأتي كهدية غير متوقعة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: RandomActOfBeautyProps): JSX.Element {
   const [surpriseIndex] = useState(() => Math.floor(Math.random() * SURPRISES.length));
   const surprise = SURPRISES[surpriseIndex]!;

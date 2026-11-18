@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Press Kit Card — media press kit with brand assets for journalists.
@@ -34,7 +35,7 @@ const KIT_ITEMS = [
 export function PressKitCard({
   onDownload,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'الملف الصحفي',
   subtitle = 'كل ما يحتاجه الإعلام للكتابة عنا',
   downloadButtonText = 'تحميل الملف الصحفي',
