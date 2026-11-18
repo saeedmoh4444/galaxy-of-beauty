@@ -1,57 +1,22 @@
-'use client';
 import type { JSX } from 'react';
-import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ServiceImage, ErrorAlert } from '@galaxy/ui';
-import { pageHeroKey } from '@galaxy/shared';
-import { useLocale } from '@/components/LocaleProvider';
+import type { Metadata } from 'next';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
+import { BehindScenesClient } from './BehindScenesClient';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.behind-scenes.title', 'ar'),
+    titleEn: t('marketing.behind-scenes.title', 'en'),
+    descriptionAr: t('marketing.behind-scenes.subtitle', 'ar'),
+    descriptionEn: t('marketing.behind-scenes.subtitle', 'en'),
+    path: '/behind-scenes',
+  });
+}
 
 export default function BehindScenesPage(): JSX.Element {
-  const { t } = useLocale();
-  const { data, isLoading, isError, refetch } = api.behindScenes.feed.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
-  const videos = data ?? [];
-
-  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
-
-  return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
-      <div className="mb-8 text-center">
-        <ServiceImage
-          service={pageHeroKey('behind-scenes')}
-          alt=""
-          size="xl"
-          className="mx-auto rounded-3xl"
-        />
-        <h1 className="mt-4 text-3xl font-bold">{t('marketing.behind-scenes.title')}</h1>
-        <p className="mt-2 text-text-secondary">{t('marketing.behind-scenes.subtitle')}</p>
-      </div>
-      {isLoading ? (
-        <GridSkeleton count={6} />
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((v: Record<string, unknown>) => (
-            <Card
-              key={v.id as number}
-              padding="md"
-              className="group hover:shadow-lg transition-all"
-            >
-              <div className="relative h-40 rounded-xl bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-4xl">
-                {v.emoji as string}
-              </div>
-              <div className="mt-2">
-                <h3 className="font-bold text-sm">{v.title as string}</h3>
-                <p className="text-xs text-text-secondary mt-1">
-                  {v.technicianName as string} · {v.duration as string} · {v.views as number}
-                </p>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <BehindScenesClient />;
 }
