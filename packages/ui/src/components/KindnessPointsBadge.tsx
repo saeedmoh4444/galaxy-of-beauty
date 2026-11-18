@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Kindness Points Badge — earn points for helping others.
@@ -103,7 +104,7 @@ export function KindnessPointsBadge({
   activityListTitle = 'كيف تكسبين النقاط',
   buttonText = 'استبدلي نقاطكِ بمكافآت',
   footerText = 'كل نقطة تكتسبينها تعني أنكِ ساعدتِ أختاً',
-  locale = 'ar',
+  locale = getUILocale(),
 }: KindnessPointsBadgeProps): JSX.Element {
   // Auto-detect level
   const detectedLevel: KindnessLevel =

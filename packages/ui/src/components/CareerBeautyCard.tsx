@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Career Beauty Card — professional makeup & quick lunch-break services.
@@ -117,7 +118,7 @@ export function CareerBeautyCard({
   lunchPrice = '150 ر.س',
   bookLabel = 'احجزي استراحة جمالكِ',
   footerText = 'المرأة العاملة تستحق أن تتألق — حتى في أكثر أيامها انشغالاً',
-  locale = 'ar',
+  locale = getUILocale(),
 }: CareerBeautyCardProps): JSX.Element {
   const prof = PROFS[profession];
 

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautySkincareNiacinamideCard({
   className = '',
   title = 'نياسيناميد',
   subtitle = 'فيتامين B3 المتعدد الفوائد',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

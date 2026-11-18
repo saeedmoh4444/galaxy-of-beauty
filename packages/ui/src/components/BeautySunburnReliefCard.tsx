@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautySunburnReliefCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'علاج حروق الشمس',
   subtitle = 'إسعاف سريع للبشرة المحروقة',
 }: {

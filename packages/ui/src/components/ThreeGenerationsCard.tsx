@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Three Generations Card — grandmother, mother, daughter spa day.
@@ -73,7 +74,7 @@ export function ThreeGenerationsCard({
   includesLabel = 'تشمل الباقة',
   keepsakeText = 'صورة تذكارية للثلاثة أجيال — هديتنا لكِ',
   bookLabel = 'احجزي للعائلة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: ThreeGenerationsCardProps): JSX.Element {
   const members: {
     key: string;

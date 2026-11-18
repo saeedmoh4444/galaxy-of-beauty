@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyThirtiesCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'العناية في الثلاثينات',
   subtitle = 'وقاية وعلاج — بشرة متوازنة',
 }: {

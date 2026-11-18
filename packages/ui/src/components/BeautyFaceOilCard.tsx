@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyFaceOilCard({
   className = '',
   title = 'زيت الوجه',
   subtitle = 'هل هو مناسب لبشرتك؟',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Safety Badge — platform safety guarantees for women.
@@ -60,7 +61,7 @@ export function SafetyBadge({
   type,
   size = 'sm',
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SafetyBadgeProps): JSX.Element | null {
   const s = SAFETY_TYPES[type];
   if (!s) return null;

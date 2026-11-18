@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyNailStrengthenCard({
   className = '',
   title = 'تقوية الأظافر',
   subtitle = 'أظافر قوية — بدون تكسر',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

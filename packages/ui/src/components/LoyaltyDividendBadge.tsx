@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Loyalty Dividend Badge — annual cashback based on yearly spend.
@@ -111,7 +112,7 @@ export function LoyaltyDividendBadge({
   topTierText = 'أنتِ في أعلى مرتبة — تهانينا!',
   payoutInfoPrefix = 'تصرف أرباحكِ السنوية في ',
   payoutInfoSuffix = 'من كل عام',
-  locale = 'ar',
+  locale = getUILocale(),
 }: LoyaltyDividendBadgeProps): JSX.Element {
   // Auto-detect tier from spend or use provided tier
   const detectedTier = (tier ??

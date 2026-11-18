@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyGraduationLookCard({
   className = '',
   title = 'إطلالة التخرج',
   subtitle = 'صور تدوم — إطلالة تبقى',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

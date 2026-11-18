@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Handwritten Note — scanned handwritten thank you after 10th booking.
@@ -75,7 +76,7 @@ export function HandwrittenNote({
   bookingCountPrefix = 'حجز #',
   nextMilestoneSuffix = 'حجوزات متبقية لمفاجأتكِ القادمة',
   footerText = 'لأن كل حجز هو قصة جميلة بيننا',
-  locale = 'ar',
+  locale = getUILocale(),
 }: HandwrittenNoteProps): JSX.Element | null {
   // Find the relevant milestone
   const milestones = Object.keys(MILESTONE_MESSAGES)

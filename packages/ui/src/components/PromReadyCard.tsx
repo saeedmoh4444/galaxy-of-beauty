@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Prom Ready Card — prom/graduation preparation beauty package for teens.
@@ -102,7 +103,7 @@ export function PromReadyCard({
   currencySuffix = 'ر.س',
   bookLabel = 'احجزي إطلالتكِ',
   footerText = 'اجعلي مناسبتكِ الخاصة لا تُنسى',
-  locale = 'ar',
+  locale = getUILocale(),
 }: PromReadyCardProps): JSX.Element {
   const ev = EVENTS[event];
   const isTeen = age !== undefined && age >= 15 && age <= 19;

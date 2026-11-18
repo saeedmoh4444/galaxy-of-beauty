@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Hot Drink Menu Badge — complimentary beverages with every service.
@@ -104,7 +105,7 @@ export function HotDrinkMenuBadge({
   onRequestText = 'متوفرة حسب الطلب',
   freeBadgeText = 'مجاناً',
   quoteText = '“القهوة العربية جزء من كرم الضيافة السعودية”',
-  locale = 'ar',
+  locale = getUILocale(),
 }: HotDrinkMenuBadgeProps): JSX.Element | null {
   if (!drinks.length) return null;
 

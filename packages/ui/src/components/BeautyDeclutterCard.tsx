@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyDeclutterCard({
   className = '',
   title = 'ترتيب وتنظيف',
   subtitle = 'تخلصي من الفوضى — بشرة أسعد',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

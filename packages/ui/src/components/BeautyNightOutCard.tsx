@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Night Out Card — last-minute beauty for a night out.
@@ -51,7 +52,7 @@ export function BeautyNightOutCard({
   available = true,
   onBook,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'ليلة خارجاً',
   subtitle = 'خدمات سريعة لليلتكِ الخاصة',
   availableBadgeText = 'متوفر الآن',

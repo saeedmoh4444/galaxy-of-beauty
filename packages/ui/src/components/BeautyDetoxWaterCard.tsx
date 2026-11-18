@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyDetoxWaterCard({
   className = '',
   title = 'ماء الديتوكس',
   subtitle = 'مشروبات طبيعية لبشرة متوهجة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

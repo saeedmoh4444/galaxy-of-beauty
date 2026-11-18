@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Seasonal Reminder Card — seasonal beauty care reminder.
@@ -75,7 +76,7 @@ export function BeautySeasonalReminderCard({
   className = '',
   reminderPrefix = 'تذكير ',
   subtitle = 'روتينكِ يتغير مع الفصول',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautySeasonalReminderCardProps): JSX.Element {
   const s = SEASONS[season];
 

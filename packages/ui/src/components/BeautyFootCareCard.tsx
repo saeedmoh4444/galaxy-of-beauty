@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 const TIPS = [
   {
@@ -37,7 +38,7 @@ export function BeautyFootCareCard({
   className = '',
   title = 'عناية بالقدمين',
   subtitle = 'أقدام ناعمة طوال العام',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyFootCareCardProps): JSX.Element {
   return (
     <div

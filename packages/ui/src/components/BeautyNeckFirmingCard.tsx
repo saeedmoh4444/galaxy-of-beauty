@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyNeckFirmingCard({
   className = '',
   title = 'شد الرقبة',
   subtitle = 'تمارين وكريمات للرقبة المشدودة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

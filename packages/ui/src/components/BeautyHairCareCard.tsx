@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Hair Care Card — hair type-specific care tips.
@@ -116,7 +117,7 @@ export function BeautyHairCareCard({
   className = '',
   title = 'عناية بالشعر',
   porosityLabel = 'مسامية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyHairCareCardProps): JSX.Element {
   const tips = TIPS[hairType][porosity];
 

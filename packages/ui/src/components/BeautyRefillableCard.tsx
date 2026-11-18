@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyRefillableCard({
   className = '',
   title = 'عبوات قابلة للتعبئة',
   subtitle = 'اشتري مرة — استخدمي للأبد',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

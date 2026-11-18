@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyHairStraightCard({
   className = '',
   title = 'الشعر الناعم',
   subtitle = 'عناية خاصة بالشعر الأملس',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

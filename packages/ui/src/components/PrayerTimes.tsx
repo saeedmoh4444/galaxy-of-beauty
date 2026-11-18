@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Saudi Prayer Times component.
@@ -45,7 +46,7 @@ function getCurrentPrayer(): {
 }
 
 export function PrayerTimes({
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'مواقيت الصلاة',
   upcomingPrefix = 'القادمة: ',
 }: {

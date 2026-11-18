@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyBridalEmergencyCard({
   className = '',
   title = 'طوارئ العروس',
   subtitle = 'طقم إنقاذ يوم الزفاف',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

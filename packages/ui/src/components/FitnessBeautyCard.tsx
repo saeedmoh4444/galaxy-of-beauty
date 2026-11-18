@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Fitness Beauty Card — post-workout beauty routine for active women.
@@ -101,7 +102,7 @@ export function FitnessBeautyCard({
   subtitle = '— روتين العناية بعد التمرين',
   productsLabel = 'منتجات مقترحة',
   footerText = 'الجمال والصحة وجهان لعملة واحدة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: FitnessBeautyCardProps): JSX.Element {
   const w = WORKOUTS[workoutType];
 

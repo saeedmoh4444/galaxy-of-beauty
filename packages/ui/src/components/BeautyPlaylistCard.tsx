@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Playlist Card — curated spa & relaxation music playlists.
@@ -35,7 +36,7 @@ interface BeautyPlaylistCardProps {
 
 export function BeautyPlaylistCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'موسيقى الجمال',
   subtitle = 'قائمة تشغيل للاسترخاء أثناء جلستكِ',
   footerText = 'اختاري الموسيقى التي تحبينها لجلسة مثالية',

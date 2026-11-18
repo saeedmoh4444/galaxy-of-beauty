@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautySkinToneMatchCard({
   className = '',
   title = 'مطابقة الألوان',
   subtitle = 'اختاري الدرجة المثالية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

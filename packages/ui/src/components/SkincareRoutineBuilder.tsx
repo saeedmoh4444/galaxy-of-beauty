@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Skincare Routine Builder — interactive personalized skincare routine.
@@ -95,7 +96,7 @@ export function SkincareRoutineBuilder({
   title = 'بناء روتين العناية',
   skinQuestion = 'ما نوع بشرتكِ؟',
   goalQuestion = 'ما هدفكِ؟',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SkincareRoutineBuilderProps): JSX.Element {
   const [step, setStep] = useState<'skin' | 'goal' | 'result'>('skin');
   const [skinType, setSkinType] = useState<SkinType | null>(null);

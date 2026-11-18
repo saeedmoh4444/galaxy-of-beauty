@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyHairHijabCard({
   className = '',
   title = 'الشعر تحت الحجاب',
   subtitle = 'عناية خاصة لشعر المحجبات',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

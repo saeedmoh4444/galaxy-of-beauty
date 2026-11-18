@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPuffyEyesCard({
   className = '',
   title = 'انتفاخ العيون',
   subtitle = 'صباح منتفخ — حل سريع',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

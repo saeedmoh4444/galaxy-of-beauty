@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyTeethCareCardProps {
   className?: string;
@@ -12,7 +13,7 @@ interface BeautyTeethCareCardProps {
 
 export function BeautyTeethCareCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'ابتسامة مشرقة',
   subtitle = 'عناية بالأسنان لجمال ابتسامتك',
 }: BeautyTeethCareCardProps): JSX.Element {

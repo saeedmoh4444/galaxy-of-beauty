@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Emergency Kit — essential items available in every salon bathroom.
@@ -63,7 +64,7 @@ export function BeautyEmergencyKit({
   subtitle = 'كل ما تحتاجينه في الحالات الطارئة — متوفر في دورة المياه',
   freeText = 'مجاناً — لا حاجة للسؤال',
   footerText = 'لأن الطوارئ لا تخبرنا قبل أن تأتي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyEmergencyKitProps): JSX.Element | null {
   if (!items.length) return null;
 

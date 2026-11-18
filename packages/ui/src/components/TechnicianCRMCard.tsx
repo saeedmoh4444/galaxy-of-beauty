@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Technician CRM Card — mini customer relationship dashboard for technicians.
@@ -66,7 +67,7 @@ export function TechnicianCRMCard({
   actionBirthdayWish = 'تهنئة ميلاد',
   actionAskRating = 'طلب تقييم',
   actionFullReport = 'تقرير كامل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: TechnicianCRMCardProps): JSX.Element {
   return (
     <div

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMenopauseSkincareCard({
   className = '',
   title = 'عناية سن اليأس',
   subtitle = 'بشرتكِ تتغير — وعنايتكِ معها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

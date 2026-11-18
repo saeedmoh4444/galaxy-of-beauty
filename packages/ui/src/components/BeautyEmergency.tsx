@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Emergency — quick-booking for urgent beauty needs.
@@ -28,7 +29,7 @@ interface BeautyEmergencyProps {
 export function BeautyEmergency({
   onBook,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'طوارئ التجميل',
   subtitle = 'احجزي خلال ساعة — نصل إليكِ أينما كنتِ',
 }: BeautyEmergencyProps): JSX.Element {

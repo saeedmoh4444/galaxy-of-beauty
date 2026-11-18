@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Accessible Salon Badge — signals inclusivity and accessibility features.
@@ -127,7 +128,7 @@ export function AccessibleSalonBadge({
   title = 'صالون شامل للجميع',
   accessibilityCountText = 'ميزات إتاحة',
   pledgeText = 'كل امرأة، كل جسد، كل جمال — مرحباً بكِ كما أنتِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: AccessibleSalonBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 
