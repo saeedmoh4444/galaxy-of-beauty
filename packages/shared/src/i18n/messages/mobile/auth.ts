@@ -10,6 +10,20 @@ export const mobileAuthMessages = {
   'mobile.auth.twoFactorTitle': { ar: 'المصادقة الثنائية', en: 'Two-Factor Authentication' },
   'mobile.auth.quickLogin': { ar: 'دخول سريع', en: 'Quick Login' },
   'mobile.auth.createNewAccount': { ar: 'إنشاء حساب جديد', en: 'Create New Account' },
+  'mobile.auth.biometricUnavailable': {
+    ar: 'المصادقة البيومترية غير متوفرة على هذا الجهاز',
+    en: 'Biometric authentication is not available on this device',
+  },
+  'mobile.auth.biometricPrompt': { ar: 'تسجيل الدخول بالبصمة', en: 'Sign in with biometrics' },
+  'mobile.auth.usePassword': { ar: 'استخدام كلمة المرور', en: 'Use password' },
+  'mobile.auth.biometricFailure': {
+    ar: 'فشلت المصادقة البيومترية',
+    en: 'Biometric authentication failed',
+  },
+  'mobile.auth.biometricAccessError': {
+    ar: 'تعذر الوصول إلى المصادقة البيومترية',
+    en: 'Could not access biometric authentication',
+  },
   'mobile.auth.biometricSuccess': {
     ar: 'تم التحقق البيومتري بنجاح',
     en: 'Biometric verification successful',
