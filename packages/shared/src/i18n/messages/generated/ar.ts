@@ -488,6 +488,7 @@ export const arWebMessages: Record<string, string> = {
   'admin.payouts.process': 'معالجة',
   'admin.payouts.process-failed-toast': 'فشلت المعالجة',
   'admin.payouts.processed-toast': 'تمت معالجة الدفع',
+  'admin.payouts.reject-note': 'مرفوض',
   'admin.payouts.requests-approve': 'قبول',
   'admin.payouts.requests-approved': 'تم قبول الطلب وسُجّلت الحوالة اليدوية',
   'admin.payouts.requests-none': 'لا توجد طلبات سحب',

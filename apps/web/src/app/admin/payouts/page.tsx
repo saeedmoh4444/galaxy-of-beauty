@@ -118,7 +118,7 @@ export default function PayoutsPage(): JSX.Element {
  * payout rows; reject stores an admin note.
  */
 function RequestsQueue(): JSX.Element | null {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { addToast } = useToast();
   const utils = api.useUtils();
   const { data } = api.payouts.listRequestsForAdmin.useQuery({ status: 'PENDING' });
@@ -161,7 +161,7 @@ function RequestsQueue(): JSX.Element | null {
                 <td className="p-3 font-medium">{r.storeName}</td>
                 <td className="p-3 font-bold">{formatCurrency(r.amount)}</td>
                 <td className="p-3 text-text-tertiary">
-                  {new Date(r.createdAt).toLocaleDateString('ar-SA')}
+                  {new Date(r.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')}
                 </td>
                 <td className="p-3">
                   <div className="flex gap-2">
@@ -175,7 +175,12 @@ function RequestsQueue(): JSX.Element | null {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => rejectMut.mutate({ requestId: r.id, adminNote: 'Rejected' })}
+                      onClick={() =>
+                        rejectMut.mutate({
+                          requestId: r.id,
+                          adminNote: t('admin.payouts.reject-note'),
+                        })
+                      }
                       loading={rejectMut.isPending}
                     >
                       {t('admin.payouts.requests-reject')}
