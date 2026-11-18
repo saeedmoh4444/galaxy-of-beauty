@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
-import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
+import { pickPrimaryAddress } from '@/utils/primaryLocation';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
@@ -28,6 +28,8 @@ export default function LastMileScreen(): JSX.Element {
   const [result, setResult] = useState<OrderResult | null>(null);
 
   const productsQ = trpc.lastMileDelivery.products.useQuery(undefined, { enabled: isAuthed });
+  // W4-9 — the delivery address is the customer's real primary address.
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const products: LastMileProduct[] = (productsQ.data as LastMileProduct[] | undefined) ?? [];
 
   const orderMut = trpc.lastMileDelivery.order.useMutation({
@@ -36,7 +38,9 @@ export default function LastMileScreen(): JSX.Element {
   const order = (productId: number) => {
     orderMut.mutate({
       productId,
-      address: DEFAULT_SAUDI_CITY,
+      address: pickPrimaryAddress(
+        addressesQ.data as { city?: string | null; label?: string | null }[] | undefined,
+      ),
       paymentMethod: 'wallet',
     });
   };
