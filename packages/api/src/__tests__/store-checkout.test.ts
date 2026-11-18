@@ -196,6 +196,9 @@ describe('payCart — wallet path', () => {
     expect(order).not.toBeNull();
     createdOrderIds.push(order!.id);
 
+    // W5-7 — every order carries a customer-facing SO- code.
+    expect(order!.orderCode).toMatch(/^SO-LEGACY-|^SO-[A-Z0-9]+-[A-F0-9]+$/);
+
     expect(order!.items).toHaveLength(1);
     expect(order!.items[0]).toMatchObject({
       productId,
