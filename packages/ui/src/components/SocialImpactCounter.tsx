@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Social Impact Counter — track progress toward employing 1000 women by 2028.
@@ -44,7 +45,7 @@ export function SocialImpactCounter({
   survivorServices,
   ruralWomen,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'أثرنا الاجتماعي',
   subtitle = 'معاً نحو تمكين 1000 امرأة بحلول 2028',
   goalPrefix = 'الهدف',

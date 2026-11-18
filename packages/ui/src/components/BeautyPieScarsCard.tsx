@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPieScarsCard({
   className = '',
   title = 'علامات ما بعد الحبوب',
   subtitle = 'PIH و PIE — الفرق والعلاج',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

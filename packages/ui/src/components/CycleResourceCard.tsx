@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Cycle Resource Card — educational resources about menstrual health & beauty.
@@ -143,7 +144,7 @@ export function CycleResourceCard({
   phase,
   className = '',
   subtitle = 'مصادر تعليمية لصحتكِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: CycleResourceCardProps): JSX.Element {
   const resources = RESOURCES[phase];
   const label = PHASE_LABELS[phase];

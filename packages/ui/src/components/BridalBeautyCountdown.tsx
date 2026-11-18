@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Bridal Beauty Countdown — countdown to wedding day with beauty milestones.
@@ -46,7 +47,7 @@ export function BridalBeautyCountdown({
   weddingDate,
   completedMilestones = [],
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   weddingDayTitle = 'يوم الزفاف!',
   countdownTitle = 'العد التنازلي للزفاف',
   congratsText = 'مبروك! ',

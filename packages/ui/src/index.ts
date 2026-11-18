@@ -16,3 +16,6 @@ export * from './hooks/index';
 
 // Utilities (cn, formatCurrency)
 export * from './utils/index';
+
+// Locale plumbing (W6-2) — apps publish their active locale here
+export { getUILocale, setUILocale } from './locale';

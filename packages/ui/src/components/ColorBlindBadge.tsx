@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Color Blind Badge — color-blind friendly salon with high-contrast signage.
@@ -21,7 +22,7 @@ interface ColorBlindBadgeProps {
 
 export function ColorBlindBadge({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'صديق لعمى الألوان',
   subtitle = 'إشارات عالية التباين — سهلة للجميع',
   footerText = 'الوضوح للجميع — ليس مجرد ألوان',

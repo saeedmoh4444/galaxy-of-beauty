@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Tip — rotating beauty tips for loading states and empty pages.
@@ -119,7 +120,7 @@ const TIPS = [
 export function BeautyTip({
   className = '',
   heading = 'نصيحة جمال',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   /** Tip heading */

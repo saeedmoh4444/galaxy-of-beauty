@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Verified Badge — shows KYC verification status.
@@ -41,7 +42,7 @@ const STATUS_CONFIG: Record<
 export function VerifiedBadge({
   status,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: VerifiedBadgeProps): JSX.Element {
   const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.PENDING!;
   return (

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyBreakoutSOSCard({
   className = '',
   title = 'طوارئ الحبوب',
   subtitle = 'ظهور مفاجئ — حل سريع',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

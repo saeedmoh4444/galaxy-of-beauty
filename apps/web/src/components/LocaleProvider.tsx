@@ -21,6 +21,7 @@ import {
   type WebLocaleCatalog,
 } from '@galaxy/shared';
 import { LOCALE_COOKIE } from '@/lib/locale';
+import { setUILocale } from '@galaxy/ui';
 
 export const LOCALE_CHANGE_EVENT = 'gob:locale-change';
 
@@ -89,6 +90,9 @@ export function LocaleProvider({
   children: ReactNode;
 }): JSX.Element {
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  // W6-2 — publish the active locale to the ui package so shared
+  // components stop defaulting their {ar,en} data maps to Arabic.
+  useEffect(() => setUILocale(locale), [locale]);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);

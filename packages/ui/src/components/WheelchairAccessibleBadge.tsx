@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Wheelchair Accessible Badge — detailed wheelchair accessibility features.
@@ -89,7 +90,7 @@ export function WheelchairAccessibleBadge({
   title = 'مهيأ للكراسي المتحركة',
   accessibilityCountText = 'ميزات إتاحة',
   footerText = 'الوصول حق للجميع — بدون استثناء',
-  locale = 'ar',
+  locale = getUILocale(),
 }: WheelchairAccessibleBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 

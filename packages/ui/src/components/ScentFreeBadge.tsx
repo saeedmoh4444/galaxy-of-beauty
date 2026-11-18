@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Scent-Free Badge — signals fragrance-free product options available.
@@ -67,7 +68,7 @@ export function ScentFreeBadge({
   benefit4 = '• خيار مريح للحواس — بدون روائح قوية',
   requestNote = 'اطلبي “خالٍ من العطور” عند الحجز — سنجهز كل شيء مسبقاً',
   footerText = 'الجمال الطبيعي لا يحتاج إلى عطور قوية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: ScentFreeBadgeProps): JSX.Element | null {
   if (!productTypes.length) return null;
 

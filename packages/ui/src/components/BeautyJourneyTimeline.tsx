@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Journey Timeline — visual life-stage beauty journey from 15 to 75+.
@@ -145,7 +146,7 @@ export function BeautyJourneyTimeline({
   ageSuffix = 'سنة',
   hereLabel = 'أنتِ هنا',
   footerText = 'الجمال يتطور معكِ — ونحن معكِ في كل مرحلة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyJourneyTimelineProps): JSX.Element {
   const currentStage = activeStage ?? (userAge ? getStageForAge(userAge) : 'discovery');
   const currentIndex = STAGES.indexOf(currentStage);

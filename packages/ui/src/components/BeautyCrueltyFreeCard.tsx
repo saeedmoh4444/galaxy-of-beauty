@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyCrueltyFreeCard({
   className = '',
   title = 'بدون تجارب على الحيوانات',
   subtitle = 'جمال أخلاقي — بدون قسوة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

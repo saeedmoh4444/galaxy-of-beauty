@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Privacy Shield Card — privacy status & settings overview.
@@ -32,7 +33,7 @@ export function BeautyPrivacyShieldCard({
   status,
   onManageSettings,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'حالة الخصوصية',
   activeFeaturesText = 'ميزات نشطة',
   manageButtonText = 'إدارة الخصوصية',

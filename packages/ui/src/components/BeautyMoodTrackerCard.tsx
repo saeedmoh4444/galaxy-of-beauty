@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Mood Tracker Card — track how beauty treatments affect your mood.
@@ -40,7 +41,7 @@ export function BeautyMoodTrackerCard({
   onSelectMood,
   lastMood,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'كيف تشعرين؟',
   lastMoodPrefix = 'آخر مزاج: ',
   noMoodText = 'تتبعي مزاجكِ بعد كل جلسة',

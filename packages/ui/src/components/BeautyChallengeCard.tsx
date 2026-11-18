@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Challenge Card — 30-day beauty & self-care challenge.
@@ -83,7 +84,7 @@ export function BeautyChallengeCard({
   doneLabel = 'أنجزتها!',
   dayWordLabel = 'يوم',
   daysRemainingLabel = 'يوم متبقي — أنتِ قادرة!',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyChallengeCardProps): JSX.Element {
   const pct = Math.round((completedDays / totalDays) * 100);
   const today = completedDays + 1 <= totalDays ? completedDays + 1 : totalDays;

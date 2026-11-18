@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Personal Styling Card — personal style and color consultation.
@@ -60,7 +61,7 @@ export function PersonalStylingCard({
   durationLabel = 'المدة',
   bookButtonText = 'احجزي استشارتكِ',
   footerText = 'لأن لكل امرأة ألوانها الخاصة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: PersonalStylingCardProps): JSX.Element {
   return (
     <div

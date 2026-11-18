@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautySweatProofCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'مكياج مقاوم للعرق',
   subtitle = 'إطلالة ثابتة أثناء التمرين',
 }: {

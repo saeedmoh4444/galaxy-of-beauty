@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Daily Check-In Card — daily beauty ritual tracker.
@@ -29,7 +30,7 @@ interface BeautyDailyCheckInCardProps {
 
 export function BeautyDailyCheckInCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'تسجيل اليوم',
 }: BeautyDailyCheckInCardProps): JSX.Element {
   const [checked, setChecked] = useState<Set<number>>(new Set());

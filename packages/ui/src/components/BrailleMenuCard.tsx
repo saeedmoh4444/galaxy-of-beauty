@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Braille Menu Card — signals Braille service menus available at partner salons.
@@ -33,7 +34,7 @@ export function BrailleMenuCard({
   languages = ['arabic'],
   hasVoiceMenu = false,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'قائمة برايل',
   subtitle = 'قائمة الخدمات بطريقة برايل متوفرة',
   voiceMenuText = 'قائمة صوتية',

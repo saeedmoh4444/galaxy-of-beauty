@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyHumidClimateCard({
   className = '',
   heading = 'عناية في الرطوبة',
   subtitle = 'بشرة منتعشة في الجو الرطب',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

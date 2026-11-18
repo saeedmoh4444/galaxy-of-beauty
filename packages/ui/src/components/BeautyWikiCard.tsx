@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Wiki Card — beauty encyclopedia entry from the Knowledge Hub.
@@ -73,7 +74,7 @@ export function BeautyWikiCard({
   readMoreText = 'اقرئي المزيد ←',
   traditionBadgeText = 'هذا المحتوى يوثق تراث الجمال السعودي الأصيل',
   mythBadgeText = 'هل تعتقدين أن معجون الأسنان يعالج الحبوب؟ اقرئي الحقيقة!',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyWikiCardProps): JSX.Element {
   const cat = CATEGORIES[entry.category];
 

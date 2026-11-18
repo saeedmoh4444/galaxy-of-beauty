@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Quiet Space Card — dedicated quiet/meditation space in salons.
@@ -33,7 +34,7 @@ const FEATURES_MAP: Record<string, { emoji: string; label: { ar: string; en: str
 export function BeautyQuietSpaceCard({
   features,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'المساحة الهادئة',
   subtitle = 'مكان للتأمل والاسترخاء',
   footerText = 'خذي لحظة لنفسكِ',

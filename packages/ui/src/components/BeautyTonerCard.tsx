@@ -1,6 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 interface BeautyTonerCardProps {
   className?: string;
   locale?: 'ar' | 'en';
@@ -9,7 +10,7 @@ interface BeautyTonerCardProps {
 }
 export function BeautyTonerCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'دليل التونر',
   subtitle = 'لماذا ومتى وكيف',
 }: BeautyTonerCardProps): JSX.Element {

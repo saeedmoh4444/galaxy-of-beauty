@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * She Leads Badge — recognizes women in beauty leadership.
@@ -166,7 +167,7 @@ export function SheLeadsBadge({
   yearsExperienceText = 'سنوات خبرة',
   teamOfLabel = 'فريق من',
   tagline = 'She Leads — لأن القيادة تبدأ من الداخل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SheLeadsBadgeProps): JSX.Element {
   const roleDef = ROLES[role];
   const tier = TIER_BADGE[roleDef.tier];

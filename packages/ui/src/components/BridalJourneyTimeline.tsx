@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Bridal Journey Timeline — 6-month beauty preparation plan for brides.
@@ -169,7 +170,7 @@ export function BridalJourneyTimeline({
   nowLabel = 'الآن',
   bookLabel = 'احجزي هذه المرحلة',
   footerText = '"يوم زفافكِ هو بداية أجمل قصة"',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BridalJourneyTimelineProps): JSX.Element {
   return (
     <div className={cn('rounded-2xl bg-surface-elevated p-5', className)}>

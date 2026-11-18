@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyAfterWaxCard({
   className = '',
   title = 'بعد إزالة الشعر',
   subtitle = 'بشرة ناعمة — بدون التهاب',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

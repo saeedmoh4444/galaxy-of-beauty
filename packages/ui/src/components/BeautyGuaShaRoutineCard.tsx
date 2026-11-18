@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyGuaShaRoutineCard({
   className = '',
   title = 'روتين القواشا',
   subtitle = 'تدليك يومي — 5 دقائق فقط',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

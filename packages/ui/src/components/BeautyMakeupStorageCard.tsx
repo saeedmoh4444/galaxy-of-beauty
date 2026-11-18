@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMakeupStorageCard({
   className = '',
   heading = 'تخزين المكياج',
   subtitle = 'حافظي على منتجاتك نظيفة ومرتبة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

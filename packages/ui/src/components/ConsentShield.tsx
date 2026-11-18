@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Consent Shield — explicit consent management for photo and data sharing.
@@ -110,7 +111,7 @@ export function ConsentShield({
   requiredLabel = 'مطلوب',
   pledgeTitle = 'تعهد الخصوصية',
   pledgeText = 'بياناتكِ ملككِ وحدكِ. يمكنكِ تغيير هذه الإعدادات في أي وقت. نحن لا نبيع بياناتكِ لأي طرف ثالث.',
-  locale = 'ar',
+  locale = getUILocale(),
 }: ConsentShieldProps): JSX.Element {
   const [permissions, setPermissions] = useState<Permission[]>(initialPermissions);
 

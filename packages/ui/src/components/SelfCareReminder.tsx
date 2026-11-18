@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Self-Care Reminder — daily prompt encouraging women to take care of themselves.
@@ -67,7 +68,7 @@ const REMINDERS = [
 
 export function SelfCareReminder({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'تذكير يومي',
 }: {
   className?: string;

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyBreathingCardProps {
   className?: string;
@@ -13,7 +14,7 @@ interface BeautyBreathingCardProps {
 
 export function BeautyBreathingCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'تنفس الجمال',
   subtitle = 'تقنية 4-7-8 للاسترخاء',
   footerText = '🫁 التنفس العميق = بشرة مشرقة + عقل هادئ',

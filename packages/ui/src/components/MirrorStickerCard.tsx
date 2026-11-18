@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Mirror Sticker Card — "You're Beautiful" mirror affirmations in every salon.
@@ -48,7 +49,7 @@ export function MirrorStickerCard({
   subtitle = 'انظري في المرآة واقرئي',
   contextText = '🪞 هذه الرسالة على مرآة كل صالون شريك — لأنكِ تستحقين أن تسمعيها كل يوم',
   morningRitualText = '“قفي أمام المرآة كل صباح وقولي: أنا جميلة، أنا قوية، أنا كافية”',
-  locale = 'ar',
+  locale = getUILocale(),
 }: MirrorStickerCardProps): JSX.Element {
   const [index] = useState(() => Math.floor(Math.random() * AFFIRMATIONS.length));
   const affirmation = AFFIRMATIONS[index]!;
