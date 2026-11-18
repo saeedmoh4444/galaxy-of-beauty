@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Platform } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BiometricResult {
   success: boolean;
@@ -9,6 +10,8 @@ interface BiometricResult {
 type BiometricType = 'fingerprint' | 'facial' | 'iris' | null;
 
 export function useBiometric() {
+  // W4-8 — strings moved to the mobile i18n bundle (was hardcoded Arabic).
+  const { t } = useLocale();
   const [isAvailable, setIsAvailable] = useState(false);
   const [biometricType, setBiometricType] = useState<BiometricType>(null);
 
@@ -54,7 +57,7 @@ export function useBiometric() {
 
   const authenticate = useCallback(async (): Promise<BiometricResult> => {
     if (!isAvailable) {
-      return { success: false, error: 'المصادقة البيومترية غير متوفرة على هذا الجهاز' };
+      return { success: false, error: t('mobile.auth.biometricUnavailable') };
     }
 
     try {
@@ -63,9 +66,9 @@ export function useBiometric() {
       const LocalAuth = require('expo-local-authentication');
 
       const result = await LocalAuth.authenticateAsync?.({
-        promptMessage: 'تسجيل الدخول بالبصمة',
-        fallbackLabel: 'استخدام كلمة المرور',
-        cancelLabel: 'إلغاء',
+        promptMessage: t('mobile.auth.biometricPrompt'),
+        fallbackLabel: t('mobile.auth.usePassword'),
+        cancelLabel: t('button.cancel'),
         disableDeviceFallback: false,
       });
 
@@ -75,12 +78,12 @@ export function useBiometric() {
 
       return {
         success: false,
-        error: result?.error || 'فشلت المصادقة البيومترية',
+        error: result?.error || t('mobile.auth.biometricFailure'),
       };
     } catch {
-      return { success: false, error: 'تعذر الوصول إلى المصادقة البيومترية' };
+      return { success: false, error: t('mobile.auth.biometricAccessError') };
     }
-  }, [isAvailable]);
+  }, [isAvailable, t]);
 
   // Check on mount
   useEffect(() => {

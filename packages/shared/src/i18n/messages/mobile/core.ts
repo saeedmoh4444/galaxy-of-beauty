@@ -3,6 +3,15 @@
 // reuse the shared core/nav/auth modules).
 
 export const mobileCoreMessages = {
+  // W4-8 — camera permission dialog (moved out of the useCamera hook).
+  'mobile.camera.permissionTitle': {
+    ar: 'صلاحية الكاميرا مطلوبة',
+    en: 'Camera permission required',
+  },
+  'mobile.camera.permissionBody': {
+    ar: 'يرجى السماح بالوصول إلى الكاميرا من إعدادات الجهاز لاستخدام هذه الميزة.',
+    en: 'Please allow camera access from your device settings to use this feature.',
+  },
   'mobile.failed': { ar: 'فشلت العملية', en: 'Operation failed' },
   'mobile.twoFactorCode': { ar: 'رمز التحقق', en: 'Verification code' },
   'mobile.newBooking': { ar: 'حجز جديد', en: 'New Booking' },

@@ -3,7 +3,6 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
-import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface SalonLocation {
@@ -17,7 +16,8 @@ interface SalonLocation {
 export default function SalonMapScreen(): JSX.Element {
   const { t } = useLocale();
   const router = useRouter();
-  const salonsQ = trpc.salonMap.explore.useQuery({ city: DEFAULT_SAUDI_CITY });
+  // W4-9 — city omitted: explore returns all salons (optional server-side).
+  const salonsQ = trpc.salonMap.explore.useQuery({});
 
   if (salonsQ.isLoading) return <SkeletonList count={5} />;
 
