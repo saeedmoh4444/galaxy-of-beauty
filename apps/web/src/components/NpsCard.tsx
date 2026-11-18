@@ -35,8 +35,8 @@ export function NpsCard({ bookingId }: { bookingId: number }): JSX.Element {
 
   if (existing) {
     return (
-      <Card padding="md" className="border-brand-200">
-        <p className="text-center text-sm font-semibold text-green-600">
+      <Card padding="md" className="border-brand-200 dark:border-brand-800">
+        <p className="text-center text-sm font-semibold text-green-600 dark:text-green-400">
           {t('nps.already', { score: existing.score ?? 0 })}
         </p>
       </Card>
@@ -44,8 +44,10 @@ export function NpsCard({ bookingId }: { bookingId: number }): JSX.Element {
   }
   if (done) {
     return (
-      <Card padding="md" className="border-brand-200">
-        <p className="text-center text-sm font-semibold text-green-600">{t('nps.thanks')}</p>
+      <Card padding="md" className="border-brand-200 dark:border-brand-800">
+        <p className="text-center text-sm font-semibold text-green-600 dark:text-green-400">
+          {t('nps.thanks')}
+        </p>
       </Card>
     );
   }

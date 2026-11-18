@@ -858,6 +858,7 @@ export const adminMessages = {
   'admin.payouts.requests-store': { ar: 'المتجر', en: 'Store' },
   'admin.payouts.requests-approve': { ar: 'قبول', en: 'Approve' },
   'admin.payouts.requests-reject': { ar: 'رفض', en: 'Reject' },
+  'admin.payouts.reject-note': { ar: 'مرفوض', en: 'Rejected' },
   'admin.payouts.requests-note': { ar: 'سبب الرفض (اختياري)', en: 'Rejection note (optional)' },
   'admin.payouts.requests-approved': {
     ar: 'تم قبول الطلب وسُجّلت الحوالة اليدوية',
