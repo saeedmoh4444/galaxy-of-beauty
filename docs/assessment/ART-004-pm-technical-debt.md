@@ -12,12 +12,12 @@ Product manager: "We need the AI skin analysis feature live by next sprint. The 
 
 Right now, the skin analysis router has zero tests, uses the OpenAI API directly with no rate limiting, and stores analysis results in an unindexed JSONB column. If we ship it next sprint, here's what happens:
 
-| Timeline     | Cost                                                                                                                                        |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Week 1-2** | Users love it — 500 analyses/day                                                                                                            |
-| **Week 3**   | OpenAI bill arrives — we're making unbounded API calls with no caching. Someone uploads a 20MB RAW file and our upload handler crashes.     |
+| Timeline     | Cost                                                                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Week 1-2** | Users love it — 500 analyses/day                                                                                                           |
+| **Week 3**   | OpenAI bill arrives — we're making unbounded API calls with no caching. Someone uploads a 20MB RAW file and our upload handler crashes.    |
 | **Week 4**   | The JSONB column hits 100K rows. The 'recent analyses' query goes from 50ms to 3 seconds. We get our first 1-star review: 'تحميل بطيء جداً' |
-| **Week 6**   | We're now firefighting instead of building. The competitor ships v2.                                                                        |
+| **Week 6**   | We're now firefighting instead of building. The competitor ships v2.                                                                       |
 
 ### My counter-proposal
 
