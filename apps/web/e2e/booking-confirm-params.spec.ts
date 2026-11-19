@@ -54,7 +54,8 @@ test('confirm page receives the real booking code and date', async ({ page }) =>
   const tomorrowUtc = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
   const tomorrowIsFriday = new Date(`${tomorrowUtc}T00:00:00Z`).getUTCDay() === 5;
   if (tomorrowIsFriday) {
-    await page.locator('#bc-time').fill('14:00');
+    // #bc-time is a <select> of 30-min slots (08:00-20:30).
+    await page.locator('#bc-time').selectOption('14:00');
   }
   const submit = page.getByRole('button', { name: 'تأكيد الحجز' });
   await expect(submit).toBeVisible();
