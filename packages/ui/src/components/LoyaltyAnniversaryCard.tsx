@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Loyalty Anniversary Card — celebrate customer's anniversary with the platform.
@@ -61,7 +62,7 @@ export function LoyaltyAnniversaryCard({
   totalBookings,
   onClaimGift,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   sincePrefix = 'منذ ',
   yearSingular = 'سنة',
   yearPlural = 'سنوات',

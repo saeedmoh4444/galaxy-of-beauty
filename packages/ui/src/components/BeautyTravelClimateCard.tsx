@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyTravelClimateCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'عناية المسافرة',
   subtitle = 'بشرتكِ بين المناخات',
 }: {

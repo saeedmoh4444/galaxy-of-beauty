@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Photo Privacy Badge — shows privacy level and auto-delete countdown for photos.
@@ -77,7 +78,7 @@ export function PhotoPrivacyBadge({
   showDescription = false,
   size = 'md',
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   deletedTomorrowText = 'تحذف غداً',
   deletesAfterPrefix = 'تحذف بعد ',
   deletesAfterSuffix = 'يوم',

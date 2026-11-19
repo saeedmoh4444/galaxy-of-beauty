@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Nail Care Card — nail health & care tips.
@@ -51,7 +52,7 @@ export function BeautyNailCareCard({
   className = '',
   title = 'عناية بالأظافر',
   subtitle = 'نصائح لأظافر قوية وجميلة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyNailCareCardProps): JSX.Element {
   return (
     <div

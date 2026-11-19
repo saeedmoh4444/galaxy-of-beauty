@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyTechNeckCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'تجاعيد الجوال',
   subtitle = 'Tech Neck — أثر النظر للأسفل',
 }: {

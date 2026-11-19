@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Teen Skincare Guide — simple skincare routine for teenage skin.
@@ -163,7 +164,7 @@ export function TeenSkincareGuide({
   eveningLabel = 'الروتين المسائي',
   tipsLabel = 'نصائح لبشرتكِ',
   reminderText = 'في هذا العمر: الأقل هو الأكثر — لا حاجة لمنتجات قوية أو باهظة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: TeenSkincareGuideProps): JSX.Element {
   const routine = ROUTINES[skinType];
   const skin = SKIN_LABELS[skinType];

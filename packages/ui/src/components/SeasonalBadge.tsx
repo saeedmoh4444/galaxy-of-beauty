@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Seasonal badge — shows time-limited/seasonal offers.
@@ -58,7 +59,7 @@ interface SeasonalBadgeProps {
 export function SeasonalBadge({
   season,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SeasonalBadgeProps): JSX.Element | null {
   const s = SEASONS[season];
   if (!s) return null;

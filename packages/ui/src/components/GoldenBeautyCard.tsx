@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Golden Beauty Card — gentle treatments for mature skin, classic timeless styles.
@@ -114,7 +115,7 @@ export function GoldenBeautyCard({
   bookLabel = 'احجزي',
   promiseText = 'نعدكِ: لا منتجات قاسية · لا استعجال · احترام كامل لراحتكِ',
   footerText = 'الجمال ليس له عمر — وأنتِ أجمل في كل مرحلة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: GoldenBeautyCardProps): JSX.Element {
   const isGolden = age !== undefined && age >= 55;
 

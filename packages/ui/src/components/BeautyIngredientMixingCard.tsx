@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyIngredientMixingCard({
   className = '',
   heading = 'خلط المكونات',
   subtitle = 'ما يصلح معاً — وما لا يصلح',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

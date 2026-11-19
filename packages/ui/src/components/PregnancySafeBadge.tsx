@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Pregnancy-Safe Badge — signals services that are safe during pregnancy.
@@ -138,7 +139,7 @@ export function PregnancySafeBadge({
   allowedLabel = 'مسموح',
   avoidLabel = 'غير مناسب',
   disclaimerText = '🩺 استشيري طبيبكِ قبل أي علاج تجميلي أثناء الحمل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: PregnancySafeBadgeProps): JSX.Element {
   const t = TRIMESTERS[trimester];
 

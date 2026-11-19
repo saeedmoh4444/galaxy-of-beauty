@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Skin Analysis Card — AI-powered skin analysis & recommendations.
@@ -118,7 +119,7 @@ export function SkinAnalysisCard({
   subtitle = 'تحليل ذكي لبشرتكِ مع توصيات مخصصة',
   disclaimerText = 'هذا التحليل مبدئي بالذكاء الاصطناعي — استشيري طبيبة جلدية للتشخيص الدقيق',
   consultationLabel = 'احجزي استشارة جلدية 🩺',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SkinAnalysisCardProps): JSX.Element | null {
   if (!concerns.length) return null;
 

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyChlorophyllCard({
   className = '',
   title = 'الكلوروفيل',
   subtitle = 'دم النبات الأخضر — لبشرة نقية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

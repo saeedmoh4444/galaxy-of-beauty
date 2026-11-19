@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Voice Assistant Card — voice-guided beauty assistant.
@@ -34,7 +35,7 @@ const COMMANDS = [
 export function BeautyVoiceAssistantCard({
   onActivate,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'المساعد الصوتي',
   subtitle = 'تحدثي — ونحن ننفذ',
   activateButtonText = 'اضغطي وتحدثي',

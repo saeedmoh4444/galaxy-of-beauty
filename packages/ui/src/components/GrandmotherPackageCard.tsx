@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Grandmother Package Card — grandmother-of-the-bride/groom beauty package.
@@ -83,7 +84,7 @@ export function GrandmotherPackageCard({
   include6 = '• صورة تذكارية',
   currencySuffix = 'ر.س',
   bookButtonText = 'احجزي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: GrandmotherPackageCardProps): JSX.Element {
   const o = OCCASIONS[occasion];
 

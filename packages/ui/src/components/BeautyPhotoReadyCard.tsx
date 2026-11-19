@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPhotoReadyCard({
   className = '',
   title = 'جاهزة للصور',
   subtitle = 'مكياج يظهر جميلاً في الكاميرا',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

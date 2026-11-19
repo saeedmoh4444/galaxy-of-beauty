@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * First Facial Card — gentle introduction to skincare for young teens.
@@ -94,7 +95,7 @@ export function FirstFacialCard({
   bookWithMomLabel = 'احجزي مع أمكِ ',
   bookAloneLabel = 'احجزي جلستكِ الأولى ',
   footerText = 'بشرتكِ تستحق بداية لطيفة — العناية قبل التجميل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: FirstFacialCardProps): JSX.Element {
   const isAgeAppropriate = age >= 10 && age <= 17;
   const tip = skinType ? SKIN_TIPS[skinType] : null;

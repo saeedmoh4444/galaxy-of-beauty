@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Green Salon Badge — eco-friendly and sustainable salon practices.
@@ -59,7 +60,7 @@ export function GreenSalonBadge({
   subtitle = 'نمارس الاستدامة في كل خطوة',
   pledgeText = 'نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة',
   footerText = 'الجمال المستدام — لكِ وللأرض',
-  locale = 'ar',
+  locale = getUILocale(),
 }: GreenSalonBadgeProps): JSX.Element | null {
   if (!practices.length) return null;
 

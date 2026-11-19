@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyHydrofacialCard({
   className = '',
   heading = 'الهيدروفيشل',
   subtitle = 'تنظيف عميق بضغط الماء',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

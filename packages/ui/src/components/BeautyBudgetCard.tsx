@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Budget Card — curated services under 100 SAR.
@@ -72,7 +73,7 @@ export function BeautyBudgetCard({
   servicesSuffix = 'خدمات',
   currencySuffix = 'ر.س',
   footerText = 'الجمال مش لازم يكون غالي — اكتشفي خدمات رائعة بميزانيتكِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyBudgetCardProps): JSX.Element | null {
   if (!services.length) return null;
 

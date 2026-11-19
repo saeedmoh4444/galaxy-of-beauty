@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPostWorkoutCard({
   className = '',
   title = 'عناية بعد الرياضة',
   subtitle = 'بشرة نظيفة بعد التمرين',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Salon Amenities — shows what each salon offers for women's comfort.
@@ -34,7 +35,7 @@ interface SalonAmenitiesProps {
 export function SalonAmenities({
   amenities,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SalonAmenitiesProps): JSX.Element | null {
   if (!amenities.length) return null;
 

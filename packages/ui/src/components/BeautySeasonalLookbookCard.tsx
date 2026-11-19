@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Seasonal Lookbook Card — seasonal beauty trends & looks.
@@ -140,7 +141,7 @@ export function BeautySeasonalLookbookCard({
   season,
   className = '',
   title = 'دليل الإطلالات',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautySeasonalLookbookCardProps): JSX.Element {
   const s = SEASONAL[season];
 

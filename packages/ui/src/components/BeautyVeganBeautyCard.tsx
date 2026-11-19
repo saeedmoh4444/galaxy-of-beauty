@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyVeganBeautyCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'الجمال النباتي',
   subtitle = 'منتجات خالية من المكونات الحيوانية',
 }: {

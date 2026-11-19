@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyKoreanRoutineCard({
   className = '',
   heading = 'الروتين الكوري — 10 خطوات',
   subtitle = 'الترتيب الصحيح للعناية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautySkincareVitaminCCard({
   className = '',
   title = 'فيتامين سي',
   subtitle = 'مضاد الأكسدة الأقوى',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

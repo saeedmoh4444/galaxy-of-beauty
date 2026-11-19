@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Franchise Card — helps top technicians open their own Galaxy of Beauty franchise.
@@ -121,7 +122,7 @@ export function FranchiseCard({
   qualifyTitle = 'شروط التأهل',
   applyLabel = 'ابدئي رحلة الامتياز',
   footerText = 'نساعدكِ تبنين مشروعكِ الخاص وتحققين استقلالكِ المالي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: FranchiseCardProps): JSX.Element {
   return (
     <div

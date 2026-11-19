@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautySpotTreatmentCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'علاج موضعي',
   subtitle = 'للحبوب الطارئة',
 }: {

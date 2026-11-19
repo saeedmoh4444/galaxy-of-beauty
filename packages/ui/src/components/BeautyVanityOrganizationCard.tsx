@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyVanityOrganizationCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'تنظيم التسريحة',
   subtitle = 'ركن جمالكِ المثالي',
 }: {

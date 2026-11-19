@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Sensory-Friendly Badge — signals sensory-sensitive options at partner salons.
@@ -112,7 +113,7 @@ export function SensoryFriendlyBadge({
   title = 'صديق للحواس',
   optionsText = 'خيارات حسية متوفرة',
   expandedNote = 'نحن نهتم براحتكِ الحسية. أخبرينا باحتياجاتكِ عند الحجز وسنقوم بتجهيز كل شيء مسبقاً.',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SensoryFriendlyBadgeProps): JSX.Element | null {
   const [expanded, setExpanded] = useState(initialExpanded);
 

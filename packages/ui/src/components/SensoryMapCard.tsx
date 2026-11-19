@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Sensory Map Card — salon sensory zone map for neurodivergent-friendly navigation.
@@ -86,7 +87,7 @@ export function SensoryMapCard({
   zoneNote = 'اخترِي المنطقة التي تناسبكِ',
   preferenceNote = 'أخبرينا بالمنطقة التي تفضلينها عند الحجز — وسنجهزها لكِ',
   footerText = 'راحتكِ الحسية أولويتنا',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SensoryMapCardProps): JSX.Element | null {
   if (!zones.length) return null;
 

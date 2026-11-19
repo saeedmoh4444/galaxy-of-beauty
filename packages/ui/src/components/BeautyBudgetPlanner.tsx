@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Budget Planner — monthly beauty budget calculator.
@@ -95,7 +96,7 @@ export function BeautyBudgetPlanner({
   breakdownTitle = 'توزيع الميزانية',
   tipPrefix = 'خصصي ',
   tipSuffix = '% من دخلكِ لجمالكِ — واستمتعي بدون تأنيب ضمير',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyBudgetPlannerProps): JSX.Element {
   const [beautyPercent, setBeautyPercent] = useState(10);
   const beautyBudget = Math.round(monthlyIncome * (beautyPercent / 100));

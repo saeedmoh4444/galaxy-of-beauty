@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Ingredient Glossary Card — beauty ingredient explained in Arabic.
@@ -87,7 +88,7 @@ interface IngredientGlossaryCardProps {
 
 export function IngredientGlossaryCard({
   ingredient,
-  locale = 'ar',
+  locale = getUILocale(),
   className = '',
   benefitsLabel = 'الفوائد',
   suitableForLabel = 'مناسب لـ',

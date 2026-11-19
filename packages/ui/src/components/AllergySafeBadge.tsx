@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Allergy Safe Badge — hypoallergenic product options for sensitive skin.
@@ -61,7 +62,7 @@ export function AllergySafeBadge({
   benefit3 = '• اختبار رقعة قبل أي منتج جديد',
   benefit4 = '• فريق مدرب على التعامل مع الحساسية',
   disclaimer = '🩺 أخبرينا عن حساسيتكِ عند الحجز — سلامتكِ تهمنا',
-  locale = 'ar',
+  locale = getUILocale(),
 }: AllergySafeBadgeProps): JSX.Element | null {
   if (!allergies.length) return null;
 
