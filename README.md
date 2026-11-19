@@ -176,16 +176,16 @@ Beauty events (capacity, auto-promoting waitlists, FREE/PAID/VIP tiers, gated me
 | Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                                                     |
 | Build             | 6/6 workspaces passing (Next.js 16: 319 routes; Turbo strict env mode with `globalPassThroughEnv`)                                                                       |
 | Web bundle size   | 221/213/298/226 KB gz per route class (FE-007 size gate against `size-baseline.json`; targets 100–150 KB remain the open debt)                                           |
-| API tests         | **~1,905 test cases** across api/web/shared/ui/db suites, green on CI's isolated DB                                                                                      |
+| API tests         | **~2,125 test cases** across api/web/shared/ui/db suites, green on CI's isolated DB                                                                                      |
 | Coverage          | **Ratchet enforced in CI** — floors 63/55/53/65 (measured 64.35/56.45/54.25/66.01 on 2026-10-31)                                                                         |
-| E2E (Playwright)  | **356 tests × 3 browser projects** (chromium + firefox + mobile Chrome) incl. the axe a11y gate and a real money-movement E2E                                            |
+| E2E (Playwright)  | **462 tests × 3 browser projects** (chromium + firefox + mobile Chrome) incl. the axe a11y gate and a real money-movement E2E                                            |
 | Contract gates    | Router inventory (1,221 procedures, counts + detail + sha256), money-integrity, i18n leak, cycles, static-Arabic, locale-catalog drift, seed contracts on an isolated DB |
 | Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                                                      |
 | Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                                                     |
 | CI                | Frozen install, format, lint, type-check, coverage-ratcheted tests, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker                  |
 | Prod audit        | 0 critical / 3 accepted high / 2 moderate (documented in SECURITY.md)                                                                                                    |
 
-**Readiness**: verifiably correct baseline with an enforced coverage ratchet. The November build-out is in motion — **W1 (money integrity), W2 (catalog bookability) and W3 (realtime + seller tier + women-only) are merged; W4–W6 remain** (tracked in [AUDIT_2026-11-11_MASTER_PLAN.md](docs/AUDIT_2026-11-11_MASTER_PLAN.md)). Ops hardening is shipped (staging, backups, alerting, breakers, metrics); launch is gated on user credentials — the MyFatoorah live token, production server/domains, Sentry DSN, AWS S3/CDN, an AI-image generator account, and the Apple Developer account. See [LAUNCH_READINESS.md](docs/LAUNCH_READINESS.md) for the live checklist.
+**Readiness**: verifiably correct baseline with an enforced coverage ratchet. The November build-out is **CLOSED — all six waves merged (W1 money integrity → W6 SEO/i18n/coverage), board zero** (see the banner in [AUDIT_2026-11-11_MASTER_PLAN.md](docs/AUDIT_2026-11-11_MASTER_PLAN.md)). The two follow-up queues ratchet in CI and can only shrink: the SEO metadata queue was **drained to zero**, and the ui i18n migration is **402/530 files** done. Launch is gated on user credentials — the MyFatoorah live token, production server/domains, Sentry DSNs, AWS S3/CDN, an AI-image generator account, and the Apple Developer account. See [LAUNCH_READINESS.md](docs/LAUNCH_READINESS.md) for the live checklist.
 
 ---
 
@@ -216,34 +216,35 @@ Beauty events (capacity, auto-promoting waitlists, FREE/PAID/VIP tiers, gated me
 
 ## 📚 Documentation
 
-| Document                                                                   | Description                                                       |
-| -------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Launch Readiness](docs/LAUNCH_READINESS.md)                               | Current health, feature inventory, and the honest launch gate     |
-| [Known Issues](docs/KNOWN_ISSUES.md)                                       | Live issue register (refreshed 2026-10-31)                        |
-| [Delivery Report](DELIVERY_REPORT.md)                                      | Historical — the original 2026-08 remediation (PR #44)            |
-| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                         | Test everything yourself — full checklist                         |
-| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)            | Auth architecture decision                                        |
-| [Model Ownership Map](docs/architecture/model-ownership.md)                | 251 models → 12 bounded contexts                                  |
-| [Architecture Context Map](docs/architecture/context-map.md)               | Domain classification + debt audit                                |
-| [Migration Standards](docs/architecture/migration-standards.md)            | Conventions, redundant index audit                                |
-| [API Risk Matrix](docs/testing/risk-matrix.md)                             | Tiered test coverage strategy                                     |
-| [Deep Audit (2026-10-30)](docs/AUDIT_2026-10-30.md)                        | Full-platform audit: features, gaps, build plan                   |
-| [Master Build Plan (2026-11-11)](docs/AUDIT_2026-11-11_MASTER_PLAN.md)     | Ranked gap list P0–P4 + W1–W6 wave tracker                        |
-| [Architecture Decisions (2026-11)](docs/ARCHITECTURE_DECISIONS_2026-11.md) | ADR-style log of the November build-out decisions                 |
-| [Imagery Plan (2026-11-15)](docs/IMAGERY_PLAN_2026-11-15.md)               | Real-imagery program: fallback chain, upload pipeline, AI library |
-| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                        | 20-item platform audit + resolution log                           |
-| [Audit Report](docs/AUDIT_REPORT.md)                                       | Findings, fixes, and recommendations                              |
-| [Reels Shoppable Plan](docs/REELS_SHOPPABLE_PLAN.md)                       | Phases 1–3 DELIVERED — delivery records                           |
-| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                     | Accessibility/delight backlog                                     |
-| [Performance Budgets](docs/frontend/performance-budgets.md)                | Web vitals targets                                                |
-| [Incident Runbooks](docs/operations/runbooks.md)                           | Emergency scenarios                                               |
-| [SECURITY.md](SECURITY.md)                                                 | Vulnerability disclosure + audit                                  |
-| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)           | Golden rules, commands, gates, gotchas                            |
-| [Project Brain](brain_code.md)                                             | Living architecture knowledge base                                |
-| [Technical Debt](docs/TECHNICAL_DEBT.md)                                   | Debt register with priorities                                     |
-| [Store & Provider System](docs/architecture/store-provider-system.md)      | Unified provider model reference                                  |
-| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)         | Phased roadmap A–D with effort estimates                          |
-| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)                | Fixes → store systems → launch → quality                          |
+| Document                                                                   | Description                                                                                             |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [Launch Readiness](docs/LAUNCH_READINESS.md)                               | Current health, feature inventory, and the honest launch gate                                           |
+| [Known Issues](docs/KNOWN_ISSUES.md)                                       | Live issue register (refreshed 2026-10-31)                                                              |
+| [Delivery Report](DELIVERY_REPORT.md)                                      | Historical — the original 2026-08 remediation (PR #44)                                                  |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                         | Test everything yourself — full checklist                                                               |
+| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)            | Auth architecture decision                                                                              |
+| [Model Ownership Map](docs/architecture/model-ownership.md)                | 251 models → 12 bounded contexts                                                                        |
+| [Architecture Context Map](docs/architecture/context-map.md)               | Domain classification + debt audit                                                                      |
+| [Migration Standards](docs/architecture/migration-standards.md)            | Conventions, redundant index audit                                                                      |
+| [API Risk Matrix](docs/testing/risk-matrix.md)                             | Tiered test coverage strategy                                                                           |
+| [Deep Audit (2026-10-30)](docs/AUDIT_2026-10-30.md)                        | Full-platform audit: features, gaps, build plan                                                         |
+| [Master Build Plan (2026-11-11)](docs/AUDIT_2026-11-11_MASTER_PLAN.md)     | Ranked gap list P0–P4 + W1–W6 wave tracker — **PROGRAM CLOSED**                                         |
+| [Platform Inventory (2026-11-18)](docs/PLATFORM_INVENTORY_2026-11-18.md)   | Every shipped feature, the 9 money/logic workflows, all 94 women's categories, and the honest remainder |
+| [Architecture Decisions (2026-11)](docs/ARCHITECTURE_DECISIONS_2026-11.md) | ADR-style log of the November build-out decisions (ADRs 1–18)                                           |
+| [Imagery Plan (2026-11-15)](docs/IMAGERY_PLAN_2026-11-15.md)               | Real-imagery program: fallback chain, upload pipeline, AI library                                       |
+| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                        | 20-item platform audit + resolution log                                                                 |
+| [Audit Report](docs/AUDIT_REPORT.md)                                       | Findings, fixes, and recommendations                                                                    |
+| [Reels Shoppable Plan](docs/REELS_SHOPPABLE_PLAN.md)                       | Phases 1–3 DELIVERED — delivery records                                                                 |
+| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                     | Accessibility/delight backlog                                                                           |
+| [Performance Budgets](docs/frontend/performance-budgets.md)                | Web vitals targets                                                                                      |
+| [Incident Runbooks](docs/operations/runbooks.md)                           | Emergency scenarios                                                                                     |
+| [SECURITY.md](SECURITY.md)                                                 | Vulnerability disclosure + audit                                                                        |
+| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)           | Golden rules, commands, gates, gotchas                                                                  |
+| [Project Brain](brain_code.md)                                             | Living architecture knowledge base                                                                      |
+| [Technical Debt](docs/TECHNICAL_DEBT.md)                                   | Debt register with priorities                                                                           |
+| [Store & Provider System](docs/architecture/store-provider-system.md)      | Unified provider model reference                                                                        |
+| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)         | Phased roadmap A–D with effort estimates                                                                |
+| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)                | Fixes → store systems → launch → quality                                                                |
 
 ---
 
