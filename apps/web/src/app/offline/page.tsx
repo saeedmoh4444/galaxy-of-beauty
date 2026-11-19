@@ -1,20 +1,23 @@
-'use client';
 import type { JSX } from 'react';
+import type { Metadata } from 'next';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
+import { OfflineClient } from './OfflineClient';
 
-import { Card, EmptyState } from '@galaxy/ui';
-import { useLocale } from '@/components/LocaleProvider';
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('offline.title', 'ar'),
+    titleEn: t('offline.title', 'en'),
+    descriptionAr: t('offline.desc', 'ar'),
+    descriptionEn: t('offline.desc', 'en'),
+    path: '/offline',
+    noIndex: true,
+  });
+}
 
 export default function OfflinePage(): JSX.Element {
-  const { t } = useLocale();
-  return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <Card className="w-full max-w-md text-center" padding="lg">
-        <EmptyState
-          title={t('offline.title')}
-          description={t('offline.desc')}
-          action={{ label: t('button.retry'), onPress: () => window.location.reload() }}
-        />
-      </Card>
-    </div>
-  );
+  return <OfflineClient />;
 }

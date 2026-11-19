@@ -1,64 +1,22 @@
-'use client';
 import type { JSX } from 'react';
-import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ServiceImage, ErrorAlert } from '@galaxy/ui';
-import { useLocale } from '@/components/LocaleProvider';
-import { pageHeroKey } from '@galaxy/shared';
+import type { Metadata } from 'next';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
+import { BeautyExpoClient } from './BeautyExpoClient';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.beauty-expo.title', 'ar'),
+    titleEn: t('marketing.beauty-expo.title', 'en'),
+    descriptionAr: t('marketing.beauty-expo.subtitle', 'ar'),
+    descriptionEn: t('marketing.beauty-expo.subtitle', 'en'),
+    path: '/beauty-expo',
+  });
+}
 
 export default function BeautyExpoPage(): JSX.Element {
-  const { t } = useLocale();
-  const { data, isLoading, isError, refetch } = api.beautyExpo.booths.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
-  const booths = data ?? [];
-
-  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
-
-  return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
-      <div className="mb-8 text-center">
-        <ServiceImage
-          service={pageHeroKey('beauty-expo')}
-          alt=""
-          size="xl"
-          className="mx-auto rounded-3xl"
-        />
-        <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-expo.title')}</h1>
-        <p className="mt-2 text-text-secondary">{t('marketing.beauty-expo.subtitle')}</p>
-      </div>
-      {isLoading ? (
-        <GridSkeleton count={6} />
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {booths.map((b: Record<string, unknown>) => (
-            <Card
-              key={b.id as number}
-              padding="lg"
-              className="text-center hover:shadow-xl transition-all"
-            >
-              <span className="text-5xl">{b.emoji as string}</span>
-              <h3 className="mt-3 text-lg font-bold">{b.brand as string}</h3>
-              <p className="text-sm text-text-secondary mt-1">{b.description as string}</p>
-              <div className="mt-3 flex flex-wrap justify-center gap-1">
-                {(b.products as string[]).map((p: string) => (
-                  <span
-                    key={p}
-                    className="rounded-full bg-brand-50 dark:bg-brand-950 px-2 py-0.5 text-[10px]"
-                  >
-                    {p}
-                  </span>
-                ))}
-              </div>
-              <p className="text-xs text-text-tertiary mt-3">
-                {t('marketing.beauty-expo.visitors', { count: b.visitors as number })}
-              </p>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <BeautyExpoClient />;
 }

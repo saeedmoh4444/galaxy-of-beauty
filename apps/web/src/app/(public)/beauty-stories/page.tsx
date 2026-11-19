@@ -1,49 +1,22 @@
-'use client';
 import type { JSX } from 'react';
-import { api } from '@/lib/trpc';
-import { GridSkeleton, ServiceImage } from '@galaxy/ui';
-import { useLocale } from '@/components/LocaleProvider';
-import { pageHeroKey } from '@galaxy/shared';
+import type { Metadata } from 'next';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
+import { BeautyStoriesClient } from './BeautyStoriesClient';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.beauty-stories.title', 'ar'),
+    titleEn: t('marketing.beauty-stories.title', 'en'),
+    descriptionAr: t('marketing.beauty-stories.subtitle', 'ar'),
+    descriptionEn: t('marketing.beauty-stories.subtitle', 'en'),
+    path: '/beauty-stories',
+  });
+}
+
 export default function BeautyStoriesPage(): JSX.Element {
-  const { t } = useLocale();
-  const { data, isLoading } = api.beautyStories.feed.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
-  const stories = data ?? [];
-  return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-8 text-center">
-        <ServiceImage
-          service={pageHeroKey('beauty-stories')}
-          alt=""
-          size="xl"
-          className="mx-auto rounded-3xl"
-        />
-        <h1 className="mt-4 text-3xl font-bold">Beauty Stories</h1>
-        <p className="mt-2 text-text-secondary">{t('marketing.beauty-stories.subtitle')}</p>
-      </div>
-      {isLoading ? (
-        <GridSkeleton count={4} />
-      ) : (
-        <div className="flex gap-4 justify-center flex-wrap">
-          {stories.map((s: Record<string, unknown>) => (
-            <div
-              key={s.id as number}
-              className="relative w-32 h-48 rounded-2xl bg-linear-to-br from-brand-400 to-brand-500 text-white flex flex-col items-center justify-end p-3"
-            >
-              <span className="text-4xl">{s.emoji as string}</span>
-              <p className="text-[10px] font-bold mt-2">{s.technicianName as string}</p>
-              <p className="text-[8px] opacity-70">{s.postedAt as string}</p>
-              <span className="absolute top-2 end-2 rounded-full bg-surface-elevated/20 px-2 py-0.5 text-[9px]">
-                {s.viewers as number}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <BeautyStoriesClient />;
 }
