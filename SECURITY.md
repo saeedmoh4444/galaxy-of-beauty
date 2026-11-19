@@ -82,16 +82,20 @@ Merging is blocked while unaccepted critical/high findings remain.
 - **SQL Injection**: Prevented by Prisma ORM with parameterized queries.
 - **XSS**: React JSX auto-escaping + CSP headers.
 
-## Security Posture — November 2026 Build-Out
+## Security Posture — November 2026 Build-Out (CLOSED)
 
-Shipped this month (W1–W4 waves, see `docs/ARCHITECTURE_DECISIONS_2026-11.md`):
+Shipped this month (W1–W6 waves, all merged — see `docs/ARCHITECTURE_DECISIONS_2026-11.md`):
 
 - **Money integrity (W1)**: booking-transition races closed in-transaction (complete/refund/approve/cashback), idempotency keys on every money path, all client errors are 4xx TRPCErrors (no raw `throw new Error`), reconciliation pages + queue registry + graceful shutdown.
+- **Payments capture (2026-11-18, #691)**: `payments.capture` claims the transition atomically (`updateMany` status-guard on AUTHORIZED) — a concurrent double-capture can no longer double-succeed.
 - **Ownership checks (W2-5/W2-7)**: bookings.create and the womens/kids book paths verify the technician↔service mapping AND address ownership — a crafted request can no longer attach another user's address.
 - **Approval gates (W3-2)**: every auto-created store starts INACTIVE + files a PENDING_REVIEW submission; public listings filter `vendor.isActive`; only `providerReview.decide` activates stores/products/packages/promotions.
 - **Women-only gate (W3-5)**: self-declared `User.gender` (default female); womens/kids booking rejects non-female accounts with FORBIDDEN. Option 2 (verified-female KYC: ID upload → admin review) is the tracked upgrade pass.
 - **Vendor-portal guard (W3-3)**: the mobile vendor-portal redirects guests to login and non-vendors to home (web stays open to authenticated users BY DESIGN — it hosts the registration wizard).
 - **Biometric login (W3-4)**: real session establishment via device auth + stored refresh token. Hardening note: the refresh token lives in AsyncStorage today — moving it to expo-secure-store is a tracked follow-up.
-- **Fail-closed analytics (W4-1)**: no fabricated financials, personas or program stats anywhere (contract-tested).
+- **Fail-closed analytics (W4-1)**: no fabricated financials, personas or program stats anywhere (contract-tested). Sentry PII scrub in the mobile `beforeSend` (W4-4).
+- **Database integrity (W5)**: FK batch on money-adjacent tables (gift cards, flash-deal claims), dispute dual-target CHECK, NULLS NOT DISTINCT on unique indexes, referral compound-unique (double-claim closed), availability-slot overlap exclusion, StoreOrder codes + status enum.
+- **Coverage gates (W6)**: the safety router (panic/escort/check-in) got its first contract suite; content/social/realtime suites widened; the static-Arabic gate now also covers `packages/ui`.
+- **Cashback self-heal (2026-11-19, #700)**: a cashback job for a user without a wallet row creates the wallet and accrues instead of failing permanently (registration guarantees a wallet for real users; factory-made/legacy rows no longer poison the queue).
 
 **Pending user-gated security items**: pentest execution, MyFatoorah live token, Sentry DSNs, AWS S3/CDN credentials, verified-female KYC depth decision.
