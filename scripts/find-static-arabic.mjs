@@ -8,8 +8,9 @@
  * listed in scripts/static-arabic-allowlist.txt are exempt — the sweep
  * migrates screens slice by slice and removes them from the list.
  *
- * Usage: node scripts/find-static-arabic.mjs [--check] [--web] [--files]
+ * Usage: node scripts/find-static-arabic.mjs [--check] [--web] [--ui] [--files]
  *   --web     scan apps/web/src with static-arabic-web-allowlist.txt (F4)
+ *   --ui      scan packages/ui/src with static-arabic-ui-allowlist.txt (W6-2)
  *   --check   CI gate mode: exit 1 when findings exist outside the allowlist
  *   --files   print only the file list (allowlist seeding)
  * The CI gate runs through find-static-arabic.test.mjs (node --test
@@ -25,6 +26,10 @@ const MOBILE_ALLOWLIST = join(process.cwd(), 'scripts/static-arabic-allowlist.tx
 // F4 — the same gate for the web app (ratcheted via its own allowlist).
 const WEB_ROOT = join(process.cwd(), 'apps/web/src');
 const WEB_ALLOWLIST = join(process.cwd(), 'scripts/static-arabic-web-allowlist.txt');
+// W6-2 — packages/ui escaped the gate entirely ({ar,en} maps defaulting
+// 'ar'); ratcheted via its own allowlist while the migration sweep runs.
+const UI_ROOT = join(process.cwd(), 'packages/ui/src');
+const UI_ALLOWLIST = join(process.cwd(), 'scripts/static-arabic-ui-allowlist.txt');
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -131,7 +136,10 @@ export function scan(dir = MOBILE_ROOT, allowlistPath = MOBILE_ALLOWLIST) {
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
   const web = process.argv.includes('--web');
-  const { findings } = scan(web ? WEB_ROOT : MOBILE_ROOT, web ? WEB_ALLOWLIST : MOBILE_ALLOWLIST);
+  const ui = process.argv.includes('--ui');
+  const root = ui ? UI_ROOT : web ? WEB_ROOT : MOBILE_ROOT;
+  const allowlist = ui ? UI_ALLOWLIST : web ? WEB_ALLOWLIST : MOBILE_ALLOWLIST;
+  const { findings } = scan(root, allowlist);
   const files = [...new Set(findings.map((f) => f.file))];
   if (process.argv.includes('--files')) {
     for (const f of files) console.log(f);
