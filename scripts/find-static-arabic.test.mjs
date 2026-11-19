@@ -60,3 +60,18 @@ test('web app has zero static Arabic outside the web allowlist (F4 gate)', () =>
       .join('\n')}`,
   );
 });
+
+test('packages/ui has zero static Arabic outside the ui allowlist (W6-2 gate)', () => {
+  const { findings } = scan(
+    join(here, '../packages/ui/src'),
+    join(here, 'static-arabic-ui-allowlist.txt'),
+  );
+  assert.deepEqual(
+    findings,
+    [],
+    `ui static Arabic outside t()/allowlist:\n${findings
+      .slice(0, 20)
+      .map((f) => `${f.file}:${f.line}`)
+      .join('\n')}`,
+  );
+});
