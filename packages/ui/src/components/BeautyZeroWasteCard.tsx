@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyZeroWasteCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'الجمال بدون نفايات',
   subtitle = 'جميلة — وكوكب أجمل',
 }: {

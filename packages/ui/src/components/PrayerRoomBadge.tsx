@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Prayer Room Badge — signals prayer facilities at partner salons.
@@ -83,7 +84,7 @@ export function PrayerRoomBadge({
   subtitle = 'كل ما تحتاجينه للصلاة براحة',
   prayerDueLabel = 'يحين بعد',
   footerText = 'راحتكِ الروحية جزء من جمالكِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: PrayerRoomBadgeProps): JSX.Element | null {
   if (!amenities.length) return null;
 

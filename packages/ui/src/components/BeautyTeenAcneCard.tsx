@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyTeenAcneCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'حبوب المراهقات',
   subtitle = 'طبيعية — ومؤقتة',
 }: {

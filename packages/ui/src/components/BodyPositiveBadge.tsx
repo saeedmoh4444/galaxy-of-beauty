@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Body Positive Badge — signals body-positive salon policies.
@@ -101,7 +102,7 @@ export function BodyPositiveBadge({
   pledgeTitle = 'تعهدنا لكِ',
   pledgeText = 'نؤمن أن الجمال الحقيقي هو أن تكوني على طبيعتكِ. لن نطلب منكِ أبداً تغيير شكل جسدكِ أو لون بشرتكِ أو ملامحكِ. نحن هنا لنبرز جمالكِ الطبيعي — ليس لنغيره.',
   affirmation = 'أنتِ جميلة كما أنتِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BodyPositiveBadgeProps): JSX.Element | null {
   if (!features.length) return null;
 

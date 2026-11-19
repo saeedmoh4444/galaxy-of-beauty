@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyHormonalAcneCard({
   className = '',
   title = 'حبوب هرمونية',
   subtitle = 'علاج حبوب الذقن والفك',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

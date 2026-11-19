@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty History Timeline — history of beauty through the ages.
@@ -110,7 +111,7 @@ export function BeautyHistoryTimeline({
   title = 'تاريخ الجمال',
   subtitle = 'رحلة الجمال عبر العصور',
   footerText = '"الجمال قصة قديمة — وما زلنا نكتب فصولها"',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyHistoryTimelineProps): JSX.Element {
   return (
     <div className={cn('rounded-2xl bg-surface-elevated p-5', className)}>

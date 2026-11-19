@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyBeetrootCard({
   className = '',
   title = 'عصير الشمندر',
   subtitle = 'الإشراقة الوردية من الداخل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

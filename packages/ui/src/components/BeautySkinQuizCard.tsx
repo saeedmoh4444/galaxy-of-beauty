@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Skin Quiz Card — interactive skin type discovery quiz.
@@ -81,7 +82,7 @@ export function BeautySkinQuizCard({
   className = '',
   resultTitle = 'نوع بشرتكِ',
   retryLabel = 'جربي مرة أخرى',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautySkinQuizCardProps): JSX.Element {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});

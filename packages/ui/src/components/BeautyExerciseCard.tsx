@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyExerciseCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyExerciseCard({
   className = '',
   title = 'رياضة الجمال',
   subtitle = 'الحركة تغذي بشرتك',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyExerciseCardProps): JSX.Element {
   return (
     <div

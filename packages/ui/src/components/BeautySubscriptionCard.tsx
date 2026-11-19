@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Subscription Card — monthly beauty box subscription.
@@ -90,7 +91,7 @@ export function BeautySubscriptionCard({
   monthlySuffix = '/ شهرياً',
   includesTitle = 'يشمل',
   subscribeButtonText = 'اشتركي الآن',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautySubscriptionCardProps): JSX.Element {
   const t = TIERS[tier];
 

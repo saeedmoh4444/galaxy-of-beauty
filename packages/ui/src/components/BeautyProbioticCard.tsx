@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyProbioticCard({
   className = '',
   title = 'البروبيوتيك',
   subtitle = 'بكتيريا نافعة — بشرة صافية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

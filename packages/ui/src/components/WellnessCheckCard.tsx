@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Wellness Check Card — monthly beauty wellness self-assessment.
@@ -59,7 +60,7 @@ export function WellnessCheckCard({
   lastCheck,
   onStartCheck,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'الفحص الشهري',
   subtitle = 'تقييم سريع لصحة جمالكِ',
   startButtonText = 'ابدئي الفحص',

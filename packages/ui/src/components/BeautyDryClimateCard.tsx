@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyDryClimateCard({
   className = '',
   title = 'عناية في الجفاف',
   subtitle = 'بشرة مرطبة في المناخ الجاف',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

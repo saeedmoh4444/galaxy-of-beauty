@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMaternityMassageCard({
   className = '',
   title = 'مساج الحامل',
   subtitle = 'آمن — بعد الشهر الثالث',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

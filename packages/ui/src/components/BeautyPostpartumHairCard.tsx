@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPostpartumHairCard({
   className = '',
   title = 'شعر ما بعد الولادة',
   subtitle = 'تساقط طبيعي — لا تقلقي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

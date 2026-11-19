@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPoreRefiningCard({
   className = '',
   title = 'تصغير المسام',
   subtitle = 'لا يمكن إغلاقها — لكن يمكن تصغيرها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

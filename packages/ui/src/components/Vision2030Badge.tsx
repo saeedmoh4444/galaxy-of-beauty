@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Vision 2030 Badge — aligns with Saudi Vision 2030 women empowerment goals.
@@ -29,7 +30,7 @@ export function Vision2030Badge({
   womenEmployed,
   target = 1000,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'رؤية 2030',
   subtitle = 'نساهم في تمكين المرأة السعودية',
   goalLabel = 'هدفنا: توظيف ',

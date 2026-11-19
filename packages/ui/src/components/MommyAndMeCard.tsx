@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Mommy & Me Card — mother-daughter side-by-side beauty experience.
@@ -143,7 +144,7 @@ export function MommyAndMeCard({
   currencySuffix = 'ر.س',
   bookLabel = 'احجزي وقتكما الخاص',
   memoryText = 'صورة تذكارية لكما معاً — لأن هذه اللحظات لا تنسى',
-  locale = 'ar',
+  locale = getUILocale(),
 }: MommyAndMeCardProps): JSX.Element {
   const exp = EXPERIENCES[experience] ?? EXPERIENCES.mini_facial;
   const isAgeAppropriate = daughterAge >= exp.ageMin && daughterAge <= exp.ageMax;

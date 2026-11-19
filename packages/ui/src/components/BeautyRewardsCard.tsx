@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Rewards Card — loyalty points & rewards redemption.
@@ -50,7 +51,7 @@ export function BeautyRewardsCard({
   tier = 'gold',
   onRedeem,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   myRewardsTitle = 'مكافآتي',
   pointsSuffix = 'نقطة',
 }: BeautyRewardsCardProps): JSX.Element {

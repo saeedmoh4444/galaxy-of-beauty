@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Sleep Card — evening self-care routine for beauty sleep.
@@ -93,7 +94,7 @@ export function BeautySleepCard({
   whyTitle = 'لماذا نوم الجمال مهم؟',
   sleepTipText = 'أثناء النوم، بشرتكِ تجدد نفسها. 8 ساعات نوم = بشرة مشرقة + عيون أقل انتفاخاً + كولاجين طبيعي.',
   quoteText = '“النوم سر من أسرار الجمال”',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautySleepCardProps): JSX.Element {
   return (
     <div

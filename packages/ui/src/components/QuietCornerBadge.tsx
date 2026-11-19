@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Quiet Corner Badge — child-friendly corner in partner salons for moms.
@@ -99,7 +100,7 @@ export function QuietCornerBadge({
   supervisedLabel = 'مراقب',
   supervisedNote = 'موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
   footerText = 'أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: QuietCornerBadgeProps): JSX.Element | null {
   if (!amenities.length) return null;
 

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyNeckCareCard({
   className = '',
   title = 'عناية الرقبة',
   subtitle = 'لا تهمليها — تظهر العمر قبل الوجه',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

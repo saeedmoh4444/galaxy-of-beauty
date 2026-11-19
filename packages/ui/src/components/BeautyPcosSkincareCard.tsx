@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPcosSkincareCard({
   className = '',
   title = 'عناية تكيس المبايض',
   subtitle = 'بشرة جميلة رغم الهرمونات',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

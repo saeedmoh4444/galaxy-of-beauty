@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Circle Card — private women-only beauty groups.
@@ -132,7 +133,7 @@ export function BeautyCircleCard({
   discountPrefix = 'خصم ',
   discountSuffix = 'عند الحجز الجماعي',
   joinButtonText = 'انضمي للدائرة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyCircleCardProps): JSX.Element {
   const topic = TOPICS[circle.topic];
   const isAlmostFull = circle.members >= 40;

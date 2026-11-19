@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyPostureCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyPostureCard({
   className = '',
   title = 'قوام جميل',
   subtitle = 'الوقفة الصحيحة = ثقة وجمال',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyPostureCardProps): JSX.Element {
   return (
     <div

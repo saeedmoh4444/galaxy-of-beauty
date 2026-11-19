@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMaskneCard({
   className = '',
   title = 'حبوب الكمامة',
   subtitle = 'Mask-Ne — كيف تتعاملين معها',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

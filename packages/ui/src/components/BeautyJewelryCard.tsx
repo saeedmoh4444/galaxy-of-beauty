@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyJewelryCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyJewelryCard({
   className = '',
   heading = 'تنسيق الإكسسوارات',
   subtitle = 'اللمسة الأخيرة لإطلالتك',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyJewelryCardProps): JSX.Element {
   return (
     <div

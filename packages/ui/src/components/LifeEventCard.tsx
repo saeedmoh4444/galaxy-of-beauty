@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Life Event Card — beauty packages for major life moments.
@@ -185,7 +186,7 @@ export function LifeEventCard({
   priceLabel = 'السعر',
   currencySuffix = 'ر.س',
   bookLabel = 'احجزي الآن',
-  locale = 'ar',
+  locale = getUILocale(),
 }: LifeEventCardProps): JSX.Element {
   const e = EVENTS[event];
 

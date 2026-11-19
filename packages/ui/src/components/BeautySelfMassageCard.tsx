@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautySelfMassageCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautySelfMassageCard({
   className = '',
   title = 'مساج ذاتي',
   subtitle = '5 دقائق يومياً لبشرة مشرقة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautySelfMassageCardProps): JSX.Element {
   return (
     <div

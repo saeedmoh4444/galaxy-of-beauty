@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Concierge Card — personal beauty concierge service.
@@ -49,7 +50,7 @@ export function BeautyConciergeCard({
   chatButtonText = 'محادثة',
   callButtonText = 'اتصال',
   quoteText = '“دللي نفسكِ — ونحن نتولى الباقي”',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyConciergeCardProps): JSX.Element {
   return (
     <div

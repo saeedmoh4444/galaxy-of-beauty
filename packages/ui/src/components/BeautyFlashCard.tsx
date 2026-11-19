@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Flash Card — interactive beauty term flashcard for learning.
@@ -96,7 +97,7 @@ export function BeautyFlashCard({
   flipHint = 'اضغطي للكشف عن التعريف',
   prevLabel = '← السابقة',
   nextLabel = 'التالية ←',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyFlashCardProps): JSX.Element {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);

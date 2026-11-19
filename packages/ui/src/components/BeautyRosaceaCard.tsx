@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyRosaceaCard({
   className = '',
   title = 'الاحمرار والوردية',
   subtitle = 'عناية لطيفة للبشرة الحساسة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

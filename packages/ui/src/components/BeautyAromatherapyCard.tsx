@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyAromatherapyCard({
   className = '',
   title = 'العلاج بالروائح',
   subtitle = 'زيوت عطرية لجمالك وصحتك',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

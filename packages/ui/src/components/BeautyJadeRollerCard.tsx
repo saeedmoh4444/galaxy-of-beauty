@@ -1,10 +1,11 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyJadeRollerCard({
   className = '',
   subtitle = 'بكرة اليشم للوجه',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   subtitle?: string;

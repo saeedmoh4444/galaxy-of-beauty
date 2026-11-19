@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Affirmation Card — daily positive affirmations for self-love.
@@ -33,7 +34,7 @@ interface BeautyAffirmationCardProps {
 
 export function BeautyAffirmationCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'توكيدات إيجابية',
   nextButtonText = 'التأكيد التالي ←',
 }: BeautyAffirmationCardProps): JSX.Element {

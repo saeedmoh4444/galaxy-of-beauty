@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyRadioFrequencyCard({
   className = '',
   title = 'الراديو فريكونسي',
   subtitle = 'موجات حرارية — كولاجين جديد',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

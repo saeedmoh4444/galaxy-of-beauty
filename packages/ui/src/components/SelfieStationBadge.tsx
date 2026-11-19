@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Selfie Station Badge — dedicated selfie spot with ring light at partner salons.
@@ -31,7 +32,7 @@ export function SelfieStationBadge({
   hasBackdrop = true,
   hasProps = false,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'ركن التصوير',
   subtitle = 'التقطي صوراً رائعة لإطلالتكِ الجديدة',
   shareLabel = 'شاركي إطلالتكِ مع',

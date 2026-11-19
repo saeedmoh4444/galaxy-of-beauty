@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Saudi Beauty Heritage Card — traditional Saudi beauty practices documented & preserved.
@@ -151,7 +152,7 @@ export function SaudiBeautyHeritageCard({
   modernUseLabel = 'الاستخدام الحديث',
   heritageNote = 'هذا المحتوى يوثق تراث الجمال السعودي الأصيل',
   footerText = 'نحافظ على تراثنا — لأنه جزء من هويتنا',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SaudiBeautyHeritageCardProps): JSX.Element {
   const p = PRACTICES[practice];
 

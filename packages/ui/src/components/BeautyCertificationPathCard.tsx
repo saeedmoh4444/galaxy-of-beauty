@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Certification Path Card — accredited certification tracks for beauty careers.
@@ -106,7 +107,7 @@ export function BeautyCertificationPathCard({
   levelsLabel = 'المستويات',
   durationLabel = 'المدة',
   enrollLabel = 'سجلي في المسار',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyCertificationPathCardProps): JSX.Element {
   const p = PATHS[path];
 

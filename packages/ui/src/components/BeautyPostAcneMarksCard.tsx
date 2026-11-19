@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPostAcneMarksCard({
   className = '',
   title = 'تفتيح آثار الحبوب',
   subtitle = 'روتين لتوحيد لون البشرة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

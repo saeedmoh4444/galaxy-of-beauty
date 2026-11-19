@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyNutritionCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyNutritionCard({
   className = '',
   title = 'تغذية الجمال',
   subtitle = 'طعامكِ هو جمالكِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyNutritionCardProps): JSX.Element {
   return (
     <div

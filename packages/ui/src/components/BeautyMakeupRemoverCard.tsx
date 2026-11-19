@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMakeupRemoverCard({
   className = '',
   heading = 'إزالة المكياج',
   subtitle = 'الطريقة الصحيحة واللطيفة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * CyclePhaseCard — beauty recommendations based on menstrual cycle phase.
@@ -138,7 +139,7 @@ export function CyclePhaseCard({
   recommendedLabel = 'ينصح بها',
   avoidLabel = 'تجنبي',
   footerTip = 'CycleSync™ — لأن جمالكِ مرتبط بصحتكِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: CyclePhaseCardProps): JSX.Element {
   const data = PHASES[phase];
   const phases: CyclePhase[] = ['menstrual', 'follicular', 'ovulation', 'luteal'];

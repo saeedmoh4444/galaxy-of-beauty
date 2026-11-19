@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPerimenopauseCard({
   className = '',
   title = 'حول انقطاع الطمث',
   subtitle = 'جمالكِ في مرحلة التغيير',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

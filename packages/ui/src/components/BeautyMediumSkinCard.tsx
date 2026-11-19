@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMediumSkinCard({
   className = '',
   title = 'البشرة المتوسطة',
   subtitle = 'البشرة الزيتونية والقمحية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

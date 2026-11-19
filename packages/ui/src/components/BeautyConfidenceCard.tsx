@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyConfidenceCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyConfidenceCard({
   className = '',
   title = 'ثقة وجمال',
   subtitle = 'الجمال الحقيقي يبدأ من الداخل. ثقتكِ بنفسكِ هي أجمل ما يمكن أن ترتديه.',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyConfidenceCardProps): JSX.Element {
   return (
     <div

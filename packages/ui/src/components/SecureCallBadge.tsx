@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Secure Call Badge — anonymous proxy communication via Twilio for technician calls.
@@ -72,7 +73,7 @@ export function SecureCallBadge({
   activateButtonText = 'فعّلي الاتصال الآمن',
   cancelButtonText = 'إلغاء الرقم المؤقت',
   privacyText = 'خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
-  locale = 'ar',
+  locale = getUILocale(),
 }: SecureCallBadgeProps): JSX.Element {
   return (
     <div

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyChappedLipsCard({
   className = '',
   title = 'تشقق الشفاه',
   subtitle = 'علاج سريع للشفاه الجافة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

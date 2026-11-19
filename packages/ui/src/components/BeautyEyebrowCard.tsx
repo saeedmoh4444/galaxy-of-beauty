@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Eyebrow Card — eyebrow shaping & care tips.
@@ -19,7 +20,7 @@ export function BeautyEyebrowCard({
   className = '',
   title = 'عناية بالحواجب',
   subtitle = 'حواجب متناسقة — إطار الوجه',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyEyebrowCardProps): JSX.Element {
   return (
     <div

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyProductOverloadCard({
   className = '',
   title = 'تحميل المنتجات',
   subtitle = 'كثرة المنتجات — ضرر أكثر من نفع',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyUndertoneCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'الأندرتون',
   subtitle = 'اعرفي أندرتونكِ — لإطلالة متناسقة',
 }: {

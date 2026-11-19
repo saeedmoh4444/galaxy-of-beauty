@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyDoubleCleansingCard({
   className = '',
   title = 'التنظيف المزدوج',
   subtitle = 'السر الكوري لبشرة نظيفة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

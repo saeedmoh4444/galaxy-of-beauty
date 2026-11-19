@@ -1,10 +1,11 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyGuaShaCard({
   className = '',
   subtitle = 'التدليك بالحجر الصيني',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   subtitle?: string;

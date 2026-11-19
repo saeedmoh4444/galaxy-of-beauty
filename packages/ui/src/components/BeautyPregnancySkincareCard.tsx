@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPregnancySkincareCard({
   className = '',
   title = 'عناية الحامل',
   subtitle = 'منتجات آمنة أثناء الحمل',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

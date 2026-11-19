@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Free Course Card — Galaxy Beauty Academy free educational content.
@@ -96,7 +97,7 @@ export function FreeCourseCard({
   certificateText = 'شهادة معتمدة عند الإكمال',
   newBadgeText = '🆕 أضيف مؤخراً',
   enrollButtonText = 'ابدئي التعلم الآن',
-  locale = 'ar',
+  locale = getUILocale(),
 }: FreeCourseCardProps): JSX.Element {
   const level = LEVELS[course.level];
 

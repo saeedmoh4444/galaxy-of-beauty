@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Emergency Beauty Fund — free/discounted beauty for women in critical need.
@@ -137,7 +138,7 @@ export function EmergencyBeautyFund({
   applyLabel = 'قدّمي طلباً سرياً',
   bookLabel = 'احجزي موعدكِ الآن',
   privacyNote = 'طلبكِ سري تماماً — لا أحد يعرف أنكِ استخدمتِ الصندوق',
-  locale = 'ar',
+  locale = getUILocale(),
 }: EmergencyBeautyFundProps): JSX.Element {
   const r = REASONS[reason];
 
