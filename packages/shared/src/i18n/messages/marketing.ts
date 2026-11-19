@@ -2417,4 +2417,48 @@ export const marketingMessages = {
     ar: 'يمكنك طلب حذف بياناتك فوراً من الإعدادات ← حذف الحساب، مع مراعاة الاستثناءات النظامية (الفواتير).',
     en: 'Request immediate deletion from Settings → Delete account, subject to legal exceptions (invoices).',
   },
+
+  // W6-1 queue — page metadata for the remaining SEO sweep pages.
+  'marketing.api-docs.title': { ar: 'توثيق واجهة البرمجة', en: 'API Documentation' },
+  'marketing.api-docs.subtitle': {
+    ar: 'مرجع شامل لواجهات برمجة التطبيقات في المنصة',
+    en: 'Complete reference for the platform APIs',
+  },
+  'marketing.beauty-faq.title': { ar: 'الأسئلة الشائعة', en: 'Beauty FAQ' },
+  'marketing.beauty-quiz.title': { ar: 'اختبار الجمال', en: 'Beauty Quiz' },
+  'marketing.beauty-quiz.subtitle': {
+    ar: 'اكتشفي روتينكِ المثالي بأسئلة ممتعة',
+    en: 'Discover your ideal routine with fun questions',
+  },
+  'marketing.beauty-shorts.subtitle': {
+    ar: 'فيديوهات قصيرة من عالم الجمال',
+    en: 'Short-form videos from the beauty world',
+  },
+  'marketing.beauty-stories.title': { ar: 'قصص الجمال', en: 'Beauty Stories' },
+  'marketing.beauty-awards.subtitle': {
+    ar: 'جوائز أفضل ما في عالم الجمال',
+    en: 'Awards for the best in beauty',
+  },
+  'marketing.compare.subtitle': {
+    ar: 'قارن الخدمات جنباً إلى جنب',
+    en: 'Compare services side by side',
+  },
+  'marketing.onboarding.title': {
+    ar: 'مرحباً بكِ في جالكسي بيوتي',
+    en: 'Welcome to Galaxy of Beauty',
+  },
+  'marketing.onboarding.subtitle': {
+    ar: 'رحلتكِ الجمالية تبدأ من هنا',
+    en: 'Your beauty journey starts here',
+  },
+  'marketing.salon-map.title': { ar: 'خريطة الصالونات', en: 'Salon Map' },
+  'marketing.salon-map.subtitle': {
+    ar: 'اعثري على الصالونات القريبة منكِ',
+    en: 'Find salons near you',
+  },
+  'marketing.search.subtitle': {
+    ar: 'ابحثي في خدماتنا ومنتجاتنا',
+    en: 'Search our services and products',
+  },
+  'marketing.service-matchmaker.title': { ar: 'مطابقة الخدمات', en: 'Service Matchmaker' },
 } as const satisfies Record<string, { ar: string; en: string }>;
