@@ -1,8 +1,16 @@
 # Launch Readiness Report — Galaxy of Beauty
 
-**Date:** 2026-10-31
-**Version:** 2.4.0
-**Status:** 🟡 Feature-complete and verifiably correct — launch gated on user credentials + ops hardening
+**Date:** 2026-11-18
+**Version:** 2.5.0
+**Status:** 🟢 Audit build-out program CLOSED (board zero, W1–W6 merged) — launch still gated on the
+user-credential list (Fatoorah, Sentry DSNs, AWS console, Apple account, pentest) + the deep
+ui t()-key migration (530 data-string files, locale-correct since #696)
+
+> 2026-11-18 refresh notes: contract gates now pin ~267 routers / ~1,213 procedures
+> (beautyCoupon removed, W5-6); the prod Docker image builds ALL targets in CI (W5-8);
+> every public page emits metadata and the sitemap covers all static routes (W6-1);
+> payments.capture is atomically race-proof (#691); scheduler heartbeats + restore
+> runbook live (W6-5). Platform-health rows below predate these; CI is the authority.
 
 ---
 
