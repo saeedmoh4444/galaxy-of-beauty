@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Just Because Flowers — random bouquet delivered to loyal customers.
@@ -91,7 +92,7 @@ export function JustBecauseFlowers({
   anyMomentText = 'قد تصلكِ باقة زهور في أي لحظة — فقط لأنكِ رائعة',
   bookingCountSuffix = 'حجز',
   footerText = 'بعض الأيام تحتاج زهوراً — بدون سبب',
-  locale = 'ar',
+  locale = getUILocale(),
 }: JustBecauseFlowersProps): JSX.Element | null {
   if (bookingsCount < 10) return null;
 

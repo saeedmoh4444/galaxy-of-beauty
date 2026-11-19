@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMakeupMistakesCard({
   className = '',
   heading = 'أخطاء المكياج',
   subtitle = 'أخطاء شائعة — حلول بسيطة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   heading?: string;

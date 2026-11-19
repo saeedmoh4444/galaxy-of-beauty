@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyRamadanBeautyCard({
   className = '',
   title = 'عناية رمضان',
   subtitle = 'روتين الجمال في الشهر الكريم',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

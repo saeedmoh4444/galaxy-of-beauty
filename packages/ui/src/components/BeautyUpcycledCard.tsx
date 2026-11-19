@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyUpcycledCard({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'الجمال المُعاد تدويره',
   subtitle = 'من النفايات — إلى الذهب',
 }: {

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Weather Card — weather-based beauty recommendations.
@@ -85,7 +86,7 @@ export function BeautyWeatherCard({
   className = '',
   title = 'طقس الجمال',
   footerText = 'روتينكِ يتغير مع الطقس — ونحن نذكركِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyWeatherCardProps): JSX.Element {
   const a = ADVICE[condition];
 

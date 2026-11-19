@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * No Rush Badge — signals "take your time" no-rush salon policy.
@@ -46,7 +47,7 @@ export function NoRushBadge({
   comfortBadgeText = 'مريح',
   comfortFirstText = 'راحتكِ أولاً',
   footerText = 'جمالكِ يستحق وقتكِ — لا تستعجلي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: NoRushBadgeProps): JSX.Element {
   return (
     <div

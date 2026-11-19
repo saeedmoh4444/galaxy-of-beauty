@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Pricing Coach Card — AI suggests optimal pricing for technician services.
@@ -81,7 +82,7 @@ export function PricingCoachCard({
   competitorAvgLabel = 'متوسط المنافسين',
   applyButtonText = 'تطبيق السعر المقترح',
   footerText = 'بناءً على تحليل الطلب والمنافسة ومهاراتكِ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: PricingCoachCardProps): JSX.Element {
   const diff = service.suggestedPrice - service.currentPrice;
   const pctIncrease = Math.round((diff / service.currentPrice) * 100);

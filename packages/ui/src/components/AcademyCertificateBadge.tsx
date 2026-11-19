@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Academy Certificate Badge — course completion certification from Galaxy of Beauty Beauty Academy.
@@ -91,7 +92,7 @@ export function AcademyCertificateBadge({
   shareLabel = 'مشاركة',
   verifyLabel = 'تحقق',
   accreditationText = 'معتمدة من المؤسسة العامة للتدريب التقني والمهني',
-  locale = 'ar',
+  locale = getUILocale(),
 }: AcademyCertificateBadgeProps): JSX.Element {
   const level = CERTS[certificate.level];
 

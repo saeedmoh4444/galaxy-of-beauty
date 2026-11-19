@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Life Stage Badge — shows which life stage a service/package is designed for.
@@ -56,7 +57,7 @@ interface LifeStageBadgeProps {
 export function LifeStageBadge({
   stage,
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
 }: LifeStageBadgeProps): JSX.Element | null {
   const s = LIFE_STAGES[stage];
   if (!s) return null;

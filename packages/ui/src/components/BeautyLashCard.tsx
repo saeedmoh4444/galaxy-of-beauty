@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Lash Card — eyelash care & extension tips.
@@ -19,7 +20,7 @@ export function BeautyLashCard({
   className = '',
   heading = 'عناية بالرموش',
   subtitle = 'رموش كثيفة وصحية',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyLashCardProps): JSX.Element {
   return (
     <div

@@ -1,5 +1,6 @@
 'use client';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Journal Prompt — daily reflection connecting beauty and mood.
@@ -46,7 +47,7 @@ const PROMPTS = [
 
 export function BeautyJournalPrompt({
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'يوميات الجمال',
   placeholder = 'اكتبي هنا...',
 }: {

@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyEyeBagsCard({
   className = '',
   title = 'انتفاخ تحت العين',
   subtitle = 'أكياس العين — حلول سريعة ودائمة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

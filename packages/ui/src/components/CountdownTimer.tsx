@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
+import { getUILocale } from '../locale';
 
 /**
  * Countdown Timer — for flash deals, limited offers, campaign expiry.
@@ -46,7 +47,7 @@ export function CountdownTimer({
   showLabels = true,
   className = '',
   expiredText = 'انتهى العرض',
-  locale = 'ar',
+  locale = getUILocale(),
 }: CountdownTimerProps): JSX.Element {
   const [time, setTime] = useState<TimeLeft>(calcTimeLeft(expiresAt));
 

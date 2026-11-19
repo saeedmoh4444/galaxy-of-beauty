@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 interface BeautyMeditationCardProps {
   className?: string;
@@ -14,7 +15,7 @@ export function BeautyMeditationCard({
   className = '',
   title = 'تأمل الجمال',
   subtitle = '5 دقائق فقط — لجمالكِ الداخلي',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyMeditationCardProps): JSX.Element {
   return (
     <div

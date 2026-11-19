@@ -16,6 +16,7 @@ import {
   type TranslationKey,
 } from '@galaxy/shared/i18n-mobile';
 import { loadStoredLocale, persistLocale } from '@/lib/locale';
+import { setUILocale } from '@galaxy/ui';
 
 interface LocaleContextValue {
   locale: Locale;
@@ -28,6 +29,9 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 export function LocaleProvider({ children }: { children: ReactNode }): JSX.Element {
   const [locale, setLocaleState] = useState<Locale>('ar');
+  // W6-2 — publish the active locale to the ui package so shared
+  // components stop defaulting their {ar,en} data maps to Arabic.
+  useEffect(() => setUILocale(locale), [locale]);
 
   // Restore the persisted preference (AsyncStorage) after mount. The app
   // splash covers the cold start, so the brief Arabic default is hidden.

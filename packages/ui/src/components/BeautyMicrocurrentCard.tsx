@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyMicrocurrentCard({
   className = '',
   title = 'المايكروكرنت',
   subtitle = 'تيار كهربائي خفيف — شد فوري',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

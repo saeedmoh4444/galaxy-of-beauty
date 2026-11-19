@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Sign Language Badge — signals technicians trained in sign language.
@@ -58,7 +59,7 @@ export function SignLanguageBadge({
   technicians,
   advanceNotice = '24 ساعة',
   className = '',
-  locale = 'ar',
+  locale = getUILocale(),
   title = 'لغة الإشارة متوفرة',
   trainedCountText = 'خبيرات مدربات على لغة الإشارة',
   bookingNoticePrefix = 'يُفضل الحجز قبل ',

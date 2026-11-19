@@ -1,11 +1,12 @@
 'use client';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 export function BeautyPlasticFreeCard({
   className = '',
   title = 'الجمال بدون بلاستيك',
   subtitle = 'بدائل ذكية للبلاستيك',
-  locale = 'ar',
+  locale = getUILocale(),
 }: {
   className?: string;
   title?: string;

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Postpartum Care Card — traditional Saudi postpartum recovery (40-day نفاس).
@@ -126,7 +127,7 @@ export function PostpartumCareCard({
   availableAfterText = 'متاحة بعد',
   dayWord = 'يوم',
   wisdomText = '"الأربعين يوم راحة وتعافي — اعتني بنفسكِ كما تعتنين بطفلكِ"',
-  locale = 'ar',
+  locale = getUILocale(),
 }: PostpartumCareCardProps): JSX.Element {
   const isNifasComplete = daysSinceBirth >= 40;
 

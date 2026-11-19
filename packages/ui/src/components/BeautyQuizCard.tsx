@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Quiz Card — fun beauty knowledge quiz.
@@ -115,7 +116,7 @@ export function BeautyQuizCard({
   wrongLabel = 'خطأ! ',
   nextQuestionLabel = 'السؤال التالي ←',
   resultLabel = 'النتيجة ',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyQuizCardProps): JSX.Element {
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);

@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Beauty Career Path Card — career paths in the beauty industry.
@@ -126,7 +127,7 @@ export function BeautyCareerPathCard({
   durationLabel = 'المدة',
   coursesLabel = 'الدورات',
   learnMoreLabel = 'اكتشفي المسار',
-  locale = 'ar',
+  locale = getUILocale(),
 }: BeautyCareerPathCardProps): JSX.Element {
   const p = PATHS[path];
 

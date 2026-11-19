@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
+import { getUILocale } from '../locale';
 
 /**
  * Mental Wellness Card — beauty as therapy for emotional wellbeing.
@@ -177,7 +178,7 @@ export function MentalWellnessCard({
   bookLabel = 'احجزي جلستكِ ',
   journalPromptLabel = 'اكتبي مشاعركِ في يومياتكِ الجمالية',
   wellnessTip = '"الجمال يبدأ من الداخل" — عنايتكِ بنفسكِ عبادة',
-  locale = 'ar',
+  locale = getUILocale(),
 }: MentalWellnessCardProps): JSX.Element {
   const m = MOODS[mood];
 
