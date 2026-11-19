@@ -96,11 +96,15 @@ describe('handleWalletJob', () => {
     expect(txn?.idempotencyKey).toBe('cashback_9002');
   });
 
-  it('throws when the user has no wallet', async () => {
+  it('self-heals when the user has no wallet (creates one and accrues)', async () => {
     const userId = await createUser();
-    await expect(handleWalletJob(job({ userId, bookingId: 9003, amount: 10 }))).rejects.toThrow(
-      `Wallet not found for user ${userId}`,
-    );
+    await handleWalletJob(job({ userId, bookingId: 9003, amount: 10 }));
+    const wallet = await prisma.wallet.findUniqueOrThrow({ where: { userId } });
+    expect(Number(wallet.bonusBalance)).toBe(10);
+    const txn = await prisma.walletTransaction.findFirst({
+      where: { walletId: wallet.id, source: 'CASHBACK' },
+    });
+    expect(txn).not.toBeNull();
   });
 });
 
