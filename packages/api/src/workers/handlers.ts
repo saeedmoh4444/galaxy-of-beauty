@@ -18,6 +18,7 @@ import {
   refreshGoogleToken,
 } from '../lib/googleCalendar';
 import { creditLoyaltyPoints } from '../lib/loyalty';
+import { ensureWallet } from '../lib/wallet';
 import { sendEmail, emailShell } from '../lib/email';
 import { notifyUser } from '../lib/notify';
 import { calculateVendorSettlements } from '../lib/storePayouts';
@@ -92,8 +93,10 @@ export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
   });
   if (existing) return;
 
-  const wallet = await prisma.wallet.findUnique({ where: { userId } });
-  if (!wallet) throw new Error(`Wallet not found for user ${userId}`);
+  // Self-heal: registration creates a wallet for every real user, but
+  // factory-made/legacy rows may lack one — create instead of failing the
+  // job into the failed set ("Wallet not found for user N").
+  const wallet = await ensureWallet(userId);
 
   await prisma.$transaction([
     prisma.wallet.update({

@@ -17,7 +17,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
 import { handleWalletJob } from '../workers/handlers';
-import { safeFutureDate, ensureTechnicianService, createUniqueSlot } from './factories';
+import { safeFutureDate, ensureTechnicianService, createUniqueSlot, buildUser } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -382,6 +382,27 @@ describe('W1 money races', () => {
 
     const after = await prisma.wallet.findUniqueOrThrow({ where: { id: wallet.id } });
     expect(Number(after.bonusBalance)).toBe(before + 25);
+    const txns = await prisma.walletTransaction.findMany({ where: { idempotencyKey: key } });
+    expect(txns).toHaveLength(1);
+  });
+
+  it('handleWalletJob: user without a wallet is self-healed (ensureWallet + accrue)', async () => {
+    // Real-world dev/edge case: cashback enqueued for a user whose wallet
+    // row does not exist (factory-made users bypass the auth-registration
+    // wallet creation). The job must create the wallet and accrue — not
+    // burn 3 attempts into the failed set ("Wallet not found for user N").
+    const user = await prisma.user.create({ data: buildUser() });
+    createdUserIds.push(user.id);
+    const key = newIdemKey();
+
+    const job = {
+      data: { userId: user.id, bookingId: -2, amount: 30, idempotencyKey: key },
+    } as never;
+    await handleWalletJob(job);
+
+    const wallet = await prisma.wallet.findUniqueOrThrow({ where: { userId: user.id } });
+    createdWalletIds.push(wallet.id);
+    expect(Number(wallet.bonusBalance)).toBe(30);
     const txns = await prisma.walletTransaction.findMany({ where: { idempotencyKey: key } });
     expect(txns).toHaveLength(1);
   });
