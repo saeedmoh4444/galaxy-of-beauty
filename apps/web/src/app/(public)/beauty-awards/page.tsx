@@ -1,91 +1,22 @@
-'use client';
 import type { JSX } from 'react';
-import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, ServiceImage, ErrorAlert } from '@galaxy/ui';
-import { useAuth } from '@galaxy/ui';
-import { useLocale } from '@/components/LocaleProvider';
-import { pageHeroKey } from '@galaxy/shared';
+import type { Metadata } from 'next';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
+import { BeautyAwardsClient } from './BeautyAwardsClient';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.beauty-awards.title', 'ar'),
+    titleEn: t('marketing.beauty-awards.title', 'en'),
+    descriptionAr: t('marketing.beauty-awards.subtitle', 'ar'),
+    descriptionEn: t('marketing.beauty-awards.subtitle', 'en'),
+    path: '/beauty-awards',
+  });
+}
 
 export default function BeautyAwardsPage(): JSX.Element {
-  const { user } = useAuth();
-  const { t } = useLocale();
-  const { data, isLoading, isError, refetch } = api.beautyAwards.current.useQuery() as {
-    data: Record<string, unknown> | undefined;
-    isLoading: boolean;
-    isError: boolean;
-    refetch: () => void;
-  };
-  const voteMut = api.beautyAwards.vote.useMutation();
-
-  const cats = (data?.categories ?? []) as Array<Record<string, unknown>>;
-
-  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
-
-  return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <div className="mb-8 text-center">
-        <ServiceImage
-          service={pageHeroKey('beauty-awards')}
-          alt=""
-          size="xl"
-          className="mx-auto rounded-3xl"
-        />
-        <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-awards.title')}</h1>
-        <p className="mt-2 text-text-secondary">
-          {t('marketing.beauty-awards.vote-cta', { month: (data?.month as string) ?? '' })}
-        </p>
-      </div>
-      {isLoading ? (
-        <CardListSkeleton count={4} />
-      ) : (
-        <div className="space-y-6">
-          {cats.map((c: Record<string, unknown>) => (
-            <Card key={c.key as string} padding="lg">
-              <h3 className="font-bold text-lg mb-4">
-                {c.emoji as string} {c.nameAr as string}
-              </h3>
-              <div className="space-y-2">
-                {(c.nominees as Array<Record<string, unknown>>).map(
-                  (n: Record<string, unknown>) => (
-                    <div
-                      key={n.id as number}
-                      className="flex items-center justify-between rounded-lg bg-surface-muted p-3"
-                    >
-                      <div>
-                        <span className="font-bold">{n.name as string}</span>
-                        {(n.desc as string) ? (
-                          <span className="text-xs text-text-secondary me-2">
-                            — {n.desc as string}
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold">
-                          {t('marketing.beauty-awards.votes', { count: n.votes as number })}
-                        </span>
-                        {user && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() =>
-                              voteMut.mutate({
-                                category: c.key as string,
-                                nomineeId: n.id as number,
-                              })
-                            }
-                          >
-                            {t('marketing.beauty-awards.vote')}
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ),
-                )}
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return <BeautyAwardsClient />;
 }

@@ -23,7 +23,7 @@ apps/web/src/app/(public)/bridal-concierge/BridalConciergeClient.tsx
 apps/web/src/app/(public)/events/[id]/EventDetailClient.tsx
 apps/web/src/app/(public)/layout.tsx
 apps/web/src/app/(public)/subscription-boxes/PlansClient.tsx
-apps/web/src/app/(public)/technician-compare/page.tsx
+apps/web/src/app/(public)/technician-compare/TechnicianCompareClient.tsx
 apps/web/src/app/(public)/technicians/[id]/TechnicianProfileClient.tsx
 apps/web/src/app/admin/content-gen/page.tsx
 apps/web/src/app/admin/observability/page.tsx
