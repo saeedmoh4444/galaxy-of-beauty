@@ -87,7 +87,9 @@ export const socialRouter = router({
       await prisma.platformConfig.create({
         data: { key: id, value: JSON.stringify(input), updatedBy: ctx.user.id },
       });
-      return { id, success: true };
+      // The tips list strips the 'tip:' prefix — return the same id shape
+      // so a created tip is findable in the list it lands in.
+      return { id: id.replace('tip:', ''), success: true };
     }),
 
   // ── Seasonal Lookbook ──────────────────────────────────
