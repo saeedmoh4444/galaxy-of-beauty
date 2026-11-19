@@ -43,20 +43,20 @@ test('confirm page receives the real booking code and date', async ({ page }) =>
   const addressSelect = page.locator('#bc-address');
   await expect(addressSelect).toBeVisible({ timeout: 20_000 });
   await addressSelect.selectOption({ index: 1 });
+  // Thursday-proof: when tomorrow is Friday, the default 10:00 + a >=2h
+  // service overlaps the Jummah window (11:30-13:30 Riyadh) and
+  // bookings.create rejects it — pick the afternoon instead. #bc-time is a
+  // <select> of 30-min slots and only exists in this (step 2) form.
+  const tomorrowUtc = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
+  const tomorrowIsFriday = new Date(`${tomorrowUtc}T00:00:00Z`).getUTCDay() === 5;
+  if (tomorrowIsFriday) {
+    await page.locator('#bc-time').selectOption('14:00');
+  }
   const next = page.getByTestId('step-next');
   await expect(next).toBeVisible();
   await next.click();
 
   // Step 3: submit (booking defaults are tomorrow 10:00 — a valid future slot).
-  // Thursday-proof: when tomorrow is Friday, 10:00 + a >=2h service overlaps
-  // the Jummah window (11:30-13:30 Riyadh) and bookings.create rejects it —
-  // book the afternoon instead so the spec stays about the confirm flow.
-  const tomorrowUtc = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
-  const tomorrowIsFriday = new Date(`${tomorrowUtc}T00:00:00Z`).getUTCDay() === 5;
-  if (tomorrowIsFriday) {
-    // #bc-time is a <select> of 30-min slots (08:00-20:30).
-    await page.locator('#bc-time').selectOption('14:00');
-  }
   const submit = page.getByRole('button', { name: 'تأكيد الحجز' });
   await expect(submit).toBeVisible();
   await submit.click();
