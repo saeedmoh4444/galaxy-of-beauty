@@ -409,31 +409,45 @@ const lastSlotEndByTech = new Map<number, number>();
 // Per-process offset so re-runs against a long-lived DB never collide with
 // leftovers from previous runs (the exclusion spans the whole table).
 const PROCESS_SLOT_OFFSET_HOURS = Math.floor(Math.random() * 5000);
-export async function createUniqueSlot(
-  technicianRecordId: number,
-  opts?: { daysAhead?: number; durationMs?: number },
-): Promise<{ id: number; startAt: Date; endAt: Date }> {
-  slotSeq += 1;
+
+/**
+ * Pure slot-window math for createUniqueSlot — exported so the Jummah
+ * property test can exercise the exact algorithm without the DB.
+ *
+ * The Jummah guard mirrors the ROUTER's interval formula (lib/jummah):
+ * a slot is blocked when it OVERLAPS the window (start < 13:30 AND
+ * end > 11:30 Riyadh = 10:30/08:30 UTC), not merely when its start
+ * minute sits inside it. A 1h slot starting in UTC (07:30, 08:30) ends
+ * inside the window and is rejected — the old start-only check kept it
+ * (the 2026-11-19 booking-lifecycle failure).
+ */
+export function uniqueSlotWindow(
+  seq: number,
+  offsetHours: number,
+  lastEndMs: number | undefined,
+  durationMs: number,
+): { start: Date; end: Date } {
   // Day 30: the seed occupies days 0-6 per technician (9:00-19:30, 90-min
   // grid) — test windows must live far outside that range or the overlap
-  // exclusion rejects them. The requested daysAhead only needs to be
-  // "in the future"; 30 satisfies every caller.
+  // exclusion rejects them.
   const base = safeFutureDate(30);
-  let start = new Date(base.getTime() + (PROCESS_SLOT_OFFSET_HOURS + slotSeq * 4) * 3_600_000);
-  // The random hour-offset can land the window inside the Riyadh Friday
-  // Jummah range (11:30-13:30 Riyadh = 08:30-10:30 UTC), which
-  // bookings.create rejects (lib/jummah). The two constraints below
-  // (Jummah-safe AND after the per-tech watermark) can push each other
-  // back and forth, so converge with a bounded loop.
-  const jummahOverlap = (t: Date): boolean => {
-    if (t.getUTCDay() !== 5) return false;
-    const m = t.getUTCHours() * 60 + t.getUTCMinutes();
-    return m >= 8 * 60 + 30 && m < 10 * 60 + 30;
+  let start = new Date(base.getTime() + (offsetHours + seq * 4) * 3_600_000);
+  const endOf = () => new Date(start.getTime() + durationMs);
+  const jummahOverlap = (): boolean => {
+    if (start.getUTCDay() !== 5) return false;
+    const mStart = start.getUTCHours() * 60 + start.getUTCMinutes();
+    const end = endOf();
+    const mEnd =
+      end.getUTCDay() === 5
+        ? end.getUTCHours() * 60 + end.getUTCMinutes()
+        : 24 * 60 + end.getUTCHours() * 60 + end.getUTCMinutes();
+    return mStart < 10 * 60 + 30 && mEnd > 8 * 60 + 30;
   };
-  const lastEnd = lastSlotEndByTech.get(technicianRecordId);
+  // The two constraints (Jummah-safe AND after the per-tech watermark) can
+  // push each other back and forth, so converge with a bounded loop.
   for (let pass = 0; pass < 3; pass++) {
     let moved = false;
-    if (jummahOverlap(start)) {
+    if (jummahOverlap()) {
       // Snap past the Jummah window, then keep the per-slot spacing — a
       // plain snap to the same 10:45 made consecutive slots overlap each
       // other and trip the exclusion constraint.
@@ -444,16 +458,30 @@ export async function createUniqueSlot(
         10,
         45,
       );
-      start = new Date(anchor + slotSeq * 2 * 3_600_000);
+      start = new Date(anchor + seq * 2 * 3_600_000);
       moved = true;
     }
-    if (lastEnd !== undefined && start.getTime() < lastEnd + 3_600_000) {
-      start = new Date(lastEnd + 3_600_000);
+    if (lastEndMs !== undefined && start.getTime() < lastEndMs + 3_600_000) {
+      start = new Date(lastEndMs + 3_600_000);
       moved = true;
     }
     if (!moved) break;
   }
-  const end = new Date(start.getTime() + (opts?.durationMs ?? 3_600_000));
+  return { start, end: endOf() };
+}
+
+export async function createUniqueSlot(
+  technicianRecordId: number,
+  opts?: { daysAhead?: number; durationMs?: number },
+): Promise<{ id: number; startAt: Date; endAt: Date }> {
+  slotSeq += 1;
+  const lastEnd = lastSlotEndByTech.get(technicianRecordId);
+  const { start, end } = uniqueSlotWindow(
+    slotSeq,
+    PROCESS_SLOT_OFFSET_HOURS,
+    lastEnd,
+    opts?.durationMs ?? 3_600_000,
+  );
   lastSlotEndByTech.set(technicianRecordId, end.getTime());
   const slot = await prisma.availabilitySlot.create({
     data: { technicianId: technicianRecordId, startAt: start, endAt: end },
