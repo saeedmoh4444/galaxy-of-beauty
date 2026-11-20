@@ -84,6 +84,16 @@ export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
   const { userId, bookingId, amount } = job.data;
   const idempotencyKey = job.data.idempotencyKey ?? `cashback_${bookingId}`;
 
+  // Queue payloads can outlive their user (dev re-seeds, account deletion):
+  // a cashback job for a missing user can never succeed — skip it instead of
+  // burning attempts into the failed set (2026-11-19 platform-run incident:
+  // hundreds of orphan jobs failing with FK violations).
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } });
+  if (!user) {
+    console.log(`[Worker] cashback skipped — user #${userId} no longer exists`);
+    return;
+  }
+
   // Idempotent replay (W1, audit 2026-11-11): a retry after a lost
   // response must be a no-op — the previous attempt already credited the
   // wallet. Without the lookup the retry's unique-key violation would fail
@@ -120,6 +130,14 @@ export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
 export async function handleLoyaltyJob(job: Job<LoyaltyPointsJob>): Promise<void> {
   const { userId, bookingId, points, reason } = job.data;
 
+  // Same orphan guard as handleWalletJob: creditLoyaltyPoints creates the
+  // account row on first earn, which FK-violates for a missing user.
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { id: true } });
+  if (!user) {
+    console.log(`[Worker] points skipped — user #${userId} no longer exists`);
+    return;
+  }
+
   // 8.2: one implementation for every earn path — booking points now ride
   // creditLoyaltyPoints too (expiry + boost windows apply).
   await creditLoyaltyPoints(prisma, userId, points, reason, `booking_${bookingId}`);
@@ -127,6 +145,18 @@ export async function handleLoyaltyJob(job: Job<LoyaltyPointsJob>): Promise<void
 
 export async function handleNotificationJob(job: Job<NotificationJob>): Promise<void> {
   const { userId, type, titleAr, titleEn, bodyAr, bodyEn, channels } = job.data;
+
+  // One user lookup for the whole job. A missing user means the in-app row
+  // cannot be created (FK) and no external channel has a target — skip
+  // instead of burning attempts into the failed set.
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true, phone: true, preferredLanguage: true },
+  });
+  if (!user) {
+    console.log(`[Worker] notification skipped — user #${userId} no longer exists`);
+    return;
+  }
 
   // Legacy callers rely on this job to create the in-app row. B.26
   // notifyUser() creates the row itself and sets skipInApp on the job so
@@ -151,12 +181,6 @@ export async function handleNotificationJob(job: Job<NotificationJob>): Promise<
     channels.includes('push') ||
     channels.includes('whatsapp')
   ) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { email: true, phone: true, preferredLanguage: true },
-    });
-    if (!user) return;
-
     if (channels.includes('email') && user.email) {
       const { sendEmail, emailShell } = await import('../lib/email');
       await sendEmail({

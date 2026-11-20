@@ -106,6 +106,18 @@ describe('handleWalletJob', () => {
     });
     expect(txn).not.toBeNull();
   });
+
+  it('completes as a no-op when the user no longer exists', async () => {
+    // Queue payloads can outlive their user (dev re-seeds, deletions): the
+    // job can never succeed — it must skip instead of burning attempts.
+    await expect(
+      handleWalletJob(job({ userId: 999_999_001, bookingId: 9004, amount: 10 })),
+    ).resolves.toBeUndefined();
+    const txn = await prisma.walletTransaction.findFirst({
+      where: { referenceId: 'booking_9004' },
+    });
+    expect(txn).toBeNull();
+  });
 });
 
 // ── Loyalty points ──────────────────────────────────────────
@@ -169,6 +181,16 @@ describe('handleLoyaltyJob', () => {
     const account = await prisma.loyaltyAccount.findUnique({ where: { userId } });
     accountIds.push(account!.id);
     expect(account?.tier).toBe('PLATINUM');
+  });
+
+  it('completes as a no-op when the user no longer exists', async () => {
+    await expect(
+      handleLoyaltyJob(
+        job({ userId: 999_999_002, bookingId: 9109, points: 50, reason: 'booking_reward' }),
+      ),
+    ).resolves.toBeUndefined();
+    const account = await prisma.loyaltyAccount.findUnique({ where: { userId: 999_999_002 } });
+    expect(account).toBeNull();
   });
 });
 
@@ -238,6 +260,26 @@ describe('handleNotificationJob', () => {
       where: { userId, type: 'PROMO' },
     });
     expect(notif?.sentVia).toEqual(['email', 'sms', 'push']);
+  });
+
+  it('skips when the user no longer exists', async () => {
+    // The in-app row create would FK-violate for a missing user — the job
+    // must skip instead of burning attempts into the failed set.
+    await expect(
+      handleNotificationJob(
+        job({
+          userId: 999_999_003,
+          type: 'SYSTEM',
+          titleAr: 'تنبيه',
+          titleEn: 'Notice',
+          bodyAr: 'رسالة',
+          bodyEn: 'Message',
+          channels: ['in_app'],
+        }),
+      ),
+    ).resolves.toBeUndefined();
+    const notif = await prisma.notification.findFirst({ where: { userId: 999_999_003 } });
+    expect(notif).toBeNull();
   });
 });
 
