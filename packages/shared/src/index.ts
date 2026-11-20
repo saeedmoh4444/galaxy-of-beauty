@@ -26,6 +26,7 @@ export { formatCurrency } from './utils/formatCurrency';
 export { getSaudiSeason, getFridayBlockedHours, getUpcomingOccasions } from './utils/saudiCalendar';
 export type { UpcomingOccasion } from './utils/saudiCalendar';
 export { buildWhatsAppShareUrl } from './utils/whatsapp';
+export { isValidSentryDsn } from './sentry';
 
 // Types
 export type {
