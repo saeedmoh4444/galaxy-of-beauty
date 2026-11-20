@@ -10,28 +10,7 @@ import {
 import { z } from 'zod';
 import { router, protectedProcedure, customerMutation, technicianMutation } from '../trpc';
 import { walletWithdrawSchema, walletTransactionQuerySchema } from '../validators/payment';
-
-/**
- * Return the user's wallet, creating one if it does not yet exist.
- */
-async function ensureWallet(userId: number) {
-  let wallet = await prisma.wallet.findUnique({
-    where: { userId },
-  });
-  if (!wallet) {
-    try {
-      wallet = await prisma.wallet.create({
-        data: { userId },
-      });
-    } catch (err) {
-      // W1 (audit 2026-11-11): a concurrent first-ever call created the
-      // wallet between the find and the create — refetch instead of 500.
-      if ((err as { code?: string }).code !== 'P2002') throw err;
-      wallet = await prisma.wallet.findUniqueOrThrow({ where: { userId } });
-    }
-  }
-  return wallet;
-}
+import { ensureWallet } from '../lib/wallet';
 
 // ---------------------------------------------------------------------------
 // Router
