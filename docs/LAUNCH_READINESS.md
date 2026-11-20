@@ -85,6 +85,10 @@ ui t()-key migration (530 data-string files, locale-correct since #696)
 | PDPL (Personal Data Protection) | ✅ consent records, GDPR export/delete                                                                  |
 | ZATCA e-invoicing               | ✅ full lifecycle + hash chain + TLV QR — **sim mode** until real CSID onboarding (needs live Fatoorah) |
 
+> Full KSA governance & accreditation roadmap (CR, Mawthooq, E-Cosma, Nafath,
+> MoH, SAMA split-pay + status mapping against this codebase):
+> [GOVERNANCE_ACCREDITATION_KSA_2026-11-20.md](GOVERNANCE_ACCREDITATION_KSA_2026-11-20.md)
+
 ## VII. Pre-Launch Actions (honest ordering)
 
 **User-gated (blocking):**
