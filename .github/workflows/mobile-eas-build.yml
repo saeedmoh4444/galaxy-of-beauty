@@ -52,10 +52,17 @@ jobs:
         run: npx expo export --platform android
 
   # ── EAS Build (iOS) ──
+  # Dispatch: only when the chosen platform includes ios.
+  # Push to master (mobile/shared/api/ui paths): build preview automatically —
+  # github.event.inputs is empty on push, which previously skipped every
+  # push build (the "Skipped" jobs users saw on every mobile-affected PR).
   build-ios:
     name: EAS Build — iOS
     needs: verify
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')) ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     env:
       HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
@@ -83,7 +90,10 @@ jobs:
   build-android:
     name: EAS Build — Android
     needs: verify
-    if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android'
+    if: >-
+      (github.event_name == 'workflow_dispatch' &&
+        (github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')) ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     env:
       HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
