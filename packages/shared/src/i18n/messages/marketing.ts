@@ -2257,36 +2257,123 @@ export const marketingMessages = {
   'marketing.terms.title': { ar: 'الشروط والأحكام', en: 'Terms and Conditions' },
   'marketing.terms.section-1-title': { ar: '١. مقدمة', en: '1. Introduction' },
   'marketing.terms.section-1-body': {
-    ar: 'مرحباً بكِ في جالكسي بيوتي. باستخدامكِ للمنصة، فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',
-    en: 'Welcome to Galaxy of Beauty. By using the platform, you agree to the following terms and conditions. Please read them carefully.',
+    ar: 'تُشكّل هذه الشروط والأحكام اتفاقاً ملزماً بينكِ وبين منصة جالكسي بيوتي ("المنصة"). باستخدامكِ المنصة أو إنشاء حساب أو إتمام حجز أو شراء، فإنكِ تقرّين بقراءة هذه الشروط وفهمها والموافقة عليها. تنقسم هذه الشروط إلى قسمين: الأول يخص حجوزات خدمات التجميل، والثاني يخص متجر المنتجات.',
+    en: 'These Terms and Conditions form a binding agreement between you and the Galaxy of Beauty platform. By using the platform, creating an account, or completing a booking or purchase, you confirm that you have read, understood and accepted these terms. These terms are divided into two parts: Part One covers beauty-service bookings; Part Two covers the product store.',
   },
-  'marketing.terms.section-2-title': { ar: '٢. الخدمات', en: '2. Services' },
+  'marketing.terms.section-2-title': {
+    ar: '٢. القسم الأول — حجوزات الخدمات',
+    en: '2. Part One — Service Bookings',
+  },
   'marketing.terms.section-2-body': {
-    ar: 'تعمل جالكسي بيوتي كمنصة وسيطة بين العملاء ومقدمي خدمات التجميل. نحن لا نقدم خدمات التجميل مباشرة، وإنما نسهل عملية الحجز والتواصل.',
-    en: 'Galaxy of Beauty operates as an intermediary platform between clients and beauty service providers. We do not provide beauty services directly, but rather facilitate the booking and communication process.',
+    ar: 'تعمل المنصة كوسيط تقني بين العميلات ومقدمي خدمات التجميل (الصالونات، المراكز النسائية، الفنيات المستقلات). نحن لا نقدم خدمات التجميل بأنفسنا، ودورنا يقتصر على عرض الخدمات وتسهيل الحجز والدفع والتواصل. يخضع مقدمو الخدمات لشروط الترخيص النظامية: الصالونات والمراكز (سجل تجاري ورخصة بلدية سارية)، والفنيات المستقلات (شهادة العمل الحر لمهن التجميل)، والعيادات التجميلية (ترخيص وزارة الصحة).',
+    en: "The platform acts as a technical intermediary between clients and beauty service providers (salons, women's centers, independent professionals). We do not provide beauty services ourselves; our role is limited to listing services and facilitating booking, payment and communication. Service providers are subject to official licensing requirements: salons and centers (commercial registration and a valid municipal license), independent professionals (a Freelance Certificate for beauty professions), and aesthetic clinics (a Ministry of Health license).",
   },
   'marketing.terms.section-3-title': {
-    ar: '٣. الحجوزات والإلغاء',
-    en: '3. Bookings and Cancellations',
+    ar: '٣. مسؤولية مقدم الخدمة وجودة التنفيذ',
+    en: '3. Provider Responsibility and Quality',
   },
   'marketing.terms.section-3-body': {
-    ar: 'يمكن إلغاء الحجز قبل موعده بـ ٢٤ ساعة على الأقل. في حالة الإلغاء المتأخر، قد يتم تطبيق رسوم إلغاء. يحق للمنصة تعديل أو إلغاء أي حجز حسب الحاجة.',
-    en: 'A booking can be cancelled at least 24 hours before its scheduled time. In the case of late cancellation, a cancellation fee may apply. The platform reserves the right to modify or cancel any booking as needed.',
+    ar: 'مسؤولية جودة الخدمة المنفذة — داخل الصالون أو في المنزل — تقع على مقدم الخدمة وحده. تبذل المنصة جهوداً معقولة للتحقق من بيانات مقدمي الخدمة عند تسجيلهم، لكنها لا تضمن نتيجة أي خدمة ولا تتحمل المسؤولية عن الأضرار الناشئة عن التنفيذ، باستثناء ما يوجبه النظام. لأي شكوى، راجعي آلية الشكاوى: يتم الرد خلال ٤٨ ساعة عبر خيار "تقديم شكوى" في تفاصيل الحجز.',
+    en: 'Responsibility for the quality of the service performed — at the salon or at home — rests solely with the provider. The platform makes reasonable efforts to verify provider credentials at registration, but it does not guarantee the outcome of any service and is not liable for execution-related damages beyond what the law requires. For complaints, see the complaints mechanism: a response is guaranteed within 48 hours via "File a complaint" in the booking details.',
   },
-  'marketing.terms.section-4-title': { ar: '٤. المدفوعات', en: '4. Payments' },
+  'marketing.terms.section-4-title': {
+    ar: '٤. الأسعار والمدفوعات والإلغاء',
+    en: '4. Prices, Payments and Cancellation',
+  },
   'marketing.terms.section-4-body': {
-    ar: 'تتم معالجة المدفوعات عبر بوابات دفع آمنة. الأسعار المعروضة شاملة للضريبة ما لم يُذكر خلاف ذلك. قد يتم تطبيق رسوم خدمة إضافية.',
-    en: 'Payments are processed through secure payment gateways. Listed prices include tax unless otherwise stated. An additional service fee may apply.',
+    ar: 'الأسعار المعروضة شاملة الضريبة وتشمل رسوم المنصة. تتم المدفوعات عبر بوابات دفع مرخصة من البنك المركزي السعودي (ساما). يُخصم مبلغ العربون المدفوع عند الحجز من قيمة الخدمة. قواعد الإلغاء والاسترداد مفصلة في سياسة الإلغاء والاستبدال والاسترداد: الإلغاء مجاني قبل ٢٤ ساعة من الموعد، وقد يُصادر العربون في حال الإلغاء المتأخر أو عدم الحضور.',
+    en: 'Displayed prices include tax and the platform fee. Payments are processed through payment gateways licensed by the Saudi Central Bank (SAMA). The deposit paid at booking is deducted from the service total. Cancellation and refund rules are detailed in the Cancellation, Exchange & Return Policy: cancellation is free at least 24 hours before the appointment; the deposit may be forfeited on late cancellation or no-show.',
   },
-  'marketing.terms.section-5-title': { ar: '٥. الخصوصية', en: '5. Privacy' },
+  'marketing.terms.section-5-title': {
+    ar: '٥. القسم الثاني — متجر المنتجات',
+    en: '5. Part Two — The Product Store',
+  },
   'marketing.terms.section-5-body': {
-    ar: 'نحن نلتزم بحماية بياناتكِ الشخصية وفقاً لسياسة الخصوصية الخاصة بنا. لا نشارك معلوماتكِ مع أطراف ثالثة دون موافقتكِ.',
-    en: 'We are committed to protecting your personal data in accordance with our privacy policy. We do not share your information with third parties without your consent.',
+    ar: 'يضم متجر المنصة منتجات تجميل تبيعها متاجر وموردون مسجلون. تعرض المنصة المنتجات نيابة عن التجار وتسهل الطلب والدفع والتوصيل. ينعقد عقد البيع بينكِ وبين التاجر، وتلتزم المنصة بضمان سلامة عملية الدفع وتوصيل الطلب وفق سياسة الإلغاء والاستبدال والاسترداد.',
+    en: 'The platform store lists beauty products sold by registered merchants and suppliers. The platform lists products on behalf of merchants and facilitates ordering, payment and delivery. The sale contract is between you and the merchant; the platform guarantees the safety of the payment process and order delivery per the Cancellation, Exchange & Return Policy.',
   },
-  'marketing.terms.section-6-title': { ar: '٦. التعديلات', en: '6. Amendments' },
+  'marketing.terms.section-6-title': {
+    ar: '٦. سلامة المنتجات وصلاحيتها والتوصيل',
+    en: '6. Product Safety, Expiry and Shipping',
+  },
   'marketing.terms.section-6-body': {
-    ar: 'تحتفظ جالكسي بيوتي بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعاركِ بأي تغييرات جوهرية عبر البريد الإلكتروني أو عبر المنصة.',
-    en: 'Galaxy of Beauty reserves the right to amend these terms at any time. You will be notified of any material changes via email or through the platform.',
+    ar: 'يُشترط أن تكون المنتجات المعروضة مسجلة لدى الهيئة العامة للغذاء والدواء عبر نظام "إي كوسما". يُحظر عرض أو بيع الخلطات المنزلية أو المنتجات غير المرخصة. يلتزم التجار بسلامة المنتجات وصلاحية تواريخ انتهائها وجودة التغليف. تُحدد مدة التوصيل عند إتمام الطلب، وتكون المسؤولية عن أضرار الشحن وفقاً لسياسة الإلغاء والاستبدال والاسترداد.',
+    en: 'Listed products must be registered with the Saudi Food and Drug Authority (SFDA) via the E-Cosma system. Homemade mixtures or unlicensed products are strictly prohibited. Merchants are responsible for product safety, valid expiry dates and packaging quality. Delivery time is stated at checkout; liability for shipping damage follows the Cancellation, Exchange & Return Policy.',
+  },
+  'marketing.terms.section-7-title': {
+    ar: '٧. الخصوصية والبيانات الشخصية',
+    en: '7. Privacy and Personal Data',
+  },
+  'marketing.terms.section-7-body': {
+    ar: 'تتم معالجة بياناتكِ الشخصية وفق نظام حماية البيانات الشخصية (PDPL) وسياسة الخصوصية. تُجمع بيانات الموقع الجغرافي فقط لتمكين الخدمات المنزلية وبموافقتكِ الصريحة، ولا تُشارك أبداً مع أطراف ثالثة. راجعي سياسة الخصوصية للتفاصيل.',
+    en: 'Your personal data is processed in accordance with the Personal Data Protection Law (PDPL) and the Privacy Policy. Geolocation data is collected only to enable at-home services, with your explicit consent, and is never shared with third parties. See the Privacy Policy for details.',
+  },
+  'marketing.terms.section-8-title': {
+    ar: '٨. التعديلات والتواصل',
+    en: '8. Amendments and Contact',
+  },
+  'marketing.terms.section-8-body': {
+    ar: 'تحتفظ المنصة بحق تعديل هذه الشروط، ويُعد استمرار الاستخدام بعد نشر التعديلات موافقة عليها. لأي استفسار أو شكوى: استخدمي خيار "تقديم شكوى" داخل الطلب أو الحجز، أو راسلينا على support@galaxyofbeauty.sa. نلتزم بالرد خلال ٤٨ ساعة.',
+    en: 'The platform reserves the right to amend these terms; continued use after publication constitutes acceptance. For questions or complaints: use "File a complaint" within the order or booking, or email support@galaxyofbeauty.sa. We commit to responding within 48 hours.',
+  },
+  // ── Cancellation, Exchange & Return Policy (E-Commerce Law) ──
+  'marketing.refunds.title': {
+    ar: 'سياسة الإلغاء والاستبدال والاسترداد',
+    en: 'Cancellation, Exchange & Return Policy',
+  },
+  'marketing.refunds.intro': {
+    ar: 'تنظّم هذه السياسة حقوقكِ في إلغاء الحجوزات واستبدال المنتجات واسترداد المبالغ، وفقاً لنظام التجارة الإلكترونية السعودي. تسري هذه السياسة على جميع الطلبات والحجوزات عبر المنصة.',
+    en: 'This policy governs your rights to cancel bookings, exchange products and receive refunds, in accordance with the Saudi E-Commerce Law. It applies to all orders and bookings made through the platform.',
+  },
+  'marketing.refunds.s1-title': { ar: 'إرجاع المنتجات — ٧ أيام', en: 'Product Returns — 7 Days' },
+  'marketing.refunds.s1-body': {
+    ar: 'يحق لكِ إرجاع أي منتج خلال ٧ أيام من تاريخ الاستلام بشرط أن يكون بحالته الأصلية غير مستخدم وفي تغليفه الأصلي، وفقاً لنظام التجارة الإلكترونية. يُسترد المبلغ خلال ٣-٥ أيام عمل بنفس وسيلة الدفع.',
+    en: 'You may return any product within 7 days of receipt, provided it is in its original unused condition and packaging, per the E-Commerce Law. The refund is issued within 3–5 business days to the original payment method.',
+  },
+  'marketing.refunds.s2-title': {
+    ar: 'استثناء النظافة — مستحضرات التجميل المفتوحة',
+    en: 'Hygiene Exception — Opened Cosmetics',
+  },
+  'marketing.refunds.s2-body': {
+    ar: 'يُستثنى من حق الإرجاع أي منتج تجميل فُتح غلافه أو استُخدم، لأسباب تتعلق بالصحة والنظافة العامة. يُذكر هذا الاستثناء بوضوح في صفحة كل منتج قبل إتمام الشراء.',
+    en: 'For health and hygiene reasons, any cosmetic product whose packaging has been opened or used is excluded from the return right. This exception is clearly stated on each product page before purchase.',
+  },
+  'marketing.refunds.s3-title': {
+    ar: 'الاستبدال — منتجات تالفة أو مخالفة للوصف',
+    en: 'Exchanges — Damaged or Misdescribed Products',
+  },
+  'marketing.refunds.s3-body': {
+    ar: 'في حال استلام منتج تالف أو منتهي الصلاحية أو مخالف للوصف المعلن، يحق لكِ استبداله بمنتج سليم أو استرداد كامل المبلغ، وتتحمل المنصة رسوم الشحن في هذه الحالة.',
+    en: 'If you receive a damaged, expired or misdescribed product, you may have it replaced or receive a full refund, and the platform covers the shipping fees in this case.',
+  },
+  'marketing.refunds.s4-title': {
+    ar: 'إلغاء الحجوزات — قبل ٢٤ ساعة',
+    en: 'Booking Cancellation — 24 Hours',
+  },
+  'marketing.refunds.s4-body': {
+    ar: 'يمكن إلغاء أي حجز مجاناً قبل موعده بـ ٢٤ ساعة على الأقل، ويُسترد العربون المدفوع كاملاً خلال ٣-٥ أيام عمل.',
+    en: 'Any booking can be cancelled free of charge at least 24 hours before its scheduled time, and the paid deposit is refunded in full within 3–5 business days.',
+  },
+  'marketing.refunds.s5-title': {
+    ar: 'الإلغاء المتأخر وعدم الحضور',
+    en: 'Late Cancellation and No-Show',
+  },
+  'marketing.refunds.s5-body': {
+    ar: 'في حال الإلغاء قبل أقل من ٢٤ ساعة من الموعد أو عدم الحضور، يجوز مصادرة العربون (أو جزء منه) تعويضاً عن الوقت المحجوز. يُوضح مبلغ العربون وحالات مصادرة قبل تأكيد الحجز.',
+    en: 'On cancellation less than 24 hours before the appointment, or on no-show, the deposit (or part of it) may be forfeited as compensation for the reserved time. The deposit amount and forfeiture conditions are shown before booking confirmation.',
+  },
+  'marketing.refunds.s6-title': {
+    ar: 'إلغاء من مقدم الخدمة — تعويض العميلة',
+    en: 'Provider-Initiated Cancellation — Client Compensation',
+  },
+  'marketing.refunds.s6-body': {
+    ar: 'إذا ألغى مقدم الخدمة حجزاً مؤكداً، يُسترد كامل المبلغ المدفوع، وقد تُمنح العميلة قسيمة تعويضية وفقاً لتقييم الحالة، مع حق مقدم الخدمة في دفع غرامة إلغاء وفق اتفاقية المزود.',
+    en: 'If a provider cancels a confirmed booking, the full amount paid is refunded, and the client may receive a compensation voucher depending on the case assessment; providers may also be liable for cancellation penalties under the provider agreement.',
+  },
+  'marketing.refunds.s7-title': { ar: 'كيفية تقديم الطلب', en: 'How to Submit a Request' },
+  'marketing.refunds.s7-body': {
+    ar: 'تُقدَّم طلبات الإلغاء أو الاستبدال أو الاسترداد من داخل الطلب أو الحجز عبر خيار "تقديم شكوى"، ويتم الرد خلال ٤٨ ساعة كحد أقصى قبل أي تصعيد للجهات الرسمية.',
+    en: 'Cancellation, exchange or refund requests are submitted within the order or booking via "File a complaint", and a response is guaranteed within 48 hours before any escalation to official authorities.',
   },
   'marketing.tutorials.difficulty-beginner': { ar: 'مبتدئ', en: 'Beginner' },
   'marketing.tutorials.difficulty-unknown': { ar: 'غير محدد', en: 'Unknown difficulty' },
@@ -2379,6 +2466,19 @@ export const marketingMessages = {
   'marketing.privacy.s6-body': {
     ar: 'لأي استفسار حول الخصوصية أو لممارسة حقوقك: privacy@galaxyofbeauty.sa',
     en: 'For privacy questions or to exercise your rights: privacy@galaxyofbeauty.sa',
+  },
+  'marketing.privacy.s7-title': { ar: 'بيانات الموقع الجغرافي', en: 'Geolocation data' },
+  'marketing.privacy.s7-body': {
+    ar: 'نطلب إذن الوصول إلى موقعكِ فقط عند حجز خدمة منزلية، لتحديد موقع التنفيذ وحساب المسافة. لا نستخدم الموقع لأي غرض آخر ولا نشاركه مع أي طرف ثالث أبداً، ويمكنكِ سحب الإذن من إعدادات جهازك في أي وقت دون التأثير على بقية الخدمات.',
+    en: 'We request access to your location only when booking an at-home service, to identify the service address and calculate distance. The location is used for no other purpose and is never shared with any third party. You can withdraw the permission from your device settings at any time without affecting the rest of the services.',
+  },
+  'marketing.privacy.s8-title': {
+    ar: 'الصور أثناء الاستشارات',
+    en: 'Photographs during consultations',
+  },
+  'marketing.privacy.s8-body': {
+    ar: 'إذا التُقطت صور أثناء استشارة تجميلية (مثل تحليل البشرة)، فلا يتم ذلك إلا بموافقتكِ الصريحة المسبقة، وتُستخدم لأغراض الخدمة فقط. لا تُنشر هذه الصور ولا تُشارك مع أي طرف ثالث أبداً.',
+    en: 'If photographs are taken during a beauty consultation (e.g., skin analysis), this happens only with your explicit prior consent and solely for service purposes. These photographs are never published or shared with any third party.',
   },
   // ── 6.2 PDPL — data retention page ──────────────────────
   'marketing.retention.title': { ar: 'سياسة الاحتفاظ بالبيانات', en: 'Data Retention Policy' },

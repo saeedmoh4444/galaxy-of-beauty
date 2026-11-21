@@ -213,6 +213,10 @@ export default function RegisterPage(): JSX.Element {
               {t('auth.terms')}
             </Link>{' '}
             {'· '}
+            <Link href="/refunds" className="text-brand-600">
+              {t('marketing.refunds.title')}
+            </Link>{' '}
+            {'· '}
             <Link href="/privacy" className="text-brand-600">
               {t('marketing.privacy.title')}
             </Link>

@@ -3142,6 +3142,12 @@ export const enWebMessages: Record<string, string> = {
   'marketing.privacy.s6-body':
     'For privacy questions or to exercise your rights: privacy@galaxyofbeauty.sa',
   'marketing.privacy.s6-title': 'Contact us',
+  'marketing.privacy.s7-body':
+    'We request access to your location only when booking an at-home service, to identify the service address and calculate distance. The location is used for no other purpose and is never shared with any third party. You can withdraw the permission from your device settings at any time without affecting the rest of the services.',
+  'marketing.privacy.s7-title': 'Geolocation data',
+  'marketing.privacy.s8-body':
+    'If photographs are taken during a beauty consultation (e.g., skin analysis), this happens only with your explicit prior consent and solely for service purposes. These photographs are never published or shared with any third party.',
+  'marketing.privacy.s8-title': 'Photographs during consultations',
   'marketing.privacy.title': 'Privacy Policy',
   'marketing.product-compare.choose-products': 'Choose two products to compare ({count}/4)',
   'marketing.product-compare.dim-absorption': 'Absorption',
@@ -3163,6 +3169,30 @@ export const enWebMessages: Record<string, string> = {
   'marketing.referral-race.share-link': 'Share your link',
   'marketing.referral-race.subtitle': 'Compete with your friends and win prizes! {days} days left',
   'marketing.referral-race.title': 'Referral race',
+  'marketing.refunds.intro':
+    'This policy governs your rights to cancel bookings, exchange products and receive refunds, in accordance with the Saudi E-Commerce Law. It applies to all orders and bookings made through the platform.',
+  'marketing.refunds.s1-body':
+    'You may return any product within 7 days of receipt, provided it is in its original unused condition and packaging, per the E-Commerce Law. The refund is issued within 3–5 business days to the original payment method.',
+  'marketing.refunds.s1-title': 'Product Returns — 7 Days',
+  'marketing.refunds.s2-body':
+    'For health and hygiene reasons, any cosmetic product whose packaging has been opened or used is excluded from the return right. This exception is clearly stated on each product page before purchase.',
+  'marketing.refunds.s2-title': 'Hygiene Exception — Opened Cosmetics',
+  'marketing.refunds.s3-body':
+    'If you receive a damaged, expired or misdescribed product, you may have it replaced or receive a full refund, and the platform covers the shipping fees in this case.',
+  'marketing.refunds.s3-title': 'Exchanges — Damaged or Misdescribed Products',
+  'marketing.refunds.s4-body':
+    'Any booking can be cancelled free of charge at least 24 hours before its scheduled time, and the paid deposit is refunded in full within 3–5 business days.',
+  'marketing.refunds.s4-title': 'Booking Cancellation — 24 Hours',
+  'marketing.refunds.s5-body':
+    'On cancellation less than 24 hours before the appointment, or on no-show, the deposit (or part of it) may be forfeited as compensation for the reserved time. The deposit amount and forfeiture conditions are shown before booking confirmation.',
+  'marketing.refunds.s5-title': 'Late Cancellation and No-Show',
+  'marketing.refunds.s6-body':
+    'If a provider cancels a confirmed booking, the full amount paid is refunded, and the client may receive a compensation voucher depending on the case assessment; providers may also be liable for cancellation penalties under the provider agreement.',
+  'marketing.refunds.s6-title': 'Provider-Initiated Cancellation — Client Compensation',
+  'marketing.refunds.s7-body':
+    'Cancellation, exchange or refund requests are submitted within the order or booking via "File a complaint", and a response is guaranteed within 48 hours before any escalation to official authorities.',
+  'marketing.refunds.s7-title': 'How to Submit a Request',
+  'marketing.refunds.title': 'Cancellation, Exchange & Return Policy',
   'marketing.retention.intro':
     'We keep your data only as long as needed for the purpose it was collected, then delete or anonymize it automatically per the table below.',
   'marketing.retention.s1-body':
@@ -3459,23 +3489,29 @@ export const enWebMessages: Record<string, string> = {
   'marketing.technicians.subtitle': 'Browse certified beauty service providers in your city',
   'marketing.technicians.title': 'Beauty service providers',
   'marketing.terms.section-1-body':
-    'Welcome to Galaxy of Beauty. By using the platform, you agree to the following terms and conditions. Please read them carefully.',
+    'These Terms and Conditions form a binding agreement between you and the Galaxy of Beauty platform. By using the platform, creating an account, or completing a booking or purchase, you confirm that you have read, understood and accepted these terms. These terms are divided into two parts: Part One covers beauty-service bookings; Part Two covers the product store.',
   'marketing.terms.section-1-title': '1. Introduction',
   'marketing.terms.section-2-body':
-    'Galaxy of Beauty operates as an intermediary platform between clients and beauty service providers. We do not provide beauty services directly, but rather facilitate the booking and communication process.',
-  'marketing.terms.section-2-title': '2. Services',
+    "The platform acts as a technical intermediary between clients and beauty service providers (salons, women's centers, independent professionals). We do not provide beauty services ourselves; our role is limited to listing services and facilitating booking, payment and communication. Service providers are subject to official licensing requirements: salons and centers (commercial registration and a valid municipal license), independent professionals (a Freelance Certificate for beauty professions), and aesthetic clinics (a Ministry of Health license).",
+  'marketing.terms.section-2-title': '2. Part One — Service Bookings',
   'marketing.terms.section-3-body':
-    'A booking can be cancelled at least 24 hours before its scheduled time. In the case of late cancellation, a cancellation fee may apply. The platform reserves the right to modify or cancel any booking as needed.',
-  'marketing.terms.section-3-title': '3. Bookings and Cancellations',
+    'Responsibility for the quality of the service performed — at the salon or at home — rests solely with the provider. The platform makes reasonable efforts to verify provider credentials at registration, but it does not guarantee the outcome of any service and is not liable for execution-related damages beyond what the law requires. For complaints, see the complaints mechanism: a response is guaranteed within 48 hours via "File a complaint" in the booking details.',
+  'marketing.terms.section-3-title': '3. Provider Responsibility and Quality',
   'marketing.terms.section-4-body':
-    'Payments are processed through secure payment gateways. Listed prices include tax unless otherwise stated. An additional service fee may apply.',
-  'marketing.terms.section-4-title': '4. Payments',
+    'Displayed prices include tax and the platform fee. Payments are processed through payment gateways licensed by the Saudi Central Bank (SAMA). The deposit paid at booking is deducted from the service total. Cancellation and refund rules are detailed in the Cancellation, Exchange & Return Policy: cancellation is free at least 24 hours before the appointment; the deposit may be forfeited on late cancellation or no-show.',
+  'marketing.terms.section-4-title': '4. Prices, Payments and Cancellation',
   'marketing.terms.section-5-body':
-    'We are committed to protecting your personal data in accordance with our privacy policy. We do not share your information with third parties without your consent.',
-  'marketing.terms.section-5-title': '5. Privacy',
+    'The platform store lists beauty products sold by registered merchants and suppliers. The platform lists products on behalf of merchants and facilitates ordering, payment and delivery. The sale contract is between you and the merchant; the platform guarantees the safety of the payment process and order delivery per the Cancellation, Exchange & Return Policy.',
+  'marketing.terms.section-5-title': '5. Part Two — The Product Store',
   'marketing.terms.section-6-body':
-    'Galaxy of Beauty reserves the right to amend these terms at any time. You will be notified of any material changes via email or through the platform.',
-  'marketing.terms.section-6-title': '6. Amendments',
+    'Listed products must be registered with the Saudi Food and Drug Authority (SFDA) via the E-Cosma system. Homemade mixtures or unlicensed products are strictly prohibited. Merchants are responsible for product safety, valid expiry dates and packaging quality. Delivery time is stated at checkout; liability for shipping damage follows the Cancellation, Exchange & Return Policy.',
+  'marketing.terms.section-6-title': '6. Product Safety, Expiry and Shipping',
+  'marketing.terms.section-7-body':
+    'Your personal data is processed in accordance with the Personal Data Protection Law (PDPL) and the Privacy Policy. Geolocation data is collected only to enable at-home services, with your explicit consent, and is never shared with third parties. See the Privacy Policy for details.',
+  'marketing.terms.section-7-title': '7. Privacy and Personal Data',
+  'marketing.terms.section-8-body':
+    'The platform reserves the right to amend these terms; continued use after publication constitutes acceptance. For questions or complaints: use "File a complaint" within the order or booking, or email support@galaxyofbeauty.sa. We commit to responding within 48 hours.',
+  'marketing.terms.section-8-title': '8. Amendments and Contact',
   'marketing.terms.title': 'Terms and Conditions',
   'marketing.trending.bookings-count': '{count} bookings',
   'marketing.trending.load-error': 'Failed to load content',
