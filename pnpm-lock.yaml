@@ -102,9 +102,6 @@ importers:
       '@react-native-community/netinfo':
         specifier: 12.0.1
         version: 12.0.1(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.87.0(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)
-      '@sentry/react-native':
-        specifier: ~8.35.0
-        version: 8.35.0(@babel/core@7.29.13)(@expo/config-types@58.0.3)(@expo/config@58.0.12(typescript@6.0.3))(@expo/env@2.6.0)(dotenv@18.0.10)(expo-router@58.0.31)(expo-updates@58.0.22(expo-dev-client@58.0.20(expo@58.0.25)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.87.0(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.1)))(expo@58.0.25)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.87.0(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1))(expo@58.0.25)(metro-config@0.87.3)(metro-resolver@0.87.3)(metro@0.87.3)(open@10.2.0)(promise@8.3.0)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.87.0(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.1))(react@19.3.1)(rollup@4.68.3)(webpack@5.108.4(esbuild@0.28.2))
       '@tanstack/query-async-storage-persister':
         specifier: ^5.107.1
         version: 5.107.1
