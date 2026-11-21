@@ -100,6 +100,7 @@ const PAGES: SitemapEntry[] = [
 
   // Legal
   { url: '/privacy', priority: 0.3, changeFrequency: 'monthly' },
+  { url: '/refunds', priority: 0.3, changeFrequency: 'monthly' },
   { url: '/terms', priority: 0.3, changeFrequency: 'monthly' },
   { url: '/retention', priority: 0.3, changeFrequency: 'monthly' },
 ];

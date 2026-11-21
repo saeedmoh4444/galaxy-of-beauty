@@ -1,9 +1,12 @@
 import type { JSX } from 'react';
+import Link from 'next/link';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
 import { pageMeta } from '@/lib/seo';
 import type { Metadata } from 'next';
+
+const SECTIONS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getServerLocale();
@@ -24,42 +27,23 @@ export default async function TermsPage(): Promise<JSX.Element> {
       <h1 className="text-2xl font-bold">{t('marketing.terms.title', locale)}</h1>
       <Card padding="lg">
         <div className="space-y-4 text-sm leading-relaxed text-text-primary">
-          <section>
-            <h2 className="font-bold text-lg mb-2">
-              {t('marketing.terms.section-1-title', locale)}
-            </h2>
-            <p>{t('marketing.terms.section-1-body', locale)}</p>
-          </section>
-          <section>
-            <h2 className="font-bold text-lg mb-2">
-              {t('marketing.terms.section-2-title', locale)}
-            </h2>
-            <p>{t('marketing.terms.section-2-body', locale)}</p>
-          </section>
-          <section>
-            <h2 className="font-bold text-lg mb-2">
-              {t('marketing.terms.section-3-title', locale)}
-            </h2>
-            <p>{t('marketing.terms.section-3-body', locale)}</p>
-          </section>
-          <section>
-            <h2 className="font-bold text-lg mb-2">
-              {t('marketing.terms.section-4-title', locale)}
-            </h2>
-            <p>{t('marketing.terms.section-4-body', locale)}</p>
-          </section>
-          <section>
-            <h2 className="font-bold text-lg mb-2">
-              {t('marketing.terms.section-5-title', locale)}
-            </h2>
-            <p>{t('marketing.terms.section-5-body', locale)}</p>
-          </section>
-          <section>
-            <h2 className="font-bold text-lg mb-2">
-              {t('marketing.terms.section-6-title', locale)}
-            </h2>
-            <p>{t('marketing.terms.section-6-body', locale)}</p>
-          </section>
+          {SECTIONS.map((n) => (
+            <section key={n}>
+              <h2 className="font-bold text-lg mb-2">
+                {t(`marketing.terms.section-${n}-title`, locale)}
+              </h2>
+              <p>{t(`marketing.terms.section-${n}-body`, locale)}</p>
+            </section>
+          ))}
+          <p className="pt-2 text-text-secondary">
+            <Link href="/refunds" className="text-brand-600 underline">
+              {t('marketing.refunds.title', locale)}
+            </Link>
+            {' · '}
+            <Link href="/privacy" className="text-brand-600 underline">
+              {t('marketing.privacy.title', locale)}
+            </Link>
+          </p>
         </div>
       </Card>
     </div>
