@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import Link from 'next/link';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
@@ -52,6 +53,23 @@ export default async function PrivacyPage(): Promise<JSX.Element> {
             <h2 className="font-bold text-lg mb-2">{t('marketing.privacy.s6-title', locale)}</h2>
             <p>{t('marketing.privacy.s6-body', locale)}</p>
           </section>
+          <section>
+            <h2 className="font-bold text-lg mb-2">{t('marketing.privacy.s7-title', locale)}</h2>
+            <p>{t('marketing.privacy.s7-body', locale)}</p>
+          </section>
+          <section>
+            <h2 className="font-bold text-lg mb-2">{t('marketing.privacy.s8-title', locale)}</h2>
+            <p>{t('marketing.privacy.s8-body', locale)}</p>
+          </section>
+          <p className="pt-2 text-text-secondary">
+            <Link href="/terms" className="text-brand-600 underline">
+              {t('marketing.terms.title', locale)}
+            </Link>
+            {' · '}
+            <Link href="/refunds" className="text-brand-600 underline">
+              {t('marketing.refunds.title', locale)}
+            </Link>
+          </p>
         </div>
       </Card>
     </div>
