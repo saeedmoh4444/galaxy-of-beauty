@@ -4838,6 +4838,70 @@ async function main() {
     );
   }
 
+  // ---- Imagery pass — category-matched, diversity-rotated photos for every
+  // service, category, product and venue (launch completeness: no empty
+  // image slots anywhere on the platform). Pools: @galaxy/shared/imagery
+  // (all URLs verified live 2026-11-21).
+  try {
+    const { imageFor, resolvePoolKey } = await import('@galaxy/shared/imagery');
+    let svcImaged = 0;
+    let catImaged = 0;
+    let prodImaged = 0;
+    let venueImaged = 0;
+
+    const bareServices = await prisma.service.findMany({
+      where: { imageUrl: null },
+      include: { category: { select: { slug: true } } },
+      orderBy: { id: 'asc' },
+    });
+    for (const [i, s] of bareServices.entries()) {
+      const url = imageFor(resolvePoolKey(s.category.slug), i);
+      if (!url) continue;
+      await prisma.service.update({ where: { id: s.id }, data: { imageUrl: url } });
+      svcImaged += 1;
+    }
+
+    const bareCategories = await prisma.category.findMany({
+      where: { imageUrl: null },
+      orderBy: { id: 'asc' },
+    });
+    for (const [i, c] of bareCategories.entries()) {
+      const url = imageFor(resolvePoolKey(c.slug), i);
+      if (!url) continue;
+      await prisma.category.update({ where: { id: c.id }, data: { imageUrl: url } });
+      catImaged += 1;
+    }
+
+    const bareProducts = await prisma.product.findMany({
+      where: { images: { isEmpty: true } },
+      include: { category: { select: { slug: true } } },
+      orderBy: { id: 'asc' },
+    });
+    for (const [i, p] of bareProducts.entries()) {
+      const url = imageFor(resolvePoolKey(p.category.slug), i);
+      if (!url) continue;
+      await prisma.product.update({ where: { id: p.id }, data: { images: [url] } });
+      prodImaged += 1;
+    }
+
+    const bareVendors = await prisma.vendor.findMany({
+      where: { bannerUrl: null },
+      orderBy: { id: 'asc' },
+    });
+    for (const [i, v] of bareVendors.entries()) {
+      const url = imageFor('venues', i);
+      if (!url) continue;
+      await prisma.vendor.update({ where: { id: v.id }, data: { bannerUrl: url } });
+      venueImaged += 1;
+    }
+
+    console.log(
+      ` Imagery pass: services +${svcImaged}, categories +${catImaged}, products +${prodImaged}, venues +${venueImaged}`,
+    );
+  } catch (err: any) {
+    console.log(`    Imagery pass skipped: ${err.message?.slice(0, 80)}`);
+  }
+
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');
 }
 
