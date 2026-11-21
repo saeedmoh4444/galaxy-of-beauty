@@ -45,6 +45,11 @@ export default {
     name: 'Galaxy of Beauty',
     slug: 'galaxy-of-beauty',
     version: '2.0.0',
+    // EAS Update contract: `eas update` requires runtimeVersion, and a
+    // dynamic config cannot be auto-written like app.json was — the OTA
+    // job fails with "Cannot automatically write to dynamic config".
+    // policy: appVersion binds updates to the release version (2.0.0).
+    runtimeVersion: { policy: 'appVersion' },
     orientation: 'portrait',
     scheme: 'galaxyofbeauty',
     platforms: ['ios', 'android', 'web'],
