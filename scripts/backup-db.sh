@@ -8,7 +8,7 @@ set -euo pipefail
 BACKUP_DIR="${BACKUP_DIR:-./backups}"
 CONTAINER="${POSTGRES_CONTAINER:-gob-postgres}"
 DB_USER="${POSTGRES_USER:-gob_admin}"
-DB_NAME="${POSTGRES_DB:-Galaxy_of_Beauty_db}"
+DB_NAME="${POSTGRES_DB:-Galaxy_of_Beauty_dev}"
 RETENTION_DAYS="${RETENTION_DAYS:-14}"
 
 mkdir -p "$BACKUP_DIR"

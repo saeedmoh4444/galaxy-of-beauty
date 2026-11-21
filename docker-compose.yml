@@ -6,6 +6,16 @@
 #   docker compose up -d --build        # Rebuild and start
 #   docker compose down                 # Stop all
 #   docker compose logs -f web          # Tail web logs
+#
+# Runner convention (2026-11-21 ops review): on the dev machine, ONLY the
+# infrastructure services run from this file:
+#   docker compose up -d postgres redis
+# The app processes (web/socket/worker/mobile) run on the HOST via pnpm
+# (`pnpm --filter @galaxy/web dev`, `--filter @galaxy/api worker|socket`,
+# `--filter @galaxy/mobile start`) — the compose web/socket/mobile services
+# below are an alternative containerized runner and would port-clash with
+# host processes. Worker is part of @galaxy/api; there is no worker compose
+# service in dev.
 # =============================================================================
 
 services:
@@ -16,14 +26,14 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-gob_admin}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gob_secure_pass_2024}
-      POSTGRES_DB: ${POSTGRES_DB:-Galaxy_of_Beauty_db}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gob_admin}
+      POSTGRES_DB: ${POSTGRES_DB:-Galaxy_of_Beauty_dev}
     ports:
       - "${POSTGRES_PORT:-5433}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gob_admin} -d ${POSTGRES_DB:-Galaxy_of_Beauty_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gob_admin} -d ${POSTGRES_DB:-Galaxy_of_Beauty_dev}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -58,7 +68,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: development
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-gob_secure_pass_2024}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-gob_admin}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_dev}?schema=public"
       REDIS_URL: "redis://redis:6379"
       JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-dev-access-secret-at-least-32-chars-long}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-dev-refresh-secret-at-least-32-chars-long}
@@ -93,7 +103,7 @@ services:
     environment:
       NODE_ENV: development
       SOCKET_PORT: "4001"
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-gob_secure_pass_2024}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-gob_admin}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_dev}?schema=public"
       REDIS_URL: "redis://redis:6379"
       JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-dev-access-secret-at-least-32-chars-long}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-dev-refresh-secret-at-least-32-chars-long}

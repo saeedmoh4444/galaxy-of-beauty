@@ -1,7 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { extractUrls } from './check-image-urls.mjs';
+import { extractUrls, IMAGERY_FILE } from './check-image-urls.mjs';
 
 test('extracts Unsplash and picsum URLs from the registry helpers', () => {
   const urls = extractUrls(`
@@ -23,4 +26,17 @@ test('ignores double-quoted helper calls and non-helper text', () => {
 
 test('returns an empty list for an empty registry', () => {
   assert.deepEqual(extractUrls('// no images yet'), []);
+});
+
+test('the imagery pool file parses and yields 80+ live-shaped URLs', () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const source = readFileSync(resolve(here, IMAGERY_FILE), 'utf8');
+  const urls = extractUrls(source);
+  assert.ok(urls.length >= 80, `expected >=80 pool URLs, got ${urls.length}`);
+  for (const url of urls) {
+    assert.match(
+      url,
+      /^https:\/\/images\.unsplash\.com\/photo-[0-9a-f-]+\?w=100&h=100&fit=crop&auto=format$/,
+    );
+  }
 });
