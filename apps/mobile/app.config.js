@@ -10,6 +10,36 @@
  * SENTRY_ORG + SENTRY_PROJECT are provided (EAS env vars or local env).
  * Runtime Sentry remains DSN-gated and works without the plugin.
  */
+/**
+ * Local plugin: R8 keep-rules for react-native-webrtc (libwebrtc JNI).
+ * Release minification strips org.webrtc.Dav1dDecoder$Natives — referenced
+ * reflectively via Dav1dDecoderJni.get() — and R8 fails the build
+ * (2026-11-21 EAS failure after the Sentry chain was fixed). The webrtc
+ * packages ship no consumer proguard rules for the JNI classes.
+ */
+import { withDangerousMod } from 'expo/config-plugins';
+
+const WEBRTC_KEEP_RULES = `
+# react-native-webrtc (libwebrtc JNI) — R8 keep rules
+-keep class org.webrtc.** { *; }
+-dontwarn org.webrtc.**
+`;
+
+const withWebrtcProguardRules = (config) =>
+  withDangerousMod(config, [
+    'android',
+    async (cfg) => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const file = path.join(cfg.modRequest.platformProjectRoot, 'app', 'proguard-rules.pro');
+      const existing = await fs.readFile(file, 'utf8').catch(() => '');
+      if (!existing.includes('org.webrtc.**')) {
+        await fs.appendFile(file, WEBRTC_KEEP_RULES);
+      }
+      return cfg;
+    },
+  ]);
+
 export default {
   expo: {
     name: 'Galaxy of Beauty',
@@ -58,6 +88,7 @@ export default {
       '@config-plugins/react-native-webrtc',
       'expo-status-bar',
       'expo-video',
+      withWebrtcProguardRules,
       // Sentry native upload — included only when the full upload chain is
       // configured (org + project + auth token). Partial configuration is
       // worse than none: sentry-cli exits non-zero mid-build (2026-11-21:
