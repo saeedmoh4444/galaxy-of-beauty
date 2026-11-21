@@ -145,7 +145,11 @@ jobs:
           # Pass via env, never inline into the shell command: commit messages
           # contain backticks/newlines that break `run:` interpolation.
           OTA_MESSAGE: ${{ github.event.head_commit.message || 'OTA update from CI' }}
-        run: eas update --branch production --message "$OTA_MESSAGE"
+        # --environment preview: EAS env vars are scoped per environment.
+        # Preview-scoped vars (e.g. EXPO_PUBLIC_SENTRY_DSN) must be requested
+        # explicitly — without it, `eas update` builds the bundle with the
+        # production environment and EXPO_PUBLIC_* values come back empty.
+        run: eas update --branch production --environment preview --message "$OTA_MESSAGE"
       - name: Skip OTA (EXPO_TOKEN not configured)
         if: env.HAS_EXPO_TOKEN != 'true'
         run: echo "::notice::Skipping EAS OTA publish — EXPO_TOKEN secret is not configured in this repo"
