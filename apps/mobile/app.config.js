@@ -58,9 +58,12 @@ export default {
       '@config-plugins/react-native-webrtc',
       'expo-status-bar',
       'expo-video',
-      // Sentry native upload — included only when org/project are configured
-      // (see the header note; builds must not fail when Sentry is absent).
-      ...(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT
+      // Sentry native upload — included only when the full upload chain is
+      // configured (org + project + auth token). Partial configuration is
+      // worse than none: sentry-cli exits non-zero mid-build (2026-11-21:
+      // org/project present without SENTRY_AUTH_TOKEN still killed the
+      // Android build at SentryUpload). Builds must never fail on Sentry.
+      ...(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT && process.env.SENTRY_AUTH_TOKEN
         ? [
             [
               '@sentry/react-native',
