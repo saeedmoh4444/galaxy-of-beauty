@@ -69,3 +69,17 @@ Fatoorah token · Sentry DSNs · SMTP/Twilio/WhatsApp/OpenAI/Google keys · AWS 
 
 **Known cosmetic gaps (tracked elsewhere):**
 Bundle sizes above FE-007 targets (baseline-gated) · client-side Jummah snap for Thursday users · real photography (current imagery = verified-live Unsplash pools, swap file = `packages/shared/src/imagery.ts`).
+
+---
+
+## 5. Follow-up fixes shipped the same day (PR #710)
+
+| #   | Finding                                                                                                             | Fix                                                                                                                               |
+| --- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `check-image-urls.mjs` only gated the 72-URL image registry — the new imagery pools (82 URLs) were unverified by CI | Gate now parses `imagery.ts` too: **198 URLs checked**; convention normalization (bare IDs vs `photo-` prefix) added; 4/4 tests   |
+| 2   | `backup-db.sh` defaulted to the dead DB name                                                                        | Default → `Galaxy_of_Beauty_dev`                                                                                                  |
+| 3   | `docker-compose.yml` carried the same stale-DB defaults (`gob_secure_pass_2024` / `Galaxy_of_Beauty_db`)            | Standardized to `gob_admin:gob_admin` / `Galaxy_of_Beauty_dev` + runner-convention note (compose = infra only on the dev machine) |
+| 4   | `docker mcp client connect claude-code` overwrote the project `.mcp.json`                                           | Restored + manually merged the `MCP_DOCKER` gateway entry (dev_workflow profile)                                                  |
+| 5   | Expo dependency drift (`expo install --check`: expo/dev-client/router patches, sentry/react alignment)              | Applied via `expo install --fix` (separate chore PR)                                                                              |
+
+**Still user-gated / machine-level (no code fix possible):** Docker Desktop's extra containers (kind/ngrok/control-plane) pressure the memory that triggers the reaper — disable unused extensions in Docker Desktop · host postgres on :5432 with stale creds (stop the Windows service to avoid confusion) · mobile `.env` LAN IP is subnet-dependent · mobile Sentry plugin needs the user's org/project slugs · prod monitoring profile + ALERT_WEBHOOK_URL need credentials.
